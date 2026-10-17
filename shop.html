@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Collection | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div>
+      <i class="fa-solid fa-gem text-gold"></i>
+      <span>Complimentary Islandwide Express Delivery on Orders Over LKR 50,000</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link active">Shop All</a>
+        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
+        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
+        <a href="track.html" class="nav-link">Track Order</a>
+        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="headerUserAction">
+          <a href="auth.html" class="action-btn" title="Sign In"><i class="fa-regular fa-user"></i></a>
+        </div>
+        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Shop Header Banner -->
+  <section class="section-padding-sm bg-cream" style="border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="d-flex justify-between align-center flex-wrap gap-2">
+        <div>
+          <span class="subtitle" style="color: var(--gold-dark); font-size: 0.775rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; display: block; margin-bottom: 0.35rem;">Boutique Catalog</span>
+          <h1 style="font-size: 2.2rem; margin: 0;" id="catalogTitle">The Complete Collection</h1>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          <a href="index.html" style="text-decoration: underline;">Home</a> / <span id="breadcrumbCurrent">Shop</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Catalog Main -->
+  <section class="section-padding">
+    <div class="container">
+      
+      <!-- Filter Bar -->
+      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 1.25rem 1.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-sm);">
+        <div class="d-flex justify-between align-center flex-wrap gap-3">
+          
+          <!-- Category Tabs -->
+          <div class="d-flex flex-wrap gap-1" id="categoryPills">
+            <button class="btn btn-sm btn-primary category-btn active" data-category="All">All Items</button>
+            <button class="btn btn-sm btn-outline category-btn" data-category="Women">Women's Couture</button>
+            <button class="btn btn-sm btn-outline category-btn" data-category="Men">Men's Sartorial</button>
+            <button class="btn btn-sm btn-outline category-btn" data-category="Accessories">Accessories</button>
+          </div>
+
+          <!-- Search & Sorting Controls -->
+          <div class="d-flex align-center flex-wrap gap-2" style="flex: 1; max-width: 480px; justify-content: flex-end;">
+            <!-- Live Search -->
+            <div style="position: relative; flex: 1; min-width: 180px;">
+              <input type="text" id="searchInput" class="form-control" placeholder="Search dresses, silks, suits..." style="padding-left: 2.2rem; font-size: 0.85rem; height: 38px;">
+              <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 10px; top: 12px; color: var(--text-light); font-size: 0.8rem;"></i>
+            </div>
+
+            <!-- Sorting Select -->
+            <select id="sortSelect" class="form-control" style="width: auto; height: 38px; font-size: 0.85rem; padding: 0.4rem 1rem;">
+              <option value="featured">Sort: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Filter Sub-row -->
+        <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-top: 1rem; padding-top: 0.85rem; border-top: 1px dashed var(--border); font-size: 0.825rem;">
+          <div class="d-flex align-center gap-2">
+            <label class="d-flex align-center gap-1" style="cursor: pointer;">
+              <input type="checkbox" id="inStockCheckbox">
+              <span>Show In-Stock Only</span>
+            </label>
+          </div>
+          <div>
+            <span id="resultsCount" style="color: var(--text-muted); font-weight: 600;">Showing all items</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="product-grid" id="shopProductGrid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- No items found state -->
+      <div id="noResultsState" style="display: none; text-align: center; padding: 4rem 1rem;">
+        <i class="fa-solid fa-search" style="font-size: 3rem; color: var(--sand); margin-bottom: 1rem;"></i>
+        <h3>No matching garments found</h3>
+        <p>Try refining your search terms or selecting another category.</p>
+        <button class="btn btn-outline btn-sm" style="margin-top: 1rem;" onclick="resetShopFilters()">Reset All Filters</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Roohira Collection. All Rights Reserved.</div>
+        <div class="d-flex gap-3">
+          <a href="index.html">Home</a>
+          <a href="track.html">Track Order</a>
+          <a href="admin.html">Admin</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="firebase-config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let activeCategory = "All";
+    let activeSearch = "";
+    let activeSort = "featured";
+    let inStockOnly = false;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Parse category from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get("category");
+      if (catParam) {
+        activeCategory = catParam;
+        document.getElementById("catalogTitle").textContent = `${catParam}'s Collection`;
+        document.getElementById("breadcrumbCurrent").textContent = catParam;
+        
+        // Update active pill button
+        document.querySelectorAll(".category-btn").forEach(btn => {
+          if (btn.dataset.category.toLowerCase() === catParam.toLowerCase()) {
+            btn.classList.add("btn-primary", "active");
+            btn.classList.remove("btn-outline");
+          } else {
+            btn.classList.remove("btn-primary", "active");
+            btn.classList.add("btn-outline");
+          }
+        });
+      }
+
+      // Event Listeners for category buttons
+      document.querySelectorAll(".category-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".category-btn").forEach(b => {
+            b.classList.remove("btn-primary", "active");
+            b.classList.add("btn-outline");
+          });
+          btn.classList.add("btn-primary", "active");
+          btn.classList.remove("btn-outline");
+          activeCategory = btn.dataset.category;
+          renderCatalog();
+        });
+      });
+
+      // Search input
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        activeSearch = e.target.value.toLowerCase().trim();
+        renderCatalog();
+      });
+
+      // Sort
+      document.getElementById("sortSelect").addEventListener("change", (e) => {
+        activeSort = e.target.value;
+        renderCatalog();
+      });
+
+      // In Stock Checkbox
+      document.getElementById("inStockCheckbox").addEventListener("change", (e) => {
+        inStockOnly = e.target.checked;
+        renderCatalog();
+      });
+
+      renderCatalog();
+
+      // Listen for database changes (realtime)
+      if (window.roohiraDB) {
+        window.roohiraDB.subscribe((type) => {
+          if (type === "products_updated" || type === "stock_updated") {
+            renderCatalog();
+          }
+        });
+      }
+    });
+
+    function renderCatalog() {
+      const grid = document.getElementById("shopProductGrid");
+      const noResults = document.getElementById("noResultsState");
+      const countEl = document.getElementById("resultsCount");
+      if (!grid || !window.roohiraDB) return;
+
+      let products = window.roohiraDB.getProducts();
+
+      // Filter Category
+      if (activeCategory !== "All") {
+        products = products.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+      }
+
+      // Filter Search
+      if (activeSearch) {
+        products = products.filter(p => 
+          p.name.toLowerCase().includes(activeSearch) || 
+          (p.description && p.description.toLowerCase().includes(activeSearch)) ||
+          p.category.toLowerCase().includes(activeSearch)
+        );
+      }
+
+      // Filter In-Stock
+      if (inStockOnly) {
+        products = products.filter(p => p.stock > 0);
+      }
+
+      // Sorting
+      if (activeSort === "price-asc") {
+        products.sort((a, b) => a.price - b.price);
+      } else if (activeSort === "price-desc") {
+        products.sort((a, b) => b.price - a.price);
+      } else if (activeSort === "rating") {
+        products.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      }
+
+      // Update count
+      countEl.textContent = `Showing ${products.length} garment${products.length === 1 ? '' : 's'}`;
+
+      if (products.length === 0) {
+        grid.style.display = "none";
+        noResults.style.display = "block";
+        return;
+      }
+
+      grid.style.display = "grid";
+      noResults.style.display = "none";
+
+      grid.innerHTML = products.map(p => `
+        <div class="product-card">
+          <div class="product-img-wrapper">
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-badges">
+              ${p.badge ? `<span class="badge ${p.badge === 'Sale' ? 'badge-sale' : 'badge-new'}">${p.badge}</span>` : ''}
+              ${p.stock <= 4 && p.stock > 0 ? `<span class="badge badge-low">Only ${p.stock} Left</span>` : ''}
+              ${p.stock === 0 ? `<span class="badge badge-out">Sold Out</span>` : ''}
+            </div>
+            <div class="card-quick-actions">
+              <button class="btn-quick-add" onclick="window.roohiraApp.addToCart('${p.id}', 1)">
+                <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+              </button>
+              <a href="product.html?id=${p.id}" class="btn-quick-add" style="flex: 0 0 42px;" title="View Details">
+                <i class="fa-regular fa-eye"></i>
+              </a>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">${p.category}</span>
+            <h3 class="product-title">
+              <a href="product.html?id=${p.id}">${p.name}</a>
+            </h3>
+            <div class="product-rating">
+              <i class="fa-solid fa-star"></i>
+              <span>${p.rating} (${p.reviewsCount})</span>
+            </div>
+            <div class="product-price-box">
+              <span class="current-price">${window.roohiraApp.formatPrice(p.price)}</span>
+              ${p.oldPrice ? `<span class="old-price">${window.roohiraApp.formatPrice(p.oldPrice)}</span>` : ''}
+            </div>
+            <div class="stock-indicator">
+              <span class="stock-dot ${p.stock > 4 ? 'in' : (p.stock > 0 ? 'low' : 'out')}"></span>
+              <small style="color: var(--text-muted);">
+                ${p.stock > 4 ? 'In Stock' : (p.stock > 0 ? `Low Stock (${p.stock})` : 'Sold Out')}
+              </small>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function resetShopFilters() {
+      activeCategory = "All";
+      activeSearch = "";
+      inStockOnly = false;
+      document.getElementById("searchInput").value = "";
+      document.getElementById("inStockCheckbox").checked = false;
+      document.querySelectorAll(".category-btn").forEach((b, i) => {
+        if (i === 0) { b.classList.add("btn-primary", "active"); b.classList.remove("btn-outline"); }
+        else { b.classList.remove("btn-primary", "active"); b.classList.add("btn-outline"); }
+      });
+      renderCatalog();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High-Precision DTF Gang Sheet Builder | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dtf-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .dtf-controls-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .gang-sheet-preview-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      overflow-x: auto;
+    }
+    .gang-sheet-board {
+      background-color: #F8F9FA;
+      background-image: linear-gradient(45deg, #ECEFF1 25%, transparent 25%), 
+                        linear-gradient(-45deg, #ECEFF1 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #ECEFF1 75%), 
+                        linear-gradient(-45deg, transparent 75%, #ECEFF1 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      border: 2px dashed #B0BEC5;
+      border-radius: 4px;
+      min-height: 480px;
+      position: relative;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 12px;
+    }
+    .placed-artwork-box {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      user-select: none;
+    }
+    .placed-artwork-box img {
+      max-height: 120px;
+      object-fit: contain;
+    }
+    .placed-meta-badge {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .remove-art-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--danger);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+    .pricing-summary-card {
+      background: var(--espresso);
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 992px) {
+      .dtf-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: var(--cream);">
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div>
+      <i class="fa-solid fa-layer-group text-gold"></i>
+      <span>Roohira DTF Industrial Print Hub &bull; Ultra-HD 2400 DPI Gang Sheet Printing</span>
+    </div>
+    <div class="d-none-sm">
+      <span>Auto Dimension Detection &amp; Instant Pricing Calculator</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
+        <a href="dtf.html" class="nav-link active"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
+        <a href="track.html" class="nav-link">Track Order</a>
+        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="headerUserAction">
+          <a href="auth.html" class="action-btn" title="Sign In"><i class="fa-regular fa-user"></i></a>
+        </div>
+        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DTF Main Section -->
+  <section class="section-padding-sm">
+    <div class="container">
+      
+      <!-- Section Title -->
+      <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 2rem;">
+        <div>
+          <span style="color: var(--gold-dark); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Industrial Garment Printing</span>
+          <h1 style="font-size: 2.2rem; margin: 0.25rem 0;">DTF Gang Sheet Print Builder</h1>
+          <p style="margin: 0; color: var(--text-muted);">Arrange multiple logos, designs &amp; artworks on standard roll lengths with automated area calculation.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="https://wa.me/94757218786?text=Hello%20Roohira%20Print%20Desk%2C%20I%20have%20a%20bulk%20DTF%20gang%20sheet%20inquiry." target="_blank" class="btn btn-sm" style="background: #25D366; color: white;">
+            <i class="fa-brands fa-whatsapp"></i> DTF Print Support
+          </a>
+        </div>
+      </div>
+
+      <!-- Main DTF Layout Grid -->
+      <div class="dtf-grid">
+        
+        <!-- Left: Print Dimensions & Upload Controls -->
+        <div>
+          <div class="dtf-controls-card">
+            <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+              <i class="fa-solid fa-sliders text-gold"></i> 1. Gang Sheet Dimensions
+            </h3>
+
+            <!-- Dimension Preset -->
+            <div class="form-group">
+              <label class="form-label">Gang Sheet Preset</label>
+              <select id="sheetPresetSelect" class="form-control" onchange="applySheetPreset(this.value)">
+                <option value="22x39" selected>Standard Roll (22 in x 39 in / 1 Meter)</option>
+                <option value="22x78">Double Roll (22 in x 78 in / 2 Meters)</option>
+                <option value="22x118">Pro Roll (22 in x 118 in / 3 Meters)</option>
+                <option value="22x196">Bulk Production (22 in x 196 in / 5 Meters)</option>
+                <option value="custom">Custom Dimensions (Length x Width)</option>
+              </select>
+            </div>
+
+            <!-- Custom Width & Length Inputs -->
+            <div id="customDimsRow" style="display: none; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label">Width (Inches)</label>
+                <input type="number" id="sheetWidthInput" class="form-control" value="22" min="10" max="24" oninput="calculateDTFPricing()">
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label">Length (Inches)</label>
+                <input type="number" id="sheetLengthInput" class="form-control" value="39" min="10" max="600" oninput="calculateDTFPricing()">
+              </div>
+            </div>
+
+            <!-- Film Type -->
+            <div class="form-group">
+              <label class="form-label">Transfer Film Grade</label>
+              <select id="filmTypeSelect" class="form-control" onchange="calculateDTFPricing()">
+                <option value="premium" selected>Premium Cold-Peel Matte (Vibrant Cotton &amp; Silk)</option>
+                <option value="glitter">Glitter Sparkle DTF (+ LKR 450 / m)</option>
+                <option value="reflective">Reflective High-Vis DTF (+ LKR 650 / m)</option>
+              </select>
+            </div>
+
+            <!-- Upload Artwork -->
+            <div class="form-group">
+              <label class="form-label">Upload Print-Ready Artwork</label>
+              <input type="file" id="dtfArtUploadInput" class="form-control" accept="image/*,.pdf" onchange="handleDTFArtUpload(event)">
+              <small style="color: var(--text-light); font-size: 0.72rem; display: block; margin-top: 4px;">Recommended: 300 DPI Transparent PNG or PDF with vector paths.</small>
+            </div>
+
+            <!-- Copies to Add -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label">Print Copies</label>
+                <input type="number" id="artCopiesInput" class="form-control" value="1" min="1" max="50">
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label">Target Width (In)</label>
+                <input type="number" id="artWidthInches" class="form-control" value="6" min="1" max="22">
+              </div>
+            </div>
+
+            <button class="btn btn-outline btn-block btn-sm" onclick="addArtworkToSheet()">
+              <i class="fa-solid fa-plus"></i> Place Artwork on Gang Sheet
+            </button>
+          </div>
+
+          <!-- Pricing Calculator Output Box -->
+          <div class="pricing-summary-card">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-light); font-weight: 700; letter-spacing: 0.1em;">Live Production Estimate</div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin: 0.75rem 0;">
+              <span style="font-size: 0.95rem;">Total Gang Sheet Price:</span>
+              <span id="dtfCalculatedTotal" style="font-size: 1.85rem; font-weight: 700; color: var(--white); font-family: var(--font-serif);">LKR 3,850</span>
+            </div>
+            
+            <div style="font-size: 0.8rem; color: #BAADA2; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 0.75rem; margin-bottom: 1.25rem;">
+              <div class="d-flex justify-between">
+                <span>Printable Area:</span>
+                <strong id="dtfAreaSummary" class="text-white">22" x 39" (858 sq in)</strong>
+              </div>
+              <div class="d-flex justify-between" style="margin-top: 4px;">
+                <span>Total Artworks Placed:</span>
+                <strong id="dtfItemCount" class="text-white">0 pieces</strong>
+              </div>
+              <div class="d-flex justify-between" style="margin-top: 4px;">
+                <span>Unit Rate / sq in:</span>
+                <span class="text-gold">LKR 4.50</span>
+              </div>
+            </div>
+
+            <button class="btn btn-gold btn-block btn-lg" onclick="addDTFSheetToCart()">
+              <i class="fa-solid fa-cart-arrow-down"></i> Add DTF Gang Sheet to Bag
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right: Interactive Gang Sheet Artboard Visualizer -->
+        <div>
+          <div class="gang-sheet-preview-card">
+            <div class="d-flex justify-between align-center" style="margin-bottom: 1rem;">
+              <div class="d-flex align-center gap-2">
+                <i class="fa-solid fa-expand text-gold"></i>
+                <h3 style="font-size: 1.15rem; margin: 0;">Interactive Gang Sheet Artboard</h3>
+              </div>
+              <div class="d-flex gap-2 align-center">
+                <span style="font-size: 0.78rem; color: var(--text-muted);" id="boardDimensionsLabel">Width: 22" &bull; Length: 39"</span>
+                <button class="btn btn-outline btn-sm" onclick="clearGangSheet()">Clear All</button>
+              </div>
+            </div>
+
+            <!-- Visual Artboard Stage -->
+            <div class="gang-sheet-board" id="gangSheetArtboard">
+              <!-- Placed designs will render here -->
+              <div id="emptyBoardPlaceholder" style="width: 100%; text-align: center; padding: 6rem 2rem; color: var(--text-light);">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.8rem; color: #CFD8DC; margin-bottom: 0.75rem;"></i>
+                <h4 style="color: var(--text-muted); margin-bottom: 0.25rem;">No Artworks Placed Yet</h4>
+                <p style="font-size: 0.85rem;">Upload your logo or print design on the left panel to position it onto this roll.</p>
+              </div>
+            </div>
+
+            <!-- Print Specs Notice -->
+            <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--text-muted);">
+              <div><i class="fa-solid fa-circle-check text-success"></i> Auto file validation &bull; High pigment ink load &bull; Washed 60+ cycles</div>
+              <div>Islandwide COD / Bank Transfer available</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo-footer">
+            <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection Logo">
+            <span class="brand-title">ROOHIRA COLLECTION</span>
+          </div>
+          <p style="color: #BBB0A6; font-size: 0.88rem; max-width: 320px; line-height: 1.7; margin-bottom: 1.5rem;">
+            Sri Lanka's luxury house of haute couture, bespoke menswear, and royal heirloom sarees. Crafted with passion, worn with pride.
+          </p>
+          <div class="social-links">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://wa.me/94757218786" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="tel:0757218786"><i class="fa-solid fa-phone"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Boutique &amp; Bespoke</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html">All Collections</a></li>
+            <li><a href="customize.html">Custom Design Studio</a></li>
+            <li><a href="dtf.html">DTF Gang Sheet Builder</a></li>
+            <li><a href="track.html">Track Order</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 Roohira Collection. All Rights Reserved. Master of Timeless Elegance.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let currentUploadedDataUrl = null;
+    let placedItems = [];
+    const BASE_RATE_PER_SQ_INCH = 4.5; // LKR 4.50 per square inch
+
+    function applySheetPreset(val) {
+      const customRow = document.getElementById("customDimsRow");
+      if (val === "custom") {
+        customRow.style.display = "grid";
+      } else {
+        customRow.style.display = "none";
+        const parts = val.split("x");
+        document.getElementById("sheetWidthInput").value = parts[0];
+        document.getElementById("sheetLengthInput").value = parts[1];
+      }
+      calculateDTFPricing();
+    }
+
+    function calculateDTFPricing() {
+      const w = parseFloat(document.getElementById("sheetWidthInput").value) || 22;
+      const l = parseFloat(document.getElementById("sheetLengthInput").value) || 39;
+      const film = document.getElementById("filmTypeSelect").value;
+      
+      const totalSqInches = w * l;
+      let multiplier = 1.0;
+      if (film === "glitter") multiplier = 1.15;
+      if (film === "reflective") multiplier = 1.25;
+
+      const totalPrice = Math.round(totalSqInches * BASE_RATE_PER_SQ_INCH * multiplier);
+
+      document.getElementById("dtfCalculatedTotal").textContent = window.roohiraApp.formatPrice(totalPrice);
+      document.getElementById("dtfAreaSummary").textContent = `${w}" x ${l}" (${totalSqInches.toLocaleString()} sq in)`;
+      document.getElementById("boardDimensionsLabel").textContent = `Width: ${w}" • Length: ${l}"`;
+      document.getElementById("dtfItemCount").textContent = `${placedItems.length} piece${placedItems.length === 1 ? '' : 's'}`;
+    }
+
+    function handleDTFArtUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentUploadedDataUrl = e.target.result;
+        window.roohiraApp.showToast("Artwork loaded! Click 'Place Artwork on Gang Sheet'", "info");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function addArtworkToSheet() {
+      if (!currentUploadedDataUrl) {
+        // Use luxury monogram logo default if no file uploaded
+        currentUploadedDataUrl = "https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png";
+      }
+
+      const copies = parseInt(document.getElementById("artCopiesInput").value, 10) || 1;
+      const targetW = parseFloat(document.getElementById("artWidthInches").value) || 6;
+
+      for (let i = 0; i < copies; i++) {
+        placedItems.push({
+          id: "ART-" + Date.now() + "-" + i,
+          url: currentUploadedDataUrl,
+          targetW: targetW
+        });
+      }
+
+      renderArtboard();
+      window.roohiraApp.showToast(`Placed ${copies} artwork piece(s) on gang sheet`, "success");
+    }
+
+    function renderArtboard() {
+      const board = document.getElementById("gangSheetArtboard");
+      const placeholder = document.getElementById("emptyBoardPlaceholder");
+
+      if (placedItems.length === 0) {
+        board.innerHTML = `
+          <div id="emptyBoardPlaceholder" style="width: 100%; text-align: center; padding: 6rem 2rem; color: var(--text-light);">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.8rem; color: #CFD8DC; margin-bottom: 0.75rem;"></i>
+            <h4 style="color: var(--text-muted); margin-bottom: 0.25rem;">No Artworks Placed Yet</h4>
+            <p style="font-size: 0.85rem;">Upload your logo or print design on the left panel to position it onto this roll.</p>
+          </div>
+        `;
+      } else {
+        board.innerHTML = placedItems.map((item, idx) => `
+          <div class="placed-artwork-box">
+            <button class="remove-art-btn" onclick="removeArtItem(${idx})" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+            <img src="${item.url}" alt="Artwork">
+            <div class="placed-meta-badge">${item.targetW} Inches Wide</div>
+          </div>
+        `).join("");
+      }
+
+      calculateDTFPricing();
+    }
+
+    function removeArtItem(idx) {
+      placedItems.splice(idx, 1);
+      renderArtboard();
+    }
+
+    function clearGangSheet() {
+      placedItems = [];
+      renderArtboard();
+    }
+
+    function addDTFSheetToCart() {
+      const w = document.getElementById("sheetWidthInput").value;
+      const l = document.getElementById("sheetLengthInput").value;
+      const film = document.getElementById("filmTypeSelect").value;
+      const priceText = document.getElementById("dtfCalculatedTotal").textContent.replace(/[^0-9]/g, "");
+      const price = parseInt(priceText, 10) || 3850;
+
+      const item = {
+        id: "DTF-GANG-" + Date.now(),
+        name: `DTF Gang Sheet (${w}" x ${l}") - ${film.toUpperCase()}`,
+        price: price,
+        image: placedItems.length > 0 ? placedItems[0].url : "https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png",
+        qty: 1,
+        size: `${w}x${l} in`,
+        color: film,
+        customNotes: `Total artworks arranged: ${placedItems.length}`
+      };
+
+      let cart = window.roohiraApp.getCart();
+      cart.push(item);
+      window.roohiraApp.saveCart(cart);
+      window.roohiraApp.showToast("DTF Gang sheet added to your bag!", "success");
+      window.roohiraApp.openCart();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      calculateDTFPricing();
+    });
+  </script>
+</body>
+</html>

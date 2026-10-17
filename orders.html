@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .order-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .order-card-header {
+      background-color: var(--cream);
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .order-card-body {
+      padding: 1.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div>
+      <i class="fa-solid fa-gem text-gold"></i>
+      <span>Roohira Concierge &bull; Track &amp; Manage Your Bespoke Acquisitions</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
+        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
+        <a href="orders.html" class="nav-link active">Order History</a>
+        <a href="track.html" class="nav-link">Track Order</a>
+        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="headerUserAction"></div>
+        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Orders Content -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      
+      <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 2.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
+        <div>
+          <span class="subtitle" style="color: var(--gold-dark); font-size: 0.775rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; display: block; margin-bottom: 0.35rem;">Client Portfolio</span>
+          <h1 style="font-size: 2.2rem; margin: 0;">Your Order History</h1>
+        </div>
+        <a href="shop.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Continue Shopping</span>
+        </a>
+      </div>
+
+      <!-- Orders Container -->
+      <div id="ordersContainer">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="ordersEmptyState" style="display: none; text-align: center; padding: 4rem 1rem; background: var(--white); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+        <i class="fa-solid fa-box-open" style="font-size: 3.5rem; color: var(--sand); margin-bottom: 1rem;"></i>
+        <h3>No prior orders recorded</h3>
+        <p>You have not placed any bespoke orders yet. Explore our latest arrivals.</p>
+        <a href="shop.html" class="btn btn-gold btn-sm" style="margin-top: 1.25rem;">Explore Catalog</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Luxury Invoice Modal -->
+  <div class="modal-overlay" id="invoiceModal">
+    <div class="modal-content" style="max-width: 700px; padding: 2.5rem;">
+      <div class="d-flex justify-between align-center" style="margin-bottom: 2rem; border-bottom: 2px solid var(--espresso); padding-bottom: 1.5rem;">
+        <div class="d-flex align-center gap-2">
+          <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira" style="height: 48px;">
+          <div>
+            <h2 style="font-size: 1.5rem; margin: 0;">ROOHIRA COLLECTION</h2>
+            <small style="color: var(--gold-dark); letter-spacing: 0.15em; font-weight: 700;">HAUTE COUTURE INVOICE</small>
+          </div>
+        </div>
+        <button onclick="closeInvoiceModal()" style="font-size: 1.4rem; color: var(--espresso);"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; font-size: 0.88rem;">
+        <div>
+          <span style="color: var(--text-light); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Billed &amp; Delivered To:</span>
+          <strong id="invCustName" style="color: var(--espresso); font-size: 1rem; display: block;">Patron Name</strong>
+          <div id="invCustAddress" style="color: var(--text-muted); line-height: 1.6;">Address</div>
+          <div id="invCustPhone" style="color: var(--text-muted);">Phone</div>
+        </div>
+        <div style="text-align: right;">
+          <span style="color: var(--text-light); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Invoice Particulars:</span>
+          <div>Order Ref: <strong id="invOrderId" class="text-espresso">ROH-000000</strong></div>
+          <div>Date: <span id="invDate">17 Oct 2026</span></div>
+          <div>Status: <span id="invStatusPill" class="status-pill status-confirmed">Confirmed</span></div>
+          <div>Payment: <span id="invPayment">Credit Card</span></div>
+        </div>
+      </div>
+
+      <!-- Item Table -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.88rem;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border); text-align: left; background: var(--cream);">
+            <th style="padding: 0.75rem 1rem;">Garment Description</th>
+            <th style="padding: 0.75rem 1rem;">Size / Color</th>
+            <th style="padding: 0.75rem 1rem; text-align: center;">Qty</th>
+            <th style="padding: 0.75rem 1rem; text-align: right;">Price</th>
+            <th style="padding: 0.75rem 1rem; text-align: right;">Total</th>
+          </tr>
+        </thead>
+        <tbody id="invItemsBody">
+          <!-- Items injected via JS -->
+        </tbody>
+      </table>
+
+      <!-- Total Rows -->
+      <div style="max-width: 280px; margin-left: auto; margin-bottom: 2rem; font-size: 0.9rem;">
+        <div class="d-flex justify-between" style="margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Subtotal:</span>
+          <span id="invSubtotal">LKR 0</span>
+        </div>
+        <div class="d-flex justify-between" id="invDiscountRow" style="margin-bottom: 6px; display: none;">
+          <span class="text-gold">Voucher Discount:</span>
+          <span id="invDiscount" class="text-gold">- LKR 0</span>
+        </div>
+        <div class="d-flex justify-between" style="margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">White-Glove Shipping:</span>
+          <span id="invShipping">Free</span>
+        </div>
+        <div class="d-flex justify-between" style="border-top: 1px dashed var(--border); padding-top: 8px; font-weight: 700; font-size: 1.15rem; color: var(--espresso);">
+          <span>Final Total:</span>
+          <span id="invTotal">LKR 0</span>
+        </div>
+      </div>
+
+      <!-- Print Action -->
+      <div class="d-flex justify-between align-center" style="border-top: 1px solid var(--border); padding-top: 1.25rem;">
+        <small style="color: var(--text-light); font-size: 0.78rem;">Thank you for choosing Roohira Collection.</small>
+        <div class="d-flex gap-2">
+          <button onclick="window.print()" class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-print"></i> Print Invoice
+          </button>
+          <button onclick="closeInvoiceModal()" class="btn btn-primary btn-sm">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Roohira Collection. All Rights Reserved.</div>
+        <div class="d-flex gap-3">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="track.html">Track Order</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      renderOrdersHistory();
+
+      if (window.roohiraDB) {
+        window.roohiraDB.subscribe((type) => {
+          if (type === "orders_updated") {
+            renderOrdersHistory();
+          }
+        });
+      }
+    });
+
+    function renderOrdersHistory() {
+      const container = document.getElementById("ordersContainer");
+      const emptyState = document.getElementById("ordersEmptyState");
+      if (!container || !window.roohiraDB) return;
+
+      const user = window.roohiraDB.getCurrentUser();
+      let orders = window.roohiraDB.getOrders();
+
+      // If logged in user, optionally filter by email if matching, or show all recent patron orders
+      if (user && user.email) {
+        const userOrders = window.roohiraDB.getUserOrders(user.email);
+        if (userOrders.length > 0) {
+          orders = userOrders;
+        }
+      }
+
+      if (orders.length === 0) {
+        container.style.display = "none";
+        emptyState.style.display = "block";
+        return;
+      }
+
+      container.style.display = "block";
+      emptyState.style.display = "none";
+
+      container.innerHTML = orders.map(order => {
+        const statusClass = "status-" + (order.status || "pending").toLowerCase();
+        return `
+          <div class="order-card">
+            <div class="order-card-header">
+              <div class="d-flex align-center gap-3">
+                <span style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: var(--espresso);">
+                  ${order.orderId}
+                </span>
+                <span class="status-pill ${statusClass}">${order.status}</span>
+              </div>
+              <div class="d-flex align-center gap-3" style="font-size: 0.85rem; color: var(--text-muted);">
+                <span>Date: <strong>${new Date(order.createdAt || Date.now()).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</strong></span>
+                <span>Total: <strong class="text-espresso">${window.roohiraApp.formatPrice(order.total)}</strong></span>
+              </div>
+            </div>
+
+            <div class="order-card-body">
+              <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+                ${(order.items || []).map(item => `
+                  <div class="d-flex align-center gap-3">
+                    <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 75px; object-fit: cover; border-radius: var(--radius-xs);">
+                    <div style="flex: 1;">
+                      <h4 style="font-size: 1.05rem; margin-bottom: 2px;">${item.name}</h4>
+                      <small style="color: var(--text-light); font-size: 0.78rem;">
+                        Qty: <strong>${item.qty}</strong> &bull; Size: <strong>${item.size || 'Std'}</strong> &bull; Color: <strong>${item.color || 'Std'}</strong>
+                      </small>
+                    </div>
+                    <div style="font-weight: 700; color: var(--espresso); font-size: 1rem;">
+                      ${window.roohiraApp.formatPrice(item.price * item.qty)}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+
+              <div class="d-flex justify-between align-center flex-wrap gap-2" style="border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+                <div style="font-size: 0.825rem; color: var(--text-muted);">
+                  <span>Payment: <strong>${order.paymentMethod || 'Credit Card'}</strong></span>
+                  ${order.trackingNumber ? ` &bull; <span>Courier Ref: <strong>${order.trackingNumber}</strong></span>` : ''}
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline btn-sm" onclick="showInvoiceModal('${order.orderId}')">
+                    <i class="fa-regular fa-file-lines"></i> View Invoice
+                  </button>
+                  <a href="track.html?orderId=${order.orderId}" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-location-crosshairs"></i> Track Shipment
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function showInvoiceModal(orderId) {
+      const order = window.roohiraDB.getOrderById(orderId);
+      if (!order) return;
+
+      document.getElementById("invOrderId").textContent = order.orderId;
+      document.getElementById("invCustName").textContent = (order.customer && order.customer.name) || "Valued Patron";
+      document.getElementById("invCustAddress").textContent = (order.customer && order.customer.address) || "Delivery Address";
+      document.getElementById("invCustPhone").textContent = (order.customer && order.customer.phone) || "";
+      document.getElementById("invDate").textContent = new Date(order.createdAt || Date.now()).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
+      document.getElementById("invPayment").textContent = order.paymentMethod || "Credit Card";
+
+      const pill = document.getElementById("invStatusPill");
+      pill.className = `status-pill status-${(order.status || 'pending').toLowerCase()}`;
+      pill.textContent = order.status;
+
+      const itemsBody = document.getElementById("invItemsBody");
+      itemsBody.innerHTML = (order.items || []).map(item => `
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--espresso);">${item.name}</td>
+          <td style="padding: 0.75rem 1rem; color: var(--text-muted);">${item.size || 'Std'} / ${item.color || 'Std'}</td>
+          <td style="padding: 0.75rem 1rem; text-align: center;">${item.qty}</td>
+          <td style="padding: 0.75rem 1rem; text-align: right;">${window.roohiraApp.formatPrice(item.price)}</td>
+          <td style="padding: 0.75rem 1rem; text-align: right; font-weight: 700;">${window.roohiraApp.formatPrice(item.price * item.qty)}</td>
+        </tr>
+      `).join("");
+
+      document.getElementById("invSubtotal").textContent = window.roohiraApp.formatPrice(order.subtotal || order.total);
+      
+      const discountRow = document.getElementById("invDiscountRow");
+      if (order.discount && order.discount > 0) {
+        discountRow.style.display = "flex";
+        document.getElementById("invDiscount").textContent = "- " + window.roohiraApp.formatPrice(order.discount);
+      } else {
+        discountRow.style.display = "none";
+      }
+
+      document.getElementById("invShipping").textContent = order.shipping && order.shipping > 0 ? window.roohiraApp.formatPrice(order.shipping) : "Free Express";
+      document.getElementById("invTotal").textContent = window.roohiraApp.formatPrice(order.total);
+
+      document.getElementById("invoiceModal").classList.add("active");
+    }
+
+    function closeInvoiceModal() {
+      document.getElementById("invoiceModal").classList.remove("active");
+    }
+  </script>
+</body>
+</html>

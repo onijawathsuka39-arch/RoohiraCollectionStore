@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bespoke Checkout | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .payment-option-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .payment-option-card.active, .payment-option-card:hover {
+      border-color: var(--espresso);
+      background-color: var(--cream);
+    }
+    .payment-option-card input[type="radio"] {
+      margin-top: 4px;
+      accent-color: var(--espresso);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimalist Checkout Header -->
+  <header style="border-bottom: 1px solid var(--border); background: var(--white); padding: 1.25rem 0;">
+    <div class="container d-flex justify-between align-center">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection" style="height: 44px;">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+      <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-lock text-gold"></i>
+        <span>256-Bit SSL Encrypted Checkout</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section-padding" style="background-color: #FAF7F2; min-height: 85vh;">
+    <div class="container">
+      
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 3.5rem;" id="checkoutGrid">
+        
+        <!-- Left: Checkout Forms -->
+        <div>
+          <form id="checkoutForm" onsubmit="handlePlaceOrder(event)">
+            
+            <!-- Step 1: Customer Contact -->
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+              <div class="d-flex justify-between align-center" style="margin-bottom: 1.25rem;">
+                <h3 style="font-size: 1.25rem; margin: 0;">1. Patron Contact Information</h3>
+                <span id="checkoutLoginPrompt" style="font-size: 0.825rem; color: var(--text-muted);">
+                  Already registered? <a href="auth.html" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline;">Sign In</a>
+                </span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label">Full Name *</label>
+                  <input type="text" id="custName" class="form-control" required placeholder="e.g. Dinithi Jayawardena">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <input type="email" id="custEmail" class="form-control" required placeholder="patron@gmail.com">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label">Contact Phone / WhatsApp (1 or 2 Contact Numbers) *</label>
+                <input type="tel" id="custPhone" class="form-control" required placeholder="e.g. 0757218786 / 0771234567">
+              </div>
+            </div>
+
+            <!-- Step 2: Shipping & Delivery Destination -->
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+              <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;">2. White-Glove Delivery Destination</h3>
+
+              <div class="form-group">
+                <label class="form-label">Street Address / Suite / Residence *</label>
+                <input type="text" id="custAddress" class="form-control" required placeholder="No. 45, Alfred House Gardens">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label">City *</label>
+                  <input type="text" id="custCity" class="form-control" required placeholder="Colombo">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">District / Province *</label>
+                  <input type="text" id="custDistrict" class="form-control" required placeholder="Western Province">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Postal Code</label>
+                  <input type="text" id="custPostal" class="form-control" placeholder="00300">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label">Special Delivery Instructions / Sizing Note</label>
+                <textarea id="custNotes" class="form-control" rows="2" placeholder="e.g. Ring bell upon arrival, request gift packaging"></textarea>
+              </div>
+            </div>
+
+            <!-- Step 3: Payment Method -->
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+              <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;">3. Preferred Payment Method</h3>
+
+              <!-- COD -->
+              <div class="payment-option-card active" onclick="selectPaymentMethod('cod', this)">
+                <input type="radio" name="paymentMethod" id="payCOD" value="Cash on Delivery" checked>
+                <div>
+                  <label for="payCOD" style="font-weight: 700; color: var(--espresso); cursor: pointer; display: block;">
+                    Cash / Card on Delivery (COD)
+                  </label>
+                  <small style="color: var(--text-muted); font-size: 0.8rem;">
+                    Pay in cash or credit card upon white-glove arrival at your doorstep. Complimentary islandwide service.
+                  </small>
+                </div>
+              </div>
+
+              <!-- Bank Transfer -->
+              <div class="payment-option-card" onclick="selectPaymentMethod('bank', this)">
+                <input type="radio" name="paymentMethod" id="payBank" value="Direct Bank Transfer">
+                <div style="flex: 1;">
+                  <label for="payBank" style="font-weight: 700; color: var(--espresso); cursor: pointer; display: block;">
+                    Direct Bank Transfer (BACS)
+                  </label>
+                  <small style="color: var(--text-muted); font-size: 0.8rem;">
+                    Transfer directly into Roohira Collection's corporate account at Commercial Bank of Ceylon.
+                  </small>
+                  <div id="bankDetailsBox" style="display: none; background: var(--white); border: 1px dashed var(--border); padding: 0.85rem; border-radius: var(--radius-xs); margin-top: 0.65rem; font-size: 0.78rem;">
+                    <div><strong>Bank:</strong> Commercial Bank of Ceylon PLC</div>
+                    <div><strong>Account Name:</strong> Roohira Collection (Pvt) Ltd</div>
+                    <div><strong>Account No:</strong> 1000 8492 0184</div>
+                    <div><strong>Branch:</strong> Colombo Main Branch</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card Payment -->
+              <div class="payment-option-card" onclick="selectPaymentMethod('card', this)">
+                <input type="radio" name="paymentMethod" id="payCard" value="Credit / Debit Card">
+                <div style="flex: 1;">
+                  <div class="d-flex justify-between align-center">
+                    <label for="payCard" style="font-weight: 700; color: var(--espresso); cursor: pointer;">
+                      Credit / Debit Card (Visa, Mastercard, Amex)
+                    </label>
+                    <div class="d-flex gap-1" style="font-size: 1.2rem; color: var(--espresso);">
+                      <i class="fa-brands fa-cc-visa"></i>
+                      <i class="fa-brands fa-cc-mastercard"></i>
+                      <i class="fa-brands fa-cc-amex"></i>
+                    </div>
+                  </div>
+                  <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-bottom: 0.5rem;">
+                    Instant 3D-Secure payment authorization.
+                  </small>
+
+                  <div id="cardInputsBox" style="display: none; background: var(--white); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius-xs); margin-top: 0.5rem;">
+                    <div class="form-group">
+                      <label class="form-label">Card Number</label>
+                      <input type="text" class="form-control" placeholder="4111 2222 3333 4444" maxlength="19">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
+                      <div class="form-group" style="margin: 0;">
+                        <label class="form-label">Expiry (MM/YY)</label>
+                        <input type="text" class="form-control" placeholder="12/28" maxlength="5">
+                      </div>
+                      <div class="form-group" style="margin: 0;">
+                        <label class="form-label">CVV / CVC</label>
+                        <input type="password" class="form-control" placeholder="123" maxlength="4">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-gold btn-block btn-lg" id="submitOrderBtn">
+              <i class="fa-solid fa-check"></i>
+              <span>Confirm &amp; Place Bespoke Order</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Order Summary Sidebar -->
+        <div>
+          <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; box-shadow: var(--shadow-sm); position: sticky; top: 20px;">
+            <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+              Bag Summary (<span id="checkoutItemCount">0</span> items)
+            </h3>
+
+            <!-- Item Mini List -->
+            <div id="checkoutItemsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; max-height: 280px; overflow-y: auto;">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Breakdown -->
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--border); padding-top: 1.25rem; margin-bottom: 1.25rem; font-size: 0.9rem;">
+              <div class="d-flex justify-between">
+                <span style="color: var(--text-muted);">Subtotal</span>
+                <span id="coSubtotal">LKR 0</span>
+              </div>
+              <div class="d-flex justify-between" id="coDiscountRow" style="display: none;">
+                <span class="text-gold">Voucher Discount</span>
+                <span class="text-gold" id="coDiscount">- LKR 0</span>
+              </div>
+              <div class="d-flex justify-between">
+                <span style="color: var(--text-muted);">White-Glove Shipping</span>
+                <span id="coShipping" style="color: var(--success); font-weight: 600;">Free</span>
+              </div>
+              <div class="d-flex justify-between" style="border-top: 1px dashed var(--border); padding-top: 0.85rem; font-size: 1.25rem; font-weight: 700; color: var(--espresso);">
+                <span>Final Total</span>
+                <span id="coTotal">LKR 0</span>
+              </div>
+            </div>
+
+            <div style="background: var(--cream); padding: 1rem; border-radius: var(--radius-xs); font-size: 0.78rem; color: var(--text-muted); line-height: 1.6;">
+              <i class="fa-solid fa-gift text-gold" style="margin-right: 4px;"></i>
+              Each order includes complimentary handwritten calligraphy gift note and Roohira signature garment bag.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Order Success Modal -->
+  <div class="modal-overlay" id="orderSuccessModal">
+    <div class="modal-content" style="text-align: center; padding: 2.5rem 2rem;">
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--success-bg); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem auto;">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h2 style="font-size: 1.85rem; margin-bottom: 0.5rem;">Order Confirmed with Pleasure</h2>
+      <p style="margin-bottom: 1.5rem;">Thank you for your patronage. Your order has been registered in the Roohira concierge system and is currently being prepared.</p>
+
+      <div style="background: var(--cream); border: 1px dashed var(--border); padding: 1.25rem; border-radius: var(--radius-xs); margin-bottom: 2rem;">
+        <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Your Bespoke Order Number</div>
+        <div id="confirmedOrderId" style="font-family: var(--font-serif); font-size: 1.75rem; font-weight: 700; color: var(--espresso); margin: 0.25rem 0;">ROH-000000</div>
+        <div style="font-size: 0.8rem; color: var(--text-light);">A copy has been transmitted to your email.</div>
+      </div>
+
+      <div class="d-flex flex-column gap-2">
+        <a id="whatsappConfirmBtnLink" href="#" target="_blank" class="btn btn-block" style="background: #25D366; color: white; font-weight: 600;">
+          <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i>
+          <span>Confirm via WhatsApp Concierge</span>
+        </a>
+        <a id="viewInvoiceBtnLink" href="#" class="btn btn-gold btn-block">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span>View / Print Official Invoice</span>
+        </a>
+        <a id="trackOrderBtnLink" href="track.html" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-location-crosshairs"></i>
+          <span>Track Order in Real-Time</span>
+        </a>
+        <a href="orders.html" class="btn btn-outline btn-block btn-sm">
+          <span>View in Order History</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let activePayment = "Cash on Delivery";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const cart = window.roohiraApp.getCart();
+      if (cart.length === 0) {
+        window.location.href = "cart.html";
+        return;
+      }
+
+      // Prefill if user logged in
+      const user = window.roohiraDB.getCurrentUser();
+      if (user) {
+        document.getElementById("custName").value = user.name || "";
+        document.getElementById("custEmail").value = user.email || "";
+        const prompt = document.getElementById("checkoutLoginPrompt");
+        if (prompt) prompt.innerHTML = `<span style="color: var(--success); font-weight: 600;"><i class="fa-solid fa-check"></i> Logged in as ${user.name}</span>`;
+      }
+
+      renderCheckoutSidebar();
+    });
+
+    function selectPaymentMethod(type, element) {
+      document.querySelectorAll(".payment-option-card").forEach(c => c.classList.remove("active"));
+      element.classList.add("active");
+      element.querySelector('input[type="radio"]').checked = true;
+
+      const bankBox = document.getElementById("bankDetailsBox");
+      const cardBox = document.getElementById("cardInputsBox");
+
+      if (type === "bank") {
+        bankBox.style.display = "block";
+        cardBox.style.display = "none";
+        activePayment = "Direct Bank Transfer";
+      } else if (type === "card") {
+        bankBox.style.display = "none";
+        cardBox.style.display = "block";
+        activePayment = "Credit / Debit Card";
+      } else {
+        bankBox.style.display = "none";
+        cardBox.style.display = "none";
+        activePayment = "Cash on Delivery";
+      }
+    }
+
+    function renderCheckoutSidebar() {
+      const cart = window.roohiraApp.getCart();
+      const container = document.getElementById("checkoutItemsContainer");
+      const countEl = document.getElementById("checkoutItemCount");
+
+      countEl.textContent = cart.reduce((c, i) => c + i.qty, 0);
+
+      container.innerHTML = cart.map(item => `
+        <div class="d-flex gap-2 align-center">
+          <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 60px; object-fit: cover; border-radius: var(--radius-xs);">
+          <div style="flex: 1; font-size: 0.85rem;">
+            <div style="font-weight: 600; color: var(--espresso);">${item.name}</div>
+            <div style="color: var(--text-light); font-size: 0.75rem;">Qty: ${item.qty} &bull; ${item.size || 'Std'}</div>
+          </div>
+          <div style="font-weight: 600; font-size: 0.88rem;">
+            ${window.roohiraApp.formatPrice(item.price * item.qty)}
+          </div>
+        </div>
+      `).join("");
+
+      const subtotal = window.roohiraApp.getCartSubtotal();
+      const discount = window.roohiraApp.getAppliedDiscount();
+      const shipping = window.roohiraApp.getShippingCost();
+      const total = Math.max(0, subtotal - discount + shipping);
+
+      document.getElementById("coSubtotal").textContent = window.roohiraApp.formatPrice(subtotal);
+      
+      const discountRow = document.getElementById("coDiscountRow");
+      if (discount > 0) {
+        discountRow.style.display = "flex";
+        document.getElementById("coDiscount").textContent = "- " + window.roohiraApp.formatPrice(discount);
+      } else {
+        discountRow.style.display = "none";
+      }
+
+      document.getElementById("coShipping").textContent = shipping === 0 ? "Free" : window.roohiraApp.formatPrice(shipping);
+      document.getElementById("coTotal").textContent = window.roohiraApp.formatPrice(total);
+    }
+
+    function handlePlaceOrder(event) {
+      event.preventDefault();
+
+      const cart = window.roohiraApp.getCart();
+      if (cart.length === 0) {
+        window.roohiraApp.showToast("Your shopping bag is empty.", "error");
+        return;
+      }
+
+      const name = document.getElementById("custName").value.trim();
+      const email = document.getElementById("custEmail").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const city = document.getElementById("custCity").value.trim();
+      const district = document.getElementById("custDistrict").value.trim();
+      const postal = document.getElementById("custPostal").value.trim();
+      const notes = document.getElementById("custNotes").value.trim();
+
+      const fullShippingAddress = `${address}, ${city}, ${district} ${postal ? '(' + postal + ')' : ''}, Sri Lanka. Note: ${notes || 'None'}`;
+
+      const subtotal = window.roohiraApp.getCartSubtotal();
+      const discount = window.roohiraApp.getAppliedDiscount();
+      const shipping = window.roohiraApp.getShippingCost();
+      const total = Math.max(0, subtotal - discount + shipping);
+
+      const orderPayload = {
+        customer: { name, email, phone, address: fullShippingAddress },
+        items: cart,
+        subtotal,
+        discount,
+        shipping,
+        total,
+        paymentMethod: activePayment
+      };
+
+      // Create Order in DB & Deduct Stock
+      const createdOrder = window.roohiraDB.createOrder(orderPayload);
+
+      // Clear Cart
+      window.roohiraApp.clearCart();
+
+      // Setup WhatsApp Confirmation URL
+      const itemsSummary = cart.map(i => `${i.qty}x ${i.name} (${i.size || 'Std'}, ${i.color || 'Std'})`).join(", ");
+      const waText = `*ROOHIRA COLLECTION - NEW ORDER CONFIRMATION*%0A%0A` +
+        `*Order ID:* ${createdOrder.orderId}%0A` +
+        `*Customer:* ${name}%0A` +
+        `*Phone:* ${phone}%0A` +
+        `*Address:* ${fullShippingAddress}%0A` +
+        `*Payment Method:* ${activePayment}%0A` +
+        `*Items:* ${itemsSummary}%0A` +
+        `*Total Amount:* ${window.roohiraApp.formatPrice(total)}%0A%0A` +
+        `Please confirm my bespoke order and dispatch schedule.`;
+      
+      const waBtn = document.getElementById("whatsappConfirmBtnLink");
+      if (waBtn) {
+        waBtn.href = `https://wa.me/94757218786?text=${waText}`;
+      }
+
+      const invBtn = document.getElementById("viewInvoiceBtnLink");
+      if (invBtn) {
+        invBtn.href = `invoice.html?orderId=${createdOrder.orderId}`;
+      }
+
+      // Show confirmation modal
+      document.getElementById("confirmedOrderId").textContent = createdOrder.orderId;
+      document.getElementById("trackOrderBtnLink").href = `track.html?orderId=${createdOrder.orderId}`;
+      document.getElementById("orderSuccessModal").classList.add("active");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Executive Suite | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div>
+          <h4>ROOHIRA</h4>
+          <small>EXECUTIVE ATELIER</small>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <a href="#dashboard" class="admin-nav-item active" onclick="switchAdminTab('dashboard', this)">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#orders" class="admin-nav-item" onclick="switchAdminTab('orders', this)">
+          <i class="fa-solid fa-boxes-packing"></i>
+          <span>Orders Management</span>
+        </a>
+        <a href="#products" class="admin-nav-item" onclick="switchAdminTab('products', this)">
+          <i class="fa-solid fa-shirt"></i>
+          <span>Products Catalog</span>
+        </a>
+        <a href="#stock" class="admin-nav-item" onclick="switchAdminTab('stock', this)">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Stock &amp; Inventory</span>
+        </a>
+        <a href="#customers" class="admin-nav-item" onclick="switchAdminTab('customers', this)">
+          <i class="fa-solid fa-users"></i>
+          <span>Patron Customers</span>
+        </a>
+        <a href="#sql" class="admin-nav-item" onclick="switchAdminTab('sql', this)">
+          <i class="fa-solid fa-database text-gold"></i>
+          <span class="text-gold">SQL Database Dump</span>
+        </a>
+      </nav>
+
+      <div style="padding: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+        <a href="index.html" class="btn btn-outline-white btn-sm btn-block" target="_blank">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span>View Boutique</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Admin Main Body -->
+    <main class="admin-main">
+      
+      <!-- Topbar -->
+      <div class="admin-topbar">
+        <div class="d-flex align-center gap-3">
+          <h2 style="font-size: 1.45rem; margin: 0;" id="adminSectionHeading">Executive Dashboard</h2>
+          <!-- Real-Time Sync Indicator -->
+          <div class="d-flex align-center gap-1" style="background: var(--success-bg); color: var(--success); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--success); display: inline-block; animation: pulseGlow 1.5s infinite;"></span>
+            <span>Real-Time Multi-Device Sync Active</span>
+          </div>
+        </div>
+
+        <div class="d-flex align-center gap-3">
+          <button class="btn btn-outline btn-sm" onclick="openFirebaseSettingsModal()">
+            <i class="fa-solid fa-cloud text-gold"></i>
+            <span>Firebase Config</span>
+          </button>
+          <div class="d-flex align-center gap-2">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Admin" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold);">
+            <div style="font-size: 0.85rem; line-height: 1.2;">
+              <strong>Concierge Admin</strong>
+              <small style="color: var(--text-light); display: block;">Superuser</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content Wrapper -->
+      <div class="admin-content">
+
+        <!-- ===================================================================
+             TAB 1: DASHBOARD OVERVIEW
+             =================================================================== -->
+        <div id="tab-dashboard" class="admin-tab-pane">
+          
+          <!-- KPI Cards -->
+          <div class="stat-cards-grid">
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3 id="statTotalSales">LKR 0</h3>
+                <p>Total Gross Sales</p>
+              </div>
+              <div class="stat-icon"><i class="fa-solid fa-coins text-gold"></i></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3 id="statTotalOrders">0</h3>
+                <p>Total Orders Placed</p>
+              </div>
+              <div class="stat-icon"><i class="fa-solid fa-boxes-stacked text-espresso"></i></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3 id="statTotalCustomers">0</h3>
+                <p>Registered Patrons</p>
+              </div>
+              <div class="stat-icon"><i class="fa-solid fa-users text-espresso"></i></div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-info">
+                <h3 id="statLowStock" style="color: var(--warning);">0</h3>
+                <p>Low Stock Warnings</p>
+              </div>
+              <div class="stat-icon" style="background: var(--warning-bg);"><i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i></div>
+            </div>
+          </div>
+
+          <!-- Recent Orders in Dashboard -->
+          <div class="admin-table-card">
+            <div class="table-header-bar">
+              <h3 style="font-size: 1.15rem; margin: 0;">Recent Haute Orders</h3>
+              <a href="#orders" onclick="switchAdminTab('orders', document.querySelectorAll('.admin-nav-item')[1])" class="btn btn-outline btn-sm">View All Orders</a>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order Ref</th>
+                    <th>Patron Name</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Current Status</th>
+                    <th>Instant Update Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashOrdersTbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             TAB 2: ORDERS MANAGEMENT
+             =================================================================== -->
+        <div id="tab-orders" class="admin-tab-pane" style="display: none;">
+          <div class="admin-table-card">
+            <div class="table-header-bar">
+              <div class="d-flex align-center gap-2">
+                <h3 style="font-size: 1.15rem; margin: 0;">All Client Orders</h3>
+                <span class="badge badge-new" id="ordersTableCount">0</span>
+              </div>
+              <div class="d-flex gap-2">
+                <select id="adminOrderStatusFilter" class="form-control" style="width: auto; height: 36px; padding: 0.3rem 0.8rem; font-size: 0.85rem;" onchange="renderAdminOrders()">
+                  <option value="All">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer &amp; Phone</th>
+                    <th>Shipping Destination</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Update In Real-Time</th>
+                  </tr>
+                </thead>
+                <tbody id="adminOrdersTbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             TAB 3: PRODUCTS MANAGEMENT
+             =================================================================== -->
+        <div id="tab-products" class="admin-tab-pane" style="display: none;">
+          <div class="admin-table-card">
+            <div class="table-header-bar">
+              <div class="d-flex align-center gap-2">
+                <h3 style="font-size: 1.15rem; margin: 0;">Garment Catalog</h3>
+                <span class="badge badge-new" id="productsTableCount">0</span>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="openAddProductModal()">
+                <i class="fa-solid fa-plus"></i> Add New Garment
+              </button>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Title &amp; ID</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Current Stock</th>
+                    <th>Badge</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminProductsTbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             TAB 4: STOCK & INVENTORY MANAGEMENT
+             =================================================================== -->
+        <div id="tab-stock" class="admin-tab-pane" style="display: none;">
+          <div class="admin-table-card">
+            <div class="table-header-bar">
+              <div>
+                <h3 style="font-size: 1.15rem; margin: 0;">Live Stock Control Room</h3>
+                <small style="color: var(--text-muted);">Stock changes propagate to all customer devices in sub-second real-time.</small>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="restockAllProducts()">
+                <i class="fa-solid fa-boxes-packing"></i> Bulk Restock (+5 all)
+              </button>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Unit Price</th>
+                    <th>Stock Level</th>
+                    <th>Inline Stock Adjuster</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="adminStockTbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             TAB 5: PATRON CUSTOMERS
+             =================================================================== -->
+        <div id="tab-customers" class="admin-tab-pane" style="display: none;">
+          <div class="admin-table-card">
+            <div class="table-header-bar">
+              <h3 style="font-size: 1.15rem; margin: 0;">Registered Patrons Registry</h3>
+              <span class="badge badge-gold" id="customersTableCount">0 Patrons</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Patron ID</th>
+                    <th>Name</th>
+                    <th>Email Address</th>
+                    <th>Contact Phone</th>
+                    <th>Joined Date</th>
+                    <th>Total Orders</th>
+                    <th>Total Spend</th>
+                  </tr>
+                </thead>
+                <tbody id="adminCustomersTbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             TAB 6: SQL DATABASE DUMP & BACKUP (THE SQL REQUIREMENT)
+             =================================================================== -->
+        <div id="tab-sql" class="admin-tab-pane" style="display: none;">
+          <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
+            <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 1.5rem;">
+              <div>
+                <h3 style="font-size: 1.35rem; margin: 0; display: flex; align-items: center; gap: 8px;">
+                  <i class="fa-solid fa-database text-gold"></i>
+                  <span>Relational SQL Database Engine Exporter</span>
+                </h3>
+                <p style="margin-top: 4px; font-size: 0.88rem;">
+                  Full MySQL, PostgreSQL &amp; MariaDB dump engine. Generates complete schema tables (`products`, `orders`, `order_items`, `customers`) and executes direct `INSERT INTO` queries matching the live system.
+                </p>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-gold btn-sm" onclick="downloadSQLFile()">
+                  <i class="fa-solid fa-download"></i> Download .SQL File
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="copySQLToClipboard()">
+                  <i class="fa-regular fa-copy"></i> Copy SQL Queries
+                </button>
+              </div>
+            </div>
+
+            <!-- SQL Code Box with Syntax Highlighting -->
+            <pre class="sql-code-box" id="sqlViewerBox">Loading real-time SQL dump...</pre>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal: Add / Edit Product -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="productModalTitle" style="font-size: 1.25rem; margin: 0;">Add New Garment</h3>
+        <button onclick="closeProductModal()" style="font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="productForm" onsubmit="handleSaveProductForm(event)">
+        <input type="hidden" id="prodEditId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Garment Title *</label>
+            <input type="text" id="prodFormName" class="form-control" required placeholder="e.g. Royal Silk Evening Gown">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="prodFormCategory" class="form-control" required>
+                <option value="Women">Women's Couture</option>
+                <option value="Men">Men's Sartorial</option>
+                <option value="Accessories">Luxury Accessories</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Initial Stock Count *</label>
+              <input type="number" id="prodFormStock" class="form-control" required min="0" value="10">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Price (LKR) *</label>
+              <input type="number" id="prodFormPrice" class="form-control" required min="1000" step="500" placeholder="38500">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Original Price (LKR) (Optional)</label>
+              <input type="number" id="prodFormOldPrice" class="form-control" placeholder="45000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">High-Res Image URL *</label>
+            <input type="url" id="prodFormImage" class="form-control" required placeholder="https://images.unsplash.com/photo-..." oninput="updateImagePreview(this.value)">
+            <div id="imagePreviewBox" style="margin-top: 8px; display: none; width: 80px; height: 100px; border-radius: var(--radius-xs); overflow: hidden; border: 1px solid var(--border);">
+              <img id="imagePreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Garment Description</label>
+            <textarea id="prodFormDesc" class="form-control" rows="3" placeholder="Artisanal mulberry silk with contoured waist silhouette..."></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Sizes (Comma separated)</label>
+              <input type="text" id="prodFormSizes" class="form-control" value="XS, S, M, L, XL">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Colors (Comma separated)</label>
+              <input type="text" id="prodFormColors" class="form-control" value="Espresso Brown, Champagne Gold, Ivory">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeProductModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Garment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Firebase Settings -->
+  <div class="modal-overlay" id="firebaseModal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; margin: 0;"><i class="fa-solid fa-cloud text-gold"></i> Firebase Cloud Sync Setup</h3>
+        <button onclick="closeFirebaseModal()" style="font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; margin-bottom: 1rem;">
+          Connect your Google Firebase Project for live cloud database synchronization and native 1-click Google Account Sign-In!
+        </p>
+        <div class="form-group">
+          <label class="form-label">Firebase Config JSON Object</label>
+          <textarea id="firebaseConfigInput" class="form-control" rows="6" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "your-app.firebaseapp.com",
+  "projectId": "your-app",
+  "storageBucket": "your-app.appspot.com",
+  "messagingSenderId": "...",
+  "appId": "..."
+}'></textarea>
+        </div>
+        <small style="color: var(--text-light); font-size: 0.78rem; display: block;">
+          Note: Even without Firebase credentials, the system automatically runs the high-fidelity Local Reactive &amp; Broadcast Engine!
+        </small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeFirebaseModal()">Close</button>
+        <button type="button" class="btn btn-gold btn-sm" onclick="saveFirebaseCredentials()">Save Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      refreshAllAdminPanels();
+
+      // Subscribe to real-time events!
+      if (window.roohiraDB) {
+        window.roohiraDB.subscribe((type) => {
+          refreshAllAdminPanels();
+        });
+      }
+    });
+
+    function refreshAllAdminPanels() {
+      updateDashboardKPIs();
+      renderDashboardOrders();
+      renderAdminOrders();
+      renderAdminProducts();
+      renderAdminStock();
+      renderAdminCustomers();
+      renderSQLViewer();
+    }
+
+    // Tab Switching
+    function switchAdminTab(tabKey, navElement) {
+      document.querySelectorAll(".admin-tab-pane").forEach(pane => pane.style.display = "none");
+      document.querySelectorAll(".admin-nav-item").forEach(item => item.classList.remove("active"));
+      
+      const targetPane = document.getElementById("tab-" + tabKey);
+      if (targetPane) targetPane.style.display = "block";
+      if (navElement) navElement.classList.add("active");
+
+      // Update heading
+      const titles = {
+        dashboard: "Executive Dashboard",
+        orders: "Haute Orders Management",
+        products: "Garments & Collections Catalog",
+        stock: "Live Stock & Inventory Control Room",
+        customers: "Patrons & VIP Client Registry",
+        sql: "Relational SQL Database Engine"
+      };
+      document.getElementById("adminSectionHeading").textContent = titles[tabKey] || "Executive Suite";
+
+      if (tabKey === "sql") renderSQLViewer();
+    }
+
+    // Dashboard KPIs
+    function updateDashboardKPIs() {
+      const orders = window.roohiraDB.getOrders();
+      const products = window.roohiraDB.getProducts();
+      const customers = window.roohiraDB.getCustomers();
+
+      const grossSales = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+      const lowStockCount = products.filter(p => p.stock <= 4).length;
+
+      document.getElementById("statTotalSales").textContent = window.roohiraApp.formatPrice(grossSales);
+      document.getElementById("statTotalOrders").textContent = orders.length;
+      document.getElementById("statTotalCustomers").textContent = customers.length;
+      document.getElementById("statLowStock").textContent = lowStockCount;
+
+      document.getElementById("ordersTableCount").textContent = orders.length + " Orders";
+      document.getElementById("productsTableCount").textContent = products.length + " Pieces";
+      document.getElementById("customersTableCount").textContent = customers.length + " Patrons";
+    }
+
+    // Dashboard Orders table
+    function renderDashboardOrders() {
+      const orders = window.roohiraDB.getOrders().slice(0, 5);
+      const tbody = document.getElementById("dashOrdersTbody");
+      if (!tbody) return;
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td><strong class="text-espresso">${o.orderId}</strong></td>
+          <td>${(o.customer && o.customer.name) || 'Patron'}</td>
+          <td>${new Date(o.createdAt || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</td>
+          <td><strong>${window.roohiraApp.formatPrice(o.total)}</strong></td>
+          <td><span class="status-pill status-${(o.status || 'pending').toLowerCase()}">${o.status}</span></td>
+          <td>
+            <select class="form-control" style="height: 32px; padding: 2px 8px; font-size: 0.8rem; width: auto;" onchange="handleAdminStatusChange('${o.orderId}', this.value)">
+              <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+              <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    // Orders tab table
+    function renderAdminOrders() {
+      const filter = document.getElementById("adminOrderStatusFilter").value;
+      let orders = window.roohiraDB.getOrders();
+      if (filter !== "All") {
+        orders = orders.filter(o => (o.status || 'Pending').toLowerCase() === filter.toLowerCase());
+      }
+
+      const tbody = document.getElementById("adminOrdersTbody");
+      if (!tbody) return;
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td>
+            <strong class="text-espresso">${o.orderId}</strong><br>
+            <small style="color: var(--text-light);">${new Date(o.createdAt || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</small>
+          </td>
+          <td>
+            <strong>${(o.customer && o.customer.name) || 'Patron'}</strong><br>
+            <small style="color: var(--text-muted);">${(o.customer && o.customer.phone) || ''}</small>
+          </td>
+          <td style="max-width: 200px; font-size: 0.825rem; color: var(--text-muted);">
+            ${(o.customer && o.customer.address) || 'N/A'}
+          </td>
+          <td>
+            ${(o.items || []).map(i => `<span style="font-size: 0.8rem; display: block;">${i.qty}x ${i.name} (${i.size || 'Std'})</span>`).join("")}
+          </td>
+          <td><strong class="text-espresso">${window.roohiraApp.formatPrice(o.total)}</strong></td>
+          <td><span class="status-pill status-${(o.status || 'pending').toLowerCase()}">${o.status}</span></td>
+          <td>
+            <select class="form-control" style="height: 32px; padding: 2px 8px; font-size: 0.8rem; width: auto;" onchange="handleAdminStatusChange('${o.orderId}', this.value)">
+              <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+              <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function handleAdminStatusChange(orderId, newStatus) {
+      window.roohiraDB.updateOrderStatus(orderId, newStatus);
+      window.roohiraApp.showToast(`Order ${orderId} updated to ${newStatus}. All devices synced!`, "success");
+    }
+
+    // Products Tab
+    function renderAdminProducts() {
+      const products = window.roohiraDB.getProducts();
+      const tbody = document.getElementById("adminProductsTbody");
+      if (!tbody) return;
+
+      tbody.innerHTML = products.map(p => `
+        <tr>
+          <td>
+            <img src="${p.image}" alt="${p.name}" style="width: 48px; height: 60px; object-fit: cover; border-radius: var(--radius-xs);">
+          </td>
+          <td>
+            <strong class="text-espresso">${p.name}</strong><br>
+            <small style="color: var(--text-light); font-family: monospace;">${p.id}</small>
+          </td>
+          <td><span class="badge" style="background: var(--cream); color: var(--espresso); border: 1px solid var(--border);">${p.category}</span></td>
+          <td><strong>${window.roohiraApp.formatPrice(p.price)}</strong></td>
+          <td>
+            <span class="stock-dot ${p.stock > 4 ? 'in' : (p.stock > 0 ? 'low' : 'out')}"></span>
+            <strong>${p.stock}</strong> units
+          </td>
+          <td>${p.badge ? `<span class="badge badge-new">${p.badge}</span>` : '-'}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn btn-outline btn-sm" onclick="openEditProductModal('${p.id}')" title="Edit">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button class="btn btn-sm" style="color: var(--danger); border: 1px solid var(--border);" onclick="handleDeleteProduct('${p.id}')" title="Delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    // Stock Tab
+    function renderAdminStock() {
+      const products = window.roohiraDB.getProducts();
+      const tbody = document.getElementById("adminStockTbody");
+      if (!tbody) return;
+
+      tbody.innerHTML = products.map(p => `
+        <tr>
+          <td>
+            <div class="d-flex align-center gap-2">
+              <img src="${p.image}" alt="${p.name}" style="width: 40px; height: 50px; object-fit: cover; border-radius: var(--radius-xs);">
+              <strong class="text-espresso">${p.name}</strong>
+            </div>
+          </td>
+          <td>${p.category}</td>
+          <td>${window.roohiraApp.formatPrice(p.price)}</td>
+          <td>
+            <span style="font-size: 1.15rem; font-weight: 700; ${p.stock <= 4 ? 'color: var(--danger);' : 'color: var(--espresso);'}">
+              ${p.stock}
+            </span>
+          </td>
+          <td>
+            <div class="qty-stepper">
+              <button onclick="adjustProductStock('${p.id}', ${p.stock - 1})">-</button>
+              <span style="width: 40px;">${p.stock}</span>
+              <button onclick="adjustProductStock('${p.id}', ${p.stock + 1})">+</button>
+            </div>
+          </td>
+          <td>
+            ${p.stock <= 0 ? '<span class="badge badge-out">Out of Stock</span>' : 
+             (p.stock <= 4 ? '<span class="badge badge-low">Low Stock</span>' : '<span class="badge badge-stock">In Stock</span>')}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function adjustProductStock(id, newStock) {
+      window.roohiraDB.updateStock(id, newStock);
+      window.roohiraApp.showToast("Stock updated across all devices instantly.", "info");
+    }
+
+    function restockAllProducts() {
+      const products = window.roohiraDB.getProducts();
+      products.forEach(p => {
+        window.roohiraDB.updateStock(p.id, p.stock + 5);
+      });
+      window.roohiraApp.showToast("Added +5 units to all products.", "success");
+    }
+
+    // Customers Tab
+    function renderAdminCustomers() {
+      const customers = window.roohiraDB.getCustomers();
+      const tbody = document.getElementById("adminCustomersTbody");
+      if (!tbody) return;
+
+      tbody.innerHTML = customers.map(c => `
+        <tr>
+          <td><code style="font-weight: 600;">${c.id}</code></td>
+          <td><strong>${c.name}</strong></td>
+          <td>${c.email}</td>
+          <td>${c.phone || 'N/A'}</td>
+          <td>${c.joinedDate || '2026-10-01'}</td>
+          <td><span class="badge" style="background: var(--cream); color: var(--espresso);">${c.totalOrders || 0} Orders</span></td>
+          <td><strong class="text-espresso">${window.roohiraApp.formatPrice(c.totalSpent || 0)}</strong></td>
+        </tr>
+      `).join("");
+    }
+
+    // SQL Dump Tab
+    function renderSQLViewer() {
+      const box = document.getElementById("sqlViewerBox");
+      if (box && window.roohiraDB) {
+        box.textContent = window.roohiraDB.generateSQLDump();
+      }
+    }
+
+    function downloadSQLFile() {
+      window.roohiraDB.downloadSQLFile();
+      window.roohiraApp.showToast("roohira_collection_db.sql downloaded successfully!", "success");
+    }
+
+    function copySQLToClipboard() {
+      const sql = window.roohiraDB.generateSQLDump();
+      navigator.clipboard.writeText(sql).then(() => {
+        window.roohiraApp.showToast("SQL script copied to clipboard!", "success");
+      });
+    }
+
+    // Product Modal (Add & Edit)
+    function openAddProductModal() {
+      document.getElementById("prodEditId").value = "";
+      document.getElementById("productModalTitle").textContent = "Add New Bespoke Garment";
+      document.getElementById("prodFormName").value = "";
+      document.getElementById("prodFormCategory").value = "Women";
+      document.getElementById("prodFormPrice").value = "";
+      document.getElementById("prodFormOldPrice").value = "";
+      document.getElementById("prodFormStock").value = "10";
+      document.getElementById("prodFormImage").value = "";
+      document.getElementById("prodFormDesc").value = "";
+      document.getElementById("imagePreviewBox").style.display = "none";
+      document.getElementById("productModal").classList.add("active");
+    }
+
+    function openEditProductModal(id) {
+      const p = window.roohiraDB.getProductById(id);
+      if (!p) return;
+
+      document.getElementById("prodEditId").value = p.id;
+      document.getElementById("productModalTitle").textContent = "Edit Garment: " + p.name;
+      document.getElementById("prodFormName").value = p.name;
+      document.getElementById("prodFormCategory").value = p.category;
+      document.getElementById("prodFormPrice").value = p.price;
+      document.getElementById("prodFormOldPrice").value = p.oldPrice || "";
+      document.getElementById("prodFormStock").value = p.stock;
+      document.getElementById("prodFormImage").value = p.image;
+      document.getElementById("prodFormDesc").value = p.description || "";
+      document.getElementById("prodFormSizes").value = (p.sizes || []).join(", ");
+      document.getElementById("prodFormColors").value = (p.colors || []).join(", ");
+      
+      updateImagePreview(p.image);
+      document.getElementById("productModal").classList.add("active");
+    }
+
+    function closeProductModal() {
+      document.getElementById("productModal").classList.remove("active");
+    }
+
+    function updateImagePreview(url) {
+      const box = document.getElementById("imagePreviewBox");
+      const img = document.getElementById("imagePreviewImg");
+      if (url && url.startsWith("http")) {
+        img.src = url;
+        box.style.display = "block";
+      } else {
+        box.style.display = "none";
+      }
+    }
+
+    function handleSaveProductForm(e) {
+      e.preventDefault();
+      const id = document.getElementById("prodEditId").value;
+      const name = document.getElementById("prodFormName").value.trim();
+      const category = document.getElementById("prodFormCategory").value;
+      const price = parseFloat(document.getElementById("prodFormPrice").value);
+      const oldPrice = parseFloat(document.getElementById("prodFormOldPrice").value) || null;
+      const stock = parseInt(document.getElementById("prodFormStock").value) || 0;
+      const image = document.getElementById("prodFormImage").value.trim();
+      const desc = document.getElementById("prodFormDesc").value.trim();
+      const sizesStr = document.getElementById("prodFormSizes").value;
+      const colorsStr = document.getElementById("prodFormColors").value;
+
+      const sizes = sizesStr.split(",").map(s => s.trim()).filter(Boolean);
+      const colors = colorsStr.split(",").map(c => c.trim()).filter(Boolean);
+
+      const productPayload = {
+        name,
+        category,
+        price,
+        oldPrice,
+        stock,
+        image,
+        description: desc,
+        sizes: sizes.length ? sizes : ["Standard"],
+        colors: colors.length ? colors : ["Standard Luxury"]
+      };
+
+      if (id) productPayload.id = id;
+
+      window.roohiraDB.saveProduct(productPayload);
+      closeProductModal();
+      window.roohiraApp.showToast(`Garment "${name}" saved and synced across all devices!`, "success");
+    }
+
+    function handleDeleteProduct(id) {
+      const p = window.roohiraDB.getProductById(id);
+      if (!p) return;
+      if (confirm(`Are you sure you want to delete "${p.name}"? This action will remove it from all connected stores.`)) {
+        window.roohiraDB.deleteProduct(id);
+        window.roohiraApp.showToast(`Deleted "${p.name}".`, "info");
+      }
+    }
+
+    // Firebase Modal
+    function openFirebaseSettingsModal() {
+      const cfg = localStorage.getItem("roohira_firebase_config") || 
+                  (window.roohiraFirebaseConfig ? JSON.stringify(window.roohiraFirebaseConfig, null, 2) : "");
+      document.getElementById("firebaseConfigInput").value = cfg;
+      document.getElementById("firebaseModal").classList.add("active");
+    }
+
+    function closeFirebaseModal() {
+      document.getElementById("firebaseModal").classList.remove("active");
+    }
+
+    function saveFirebaseCredentials() {
+      const val = document.getElementById("firebaseConfigInput").value.trim();
+      try {
+        if (val) {
+          const parsed = JSON.parse(val);
+          window.roohiraDB.saveFirebaseConfig(parsed);
+          window.roohiraApp.showToast("Firebase cloud configuration saved successfully!", "success");
+        } else {
+          localStorage.removeItem("roohira_firebase_config");
+          window.roohiraApp.showToast("Firebase credentials cleared. Running local reactive engine.", "info");
+        }
+        closeFirebaseModal();
+      } catch (err) {
+        alert("Invalid JSON format. Please ensure you paste valid Firebase config JSON.");
+      }
+    }
+  </script>
+</body>
+</html>

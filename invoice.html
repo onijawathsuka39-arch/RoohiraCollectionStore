@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Order Invoice | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: var(--cream);
+      color: var(--espresso);
+    }
+    .invoice-wrapper {
+      max-width: 820px;
+      margin: 3rem auto;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .invoice-header {
+      background: var(--espresso);
+      color: var(--white);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .invoice-body {
+      padding: 3rem;
+    }
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+    }
+    .invoice-table th {
+      background-color: var(--cream);
+      text-align: left;
+      padding: 0.9rem 1rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--espresso);
+      border-bottom: 2px solid var(--border);
+    }
+    .invoice-table td {
+      padding: 1.1rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.9rem;
+    }
+    .invoice-totals {
+      width: 320px;
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .invoice-totals .row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+    .invoice-totals .row.grand-total {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--espresso);
+      border-top: 2px solid var(--gold);
+      padding-top: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .invoice-badge-status {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .status-paid {
+      background: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #C8E6C9;
+    }
+    .status-cod {
+      background: #FFF3E0;
+      color: #E65100;
+      border: 1px solid #FFE0B2;
+    }
+    @media print {
+      body {
+        background: white;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .invoice-wrapper {
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Top Bar with Print Actions -->
+  <div class="no-print" style="background: var(--espresso); border-bottom: 1px solid rgba(198, 162, 107, 0.3); padding: 0.85rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="index.html" class="d-flex align-center gap-2 text-white" style="text-decoration: none;">
+      <i class="fa-solid fa-arrow-left text-gold"></i>
+      <span style="font-weight: 600; font-size: 0.88rem;">Back to Roohira Boutique</span>
+    </a>
+    <div class="d-flex gap-2">
+      <a id="trackLinkTop" href="track.html" class="btn btn-outline btn-sm" style="color: var(--white); border-color: var(--gold-light);">
+        <i class="fa-solid fa-location-crosshairs"></i> Track Consignment
+      </a>
+      <button onclick="window.print()" class="btn btn-gold btn-sm">
+        <i class="fa-solid fa-print"></i> Print / Download PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="invoice-wrapper" id="invoiceCard">
+      <!-- Invoice Header -->
+      <div class="invoice-header">
+        <div class="d-flex align-center gap-3">
+          <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection" style="width: 58px; height: 58px; object-fit: contain;">
+          <div>
+            <h2 style="font-family: var(--font-serif); font-size: 1.6rem; margin: 0; color: var(--gold-light); letter-spacing: 0.05em;">ROOHIRA COLLECTION</h2>
+            <small style="color: #BAADA2; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;">Master of Timeless Elegance</small>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-light); font-weight: 700;">Official Tax Invoice</div>
+          <div id="invOrderId" style="font-size: 1.45rem; font-weight: 700; color: var(--white); font-family: monospace;">ROH-000000</div>
+          <div id="invDate" style="color: #BAADA2; font-size: 0.8rem;">Date: --</div>
+        </div>
+      </div>
+
+      <!-- Invoice Body -->
+      <div class="invoice-body">
+        
+        <!-- Addresses Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+          <div>
+            <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 700; display: block; margin-bottom: 0.35rem;">Billed &amp; Dispatched To:</span>
+            <h4 id="invCustName" style="margin: 0 0 0.35rem 0; font-size: 1.1rem; color: var(--espresso);">Valued Patron</h4>
+            <div id="invCustEmail" style="color: var(--text-muted); font-size: 0.85rem;">customer@email.com</div>
+            <div id="invCustPhone" style="color: var(--text-muted); font-size: 0.85rem;">+94 75 721 8786</div>
+            <div id="invCustAddress" style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-top: 0.35rem;">Colombo, Sri Lanka</div>
+          </div>
+
+          <div style="text-align: right;">
+            <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 700; display: block; margin-bottom: 0.35rem;">Fashion House Headquarters:</span>
+            <h4 style="margin: 0 0 0.35rem 0; font-size: 1.1rem; color: var(--espresso);">Roohira Collection Atelier</h4>
+            <div style="color: var(--text-muted); font-size: 0.85rem;">Alfred House Gardens, Colombo 03</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem;">Hotline: 0757218786 / 075 721 8786</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem;">Email: roohiraonline@gmail.com</div>
+            <div style="margin-top: 0.75rem;">
+              <span id="invPaymentStatusBadge" class="invoice-badge-status status-cod">Cash on Delivery</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Garment / Item Details</th>
+              <th style="text-align: center;">Size / Color</th>
+              <th style="text-align: center;">Qty</th>
+              <th style="text-align: right;">Unit Rate</th>
+              <th style="text-align: right;">Total (LKR)</th>
+            </tr>
+          </thead>
+          <tbody id="invoiceTableBody">
+            <!-- Items rendered via JS -->
+          </tbody>
+        </table>
+
+        <!-- Totals Summary -->
+        <div class="invoice-totals">
+          <div class="row">
+            <span style="color: var(--text-muted);">Subtotal:</span>
+            <strong id="invSubtotal">LKR 0</strong>
+          </div>
+          <div class="row" id="invDiscountRow" style="display: none; color: var(--gold-dark);">
+            <span>Promotional Discount:</span>
+            <strong id="invDiscount">- LKR 0</strong>
+          </div>
+          <div class="row">
+            <span style="color: var(--text-muted);">White-Glove Delivery:</span>
+            <strong id="invShipping">Complimentary (Free)</strong>
+          </div>
+          <div class="row grand-total">
+            <span>Net Payable:</span>
+            <span id="invGrandTotal" style="color: var(--espresso);">LKR 0</span>
+          </div>
+        </div>
+
+        <!-- Footer Terms -->
+        <div style="margin-top: 3.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+          <div style="font-size: 0.78rem; color: var(--text-muted); max-width: 450px; line-height: 1.6;">
+            <strong>Policy &amp; Guarantee:</strong> All bespoke garments are delivered in signature Roohira monogram luxury packaging. 14-day hassle-free exchange &amp; sizing alteration support.
+            For concierge assistance, contact WhatsApp <strong>+94 75 721 8786</strong>.
+          </div>
+          <div style="text-align: right;">
+            <div style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--espresso); font-style: italic;">Roohira Collection</div>
+            <small style="color: var(--text-light); font-size: 0.72rem;">Authorized Commercial Invoice</small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get("orderId") || "ROH-892104";
+
+      const order = window.roohiraDB.getOrderById(orderId) || window.roohiraDB.getOrders()[0];
+
+      if (!order) {
+        alert("Order not found!");
+        return;
+      }
+
+      document.getElementById("invOrderId").textContent = order.orderId;
+      document.getElementById("invDate").textContent = "Date: " + (order.createdAt ? new Date(order.createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' }) : "Recent");
+      document.getElementById("trackLinkTop").href = `track.html?orderId=${order.orderId}`;
+
+      const cust = order.customer || {};
+      document.getElementById("invCustName").textContent = cust.name || "Valued Patron";
+      document.getElementById("invCustEmail").textContent = cust.email || "roohiraonline@gmail.com";
+      document.getElementById("invCustPhone").textContent = cust.phone || "+94 75 721 8786";
+      document.getElementById("invCustAddress").textContent = cust.address || "Sri Lanka";
+
+      // Payment Status Badge
+      const statusBadge = document.getElementById("invPaymentStatusBadge");
+      if (order.paymentMethod && order.paymentMethod.toLowerCase().includes("cash")) {
+        statusBadge.textContent = "Payment: Cash on Delivery (COD)";
+        statusBadge.className = "invoice-badge-status status-cod";
+      } else {
+        statusBadge.textContent = "Payment: Paid (" + (order.paymentMethod || "Direct") + ")";
+        statusBadge.className = "invoice-badge-status status-paid";
+      }
+
+      // Render Items
+      const tbody = document.getElementById("invoiceTableBody");
+      const items = order.items || [];
+      tbody.innerHTML = items.map(item => `
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: var(--espresso);">${item.name}</div>
+            <small style="color: var(--text-light); font-size: 0.75rem;">SKU: ${item.id}</small>
+          </td>
+          <td style="text-align: center;">${item.size || 'Standard'} / ${item.color || 'Standard'}</td>
+          <td style="text-align: center; font-weight: 600;">${item.qty}</td>
+          <td style="text-align: right;">${window.roohiraApp.formatPrice(item.price)}</td>
+          <td style="text-align: right; font-weight: 600;">${window.roohiraApp.formatPrice(item.price * item.qty)}</td>
+        </tr>
+      `).join("");
+
+      // Totals
+      document.getElementById("invSubtotal").textContent = window.roohiraApp.formatPrice(order.subtotal || 0);
+      if (order.discount > 0) {
+        document.getElementById("invDiscountRow").style.display = "flex";
+        document.getElementById("invDiscount").textContent = "- " + window.roohiraApp.formatPrice(order.discount);
+      }
+      document.getElementById("invShipping").textContent = (order.shipping === 0) ? "Complimentary (Free)" : window.roohiraApp.formatPrice(order.shipping);
+      document.getElementById("invGrandTotal").textContent = window.roohiraApp.formatPrice(order.total || 0);
+    });
+  </script>
+</body>
+</html>

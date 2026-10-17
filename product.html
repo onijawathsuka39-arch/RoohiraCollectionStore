@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .product-detail-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+    .gallery-main {
+      border-radius: var(--radius-xs);
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: var(--cream);
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .gallery-thumbs {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .thumb-item {
+      width: 80px;
+      height: 100px;
+      border-radius: var(--radius-xs);
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.6;
+      transition: all var(--transition-fast);
+    }
+    .thumb-item.active, .thumb-item:hover {
+      border-color: var(--espresso);
+      opacity: 1;
+    }
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .size-option-btn {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--espresso);
+      transition: all var(--transition-fast);
+      min-width: 44px;
+      text-align: center;
+    }
+    .size-option-btn.active, .size-option-btn:hover {
+      border-color: var(--espresso);
+      background: var(--espresso);
+      color: var(--white);
+    }
+    .color-swatch-btn {
+      padding: 0.45rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+    .color-swatch-btn.active, .color-swatch-btn:hover {
+      border-color: var(--gold-dark);
+      background-color: var(--cream);
+      font-weight: 600;
+    }
+    .accordion-item {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 0;
+    }
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--espresso);
+    }
+    .accordion-content {
+      padding-top: 0.85rem;
+      display: none;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .accordion-item.open .accordion-content {
+      display: block;
+    }
+    .accordion-item.open .accordion-header i {
+      transform: rotate(180deg);
+    }
+    @media (max-width: 900px) {
+      .product-detail-layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div>
+      <i class="fa-solid fa-gem text-gold"></i>
+      <span>Complimentary Islandwide Express Delivery on Orders Over LKR 50,000</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link active">Shop All</a>
+        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
+        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
+        <a href="track.html" class="nav-link">Track Order</a>
+        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="headerUserAction">
+          <a href="auth.html" class="action-btn" title="Sign In"><i class="fa-regular fa-user"></i></a>
+        </div>
+        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Details Section -->
+  <section class="section-padding">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 2rem;">
+        <a href="index.html">Home</a> / <a href="shop.html">Shop</a> / <span id="pdpCategoryBreadcrumb">Couture</span> / <span id="pdpTitleBreadcrumb" style="color: var(--espresso); font-weight: 500;">Product</span>
+      </div>
+
+      <div class="product-detail-layout" id="productDetailContainer">
+        
+        <!-- Left: Image Gallery -->
+        <div>
+          <div class="gallery-main">
+            <img id="mainGalleryImg" src="" alt="Roohira Garment">
+          </div>
+          <div class="gallery-thumbs" id="galleryThumbs">
+            <!-- Thumbnails injected via JS -->
+          </div>
+        </div>
+
+        <!-- Right: Product Information & Action Suite -->
+        <div>
+          <div class="d-flex align-center gap-2" style="margin-bottom: 0.75rem;">
+            <span id="pdpCategory" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; color: var(--gold-dark);">Collection</span>
+            <span id="pdpBadge" class="badge badge-new" style="display: none;">New</span>
+          </div>
+
+          <h1 id="pdpTitle" style="font-size: 2.2rem; margin-bottom: 0.75rem;">Garment Title</h1>
+
+          <!-- Reviews & Rating -->
+          <div class="d-flex align-center gap-2" style="margin-bottom: 1.25rem;">
+            <div style="color: #E2A03F; font-size: 0.85rem;">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <span id="pdpRatingText" style="font-size: 0.825rem; font-weight: 600;">4.9 (34 reviews)</span>
+            <span style="color: var(--text-light);">&bull;</span>
+            <span style="color: var(--success); font-size: 0.825rem; font-weight: 600;"><i class="fa-solid fa-check"></i> Verified Couture</span>
+          </div>
+
+          <!-- Price Row -->
+          <div class="d-flex align-center gap-3" style="margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border);">
+            <span id="pdpPrice" style="font-size: 1.85rem; font-weight: 700; color: var(--espresso);">LKR 0</span>
+            <span id="pdpOldPrice" style="font-size: 1.15rem; color: var(--text-light); text-decoration: line-through; display: none;">LKR 0</span>
+            <span id="pdpDiscountBadge" class="badge badge-sale" style="display: none;">Save 15%</span>
+          </div>
+
+          <!-- Description -->
+          <p id="pdpDescription" style="margin-bottom: 1.75rem; font-size: 0.95rem; line-height: 1.8;">
+            Product description will appear here.
+          </p>
+
+          <!-- Color Selector -->
+          <div style="margin-bottom: 1.5rem;">
+            <label class="form-label">Color: <span id="selectedColorName" style="color: var(--gold-dark); text-transform: none; font-weight: 600;">Standard</span></label>
+            <div class="d-flex flex-wrap gap-2" id="colorOptionsContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Size Selector -->
+          <div style="margin-bottom: 1.5rem;">
+            <div class="d-flex justify-between align-center" style="margin-bottom: 0.45rem;">
+              <label class="form-label" style="margin: 0;">Select Size</label>
+              <button onclick="alert('Roohira Sizing Guide:\nXS: Bust 32-34 in, Waist 24-26 in\nS: Bust 34-36 in, Waist 26-28 in\nM: Bust 36-38 in, Waist 28-30 in\nL: Bust 38-41 in, Waist 31-33 in\nXL: Bust 42-44 in, Waist 34-37 in')" style="font-size: 0.78rem; text-decoration: underline; color: var(--gold-dark); font-weight: 600;">
+                <i class="fa-solid fa-ruler-horizontal"></i> Sizing Guide
+              </button>
+            </div>
+            <div class="d-flex flex-wrap gap-2" id="sizeOptionsContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Stock Status Alert -->
+          <div id="pdpStockBadge" style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; border-radius: var(--radius-xs); background: var(--cream); font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+            <span class="stock-dot in" id="pdpStockDot"></span>
+            <span id="pdpStockMsg">Checking availability...</span>
+          </div>
+
+          <!-- Quantity & Action Buttons -->
+          <div class="d-flex gap-3 align-center" style="margin-bottom: 2rem;">
+            <div class="qty-stepper" style="height: 48px;">
+              <button id="pdpQtyDec" style="width: 40px; font-size: 1.1rem;">-</button>
+              <span id="pdpQtyVal" style="width: 48px; font-size: 1rem;">1</span>
+              <button id="pdpQtyInc" style="width: 40px; font-size: 1.1rem;">+</button>
+            </div>
+
+            <button class="btn btn-primary btn-lg" id="pdpAddToCartBtn" style="flex: 1;">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span>Add to Bag</span>
+            </button>
+
+            <button class="btn btn-gold btn-lg" id="pdpBuyNowBtn" style="flex: 1;">
+              <span>Buy Now</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- Accordion Details -->
+          <div class="accordion-list">
+            <div class="accordion-item open">
+              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                <span>Fabric &amp; Care</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content" id="pdpFabricContent">
+                100% Pure Mulberry Silk. Specialist Dry Clean Only.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                <span>Complimentary Delivery &amp; Returns</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                Dispatched in signature Roohira monogram packaging. Islandwide delivery within 24-48 business hours. 14-day hassle-free exchange and sizing alteration support.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+                <span>Bespoke Atelier Guarantee</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                Every piece undergoes a triple-point quality assurance check before dispatch. Master tailoring consultations are available in our private Colombo salon.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Roohira Collection. All Rights Reserved.</div>
+        <div class="d-flex gap-3">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop All</a>
+          <a href="track.html">Track Order</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    let currentProduct = null;
+    let selectedSize = "";
+    let selectedColor = "";
+    let selectedQty = 1;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const prodId = urlParams.get("id") || "RC-PROD-001";
+
+      currentProduct = window.roohiraDB.getProductById(prodId);
+      if (!currentProduct) {
+        const all = window.roohiraDB.getProducts();
+        currentProduct = all[0];
+      }
+
+      renderProductDetails(currentProduct);
+
+      // Listen for stock changes in real-time
+      if (window.roohiraDB) {
+        window.roohiraDB.subscribe((type) => {
+          if (type === "stock_updated" || type === "products_updated") {
+            const updated = window.roohiraDB.getProductById(currentProduct.id);
+            if (updated) {
+              currentProduct = updated;
+              updateStockUI(updated);
+            }
+          }
+        });
+      }
+    });
+
+    function renderProductDetails(p) {
+      document.title = `${p.name} | Roohira Collection`;
+      document.getElementById("pdpTitle").textContent = p.name;
+      document.getElementById("pdpTitleBreadcrumb").textContent = p.name;
+      document.getElementById("pdpCategory").textContent = p.category;
+      document.getElementById("pdpCategoryBreadcrumb").textContent = p.category;
+      document.getElementById("pdpDescription").textContent = p.description || "";
+      document.getElementById("pdpPrice").textContent = window.roohiraApp.formatPrice(p.price);
+      document.getElementById("pdpRatingText").textContent = `${p.rating || 5.0} (${p.reviewsCount || 1} verified patron reviews)`;
+      
+      if (p.fabric) {
+        document.getElementById("pdpFabricContent").textContent = p.fabric;
+      }
+
+      if (p.oldPrice && p.oldPrice > p.price) {
+        const oldEl = document.getElementById("pdpOldPrice");
+        oldEl.textContent = window.roohiraApp.formatPrice(p.oldPrice);
+        oldEl.style.display = "inline";
+
+        const discountPct = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
+        const badgeEl = document.getElementById("pdpDiscountBadge");
+        badgeEl.textContent = `Save ${discountPct}%`;
+        badgeEl.style.display = "inline-flex";
+      }
+
+      if (p.badge) {
+        const b = document.getElementById("pdpBadge");
+        b.textContent = p.badge;
+        b.style.display = "inline-flex";
+      }
+
+      // Gallery Images
+      const images = p.images && p.images.length ? p.images : [p.image];
+      document.getElementById("mainGalleryImg").src = images[0];
+
+      const thumbsContainer = document.getElementById("galleryThumbs");
+      thumbsContainer.innerHTML = images.map((img, i) => `
+        <div class="thumb-item ${i === 0 ? 'active' : ''}" onclick="switchGalleryImg('${img}', this)">
+          <img src="${img}" alt="${p.name} view ${i+1}">
+        </div>
+      `).join("");
+
+      // Colors
+      const colors = p.colors || ["Standard Luxury"];
+      selectedColor = colors[0];
+      document.getElementById("selectedColorName").textContent = selectedColor;
+      document.getElementById("colorOptionsContainer").innerHTML = colors.map((c, i) => `
+        <button class="color-swatch-btn ${i === 0 ? 'active' : ''}" onclick="selectColor('${c}', this)">
+          <i class="fa-solid fa-circle" style="font-size: 0.65rem; color: var(--gold);"></i>
+          <span>${c}</span>
+        </button>
+      `).join("");
+
+      // Sizes
+      const sizes = p.sizes || ["Standard"];
+      selectedSize = sizes[0];
+      document.getElementById("sizeOptionsContainer").innerHTML = sizes.map((s, i) => `
+        <button class="size-option-btn ${i === 0 ? 'active' : ''}" onclick="selectSize('${s}', this)">
+          ${s}
+        </button>
+      `).join("");
+
+      // Stock status
+      updateStockUI(p);
+
+      // Quantity controls
+      document.getElementById("pdpQtyDec").onclick = () => {
+        if (selectedQty > 1) {
+          selectedQty--;
+          document.getElementById("pdpQtyVal").textContent = selectedQty;
+        }
+      };
+
+      document.getElementById("pdpQtyInc").onclick = () => {
+        if (selectedQty < p.stock) {
+          selectedQty++;
+          document.getElementById("pdpQtyVal").textContent = selectedQty;
+        } else {
+          window.roohiraApp.showToast(`Only ${p.stock} items left in stock.`, "warning");
+        }
+      };
+
+      // Add to bag
+      document.getElementById("pdpAddToCartBtn").onclick = () => {
+        window.roohiraApp.addToCart(p.id, selectedQty, selectedSize, selectedColor);
+      };
+
+      // Buy Now (Adds to cart & redirects directly to checkout)
+      document.getElementById("pdpBuyNowBtn").onclick = () => {
+        window.roohiraApp.addToCart(p.id, selectedQty, selectedSize, selectedColor);
+        window.location.href = "checkout.html";
+      };
+    }
+
+    function switchGalleryImg(url, el) {
+      document.getElementById("mainGalleryImg").src = url;
+      document.querySelectorAll(".thumb-item").forEach(t => t.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function selectColor(color, el) {
+      selectedColor = color;
+      document.getElementById("selectedColorName").textContent = color;
+      document.querySelectorAll(".color-swatch-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function selectSize(size, el) {
+      selectedSize = size;
+      document.querySelectorAll(".size-option-btn").forEach(b => b.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function updateStockUI(p) {
+      const dot = document.getElementById("pdpStockDot");
+      const msg = document.getElementById("pdpStockMsg");
+      const addBtn = document.getElementById("pdpAddToCartBtn");
+      const buyBtn = document.getElementById("pdpBuyNowBtn");
+
+      if (p.stock <= 0) {
+        dot.className = "stock-dot out";
+        msg.textContent = "Currently Sold Out. Join waitlist for restock.";
+        addBtn.disabled = true;
+        buyBtn.disabled = true;
+        addBtn.style.opacity = "0.5";
+        buyBtn.style.opacity = "0.5";
+      } else if (p.stock <= 4) {
+        dot.className = "stock-dot low";
+        msg.innerHTML = `<strong>Only ${p.stock} piece${p.stock === 1 ? '' : 's'} remaining</strong> &mdash; Order soon to guarantee allocation.`;
+        addBtn.disabled = false;
+        buyBtn.disabled = false;
+        addBtn.style.opacity = "1";
+        buyBtn.style.opacity = "1";
+      } else {
+        dot.className = "stock-dot in";
+        msg.innerHTML = `<span style="color: var(--success); font-weight: 600;">In Stock (${p.stock} available)</span> &mdash; Ready for immediate white-glove dispatch.`;
+        addBtn.disabled = false;
+        buyBtn.disabled = false;
+        addBtn.style.opacity = "1";
+        buyBtn.style.opacity = "1";
+      }
+    }
+  </script>
+</body>
+</html>

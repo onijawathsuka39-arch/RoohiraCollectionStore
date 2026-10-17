@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bespoke 3D Custom Design Studio | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .studio-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr 340px;
+      gap: 1.5rem;
+      min-height: calc(100vh - 180px);
+      align-items: start;
+    }
+    .studio-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .canvas-stage-wrapper {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 580px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .garment-canvas-container {
+      position: relative;
+      width: 440px;
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .garment-base-svg {
+      width: 100%;
+      height: 100%;
+      transition: filter 0.3s ease;
+    }
+    .print-safe-area {
+      position: absolute;
+      top: 26%;
+      left: 28%;
+      width: 44%;
+      height: 48%;
+      border: 2px dashed rgba(198, 162, 107, 0.6);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow: hidden;
+      cursor: move;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .custom-art-layer {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.25));
+    }
+    .custom-text-layer {
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+      pointer-events: none;
+      word-break: break-word;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .color-swatch-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .color-swatch-circle.active,
+    .color-swatch-circle:hover {
+      border-color: var(--gold);
+      transform: scale(1.15);
+    }
+    @media (max-width: 1100px) {
+      .studio-layout {
+        grid-template-columns: 1fr;
+      }
+      .garment-canvas-container {
+        width: 360px;
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: var(--cream);">
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div>
+      <i class="fa-solid fa-wand-magic-sparkles text-gold"></i>
+      <span>Roohira Bespoke Studio &bull; Real-time 3D Garment Customizer &amp; Live Preview</span>
+    </div>
+    <div class="d-none-sm">
+      <span>Complimentary Islandwide Courier Delivery on Custom Orders</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="customize.html" class="nav-link active text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
+        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
+        <a href="track.html" class="nav-link">Track Order</a>
+        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="headerUserAction">
+          <a href="auth.html" class="action-btn" title="Sign In"><i class="fa-regular fa-user"></i></a>
+        </div>
+        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Studio Main Section -->
+  <section class="section-padding-sm">
+    <div class="container">
+      
+      <!-- Studio Header -->
+      <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 1.5rem;">
+        <div>
+          <span style="color: var(--gold-dark); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Atelier Bespoke Workshop</span>
+          <h1 style="font-size: 2.2rem; margin: 0.25rem 0;">Custom Design Studio</h1>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline btn-sm" onclick="resetStudio()">
+            <i class="fa-solid fa-rotate-right"></i> Reset Canvas
+          </button>
+          <a href="https://wa.me/94757218786?text=Hello%20Roohira%20Concierge%2C%20I%20need%20custom%20design%20consultation." target="_blank" class="btn btn-sm" style="background: #25D366; color: white;">
+            <i class="fa-brands fa-whatsapp"></i> Live Consultation
+          </a>
+        </div>
+      </div>
+
+      <!-- Studio Layout Grid -->
+      <div class="studio-layout">
+        
+        <!-- Left Panel: Garment, View & Colors -->
+        <div class="studio-panel">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+            <i class="fa-solid fa-shirt text-gold"></i> 1. Select Garment
+          </h3>
+
+          <!-- Apparel Type Selector -->
+          <div class="form-group">
+            <label class="form-label">Garment Silhouette</label>
+            <select id="garmentTypeSelect" class="form-control" onchange="changeGarmentType(this.value)">
+              <option value="tshirt">Heavyweight Bespoke T-Shirt</option>
+              <option value="frock">Silk Flare Frock / Dress</option>
+              <option value="hoodie">Luxury Terry Cotton Hoodie</option>
+            </select>
+          </div>
+
+          <!-- View Switcher (Front vs Back) -->
+          <div class="form-group">
+            <label class="form-label">Perspective View</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+              <button id="viewFrontBtn" class="btn btn-primary btn-sm active" onclick="switchView('front')">
+                <i class="fa-solid fa-eye"></i> Front View
+              </button>
+              <button id="viewBackBtn" class="btn btn-outline btn-sm" onclick="switchView('back')">
+                <i class="fa-solid fa-arrow-rotate-left"></i> Back View
+              </button>
+            </div>
+          </div>
+
+          <!-- Color Swatches -->
+          <div class="form-group">
+            <label class="form-label">Fabric Color: <strong id="selectedColorLabel" class="text-gold">Black (#1A0F0A)</strong></label>
+            <div class="d-flex flex-wrap gap-2" id="colorSwatchesContainer">
+              <!-- Colors injected via JS -->
+            </div>
+          </div>
+
+          <!-- Sizing Selection -->
+          <div class="form-group" style="margin: 0;">
+            <label class="form-label">Select Size</label>
+            <select id="customSizeSelect" class="form-control">
+              <option value="XS">XS (Extra Small)</option>
+              <option value="S">S (Small)</option>
+              <option value="M" selected>M (Medium)</option>
+              <option value="L">L (Large)</option>
+              <option value="XL">XL (Extra Large)</option>
+              <option value="XXL">XXL (Double Extra Large)</option>
+              <option value="XXXL">XXXL (Triple Extra Large)</option>
+              <option value="Free Size">Free Size (Custom Fit)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Center: Interactive Canvas Stage -->
+        <div class="canvas-stage-wrapper">
+          <div class="garment-canvas-container" id="canvasContainer">
+            <!-- Dynamic SVG Garment Mockup -->
+            <svg id="garmentSvg" viewBox="0 0 500 500" class="garment-base-svg">
+              <defs>
+                <filter id="shadowFilter">
+                  <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.18"/>
+                </filter>
+              </defs>
+              <!-- Dynamic Garment Path with Fabric Fill -->
+              <path id="garmentBodyPath" d="M160,100 C185,130 315,130 340,100 L440,175 L385,245 L345,215 L350,450 L150,450 L155,215 L115,245 L60,175 Z" 
+                    fill="#1A0F0A" stroke="#C6A26B" stroke-width="2" filter="url(#shadowFilter)"/>
+              <!-- Collar Stitching Detail -->
+              <path id="garmentCollar" d="M160,100 C190,135 310,135 340,100 C310,115 190,115 160,100 Z" fill="#2E1A11" opacity="0.6"/>
+            </svg>
+
+            <!-- Printable Safe Area Overlay with Live Artwork & Text Layers -->
+            <div class="print-safe-area" id="printSafeArea">
+              <img id="customArtImg" class="custom-art-layer" style="display: none;" src="" alt="Custom Artwork">
+              <div id="customTextDisplay" class="custom-text-layer" style="display: none; color: #FAF7F2; font-size: 1.2rem; font-family: 'Playfair Display';">
+                Roohira Bespoke
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Stage Indicator -->
+          <div class="d-flex align-center justify-between w-100" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--text-muted);">
+            <div><i class="fa-solid fa-lock text-gold"></i> Live 2D/3D Mockup Simulation &bull; Vector Precision</div>
+            <div id="canvasViewIndicator" style="font-weight: 600; text-transform: uppercase;">Viewing: Front</div>
+          </div>
+        </div>
+
+        <!-- Right Panel: Artwork, Text & Add to Cart -->
+        <div class="studio-panel">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+            <i class="fa-solid fa-palette text-gold"></i> 2. Personalize &amp; Order
+          </h3>
+
+          <!-- Upload Artwork Image -->
+          <div class="form-group">
+            <label class="form-label">Upload Custom Artwork / Logo</label>
+            <input type="file" id="artworkFileInput" class="form-control" accept="image/*" onchange="handleArtworkUpload(event)">
+            <small style="color: var(--text-light); font-size: 0.72rem; display: block; margin-top: 4px;">PNG, JPG, SVG or WEBP with transparent background recommended.</small>
+          </div>
+
+          <!-- Custom Text / Slogan -->
+          <div class="form-group">
+            <label class="form-label">Custom Monogram / Text</label>
+            <input type="text" id="customTextInput" class="form-control" placeholder="e.g. Master of Timeless Elegance" oninput="updateCustomText(this.value)">
+          </div>
+
+          <!-- Text Font & Color -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
+            <div>
+              <label class="form-label">Font Family</label>
+              <select id="textFontSelect" class="form-control" onchange="updateTextFont(this.value)">
+                <option value="'Playfair Display', serif">Playfair Display</option>
+                <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+                <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                <option value="monospace">Luxury Monospace</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Text Color</label>
+              <select id="textColorSelect" class="form-control" onchange="updateTextColor(this.value)">
+                <option value="#C6A26B">Champagne Gold</option>
+                <option value="#FAF7F2">Luxury Cream</option>
+                <option value="#FFFFFF">Crisp White</option>
+                <option value="#1A0F0A">Espresso Black</option>
+                <option value="#E2A03F">Golden Ochre</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Text Size Slider -->
+          <div class="form-group">
+            <div class="d-flex justify-between" style="font-size: 0.78rem; margin-bottom: 4px;">
+              <span>Text Scale</span>
+              <span id="textScaleVal">1.2rem</span>
+            </div>
+            <input type="range" id="textScaleRange" min="0.7" max="2.4" step="0.1" value="1.2" class="form-control" style="padding: 0;" oninput="updateTextScale(this.value)">
+          </div>
+
+          <!-- Pricing & Checkout -->
+          <div style="background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 1.15rem; margin-top: 1.25rem;">
+            <div class="d-flex justify-between align-center" style="margin-bottom: 0.5rem;">
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Bespoke Unit Rate:</span>
+              <strong style="font-size: 1.35rem; color: var(--espresso);" id="customStudioPrice">LKR 6,500</strong>
+            </div>
+            <small style="color: var(--text-light); font-size: 0.72rem; display: block; margin-bottom: 1rem;">Includes high-density DTF printing + luxury garment blank.</small>
+
+            <button class="btn btn-gold btn-block btn-lg" onclick="addCustomToBag()">
+              <i class="fa-solid fa-bag-shopping"></i> Add Custom Design to Bag
+            </button>
+            <button class="btn btn-outline btn-block btn-sm" style="margin-top: 0.5rem;" onclick="orderCustomViaWhatsApp()">
+              <i class="fa-brands fa-whatsapp"></i> Order Directly via WhatsApp
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo-footer">
+            <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection Logo">
+            <span class="brand-title">ROOHIRA COLLECTION</span>
+          </div>
+          <p style="color: #BBB0A6; font-size: 0.88rem; max-width: 320px; line-height: 1.7; margin-bottom: 1.5rem;">
+            Sri Lanka's luxury house of haute couture, bespoke menswear, and royal heirloom sarees. Crafted with passion, worn with pride.
+          </p>
+          <div class="social-links">
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://wa.me/94757218786" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="tel:0757218786"><i class="fa-solid fa-phone"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Boutique &amp; Bespoke</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html">All Collections</a></li>
+            <li><a href="customize.html">Custom Design Studio</a></li>
+            <li><a href="dtf.html">DTF Gang Sheet Builder</a></li>
+            <li><a href="track.html">Track Order</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 Roohira Collection. All Rights Reserved. Master of Timeless Elegance.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Palette swatches
+    const COLOR_SWATCHES = [
+      { name: "Espresso Black", hex: "#1A0F0A" },
+      { name: "Crisp White", hex: "#FFFFFF" },
+      { name: "Dark Yellow", hex: "#D49E10" },
+      { name: "Light Yellow", hex: "#F3D86B" },
+      { name: "Rich Maroon", hex: "#5C1318" },
+      { name: "Champagne Gold", hex: "#C6A26B" },
+      { name: "Royal Mocha", hex: "#4A2E1F" }
+    ];
+
+    let currentGarment = "tshirt";
+    let currentView = "front";
+    let activeColor = COLOR_SWATCHES[0];
+    let customArtUrl = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Render color swatches
+      const container = document.getElementById("colorSwatchesContainer");
+      container.innerHTML = COLOR_SWATCHES.map((c, i) => `
+        <div class="color-swatch-circle ${i === 0 ? 'active' : ''}" 
+             style="background-color: ${c.hex};" 
+             title="${c.name}" 
+             onclick="selectStudioColor(${i})">
+        </div>
+      `).join("");
+    });
+
+    function selectStudioColor(index) {
+      activeColor = COLOR_SWATCHES[index];
+      document.querySelectorAll(".color-swatch-circle").forEach((el, i) => {
+        el.classList.toggle("active", i === index);
+      });
+      document.getElementById("selectedColorLabel").textContent = `${activeColor.name} (${activeColor.hex})`;
+      document.getElementById("garmentBodyPath").setAttribute("fill", activeColor.hex);
+    }
+
+    function changeGarmentType(type) {
+      currentGarment = type;
+      const path = document.getElementById("garmentBodyPath");
+      const priceEl = document.getElementById("customStudioPrice");
+      
+      if (type === "frock") {
+        // Frock silhouette path
+        path.setAttribute("d", "M175,90 C200,120 300,120 325,90 L395,150 L355,200 L320,180 L305,250 L420,460 L80,460 L195,250 L180,180 L145,200 L105,150 Z");
+        priceEl.textContent = "LKR 12,500";
+      } else if (type === "hoodie") {
+        // Hoodie silhouette path
+        path.setAttribute("d", "M150,90 C180,140 320,140 350,90 L455,185 L395,255 L350,225 L355,460 L145,460 L150,225 L105,255 L45,185 Z");
+        priceEl.textContent = "LKR 8,900";
+      } else {
+        // T-Shirt default
+        path.setAttribute("d", "M160,100 C185,130 315,130 340,100 L440,175 L385,245 L345,215 L350,450 L150,450 L155,215 L115,245 L60,175 Z");
+        priceEl.textContent = "LKR 6,500";
+      }
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.getElementById("viewFrontBtn").className = view === "front" ? "btn btn-primary btn-sm active" : "btn btn-outline btn-sm";
+      document.getElementById("viewBackBtn").className = view === "back" ? "btn btn-primary btn-sm active" : "btn btn-outline btn-sm";
+      document.getElementById("canvasViewIndicator").textContent = `Viewing: ${view.toUpperCase()}`;
+      
+      // Toggle collar line for back view
+      const collar = document.getElementById("garmentCollar");
+      if (view === "back") {
+        collar.style.opacity = "0.2";
+      } else {
+        collar.style.opacity = "0.6";
+      }
+    }
+
+    function handleArtworkUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        customArtUrl = e.target.result;
+        const artImg = document.getElementById("customArtImg");
+        artImg.src = customArtUrl;
+        artImg.style.display = "block";
+        window.roohiraApp.showToast("Artwork uploaded to canvas successfully!", "success");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateCustomText(val) {
+      const display = document.getElementById("customTextDisplay");
+      if (val.trim() === "") {
+        display.style.display = "none";
+      } else {
+        display.style.display = "block";
+        display.textContent = val;
+      }
+    }
+
+    function updateTextFont(font) {
+      document.getElementById("customTextDisplay").style.fontFamily = font;
+    }
+
+    function updateTextColor(color) {
+      document.getElementById("customTextDisplay").style.color = color;
+    }
+
+    function updateTextScale(scale) {
+      document.getElementById("customTextDisplay").style.fontSize = scale + "rem";
+      document.getElementById("textScaleVal").textContent = scale + "rem";
+    }
+
+    function resetStudio() {
+      selectStudioColor(0);
+      document.getElementById("customTextInput").value = "";
+      document.getElementById("artworkFileInput").value = "";
+      document.getElementById("customArtImg").style.display = "none";
+      document.getElementById("customTextDisplay").style.display = "none";
+      customArtUrl = null;
+      window.roohiraApp.showToast("Canvas restored to blank atelier state.", "info");
+    }
+
+    function addCustomToBag() {
+      const size = document.getElementById("customSizeSelect").value;
+      const text = document.getElementById("customTextInput").value.trim();
+      const priceText = document.getElementById("customStudioPrice").textContent.replace(/[^0-9]/g, "");
+      const price = parseInt(priceText, 10) || 6500;
+
+      const customItem = {
+        id: "BESPOKE-" + Date.now(),
+        name: `Bespoke Custom ${currentGarment.toUpperCase()} (${currentView.toUpperCase()})`,
+        price: price,
+        image: customArtUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+        qty: 1,
+        size: size,
+        color: activeColor.name,
+        customNotes: `Text: "${text || 'None'}" & Color: ${activeColor.name}`
+      };
+
+      let cart = window.roohiraApp.getCart();
+      cart.push(customItem);
+      window.roohiraApp.saveCart(cart);
+      window.roohiraApp.showToast("Custom design created and added to your bag!", "success");
+      window.roohiraApp.openCart();
+    }
+
+    function orderCustomViaWhatsApp() {
+      const size = document.getElementById("customSizeSelect").value;
+      const text = document.getElementById("customTextInput").value.trim();
+      const price = document.getElementById("customStudioPrice").textContent;
+      
+      const msg = `*ROOHIRA BESPOKE STUDIO - CUSTOM ORDER*%0A%0A` +
+        `*Garment:* ${currentGarment.toUpperCase()}%0A` +
+        `*Color:* ${activeColor.name} (${activeColor.hex})%0A` +
+        `*Size:* ${size}%0A` +
+        `*Custom Text:* ${text || 'None'}%0A` +
+        `*Artwork Attached:* ${customArtUrl ? 'Yes' : 'No'}%0A` +
+        `*Estimated Price:* ${price}%0A%0A` +
+        `Please confirm my custom printing and tailoring!`;
+
+      window.open(`https://wa.me/94757218786?text=${msg}`, '_blank');
+    }
+  </script>
+</body>
+</html>

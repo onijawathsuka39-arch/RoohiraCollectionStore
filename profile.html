@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patron Profile | Roohira Collection</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div>
+      <i class="fa-solid fa-gem text-gold"></i>
+      <span>Roohira Privé Patron Portal &bull; Bespoke Sizing &amp; Concierge</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="site-logo">
+        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
+        <div class="brand-text">
+          <span>ROOHIRA</span>
+          <small>COLLECTION</small>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
+        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
+        <a href="orders.html" class="nav-link">Order History</a>
+        <a href="track.html" class="nav-link">Track Order</a>
+        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="headerUserAction"></div>
+        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Profile Content -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      
+      <!-- User Hero Card -->
+      <div style="background: var(--espresso); color: var(--white); border-radius: var(--radius-sm); padding: 2.5rem; margin-bottom: 2.5rem; position: relative; overflow: hidden; box-shadow: var(--shadow-lg);">
+        <div class="d-flex justify-between align-center flex-wrap gap-3">
+          
+          <div class="d-flex align-center gap-3">
+            <img id="profileAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Patron" style="width: 86px; height: 86px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold);">
+            <div>
+              <div class="d-flex align-center gap-2">
+                <h1 style="color: var(--white); font-size: 1.85rem; margin: 0;" id="profileName">Patron Name</h1>
+                <span class="badge badge-gold" style="font-size: 0.68rem;"><i class="fa-solid fa-crown"></i> Privé Patron</span>
+              </div>
+              <p style="color: var(--gold-light); margin: 0.25rem 0 0 0; font-size: 0.9rem;" id="profileEmail">patron@gmail.com</p>
+              <small style="color: #A99B90; font-size: 0.78rem;">Member since October 2026</small>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <a href="orders.html" class="btn btn-gold btn-sm">
+              <i class="fa-solid fa-box-archive"></i>
+              <span>View Order History</span>
+            </a>
+            <button onclick="handleLogout()" class="btn btn-outline-white btn-sm">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Sign Out</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Profile Grid -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
+        
+        <!-- Left: Edit Personal Details -->
+        <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 1.35rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+            Personal Concierge Profile
+          </h3>
+
+          <form id="profileForm" onsubmit="handleSaveProfile(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="editName" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address (Read-only)</label>
+                <input type="email" id="editEmail" class="form-control" readonly style="background-color: var(--cream);">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Contact Phone / WhatsApp</label>
+              <input type="tel" id="editPhone" class="form-control" placeholder="+94 77 123 4567">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Default Shipping Residence</label>
+              <textarea id="editAddress" class="form-control" rows="3" placeholder="No. 45, Alfred House Gardens, Colombo 03, Sri Lanka"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Save Profile Changes</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Privé Privileges & Quick Links -->
+        <div>
+          <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
+            <div class="d-flex align-center gap-2" style="margin-bottom: 1rem;">
+              <i class="fa-solid fa-gem text-gold" style="font-size: 1.3rem;"></i>
+              <h4 style="margin: 0; font-size: 1.1rem;">Roohira Privé Tier</h4>
+            </div>
+            <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+              As a valued patron, you enjoy complimentary garment alterations, priority atelier fittings, and invitations to private trunk shows.
+            </p>
+            <div style="background: var(--cream); padding: 0.85rem; border-radius: var(--radius-xs); font-size: 0.8rem;">
+              <div class="d-flex justify-between" style="margin-bottom: 4px;">
+                <span>Total Orders Placed:</span>
+                <strong id="userTotalOrdersCount">0</strong>
+              </div>
+              <div class="d-flex justify-between">
+                <span>Atelier Concierge Hotline:</span>
+                <strong class="text-gold">+94 11 234 5678</strong>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.75rem; box-shadow: var(--shadow-sm);">
+            <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Quick Navigation</h4>
+            <div class="d-flex flex-column gap-2" style="font-size: 0.9rem;">
+              <a href="orders.html" class="d-flex justify-between align-center text-espresso" style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">
+                <span><i class="fa-solid fa-clock-rotate-left text-gold" style="margin-right: 8px;"></i> View Order History</span>
+                <i class="fa-solid fa-chevron-right text-light" style="font-size: 0.75rem;"></i>
+              </a>
+              <a href="track.html" class="d-flex justify-between align-center text-espresso" style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">
+                <span><i class="fa-solid fa-truck-fast text-gold" style="margin-right: 8px;"></i> Live Order Tracking</span>
+                <i class="fa-solid fa-chevron-right text-light" style="font-size: 0.75rem;"></i>
+              </a>
+              <a href="shop.html" class="d-flex justify-between align-center text-espresso" style="padding: 0.5rem 0;">
+                <span><i class="fa-solid fa-bag-shopping text-gold" style="margin-right: 8px;"></i> Explore Boutique</span>
+                <i class="fa-solid fa-chevron-right text-light" style="font-size: 0.75rem;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Roohira Collection. All Rights Reserved.</div>
+        <div class="d-flex gap-3">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="admin.html">Admin</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let user = window.roohiraDB.getCurrentUser();
+      
+      // If not logged in, prompt or log in as default patron
+      if (!user) {
+        user = {
+          uid: "USER-DEMO-01",
+          name: "Dinithi Jayawardena",
+          email: "roohiraonline@gmail.com",
+          phone: "+94 75 721 8786",
+          address: "No. 45, Alfred House Gardens, Colombo 03, Sri Lanka",
+          photoURL: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+        };
+        window.roohiraDB.setCurrentUser(user);
+      }
+
+      document.getElementById("profileName").textContent = user.name;
+      document.getElementById("profileEmail").textContent = user.email;
+      if (user.photoURL) document.getElementById("profileAvatar").src = user.photoURL;
+
+      document.getElementById("editName").value = user.name || "";
+      document.getElementById("editEmail").value = user.email || "";
+      document.getElementById("editPhone").value = user.phone || "+94 75 721 8786";
+      document.getElementById("editAddress").value = user.address || "No. 45, Alfred House Gardens, Colombo 03, Sri Lanka";
+
+      // Order counts
+      const userOrders = window.roohiraDB.getUserOrders(user.email);
+      document.getElementById("userTotalOrdersCount").textContent = userOrders.length || 1;
+    });
+
+    function handleSaveProfile(e) {
+      e.preventDefault();
+      const user = window.roohiraDB.getCurrentUser() || {};
+      user.name = document.getElementById("editName").value;
+      user.phone = document.getElementById("editPhone").value;
+      user.address = document.getElementById("editAddress").value;
+
+      window.roohiraDB.setCurrentUser(user);
+      document.getElementById("profileName").textContent = user.name;
+      window.roohiraApp.showToast("Profile details updated successfully.", "success");
+    }
+
+    function handleLogout() {
+      if (confirm("Are you sure you wish to sign out from your patron session?")) {
+        window.roohiraDB.logout();
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+</body>
+</html>
