@@ -1,435 +1,625 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bespoke Checkout | Roohira Collection</title>
-  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .payment-option-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xs);
-      padding: 1.25rem;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      margin-bottom: 0.85rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    .payment-option-card.active, .payment-option-card:hover {
-      border-color: var(--espresso);
-      background-color: var(--cream);
-    }
-    .payment-option-card input[type="radio"] {
-      margin-top: 4px;
-      accent-color: var(--espresso);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Roohira Collection</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
-
-  <!-- Minimalist Checkout Header -->
-  <header style="border-bottom: 1px solid var(--border); background: var(--white); padding: 1.25rem 0;">
-    <div class="container d-flex justify-between align-center">
-      <a href="index.html" class="site-logo">
-        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection" style="height: 44px;">
-        <div class="brand-text">
-          <span>ROOHIRA</span>
-          <small>COLLECTION</small>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span
+                style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span
+                    style="color: #8B5A2B;">ROOHIRA</span> <span
+                    style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html">Customize</a></li>
+            <li><a href="offers.html">Offers</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="login.html"><i data-lucide="user"></i></a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #8B5A2B; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
         </div>
-      </a>
-      <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-lock text-gold"></i>
-        <span>256-Bit SSL Encrypted Checkout</span>
-      </div>
-    </div>
-  </header>
+    </nav>
 
-  <section class="section-padding" style="background-color: #FAF7F2; min-height: 85vh;">
-    <div class="container">
-      
-      <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 3.5rem;" id="checkoutGrid">
-        
-        <!-- Left: Checkout Forms -->
-        <div>
-          <form id="checkoutForm" onsubmit="handlePlaceOrder(event)">
-            
-            <!-- Step 1: Customer Contact -->
-            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
-              <div class="d-flex justify-between align-center" style="margin-bottom: 1.25rem;">
-                <h3 style="font-size: 1.25rem; margin: 0;">1. Patron Contact Information</h3>
-                <span id="checkoutLoginPrompt" style="font-size: 0.825rem; color: var(--text-muted);">
-                  Already registered? <a href="auth.html" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline;">Sign In</a>
-                </span>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                  <label class="form-label">Full Name *</label>
-                  <input type="text" id="custName" class="form-control" required placeholder="e.g. Dinithi Jayawardena">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Email Address *</label>
-                  <input type="email" id="custEmail" class="form-control" required placeholder="patron@gmail.com">
-                </div>
-              </div>
-
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label">Contact Phone / WhatsApp (1 or 2 Contact Numbers) *</label>
-                <input type="tel" id="custPhone" class="form-control" required placeholder="e.g. 0757218786 / 0771234567">
-              </div>
+    <main class="section" style="padding-top: 130px; padding-bottom: 80px;">
+        <!-- Checkout Stepper -->
+        <div class="checkout-stepper">
+            <a href="cart.html" class="stepper-step" style="text-decoration: none;">
+                <div class="stepper-num"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+                <span>1. Shopping Cart</span>
+            </a>
+            <div class="stepper-line active"></div>
+            <div class="stepper-step active">
+                <div class="stepper-num">2</div>
+                <span>2. Shipping & Billing</span>
             </div>
-
-            <!-- Step 2: Shipping & Delivery Destination -->
-            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
-              <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;">2. White-Glove Delivery Destination</h3>
-
-              <div class="form-group">
-                <label class="form-label">Street Address / Suite / Residence *</label>
-                <input type="text" id="custAddress" class="form-control" required placeholder="No. 45, Alfred House Gardens">
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                  <label class="form-label">City *</label>
-                  <input type="text" id="custCity" class="form-control" required placeholder="Colombo">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">District / Province *</label>
-                  <input type="text" id="custDistrict" class="form-control" required placeholder="Western Province">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Postal Code</label>
-                  <input type="text" id="custPostal" class="form-control" placeholder="00300">
-                </div>
-              </div>
-
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label">Special Delivery Instructions / Sizing Note</label>
-                <textarea id="custNotes" class="form-control" rows="2" placeholder="e.g. Ring bell upon arrival, request gift packaging"></textarea>
-              </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step">
+                <div class="stepper-num">3</div>
+                <span>3. Invoice & Order Confirmation</span>
             </div>
+        </div>
 
-            <!-- Step 3: Payment Method -->
-            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
-              <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;">3. Preferred Payment Method</h3>
+        <div style="text-align: center; margin-bottom: 35px;">
+            <h2 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 8px;">
+                Secure <span style="color: var(--accent-pink);">Checkout</span>
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">
+                <i data-lucide="shield-check"
+                    style="width: 16px; height: 16px; color: #22c55e; vertical-align: middle; margin-right: 4px;"></i>
+                256-Bit SSL Encrypted & Direct WhatsApp Order Confirmation
+            </p>
+        </div>
 
-              <!-- COD -->
-              <div class="payment-option-card active" onclick="selectPaymentMethod('cod', this)">
-                <input type="radio" name="paymentMethod" id="payCOD" value="Cash on Delivery" checked>
-                <div>
-                  <label for="payCOD" style="font-weight: 700; color: var(--espresso); cursor: pointer; display: block;">
-                    Cash / Card on Delivery (COD)
-                  </label>
-                  <small style="color: var(--text-muted); font-size: 0.8rem;">
-                    Pay in cash or credit card upon white-glove arrival at your doorstep. Complimentary islandwide service.
-                  </small>
-                </div>
-              </div>
+        <div class="checkout-grid">
+            <!-- Left Side: Billing & Shipping Forms -->
+            <div class="checkout-form-container">
 
-              <!-- Bank Transfer -->
-              <div class="payment-option-card" onclick="selectPaymentMethod('bank', this)">
-                <input type="radio" name="paymentMethod" id="payBank" value="Direct Bank Transfer">
-                <div style="flex: 1;">
-                  <label for="payBank" style="font-weight: 700; color: var(--espresso); cursor: pointer; display: block;">
-                    Direct Bank Transfer (BACS)
-                  </label>
-                  <small style="color: var(--text-muted); font-size: 0.8rem;">
-                    Transfer directly into Roohira Collection's corporate account at Commercial Bank of Ceylon.
-                  </small>
-                  <div id="bankDetailsBox" style="display: none; background: var(--white); border: 1px dashed var(--border); padding: 0.85rem; border-radius: var(--radius-xs); margin-top: 0.65rem; font-size: 0.78rem;">
-                    <div><strong>Bank:</strong> Commercial Bank of Ceylon PLC</div>
-                    <div><strong>Account Name:</strong> Roohira Collection (Pvt) Ltd</div>
-                    <div><strong>Account No:</strong> 1000 8492 0184</div>
-                    <div><strong>Branch:</strong> Colombo Main Branch</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Card Payment -->
-              <div class="payment-option-card" onclick="selectPaymentMethod('card', this)">
-                <input type="radio" name="paymentMethod" id="payCard" value="Credit / Debit Card">
-                <div style="flex: 1;">
-                  <div class="d-flex justify-between align-center">
-                    <label for="payCard" style="font-weight: 700; color: var(--espresso); cursor: pointer;">
-                      Credit / Debit Card (Visa, Mastercard, Amex)
-                    </label>
-                    <div class="d-flex gap-1" style="font-size: 1.2rem; color: var(--espresso);">
-                      <i class="fa-brands fa-cc-visa"></i>
-                      <i class="fa-brands fa-cc-mastercard"></i>
-                      <i class="fa-brands fa-cc-amex"></i>
+                <!-- 1. Customer Personal Information Card -->
+                <div class="checkout-section-card">
+                    <div class="checkout-card-header">
+                        <i data-lucide="user"></i>
+                        <div>
+                            <h3>1. Personal Details</h3>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">Enter your contact
+                                information for order status updates</p>
+                        </div>
                     </div>
-                  </div>
-                  <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-bottom: 0.5rem;">
-                    Instant 3D-Secure payment authorization.
-                  </small>
 
-                  <div id="cardInputsBox" style="display: none; background: var(--white); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius-xs); margin-top: 0.5rem;">
-                    <div class="form-group">
-                      <label class="form-label">Card Number</label>
-                      <input type="text" class="form-control" placeholder="4111 2222 3333 4444" maxlength="19">
+                    <div class="form-grid-2">
+                        <div class="checkout-form-group">
+                            <label for="checkout-name">Full Name <span class="req">*</span></label>
+                            <div class="input-with-icon">
+                                <input type="text" id="checkout-name" placeholder="e.g. Kasun Perera" required>
+                                <i data-lucide="user"></i>
+                            </div>
+                        </div>
+
+                        <div class="checkout-form-group">
+                            <label for="checkout-email">Email Address <span class="req">*</span></label>
+                            <div class="input-with-icon">
+                                <input type="email" id="checkout-email" placeholder="e.g. kasun@gmail.com" required>
+                                <i data-lucide="mail"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
-                      <div class="form-group" style="margin: 0;">
-                        <label class="form-label">Expiry (MM/YY)</label>
-                        <input type="text" class="form-control" placeholder="12/28" maxlength="5">
-                      </div>
-                      <div class="form-group" style="margin: 0;">
-                        <label class="form-label">CVV / CVC</label>
-                        <input type="password" class="form-control" placeholder="123" maxlength="4">
-                      </div>
+
+                    <div class="form-grid-2">
+                        <div class="checkout-form-group">
+                            <label for="checkout-phone">Primary Phone Number <span class="req">*</span></label>
+                            <div class="input-with-icon">
+                                <input type="tel" id="checkout-phone" placeholder="e.g. 0771234567" required>
+                                <i data-lucide="phone"></i>
+                            </div>
+                        </div>
+
+                        <div class="checkout-form-group">
+                            <label for="checkout-phone2">Alternative Phone / WhatsApp <span
+                                    class="optional-tag">(Optional)</span></label>
+                            <div class="input-with-icon">
+                                <input type="tel" id="checkout-phone2" placeholder="e.g. 0719876543">
+                                <i data-lucide="phone-call"></i>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+
+                <!-- 2. Shipping & Delivery Address Card -->
+                <div class="checkout-section-card">
+                    <div class="checkout-card-header">
+                        <i data-lucide="map-pin"></i>
+                        <div>
+                            <h3>2. Delivery & Shipping Address</h3>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">Where should we ship your
+                                order?</p>
+                        </div>
+                    </div>
+
+                    <div class="checkout-form-group">
+                        <label for="checkout-address">Street Address / House No. <span class="req">*</span></label>
+                        <div class="input-with-icon">
+                            <input type="text" id="checkout-address" placeholder="e.g. No. 45, Temple Road" required>
+                            <i data-lucide="home"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div class="checkout-form-group">
+                            <label for="checkout-city">City / Town <span class="req">*</span></label>
+                            <div class="input-with-icon">
+                                <input type="text" id="checkout-city" placeholder="e.g. Nugegoda" required>
+                                <i data-lucide="building"></i>
+                            </div>
+                        </div>
+
+                        <div class="checkout-form-group">
+                            <label for="checkout-district">District <span class="req">*</span></label>
+                            <div class="input-with-icon">
+                                <select id="checkout-district" required>
+                                    <option value="" disabled selected>Select District</option>
+                                    <option value="Colombo">Colombo</option>
+                                    <option value="Gampaha">Gampaha</option>
+                                    <option value="Kalutara">Kalutara</option>
+                                    <option value="Kandy">Kandy</option>
+                                    <option value="Matale">Matale</option>
+                                    <option value="Nuwara Eliya">Nuwara Eliya</option>
+                                    <option value="Galle">Galle</option>
+                                    <option value="Matara">Matara</option>
+                                    <option value="Hambantota">Hambantota</option>
+                                    <option value="Jaffna">Jaffna</option>
+                                    <option value="Kilinochchi">Kilinochchi</option>
+                                    <option value="Mannar">Mannar</option>
+                                    <option value="Vavuniya">Vavuniya</option>
+                                    <option value="Mullaitivu">Mullaitivu</option>
+                                    <option value="Batticaloa">Batticaloa</option>
+                                    <option value="Ampara">Ampara</option>
+                                    <option value="Trincomalee">Trincomalee</option>
+                                    <option value="Kurunegala">Kurunegala</option>
+                                    <option value="Puttalam">Puttalam</option>
+                                    <option value="Anuradhapura">Anuradhapura</option>
+                                    <option value="Polonnaruwa">Polonnaruwa</option>
+                                    <option value="Badulla">Badulla</option>
+                                    <option value="Moneragala">Moneragala</option>
+                                    <option value="Ratnapura">Ratnapura</option>
+                                    <option value="Kegalle">Kegalle</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <i data-lucide="compass"></i>
+                            </div>
+                        </div>
+
+                        <div class="checkout-form-group">
+                            <label for="checkout-postal">Postal Code <span
+                                    class="optional-tag">(Optional)</span></label>
+                            <div class="input-with-icon">
+                                <input type="text" id="checkout-postal" placeholder="e.g. 10250">
+                                <i data-lucide="hash"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-form-group">
+                        <label for="checkout-notes">Delivery Notes / Special Instructions <span
+                                class="optional-tag">(Optional)</span></label>
+                        <div class="input-with-icon">
+                            <textarea id="checkout-notes"
+                                placeholder="e.g. Call before delivery / Leave with security guard"></textarea>
+                            <i data-lucide="file-text"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Payment Method Card -->
+                <div class="checkout-section-card">
+                    <div class="checkout-card-header">
+                        <i data-lucide="credit-card"></i>
+                        <div>
+                            <h3>3. Payment Method</h3>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">Select how you wish to pay
+                                for your order</p>
+                        </div>
+                    </div>
+
+                    <div class="payment-grid">
+                        <label class="payment-option-card selected" id="opt-cod">
+                            <input type="radio" name="payment" value="Cash on Delivery" checked
+                                onchange="updatePaymentSelection(this)">
+                            <div class="payment-option-info">
+                                <div class="payment-option-title">
+                                    <i data-lucide="banknote"
+                                        style="width:18px;height:18px;color:var(--accent-pink);"></i>
+                                    Cash on Delivery (COD)
+                                    <span class="payment-badge">Most Popular</span>
+                                </div>
+                                <div class="payment-option-desc">Pay in cash directly to the delivery rider when your
+                                    package arrives.</div>
+                            </div>
+                        </label>
+
+                        <label class="payment-option-card" id="opt-bank">
+                            <input type="radio" name="payment" value="Bank Transfer / Deposit"
+                                onchange="updatePaymentSelection(this)">
+                            <div class="payment-option-info">
+                                <div class="payment-option-title">
+                                    <i data-lucide="building-2"
+                                        style="width:18px;height:18px;color:var(--accent-pink);"></i>
+                                    Bank Transfer / Direct Deposit
+                                </div>
+                                <div class="payment-option-desc">Transfer funds to People's Bank or HNB Bank (Hatton
+                                    National Bank). Details shown below.</div>
+                            </div>
+                        </label>
+
+                        <!-- Bank Accounts Info Drawer -->
+                        <div id="bank-details-box"
+                            style="display: none; background: var(--surface-card); border: 1.5px solid var(--border-color); border-radius: 14px; padding: 20px; margin-top: 5px; animation: fadeIn 0.3s ease;">
+                            <h4
+                                style="color: var(--accent-pink); font-size: 0.92rem; font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                                <i data-lucide="landmark" style="width: 18px; height: 18px;"></i> Select Destination
+                                Bank for Transfer
+                            </h4>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0; margin-bottom:14px;">
+                                Choose which bank account you will transfer funds to:</p>
+
+                            <div class="form-grid-2" style="gap: 15px;">
+                                <!-- People's Bank Card Option -->
+                                <label class="bank-sub-card selected" id="bank-card-peoples"
+                                    style="display: block; cursor: pointer; background: rgba(255, 20, 147, 0.08); border: 1.5px solid var(--accent-pink); padding: 14px; border-radius: 12px; transition: var(--transition-smooth);">
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <div
+                                            style="font-weight: 900; color: var(--accent-pink); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+                                            <input type="radio" name="target_bank" value="People's Bank" checked
+                                                onchange="toggleSubBankCard(this)">
+                                            <i data-lucide="building" style="width: 16px; height: 16px;"></i> People's
+                                            Bank
+                                        </div>
+                                        <span class="payment-badge" style="font-size:0.65rem;">Selected</span>
+                                    </div>
+                                    <div
+                                        style="font-size: 0.82rem; line-height: 1.6; color: var(--text-main); padding-left: 24px;">
+                                        <p style="margin: 2px 0;"><b>Account Name:</b> Onija Wathsuka Kodithuwakku</p>
+                                        <p style="margin: 2px 0;"><b>Account No:</b> 217 200 4500 29209</p>
+                                        <p style="margin: 2px 0;"><b>Branch:</b> Mahara</p>
+                                    </div>
+                                </label>
+
+                                <!-- HNB Bank Card Option -->
+                                <label class="bank-sub-card" id="bank-card-hnb"
+                                    style="display: block; cursor: pointer; background: var(--surface); border: 1.5px solid var(--border-light); padding: 14px; border-radius: 12px; transition: var(--transition-smooth);">
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <div
+                                            style="font-weight: 900; color: var(--accent-pink); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+                                            <input type="radio" name="target_bank" value="HNB Bank"
+                                                onchange="toggleSubBankCard(this)">
+                                            <i data-lucide="building" style="width: 16px; height: 16px;"></i> HNB Bank
+                                        </div>
+                                        <span class="payment-badge"
+                                            style="font-size:0.65rem; display:none;">Selected</span>
+                                    </div>
+                                    <div
+                                        style="font-size: 0.82rem; line-height: 1.6; color: var(--text-main); padding-left: 24px;">
+                                        <p style="margin: 2px 0;"><b>Account Name:</b> Roohira Collection</p>
+                                        <p style="margin: 2px 0;"><b>Account No:</b> 0840 2041 4386</p>
+                                    </div>
+                                </label>
+                            </div>
+                            <p
+                                style="font-size: 0.78rem; color: var(--text-muted); margin-top: 14px; margin-bottom: 0;">
+                                📌 <b>Note:</b> After bank transfer, please share your payment receipt to WhatsApp
+                                (<b>075 721 8786</b>) along with your Order ID.
+                            </p>
+                        </div>
+
+                        <label class="payment-option-card" id="opt-card">
+                            <input type="radio" name="payment" value="Online Card Payment"
+                                onchange="updatePaymentSelection(this)">
+                            <div class="payment-option-info">
+                                <div class="payment-option-title">
+                                    <i data-lucide="credit-card"
+                                        style="width:18px;height:18px;color:var(--accent-pink);"></i>
+                                    Visa / Mastercard Online
+                                </div>
+                                <div class="payment-option-desc">Instant payment authorization via secure payment
+                                    gateway.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
 
             </div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-gold btn-block btn-lg" id="submitOrderBtn">
-              <i class="fa-solid fa-check"></i>
-              <span>Confirm &amp; Place Bespoke Order</span>
-            </button>
-          </form>
+            <!-- Right Side: Order Summary Card -->
+            <div class="checkout-summary-container">
+                <div class="checkout-section-card order-summary-card">
+                    <div class="checkout-card-header">
+                        <i data-lucide="shopping-bag"></i>
+                        <div>
+                            <h3>Order Summary</h3>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">Review your items</p>
+                        </div>
+                    </div>
+
+                    <div id="checkout-items-list">
+                        <!-- Items rendered dynamically -->
+                    </div>
+
+                    <div id="promo-delivery-notice"></div>
+
+                    <div style="margin-top: 20px; border-top: 1px solid var(--border-light); padding-top: 15px;">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="checkout-subtotal" style="font-weight:700; color:var(--text-main);">Rs.
+                                0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Fee</span>
+                            <span id="checkout-delivery-fee" style="font-weight:700; color:var(--text-main);">Rs.
+                                0.00</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>Grand Total</span>
+                            <span id="checkout-total" class="amount">Rs. 0.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="btn-complete-order"
+                        style="width: 100%; margin-top: 25px; padding: 16px; font-size: 1.05rem; font-weight: 800; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;"
+                        onclick="placeOrder()">
+                        <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+                        <span>Complete Order & Invoice</span>
+                    </button>
+
+                    <div class="checkout-trust-badges">
+                        <div class="trust-badge-item">
+                            <i data-lucide="shield-check" style="width:20px;height:20px;"></i>
+                            <span>SSL Secure</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <i data-lucide="truck" style="width:20px;height:20px;"></i>
+                            <span>2-4 Days Delivery</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <i data-lucide="refresh-cw" style="width:20px;height:20px;"></i>
+                            <span>Easy Return</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </main>
 
-        <!-- Right: Order Summary Sidebar -->
-        <div>
-          <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; box-shadow: var(--shadow-sm); position: sticky; top: 20px;">
-            <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
-              Bag Summary (<span id="checkoutItemCount">0</span> items)
-            </h3>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
 
-            <!-- Item Mini List -->
-            <div id="checkoutItemsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; max-height: 280px; overflow-y: auto;">
-              <!-- Rendered via JS -->
-            </div>
+    <!-- Checkout Auth Guard: Redirect if not logged in -->
+    <script>
+        // Show a brief auth-checking overlay
+        (function() {
+            const overlay = document.createElement('div');
+            overlay.id = 'checkout-auth-overlay';
+            overlay.style.cssText = 'position:fixed;inset:0;background:#0A0F1E;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;';
+            overlay.innerHTML = `
+                <svg viewBox="0 0 100 100" style="width:70px;height:70px;filter:drop-shadow(0 0 10px rgba(255,20,147,0.7));">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6"/>
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="url(#cg)" stroke-width="6" stroke-linecap="round"
+                        style="stroke-dasharray:200;animation:spin 1s linear infinite;transform-origin:center;">
+                        <defs>
+                            <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#8B5A2B"/>
+                                <stop offset="100%" stop-color="#c8a96e"/>
+                            </linearGradient>
+                        </defs>
+                    </circle>
+                </svg>
+                <p style="color:#fff;font-size:1rem;font-weight:700;letter-spacing:1px;">Verifying Account...</p>
+                <style>@keyframes spin{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}</style>
+            `;
+            document.body.appendChild(overlay);
 
-            <!-- Breakdown -->
-            <div style="display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--border); padding-top: 1.25rem; margin-bottom: 1.25rem; font-size: 0.9rem;">
-              <div class="d-flex justify-between">
-                <span style="color: var(--text-muted);">Subtotal</span>
-                <span id="coSubtotal">LKR 0</span>
-              </div>
-              <div class="d-flex justify-between" id="coDiscountRow" style="display: none;">
-                <span class="text-gold">Voucher Discount</span>
-                <span class="text-gold" id="coDiscount">- LKR 0</span>
-              </div>
-              <div class="d-flex justify-between">
-                <span style="color: var(--text-muted);">White-Glove Shipping</span>
-                <span id="coShipping" style="color: var(--success); font-weight: 600;">Free</span>
-              </div>
-              <div class="d-flex justify-between" style="border-top: 1px dashed var(--border); padding-top: 0.85rem; font-size: 1.25rem; font-weight: 700; color: var(--espresso);">
-                <span>Final Total</span>
-                <span id="coTotal">LKR 0</span>
-              </div>
-            </div>
+            // Wait for Firebase Auth to resolve
+            function removeOverlay() {
+                const el = document.getElementById('checkout-auth-overlay');
+                if (el) el.remove();
+            }
 
-            <div style="background: var(--cream); padding: 1rem; border-radius: var(--radius-xs); font-size: 0.78rem; color: var(--text-muted); line-height: 1.6;">
-              <i class="fa-solid fa-gift text-gold" style="margin-right: 4px;"></i>
-              Each order includes complimentary handwritten calligraphy gift note and Roohira signature garment bag.
-            </div>
-          </div>
-        </div>
+            if (typeof auth !== 'undefined' && auth) {
+                auth.onAuthStateChanged(function(user) {
+                    if (!user) {
+                        // Not logged in - redirect to login with redirect param
+                        window.location.href = 'login.html?redirect=checkout.html';
+                    } else {
+                        removeOverlay();
+                    }
+                });
+            } else {
+                // Firebase not loaded yet - check localStorage fallback
+                setTimeout(function() {
+                    const localUser = localStorage.getItem('roohira_user');
+                    if (!localUser) {
+                        window.location.href = 'login.html?redirect=checkout.html';
+                    } else {
+                        removeOverlay();
+                    }
+                }, 800);
+            }
+        })();
+    </script>
+    <script>
+        function updatePaymentSelection(radioElem) {
+            document.querySelectorAll('.payment-option-card').forEach(card => card.classList.remove('selected'));
+            if (radioElem && radioElem.closest('.payment-option-card')) {
+                radioElem.closest('.payment-option-card').classList.add('selected');
+            }
 
-      </div>
+            const bankBox = document.getElementById('bank-details-box');
+            if (bankBox) {
+                if (radioElem && radioElem.value === 'Bank Transfer / Deposit') {
+                    bankBox.style.display = 'block';
+                } else {
+                    bankBox.style.display = 'none';
+                }
+            }
+        }
 
-    </div>
-  </section>
+        function toggleSubBankCard(radioElem) {
+            document.querySelectorAll('.bank-sub-card').forEach(card => {
+                card.style.borderColor = 'var(--border-light)';
+                card.style.background = 'var(--surface)';
+                const badge = card.querySelector('.payment-badge');
+                if (badge) badge.style.display = 'none';
+            });
 
-  <!-- Order Success Modal -->
-  <div class="modal-overlay" id="orderSuccessModal">
-    <div class="modal-content" style="text-align: center; padding: 2.5rem 2rem;">
-      <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--success-bg); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem auto;">
-        <i class="fa-solid fa-check"></i>
-      </div>
-      <h2 style="font-size: 1.85rem; margin-bottom: 0.5rem;">Order Confirmed with Pleasure</h2>
-      <p style="margin-bottom: 1.5rem;">Thank you for your patronage. Your order has been registered in the Roohira concierge system and is currently being prepared.</p>
+            if (radioElem && radioElem.closest('.bank-sub-card')) {
+                const activeCard = radioElem.closest('.bank-sub-card');
+                activeCard.style.borderColor = 'var(--accent-pink)';
+                activeCard.style.background = 'rgba(255, 20, 147, 0.08)';
+                const badge = activeCard.querySelector('.payment-badge');
+                if (badge) badge.style.display = 'inline-block';
+            }
+        }
 
-      <div style="background: var(--cream); border: 1px dashed var(--border); padding: 1.25rem; border-radius: var(--radius-xs); margin-bottom: 2rem;">
-        <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Your Bespoke Order Number</div>
-        <div id="confirmedOrderId" style="font-family: var(--font-serif); font-size: 1.75rem; font-weight: 700; color: var(--espresso); margin: 0.25rem 0;">ROH-000000</div>
-        <div style="font-size: 0.8rem; color: var(--text-light);">A copy has been transmitted to your email.</div>
-      </div>
+        function fillCheckoutUserFields(user) {
+            if (!user) return;
+            const nameInput = document.getElementById('checkout-name');
+            const emailInput = document.getElementById('checkout-email');
+            const phoneInput = document.getElementById('checkout-phone');
+            const phone2Input = document.getElementById('checkout-phone2');
+            const addressInput = document.getElementById('checkout-address');
+            const cityInput = document.getElementById('checkout-city');
+            const districtSelect = document.getElementById('checkout-district');
+            const postalInput = document.getElementById('checkout-postal');
 
-      <div class="d-flex flex-column gap-2">
-        <a id="whatsappConfirmBtnLink" href="#" target="_blank" class="btn btn-block" style="background: #25D366; color: white; font-weight: 600;">
-          <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i>
-          <span>Confirm via WhatsApp Concierge</span>
-        </a>
-        <a id="viewInvoiceBtnLink" href="#" class="btn btn-gold btn-block">
-          <i class="fa-solid fa-file-invoice"></i>
-          <span>View / Print Official Invoice</span>
-        </a>
-        <a id="trackOrderBtnLink" href="track.html" class="btn btn-primary btn-block">
-          <i class="fa-solid fa-location-crosshairs"></i>
-          <span>Track Order in Real-Time</span>
-        </a>
-        <a href="orders.html" class="btn btn-outline btn-block btn-sm">
-          <span>View in Order History</span>
-        </a>
-      </div>
-    </div>
-  </div>
+            if (nameInput && user.name && (!nameInput.value || nameInput.value === 'Guest')) {
+                nameInput.value = user.name;
+            }
+            if (emailInput && user.email && !emailInput.value) {
+                emailInput.value = user.email;
+            }
+            if (phoneInput && user.phone && !phoneInput.value) {
+                phoneInput.value = user.phone;
+            }
+            if (phone2Input && user.phone2 && !phone2Input.value) {
+                phone2Input.value = user.phone2;
+            }
+            if (postalInput && user.postal && !postalInput.value) {
+                postalInput.value = user.postal;
+            }
+            if (districtSelect && user.district && !districtSelect.value) {
+                districtSelect.value = user.district;
+            }
+            if (addressInput && user.address && !addressInput.value) {
+                const addressParts = user.address.split(',');
+                if (addressParts.length > 1) {
+                    const cityVal = addressParts.pop().trim();
+                    const streetAddress = addressParts.join(',').trim();
+                    addressInput.value = streetAddress || user.address;
+                    if (cityInput && !cityInput.value) cityInput.value = cityVal || '';
+                } else {
+                    addressInput.value = user.address;
+                }
+            }
+        }
 
-  <script src="firebase-config.js"></script>
-  <script src="db.js"></script>
-  <script src="app.js"></script>
-  <script>
-    let activePayment = "Cash on Delivery";
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const cart = window.roohiraApp.getCart();
-      if (cart.length === 0) {
-        window.location.href = "cart.html";
-        return;
-      }
+            // Auto-fill logged in user details from localStorage
+            const localUser = JSON.parse(localStorage.getItem('roohira_user')) || null;
+            fillCheckoutUserFields(localUser);
 
-      // Prefill if user logged in
-      const user = window.roohiraDB.getCurrentUser();
-      if (user) {
-        document.getElementById("custName").value = user.name || "";
-        document.getElementById("custEmail").value = user.email || "";
-        const prompt = document.getElementById("checkoutLoginPrompt");
-        if (prompt) prompt.innerHTML = `<span style="color: var(--success); font-weight: 600;"><i class="fa-solid fa-check"></i> Logged in as ${user.name}</span>`;
-      }
+            // Also check Firebase Auth state to fill signup user profile name if authenticated
+            if (typeof auth !== 'undefined' && auth) {
+                auth.onAuthStateChanged(firebaseUser => {
+                    if (firebaseUser) {
+                        if (typeof db !== 'undefined' && db) {
+                            db.collection('users').doc(firebaseUser.uid).get().then(doc => {
+                                if (doc.exists) {
+                                    const data = doc.data();
+                                    fillCheckoutUserFields({
+                                        name: data.name || firebaseUser.displayName,
+                                        email: firebaseUser.email,
+                                        phone: data.phone,
+                                        phone2: data.phone2,
+                                        address: data.address,
+                                        district: data.district,
+                                        postal: data.postal
+                                    });
+                                } else {
+                                    fillCheckoutUserFields({
+                                        name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+                                        email: firebaseUser.email
+                                    });
+                                }
+                            }).catch(err => {
+                                console.warn('Could not fetch user profile doc:', err);
+                            });
+                        } else {
+                            fillCheckoutUserFields({
+                                name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+                                email: firebaseUser.email
+                            });
+                        }
+                    }
+                });
+            }
 
-      renderCheckoutSidebar();
-    });
+            // Render Cart Summary Items
+            const cart = JSON.parse(localStorage.getItem('roohira_cart')) || [];
+            const container = document.getElementById('checkout-items-list');
+            const promoContainer = document.getElementById('promo-delivery-notice');
+            let subtotal = 0;
+            let itemCount = 0;
 
-    function selectPaymentMethod(type, element) {
-      document.querySelectorAll(".payment-option-card").forEach(c => c.classList.remove("active"));
-      element.classList.add("active");
-      element.querySelector('input[type="radio"]').checked = true;
+            if (cart.length === 0) {
+                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 20px 0;">Your cart is currently empty.</p>`;
+            } else {
+                container.innerHTML = '';
+                cart.forEach(item => {
+                    subtotal += (item.price || 0) * (item.quantity || 1);
+                    itemCount += (item.quantity || 1);
 
-      const bankBox = document.getElementById("bankDetailsBox");
-      const cardBox = document.getElementById("cardInputsBox");
+                    const colorDisplay = item.color ? (colorNames[item.color] || item.color) : 'Default';
+                    const imgUrl = item.image || 'logo.png';
 
-      if (type === "bank") {
-        bankBox.style.display = "block";
-        cardBox.style.display = "none";
-        activePayment = "Direct Bank Transfer";
-      } else if (type === "card") {
-        bankBox.style.display = "none";
-        cardBox.style.display = "block";
-        activePayment = "Credit / Debit Card";
-      } else {
-        bankBox.style.display = "none";
-        cardBox.style.display = "none";
-        activePayment = "Cash on Delivery";
-      }
-    }
+                    container.innerHTML += `
+                        <div class="checkout-item-row">
+                            <img src="${imgUrl}" alt="${item.name}" class="checkout-item-img">
+                            <div class="checkout-item-details">
+                                <div class="checkout-item-name">${item.name}</div>
+                                <div class="checkout-item-meta">Size: <b>${item.size || 'Free'}</b> | Color: <b>${colorDisplay}</b> | Qty: <b>${item.quantity}</b></div>
+                            </div>
+                            <div class="checkout-item-price">Rs. ${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</div>
+                        </div>
+                    `;
+                });
+            }
 
-    function renderCheckoutSidebar() {
-      const cart = window.roohiraApp.getCart();
-      const container = document.getElementById("checkoutItemsContainer");
-      const countEl = document.getElementById("checkoutItemCount");
+            const deliveryFee = itemCount > 3 ? 0 : 450;
+            const grandTotal = subtotal + deliveryFee;
 
-      countEl.textContent = cart.reduce((c, i) => c + i.qty, 0);
+            if (itemCount > 3) {
+                promoContainer.innerHTML = `
+                    <div class="promo-notice-box">
+                        <i data-lucide="gift" style="width:18px;height:18px;"></i>
+                        <span>Congratulations! You unlocked <b>FREE Islandwide Delivery</b>!</span>
+                    </div>
+                `;
+            } else if (itemCount > 0) {
+                promoContainer.innerHTML = `
+                    <div class="promo-notice-box warning">
+                        <i data-lucide="truck" style="width:18px;height:18px;"></i>
+                        <span>Add <b>${4 - itemCount}</b> more item(s) to unlock <b>FREE Delivery</b>!</span>
+                    </div>
+                `;
+            }
 
-      container.innerHTML = cart.map(item => `
-        <div class="d-flex gap-2 align-center">
-          <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 60px; object-fit: cover; border-radius: var(--radius-xs);">
-          <div style="flex: 1; font-size: 0.85rem;">
-            <div style="font-weight: 600; color: var(--espresso);">${item.name}</div>
-            <div style="color: var(--text-light); font-size: 0.75rem;">Qty: ${item.qty} &bull; ${item.size || 'Std'}</div>
-          </div>
-          <div style="font-weight: 600; font-size: 0.88rem;">
-            ${window.roohiraApp.formatPrice(item.price * item.qty)}
-          </div>
-        </div>
-      `).join("");
+            document.getElementById('checkout-subtotal').innerText = `Rs. ${subtotal.toLocaleString()}.00`;
+            document.getElementById('checkout-delivery-fee').innerText = deliveryFee === 0 ? 'FREE' : `Rs. ${deliveryFee.toLocaleString()}.00`;
+            document.getElementById('checkout-total').innerText = `Rs. ${grandTotal.toLocaleString()}.00`;
 
-      const subtotal = window.roohiraApp.getCartSubtotal();
-      const discount = window.roohiraApp.getAppliedDiscount();
-      const shipping = window.roohiraApp.getShippingCost();
-      const total = Math.max(0, subtotal - discount + shipping);
-
-      document.getElementById("coSubtotal").textContent = window.roohiraApp.formatPrice(subtotal);
-      
-      const discountRow = document.getElementById("coDiscountRow");
-      if (discount > 0) {
-        discountRow.style.display = "flex";
-        document.getElementById("coDiscount").textContent = "- " + window.roohiraApp.formatPrice(discount);
-      } else {
-        discountRow.style.display = "none";
-      }
-
-      document.getElementById("coShipping").textContent = shipping === 0 ? "Free" : window.roohiraApp.formatPrice(shipping);
-      document.getElementById("coTotal").textContent = window.roohiraApp.formatPrice(total);
-    }
-
-    function handlePlaceOrder(event) {
-      event.preventDefault();
-
-      const cart = window.roohiraApp.getCart();
-      if (cart.length === 0) {
-        window.roohiraApp.showToast("Your shopping bag is empty.", "error");
-        return;
-      }
-
-      const name = document.getElementById("custName").value.trim();
-      const email = document.getElementById("custEmail").value.trim();
-      const phone = document.getElementById("custPhone").value.trim();
-      const address = document.getElementById("custAddress").value.trim();
-      const city = document.getElementById("custCity").value.trim();
-      const district = document.getElementById("custDistrict").value.trim();
-      const postal = document.getElementById("custPostal").value.trim();
-      const notes = document.getElementById("custNotes").value.trim();
-
-      const fullShippingAddress = `${address}, ${city}, ${district} ${postal ? '(' + postal + ')' : ''}, Sri Lanka. Note: ${notes || 'None'}`;
-
-      const subtotal = window.roohiraApp.getCartSubtotal();
-      const discount = window.roohiraApp.getAppliedDiscount();
-      const shipping = window.roohiraApp.getShippingCost();
-      const total = Math.max(0, subtotal - discount + shipping);
-
-      const orderPayload = {
-        customer: { name, email, phone, address: fullShippingAddress },
-        items: cart,
-        subtotal,
-        discount,
-        shipping,
-        total,
-        paymentMethod: activePayment
-      };
-
-      // Create Order in DB & Deduct Stock
-      const createdOrder = window.roohiraDB.createOrder(orderPayload);
-
-      // Clear Cart
-      window.roohiraApp.clearCart();
-
-      // Setup WhatsApp Confirmation URL
-      const itemsSummary = cart.map(i => `${i.qty}x ${i.name} (${i.size || 'Std'}, ${i.color || 'Std'})`).join(", ");
-      const waText = `*ROOHIRA COLLECTION - NEW ORDER CONFIRMATION*%0A%0A` +
-        `*Order ID:* ${createdOrder.orderId}%0A` +
-        `*Customer:* ${name}%0A` +
-        `*Phone:* ${phone}%0A` +
-        `*Address:* ${fullShippingAddress}%0A` +
-        `*Payment Method:* ${activePayment}%0A` +
-        `*Items:* ${itemsSummary}%0A` +
-        `*Total Amount:* ${window.roohiraApp.formatPrice(total)}%0A%0A` +
-        `Please confirm my bespoke order and dispatch schedule.`;
-      
-      const waBtn = document.getElementById("whatsappConfirmBtnLink");
-      if (waBtn) {
-        waBtn.href = `https://wa.me/94757218786?text=${waText}`;
-      }
-
-      const invBtn = document.getElementById("viewInvoiceBtnLink");
-      if (invBtn) {
-        invBtn.href = `invoice.html?orderId=${createdOrder.orderId}`;
-      }
-
-      // Show confirmation modal
-      document.getElementById("confirmedOrderId").textContent = createdOrder.orderId;
-      document.getElementById("trackOrderBtnLink").href = `track.html?orderId=${createdOrder.orderId}`;
-      document.getElementById("orderSuccessModal").classList.add("active");
-    }
-  </script>
+            lucide.createIcons();
+        });
+    </script>
 </body>
+
 </html>

@@ -1,471 +1,893 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>High-Precision DTF Gang Sheet Builder | Roohira Collection</title>
-  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .dtf-grid {
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 2rem;
-      align-items: start;
-    }
-    .dtf-controls-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1.75rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .gang-sheet-preview-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1.5rem;
-      box-shadow: var(--shadow-md);
-      overflow-x: auto;
-    }
-    .gang-sheet-board {
-      background-color: #F8F9FA;
-      background-image: linear-gradient(45deg, #ECEFF1 25%, transparent 25%), 
-                        linear-gradient(-45deg, #ECEFF1 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #ECEFF1 75%), 
-                        linear-gradient(-45deg, transparent 75%, #ECEFF1 75%);
-      background-size: 20px 20px;
-      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-      border: 2px dashed #B0BEC5;
-      border-radius: 4px;
-      min-height: 480px;
-      position: relative;
-      padding: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      gap: 12px;
-    }
-    .placed-artwork-box {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--gold);
-      border-radius: 4px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      box-shadow: var(--shadow-sm);
-      user-select: none;
-    }
-    .placed-artwork-box img {
-      max-height: 120px;
-      object-fit: contain;
-    }
-    .placed-meta-badge {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-      font-weight: 600;
-    }
-    .remove-art-btn {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--danger);
-      color: white;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-    }
-    .pricing-summary-card {
-      background: var(--espresso);
-      color: var(--white);
-      border-radius: var(--radius-sm);
-      padding: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    @media (max-width: 992px) {
-      .dtf-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTF Pre-Designed Store | Roohira Collection</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #f5f5f5 !important; color: #111 !important; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+
+        /* ===== LAYOUT ===== */
+        .dtf-page-wrap {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 16px 80px;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .dtf-page-wrap { grid-template-columns: 1fr; }
+            .dtf-cart-panel { position: static !important; }
+        }
+
+        /* ===== HEADER ===== */
+        .dtf-header {
+            text-align: center;
+            padding: 30px 16px 0;
+            margin-bottom: 10px;
+        }
+        .dtf-header h1 { font-size: 2rem; font-weight: 900; color: #111 !important; margin: 8px 0 6px; }
+        .dtf-header p { color: #666 !important; font-size: 0.9rem; margin: 0; }
+
+        /* ===== PRICE MATRIX ===== */
+        .price-matrix-bar {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .price-matrix-bar { grid-template-columns: repeat(2, 1fr); } }
+        .price-cell {
+            text-align: center;
+            padding: 10px 8px;
+            border-radius: 10px;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+        }
+        .price-cell .size-lbl { font-size: 0.7rem; font-weight: 800; color: #8B5A2B; text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .price-cell .retail-p { font-size: 0.78rem; color: #888; text-decoration: line-through; }
+        .price-cell .whol-p { font-size: 0.9rem; font-weight: 800; color: #22c55e; }
+        .price-cell .min-q { font-size: 0.65rem; color: #999; display: block; margin-top: 2px; }
+
+        /* ===== PRODUCT GRID ===== */
+        .dtf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+            gap: 14px;
+        }
+
+        /* ===== PRODUCT CARD ===== */
+        .dtf-card {
+            background: #fff;
+            border: 1.5px solid #eee;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.22s;
+            position: relative;
+        }
+        .dtf-card:hover { border-color: #8B5A2B; box-shadow: 0 6px 20px rgba(255,20,147,0.12); transform: translateY(-2px); }
+
+        .dtf-card-img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            background: #fafafa;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .dtf-card-img-wrap img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+        .dtf-card-img-wrap .id-badge {
+            position: absolute; top: 7px; left: 7px;
+            background: #8B5A2B; color: #fff; font-size: 0.62rem; font-weight: 800;
+            padding: 3px 8px; border-radius: 20px;
+        }
+        .dtf-card-img-wrap .view-badge {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.35);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: 0.2s; color: #fff; font-size: 0.75rem; font-weight: 700; gap: 5px;
+        }
+        .dtf-card-img-wrap:hover .view-badge { opacity: 1; }
+
+        .dtf-card-body { padding: 10px 10px 12px; }
+        .dtf-card-body .card-id { font-size: 0.85rem; font-weight: 900; color: #111; margin-bottom: 2px; }
+        .dtf-card-body .card-size { font-size: 0.7rem; color: #888; margin-bottom: 8px; }
+
+        /* Cart status on card */
+        .card-cart-status {
+            font-size: 0.68rem; padding: 4px 8px; border-radius: 8px;
+            background: #f5f5f5; color: #666; margin-bottom: 8px;
+            display: none;
+        }
+        .card-cart-status.visible { display: block; }
+        .card-cart-status.wholesale { background: #dcfce7; color: #15803d; font-weight: 700; }
+        .card-cart-status.retail { background: #fff0f8; color: #be185d; }
+
+        /* Qty + Add row */
+        .dtf-card-actions { display: flex; align-items: center; gap: 6px; }
+        .qty-stepper { display: flex; align-items: center; gap: 0; background: #f0f0f0; border-radius: 8px; overflow: hidden; }
+        .qty-stepper button {
+            border: none; background: transparent; width: 28px; height: 28px;
+            cursor: pointer; font-size: 1rem; font-weight: 800; color: #333;
+            transition: background 0.15s;
+        }
+        .qty-stepper button:hover { background: #e0e0e0; }
+        .qty-stepper .qty-val { width: 26px; text-align: center; font-size: 0.85rem; font-weight: 800; color: #111; }
+        .btn-add-dtf {
+            flex: 1; background: #8B5A2B; color: #fff; border: none;
+            border-radius: 8px; padding: 6px 8px; font-size: 0.72rem;
+            font-weight: 800; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 4px;
+        }
+        .btn-add-dtf:hover { background: #d1116e; transform: scale(1.02); }
+
+        /* ===== DTF CART PANEL ===== */
+        .dtf-cart-panel {
+            position: sticky;
+            top: 100px;
+            background: #fff;
+            border: 2px solid #8B5A2B;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .dtf-cart-header {
+            background: #8B5A2B;
+            color: #fff;
+            padding: 14px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .dtf-cart-header h3 { font-size: 0.95rem; font-weight: 900; margin: 0; }
+        .dtf-cart-badge {
+            background: #fff; color: #8B5A2B; font-size: 0.7rem; font-weight: 900;
+            padding: 3px 9px; border-radius: 20px;
+        }
+        .dtf-cart-body { padding: 14px 16px; max-height: calc(100vh - 260px); overflow-y: auto; }
+
+        /* Empty state */
+        .dtf-cart-empty {
+            text-align: center; padding: 30px 0;
+            color: #bbb; font-size: 0.85rem;
+        }
+
+        /* Size group in cart */
+        .size-group { margin-bottom: 14px; }
+        .size-group-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 6px; padding: 6px 10px;
+            background: #f8f8f8; border-radius: 8px;
+            font-size: 0.72rem; font-weight: 800; color: #555;
+        }
+        .size-group-header .ws-pill {
+            font-size: 0.65rem; padding: 2px 8px; border-radius: 12px;
+            font-weight: 800;
+        }
+        .ws-pill.unlocked { background: #dcfce7; color: #15803d; }
+        .ws-pill.locked { background: #fff0f8; color: #be185d; }
+
+        /* Progress bar in group */
+        .group-progress-wrap { padding: 0 2px; margin-bottom: 6px; }
+        .group-progress-track { background: #f0f0f0; height: 5px; border-radius: 3px; overflow: hidden; }
+        .group-progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+
+        /* Cart item row */
+        .cart-item-row {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 8px; border-radius: 8px;
+            background: #fafafa; border: 1px solid #f0f0f0;
+            margin-bottom: 5px;
+        }
+        .cart-item-row img { width: 36px; height: 36px; object-fit: contain; border-radius: 5px; background: #fff; border: 1px solid #eee; flex-shrink: 0; }
+        .cart-item-info { flex: 1; min-width: 0; }
+        .cart-item-info .ci-id { font-size: 0.78rem; font-weight: 800; color: #111; }
+        .cart-item-info .ci-sub { font-size: 0.65rem; color: #888; }
+        .cart-item-actions { display: flex; align-items: center; gap: 4px; }
+        .ci-qty-btn {
+            width: 22px; height: 22px; border: 1px solid #ddd; background: #fff;
+            border-radius: 5px; cursor: pointer; font-size: 0.8rem; font-weight: 800; color: #333;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ci-qty-val { font-size: 0.78rem; font-weight: 800; width: 20px; text-align: center; color: #111; }
+        .ci-remove { border: none; background: transparent; cursor: pointer; color: #ef4444; padding: 2px; }
+
+        /* Cart totals */
+        .dtf-cart-totals { border-top: 1px solid #f0f0f0; padding: 12px 16px; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-bottom: 5px; }
+        .total-row.grand { font-size: 1rem; font-weight: 900; color: #111; margin-top: 8px; border-top: 1.5px solid #eee; padding-top: 8px; }
+        .total-row.grand .grand-amt { color: #8B5A2B; }
+
+        .btn-place-order {
+            width: 100%; background: #8B5A2B; color: #fff; border: none;
+            border-radius: 10px; padding: 12px; font-size: 0.88rem; font-weight: 800;
+            cursor: pointer; margin-top: 12px; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-place-order:hover { background: #d1116e; }
+        .btn-clear-dtf {
+            width: 100%; background: transparent; color: #999; border: 1px solid #eee;
+            border-radius: 10px; padding: 8px; font-size: 0.78rem; font-weight: 700;
+            cursor: pointer; margin-top: 6px; transition: all 0.2s;
+        }
+        .btn-clear-dtf:hover { border-color: #ef4444; color: #ef4444; }
+
+        /* ===== IMAGE PREVIEW MODAL ===== */
+        #img-preview-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px); z-index: 99999;
+            display: none; align-items: center; justify-content: center; padding: 10px;
+        }
+        #img-preview-modal.open { display: flex; }
+        .img-preview-box {
+            background: #fff; border-radius: 14px; padding: 10px;
+            max-width: 290px; width: 100%; position: relative;
+            border: 2px solid #8B5A2B;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .img-preview-box .prev-img-wrap {
+            position: relative; width: 100%; aspect-ratio: 1;
+            background: #fafafa; border-radius: 8px; overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .img-preview-box .prev-img-wrap img {
+            width: 100%; height: 100%; object-fit: contain;
+            pointer-events: none; user-select: none; -webkit-user-drag: none;
+        }
+        /* Watermark */
+        .wm-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            opacity: 0.12;
+        }
+        .wm-overlay span {
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.58rem; font-weight: 900; color: #000;
+            transform: rotate(-28deg); white-space: nowrap;
+        }
+        .img-preview-box .prev-id { font-size: 1.1rem; font-weight: 900; color: #111; margin-bottom: 4px; }
+        .img-preview-box .prev-size { font-size: 0.78rem; color: #888; margin-bottom: 10px; }
+        .img-preview-box .prev-price-row {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #f8f8f8; border-radius: 10px; padding: 10px 14px; margin-bottom: 4px;
+        }
+        .img-preview-box .prev-price-row .lbl { font-size: 0.72rem; color: #888; }
+        .img-preview-box .prev-price-row .val { font-size: 0.95rem; font-weight: 800; color: #111; }
+        .img-preview-box .prev-price-row .val.green { color: #22c55e; }
+        .close-prev-btn {
+            position: absolute; top: 12px; right: 12px;
+            background: #f0f0f0; border: none; border-radius: 50%;
+            width: 30px; height: 30px; cursor: pointer; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center; color: #555;
+        }
+        .close-prev-btn:hover { background: #ddd; }
+
+        /* ===== NOTIFICATION ===== */
+        .dtf-toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #111; color: #fff; padding: 10px 22px; border-radius: 30px;
+            font-size: 0.85rem; font-weight: 700; z-index: 99998;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        }
+        .dtf-toast.show { opacity: 1; }
+    </style>
 </head>
-<body style="background-color: var(--cream);">
-
-  <!-- Announcement Bar -->
-  <div class="announcement-bar">
-    <div>
-      <i class="fa-solid fa-layer-group text-gold"></i>
-      <span>Roohira DTF Industrial Print Hub &bull; Ultra-HD 2400 DPI Gang Sheet Printing</span>
-    </div>
-    <div class="d-none-sm">
-      <span>Auto Dimension Detection &amp; Instant Pricing Calculator</span>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="site-logo">
-        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
-        <div class="brand-text">
-          <span>ROOHIRA</span>
-          <small>COLLECTION</small>
+<body>
+    <!-- NAVBAR -->
+    <nav id="navbar" class="scrolled" style="background:#fff !important; border-bottom:1px solid rgba(0,0,0,0.08);">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family:'Mileast','Plus Jakarta Sans',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:1.5px;color:#000 !important;">
+                <span style="color:#8B5A2B !important;">ROOHIRA</span> COLLECTION
+            </span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html" style="color:#000 !important;">Home</a></li>
+            <li><a href="shop.html" style="color:#000 !important;">Shop</a></li>
+            <li><a href="customize.html" style="color:#000 !important;">Customize</a></li>
+            <li><a href="dtf.html" class="active" style="color:#8B5A2B !important;font-weight:800;">DTF Print</a></li>
+            <li><a href="offers.html" style="color:#000 !important;">Offers</a></li>
+            <li><a href="reviews.html" style="color:#000 !important;">Reviews</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="login.html" style="color:#000 !important;"><i data-lucide="user"></i></a>
+            <a href="cart.html" style="position:relative;color:#000 !important;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count" style="position:absolute;top:-10px;right:-10px;background:#8B5A2B;color:#fff;font-size:10px;padding:2px 5px;border-radius:50%;font-weight:800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn" style="color:#000 !important;"><i data-lucide="menu"></i></a>
         </div>
-      </a>
-
-      <nav class="nav-menu">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="shop.html" class="nav-link">Shop All</a>
-        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
-        <a href="dtf.html" class="nav-link active"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
-        <a href="track.html" class="nav-link">Track Order</a>
-        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
-      </nav>
-
-      <div class="header-actions">
-        <div id="headerUserAction">
-          <a href="auth.html" class="action-btn" title="Sign In"><i class="fa-regular fa-user"></i></a>
-        </div>
-        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <span class="badge-count cart-count-badge" style="display: none;">0</span>
-        </button>
-      </div>
+    </nav>
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu" style="background:#fff !important;">
+        <div class="close-menu" id="close-menu" style="color:#000 !important;"><i data-lucide="x"></i></div>
+        <a href="index.html" style="color:#000 !important;">Home</a>
+        <a href="shop.html" style="color:#000 !important;">Shop</a>
+        <a href="customize.html" style="color:#000 !important;">Customize</a>
+        <a href="dtf.html" style="color:#8B5A2B !important;">DTF Print</a>
+        <a href="offers.html" style="color:#000 !important;">Offers</a>
+        <a href="reviews.html" style="color:#000 !important;">Reviews</a>
+        <a href="cart.html" style="color:#000 !important;">Cart</a>
     </div>
-  </header>
 
-  <!-- DTF Main Section -->
-  <section class="section-padding-sm">
-    <div class="container">
-      
-      <!-- Section Title -->
-      <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 2rem;">
+    <!-- PAGE HEADER -->
+    <div class="dtf-header" style="padding-top:110px;">
+        <span style="background:#8B5A2B;color:#fff;padding:5px 14px;border-radius:30px;font-size:0.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;">Direct-to-Film Prints</span>
+        <h1 style="font-family:'Mileast',sans-serif;">DTF <span style="color:#8B5A2B;">Pre-Designed</span> Sticker Rolls</h1>
+        <p>Add designs to your DTF Cart. Wholesale pricing unlocks automatically when you hit the minimum quantity per size.</p>
+    </div>
+
+    <!-- PRICE MATRIX -->
+    <div style="max-width:700px;margin:18px auto 0;padding:0 16px;">
+        <div class="price-matrix-bar">
+            <div class="price-cell">
+                <span class="size-lbl">A4</span>
+                <div class="retail-p">Rs. 350</div>
+                <div class="whol-p">Rs. 230</div>
+                <span class="min-q">Min 10 sheets</span>
+            </div>
+            <div class="price-cell">
+                <span class="size-lbl">A3</span>
+                <div class="retail-p">Rs. 600</div>
+                <div class="whol-p">Rs. 460</div>
+                <span class="min-q">Min 6 sheets</span>
+            </div>
+            <div class="price-cell">
+                <span class="size-lbl">A2</span>
+                <div class="retail-p">Rs. 880</div>
+                <div class="whol-p">Rs. 680</div>
+                <span class="min-q">Min 3 sheets</span>
+            </div>
+            <div class="price-cell">
+                <span class="size-lbl">1M Roll</span>
+                <div class="retail-p">Rs. 1,700</div>
+                <div class="whol-p">Rs. 1,490</div>
+                <span class="min-q">Min 2 rolls</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT: GRID + CART -->
+    <div class="dtf-page-wrap">
+
+        <!-- LEFT: PRODUCT GRID -->
         <div>
-          <span style="color: var(--gold-dark); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Industrial Garment Printing</span>
-          <h1 style="font-size: 2.2rem; margin: 0.25rem 0;">DTF Gang Sheet Print Builder</h1>
-          <p style="margin: 0; color: var(--text-muted);">Arrange multiple logos, designs &amp; artworks on standard roll lengths with automated area calculation.</p>
-        </div>
-        <div class="d-flex gap-2">
-          <a href="https://wa.me/94757218786?text=Hello%20Roohira%20Print%20Desk%2C%20I%20have%20a%20bulk%20DTF%20gang%20sheet%20inquiry." target="_blank" class="btn btn-sm" style="background: #25D366; color: white;">
-            <i class="fa-brands fa-whatsapp"></i> DTF Print Support
-          </a>
-        </div>
-      </div>
-
-      <!-- Main DTF Layout Grid -->
-      <div class="dtf-grid">
-        
-        <!-- Left: Print Dimensions & Upload Controls -->
-        <div>
-          <div class="dtf-controls-card">
-            <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
-              <i class="fa-solid fa-sliders text-gold"></i> 1. Gang Sheet Dimensions
+            <h3 style="font-size:1rem;font-weight:800;color:#111;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                <i data-lucide="layers" style="width:18px;color:#8B5A2B;"></i> Pre-Designed A4 Designs
             </h3>
-
-            <!-- Dimension Preset -->
-            <div class="form-group">
-              <label class="form-label">Gang Sheet Preset</label>
-              <select id="sheetPresetSelect" class="form-control" onchange="applySheetPreset(this.value)">
-                <option value="22x39" selected>Standard Roll (22 in x 39 in / 1 Meter)</option>
-                <option value="22x78">Double Roll (22 in x 78 in / 2 Meters)</option>
-                <option value="22x118">Pro Roll (22 in x 118 in / 3 Meters)</option>
-                <option value="22x196">Bulk Production (22 in x 196 in / 5 Meters)</option>
-                <option value="custom">Custom Dimensions (Length x Width)</option>
-              </select>
+            <div class="dtf-grid" id="a4-products-grid" style="margin-bottom: 30px;">
+                <!-- Injected by JS -->
             </div>
 
-            <!-- Custom Width & Length Inputs -->
-            <div id="customDimsRow" style="display: none; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label">Width (Inches)</label>
-                <input type="number" id="sheetWidthInput" class="form-control" value="22" min="10" max="24" oninput="calculateDTFPricing()">
-              </div>
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label">Length (Inches)</label>
-                <input type="number" id="sheetLengthInput" class="form-control" value="39" min="10" max="600" oninput="calculateDTFPricing()">
-              </div>
+            <h3 style="font-size:1rem;font-weight:800;color:#111;margin-bottom:14px;display:flex;align-items:center;gap:8px;margin-top:20px;">
+                <i data-lucide="layers" style="width:18px;color:#8B5A2B;"></i> Pre-Designed A3 Designs
+            </h3>
+            <div class="dtf-grid" id="a3-products-grid" style="margin-bottom: 30px;">
+                <!-- Injected by JS -->
             </div>
 
-            <!-- Film Type -->
-            <div class="form-group">
-              <label class="form-label">Transfer Film Grade</label>
-              <select id="filmTypeSelect" class="form-control" onchange="calculateDTFPricing()">
-                <option value="premium" selected>Premium Cold-Peel Matte (Vibrant Cotton &amp; Silk)</option>
-                <option value="glitter">Glitter Sparkle DTF (+ LKR 450 / m)</option>
-                <option value="reflective">Reflective High-Vis DTF (+ LKR 650 / m)</option>
-              </select>
+            <h3 style="font-size:1rem;font-weight:800;color:#111;margin-bottom:14px;display:flex;align-items:center;gap:8px;margin-top:20px;">
+                <i data-lucide="layers" style="width:18px;color:#8B5A2B;"></i> Pre-Designed A2 Designs
+            </h3>
+            <div class="dtf-grid" id="a2-products-grid" style="margin-bottom: 30px;">
+                <!-- Injected by JS -->
             </div>
 
-            <!-- Upload Artwork -->
-            <div class="form-group">
-              <label class="form-label">Upload Print-Ready Artwork</label>
-              <input type="file" id="dtfArtUploadInput" class="form-control" accept="image/*,.pdf" onchange="handleDTFArtUpload(event)">
-              <small style="color: var(--text-light); font-size: 0.72rem; display: block; margin-top: 4px;">Recommended: 300 DPI Transparent PNG or PDF with vector paths.</small>
+            <h3 style="font-size:1rem;font-weight:800;color:#111;margin-bottom:14px;display:flex;align-items:center;gap:8px;margin-top:20px;">
+                <i data-lucide="layers" style="width:18px;color:#8B5A2B;"></i> Pre-Designed 1M Rolls
+            </h3>
+            <div class="dtf-grid" id="dtf-products-grid">
+                <!-- Injected by JS -->
             </div>
-
-            <!-- Copies to Add -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label">Print Copies</label>
-                <input type="number" id="artCopiesInput" class="form-control" value="1" min="1" max="50">
-              </div>
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label">Target Width (In)</label>
-                <input type="number" id="artWidthInches" class="form-control" value="6" min="1" max="22">
-              </div>
-            </div>
-
-            <button class="btn btn-outline btn-block btn-sm" onclick="addArtworkToSheet()">
-              <i class="fa-solid fa-plus"></i> Place Artwork on Gang Sheet
-            </button>
-          </div>
-
-          <!-- Pricing Calculator Output Box -->
-          <div class="pricing-summary-card">
-            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-light); font-weight: 700; letter-spacing: 0.1em;">Live Production Estimate</div>
-            <div style="display: flex; justify-content: space-between; align-items: baseline; margin: 0.75rem 0;">
-              <span style="font-size: 0.95rem;">Total Gang Sheet Price:</span>
-              <span id="dtfCalculatedTotal" style="font-size: 1.85rem; font-weight: 700; color: var(--white); font-family: var(--font-serif);">LKR 3,850</span>
-            </div>
-            
-            <div style="font-size: 0.8rem; color: #BAADA2; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 0.75rem; margin-bottom: 1.25rem;">
-              <div class="d-flex justify-between">
-                <span>Printable Area:</span>
-                <strong id="dtfAreaSummary" class="text-white">22" x 39" (858 sq in)</strong>
-              </div>
-              <div class="d-flex justify-between" style="margin-top: 4px;">
-                <span>Total Artworks Placed:</span>
-                <strong id="dtfItemCount" class="text-white">0 pieces</strong>
-              </div>
-              <div class="d-flex justify-between" style="margin-top: 4px;">
-                <span>Unit Rate / sq in:</span>
-                <span class="text-gold">LKR 4.50</span>
-              </div>
-            </div>
-
-            <button class="btn btn-gold btn-block btn-lg" onclick="addDTFSheetToCart()">
-              <i class="fa-solid fa-cart-arrow-down"></i> Add DTF Gang Sheet to Bag
-            </button>
-          </div>
-
         </div>
 
-        <!-- Right: Interactive Gang Sheet Artboard Visualizer -->
-        <div>
-          <div class="gang-sheet-preview-card">
-            <div class="d-flex justify-between align-center" style="margin-bottom: 1rem;">
-              <div class="d-flex align-center gap-2">
-                <i class="fa-solid fa-expand text-gold"></i>
-                <h3 style="font-size: 1.15rem; margin: 0;">Interactive Gang Sheet Artboard</h3>
-              </div>
-              <div class="d-flex gap-2 align-center">
-                <span style="font-size: 0.78rem; color: var(--text-muted);" id="boardDimensionsLabel">Width: 22" &bull; Length: 39"</span>
-                <button class="btn btn-outline btn-sm" onclick="clearGangSheet()">Clear All</button>
-              </div>
+        <!-- RIGHT: DTF CART PANEL -->
+        <div class="dtf-cart-panel">
+            <div class="dtf-cart-header">
+                <h3><i data-lucide="shopping-bag" style="width:16px;display:inline-block;vertical-align:middle;margin-right:6px;"></i>DTF Cart</h3>
+                <span class="dtf-cart-badge" id="dtf-cart-badge">0 items</span>
             </div>
 
-            <!-- Visual Artboard Stage -->
-            <div class="gang-sheet-board" id="gangSheetArtboard">
-              <!-- Placed designs will render here -->
-              <div id="emptyBoardPlaceholder" style="width: 100%; text-align: center; padding: 6rem 2rem; color: var(--text-light);">
-                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.8rem; color: #CFD8DC; margin-bottom: 0.75rem;"></i>
-                <h4 style="color: var(--text-muted); margin-bottom: 0.25rem;">No Artworks Placed Yet</h4>
-                <p style="font-size: 0.85rem;">Upload your logo or print design on the left panel to position it onto this roll.</p>
-              </div>
+            <!-- REAL-TIME SIZE SUMMARY STRIP -->
+            <div id="size-summary-strip" style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:10px 12px;background:#fafafa;border-bottom:1px solid #f0f0f0;">
+                <div class="sz-chip" id="sz-A4" style="text-align:center;padding:6px 4px;border-radius:10px;background:#f5f5f5;border:1px solid #eee;">
+                    <div style="font-size:0.62rem;font-weight:800;color:#8B5A2B;text-transform:uppercase;">A4</div>
+                    <div id="sz-A4-qty" style="font-size:1rem;font-weight:900;color:#111;">0</div>
+                    <div id="sz-A4-status" style="font-size:0.58rem;color:#aaa;">—</div>
+                </div>
+                <div class="sz-chip" id="sz-A3" style="text-align:center;padding:6px 4px;border-radius:10px;background:#f5f5f5;border:1px solid #eee;">
+                    <div style="font-size:0.62rem;font-weight:800;color:#8B5A2B;text-transform:uppercase;">A3</div>
+                    <div id="sz-A3-qty" style="font-size:1rem;font-weight:900;color:#111;">0</div>
+                    <div id="sz-A3-status" style="font-size:0.58rem;color:#aaa;">—</div>
+                </div>
+                <div class="sz-chip" id="sz-A2" style="text-align:center;padding:6px 4px;border-radius:10px;background:#f5f5f5;border:1px solid #eee;">
+                    <div style="font-size:0.62rem;font-weight:800;color:#8B5A2B;text-transform:uppercase;">A2</div>
+                    <div id="sz-A2-qty" style="font-size:1rem;font-weight:900;color:#111;">0</div>
+                    <div id="sz-A2-status" style="font-size:0.58rem;color:#aaa;">—</div>
+                </div>
+                <div class="sz-chip" id="sz-1M" style="text-align:center;padding:6px 4px;border-radius:10px;background:#f5f5f5;border:1px solid #eee;">
+                    <div style="font-size:0.62rem;font-weight:800;color:#8B5A2B;text-transform:uppercase;">1M</div>
+                    <div id="sz-1M-qty" style="font-size:1rem;font-weight:900;color:#111;">0</div>
+                    <div id="sz-1M-status" style="font-size:0.58rem;color:#aaa;">—</div>
+                </div>
             </div>
 
-            <!-- Print Specs Notice -->
-            <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--text-muted);">
-              <div><i class="fa-solid fa-circle-check text-success"></i> Auto file validation &bull; High pigment ink load &bull; Washed 60+ cycles</div>
-              <div>Islandwide COD / Bank Transfer available</div>
+            <div class="dtf-cart-body" id="dtf-cart-body">
+                <!-- Content rendered by JS -->
             </div>
-          </div>
+            <div class="dtf-cart-totals" id="dtf-cart-totals" style="display:none;">
+                <div style="font-size: 0.8rem; font-weight: 800; color: #111; border-bottom: 1.5px solid #eee; padding-bottom: 8px; margin-bottom: 8px;">
+                    Total Stickers Selected: <span id="dtf-total-stickers-qty" style="color: #8B5A2B;">0</span>
+                </div>
+                <div class="total-row" id="dtf-subtotal-rows"><!-- sub rows --></div>
+                <div class="total-row grand">
+                    <span>Grand Total</span>
+                    <span class="grand-amt" id="dtf-grand-total">Rs. 0</span>
+                </div>
+                <button class="btn-place-order" onclick="placeOrderToMainCart()">
+                    <i data-lucide="check-circle" style="width:16px;"></i> Add All to Cart & Order
+                </button>
+                <button class="btn-clear-dtf" onclick="clearDtfCart()">Clear DTF Cart</button>
+            </div>
         </div>
-
-      </div>
-
     </div>
-  </section>
 
-  <!-- Luxury Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="logo-footer">
-            <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection Logo">
-            <span class="brand-title">ROOHIRA COLLECTION</span>
-          </div>
-          <p style="color: #BBB0A6; font-size: 0.88rem; max-width: 320px; line-height: 1.7; margin-bottom: 1.5rem;">
-            Sri Lanka's luxury house of haute couture, bespoke menswear, and royal heirloom sarees. Crafted with passion, worn with pride.
-          </p>
-          <div class="social-links">
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://web.facebook.com/roohiraonline" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://wa.me/94757218786" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="tel:0757218786"><i class="fa-solid fa-phone"></i></a>
-          </div>
+    <!-- IMAGE PREVIEW MODAL -->
+    <div id="img-preview-modal" onclick="closePreview(event)">
+        <div class="img-preview-box" onclick="event.stopPropagation()">
+            <button class="close-prev-btn" onclick="document.getElementById('img-preview-modal').classList.remove('open')">
+                <i data-lucide="x" style="width:14px;"></i>
+            </button>
+            <div class="prev-img-wrap">
+                <img id="prev-img" src="" draggable="false" oncontextmenu="return false;">
+                <!-- Watermark -->
+                <div class="wm-overlay" id="wm-cells"></div>
+            </div>
+            <div class="prev-id" id="prev-id-label" style="font-size:0.95rem; font-weight:800; color:#111; margin-bottom:2px; text-align:center;">DTF-1</div>
+            <div class="prev-size" id="prev-size-label" style="font-size:0.7rem; color:#888; text-align:center; margin-bottom:8px;">Size: 1 Meter Roll &nbsp;|&nbsp; Pre-designed</div>
+            <div class="prev-price-row" style="display:flex; justify-content:space-between; align-items:center; background:#fafafa; border:1px solid #eee; border-radius:8px; padding:6px 10px; margin-bottom:5px; font-size:0.75rem;">
+                <div><span class="lbl" style="color:#888;">Retail Price</span><br><span class="val" id="prev-retail-price" style="font-weight:700; color:#111;">Rs. 1,700</span></div>
+                <div style="text-align:right;"><span class="lbl" style="color:#888;" id="prev-wholesale-label">Wholesale (2+ rolls)</span><br><span class="val green" id="prev-wholesale-price" style="font-weight:800; color:#22c55e;">Rs. 1,490</span></div>
+            </div>
+            <div class="prev-price-row" id="prev-cart-status" style="margin-top:4px; background:#fff0f8; border-radius:8px; padding:6px 10px; text-align:center;">
+                <span style="font-size:0.68rem; color:#be185d; font-weight:700;" id="prev-cart-status-text">Not in DTF Cart yet</span>
+            </div>
         </div>
-        <div class="footer-col">
-          <h4>Boutique &amp; Bespoke</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html">All Collections</a></li>
-            <li><a href="customize.html">Custom Design Studio</a></li>
-            <li><a href="dtf.html">DTF Gang Sheet Builder</a></li>
-            <li><a href="track.html">Track Order</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div>&copy; 2026 Roohira Collection. All Rights Reserved. Master of Timeless Elegance.</div>
-      </div>
     </div>
-  </footer>
 
-  <script src="db.js"></script>
-  <script src="app.js"></script>
-  <script>
-    let currentUploadedDataUrl = null;
-    let placedItems = [];
-    const BASE_RATE_PER_SQ_INCH = 4.5; // LKR 4.50 per square inch
+    <!-- TOAST -->
+    <div class="dtf-toast" id="dtf-toast"></div>
 
-    function applySheetPreset(val) {
-      const customRow = document.getElementById("customDimsRow");
-      if (val === "custom") {
-        customRow.style.display = "grid";
-      } else {
-        customRow.style.display = "none";
-        const parts = val.split("x");
-        document.getElementById("sheetWidthInput").value = parts[0];
-        document.getElementById("sheetLengthInput").value = parts[1];
-      }
-      calculateDTFPricing();
-    }
+    <!-- FOOTER -->
+    <footer class="footer" style="padding:50px 10% 30px;border-top:2px solid rgba(255,20,147,0.2);background:#fff !important;margin-top:60px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;max-width:1100px;margin:0 auto 30px;">
+            <div>
+                <h3 style="font-family:'Mileast',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:12px;color:#000 !important;">
+                    <span style="color:#8B5A2B;">Roohira</span> Collection
+                </h3>
+                <p style="color:#555 !important;font-size:0.88rem;line-height:1.7;">Premium clothing & customized printing crafted for Sri Lanka.</p>
+            </div>
+            <div>
+                <h4 style="font-size:1rem;font-weight:800;color:#000 !important;margin-bottom:14px;">Quick Links</h4>
+                <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;font-size:0.88rem;">
+                    <li><a href="shop.html" style="color:#555 !important;text-decoration:none;">Shop All</a></li>
+                    <li><a href="customize.html" style="color:#555 !important;text-decoration:none;">Custom Design</a></li>
+                    <li><a href="dtf.html" style="color:#555 !important;text-decoration:none;">DTF Print</a></li>
+                    <li><a href="offers.html" style="color:#555 !important;text-decoration:none;">Special Offers</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-    function calculateDTFPricing() {
-      const w = parseFloat(document.getElementById("sheetWidthInput").value) || 22;
-      const l = parseFloat(document.getElementById("sheetLengthInput").value) || 39;
-      const film = document.getElementById("filmTypeSelect").value;
-      
-      const totalSqInches = w * l;
-      let multiplier = 1.0;
-      if (film === "glitter") multiplier = 1.15;
-      if (film === "reflective") multiplier = 1.25;
+    <!-- FIREBASE + SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
 
-      const totalPrice = Math.round(totalSqInches * BASE_RATE_PER_SQ_INCH * multiplier);
+        // ─── DATA ─────────────────────────────────────────────────────────────────
+        const PRODUCTS = [
+            { id: 'A4D-1', img: 'https://i.ibb.co/jZzC1rRN/download-72.jpg', size: 'A4' },
+            { id: 'A4D-2', img: 'https://i.ibb.co/Nkt8Pmf/download-70.jpg', size: 'A4' },
+            { id: 'A4D-3', img: 'https://i.ibb.co/JWwPnHBF/download-64.jpg', size: 'A4' },
+            { id: 'A4D-4', img: 'https://i.ibb.co/7d0Fk2WG/Chat-GPT-Image-Jul-31-2026-10-16-13-PM.png', size: 'A4' },
+            { id: 'A4D-5', img: 'https://i.ibb.co/NgkFccPn/Chat-GPT-Image-Jul-27-2026-10-59-53-AM.png', size: 'A4' },
+            { id: 'A4D-6', img: 'https://i.ibb.co/N27fL8z8/996.jpg', size: 'A4' },
+            { id: 'A4D-7', img: 'https://i.ibb.co/sdHQV7ty/A-cartoon-t-rex-dinosaur-1.jpg', size: 'A4' },
+            { id: 'A4D-8', img: 'https://i.ibb.co/6RWXnRRG/AI-generated-Close-up-portrait-of-a-border-collie-dog-Generative-AI.jpg', size: 'A4' },
+            { id: 'A4D-9', img: 'https://i.ibb.co/B2QG98kY/art-by-DMAN-ap.jpg', size: 'A4' },
+            { id: 'A4D-10', img: 'https://i.ibb.co/CsNH2SRX/Born-To-Sparkle-S-es-Kawaii-Einhorn-mit-Spruch-von-Booster-Shop-Redbubble.jpg', size: 'A4' },
+            { id: 'A4D-11', img: 'https://i.ibb.co/Q3Xx54jv/Click-to-Explore-Adorable-Stylish-Kitten-Designs-for-Kids.jpg', size: 'A4' },
+            { id: 'A4D-12', img: 'https://i.ibb.co/8n3Bwm0P/cute-sticker.jpg', size: 'A4' },
+            { id: 'A4D-13', img: 'https://i.ibb.co/TBqKhH25/DISNEY-PASCAL.jpg', size: 'A4' },
+            { id: 'A4D-14', img: 'https://i.ibb.co/zVxtgMZ8/download-77.jpg', size: 'A4' },
+            { id: 'A4D-15', img: 'https://i.ibb.co/sp32t3yx/download-78.jpg', size: 'A4' },
+            { id: 'A4D-16', img: 'https://i.ibb.co/RXccDqL/download-79.jpg', size: 'A4' },
+            { id: 'A4D-17', img: 'https://i.ibb.co/3yb5DMzX/download-80.jpg', size: 'A4' },
+            { id: 'A4D-18', img: 'https://i.ibb.co/TDTMkp0F/download-81.jpg', size: 'A4' },
+            { id: 'A4D-19', img: 'https://i.ibb.co/wNrTrJFL/download-82.jpg', size: 'A4' },
+            { id: 'A4D-20', img: 'https://i.ibb.co/QjffMYnr/Koala-ty-Time-S-er-Koala-Kawaii-Spruch-von-Booster-Shop-Redbubble.jpg', size: 'A4' },
+            { id: 'A4D-21', img: 'https://i.ibb.co/M59Vc4cJ/Kpop-Huntrix-Saja-Girls-Fan-Art-PNG-Bundle-Demon-Hunters-Merch-Instant-digital-download-subli.jpg', size: 'A4' },
+            { id: 'A4D-22', img: 'https://i.ibb.co/MDJMc2hv/Na-vi-chibi-family-Avatar.jpg', size: 'A4' },
 
-      document.getElementById("dtfCalculatedTotal").textContent = window.roohiraApp.formatPrice(totalPrice);
-      document.getElementById("dtfAreaSummary").textContent = `${w}" x ${l}" (${totalSqInches.toLocaleString()} sq in)`;
-      document.getElementById("boardDimensionsLabel").textContent = `Width: ${w}" • Length: ${l}"`;
-      document.getElementById("dtfItemCount").textContent = `${placedItems.length} piece${placedItems.length === 1 ? '' : 's'}`;
-    }
+            { id: 'A3D-1', img: 'https://i.ibb.co/jZzC1rRN/download-72.jpg', size: 'A3' },
+            { id: 'A3D-2', img: 'https://i.ibb.co/Nkt8Pmf/download-70.jpg', size: 'A3' },
+            { id: 'A3D-3', img: 'https://i.ibb.co/JWwPnHBF/download-64.jpg', size: 'A3' },
+            { id: 'A3D-4', img: 'https://i.ibb.co/7d0Fk2WG/Chat-GPT-Image-Jul-31-2026-10-16-13-PM.png', size: 'A3' },
+            { id: 'A3D-5', img: 'https://i.ibb.co/NgkFccPn/Chat-GPT-Image-Jul-27-2026-10-59-53-AM.png', size: 'A3' },
 
-    function handleDTFArtUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+            { id: 'A2D-1', img: 'https://i.ibb.co/jZzC1rRN/download-72.jpg', size: 'A2' },
+            { id: 'A2D-2', img: 'https://i.ibb.co/Nkt8Pmf/download-70.jpg', size: 'A2' },
+            { id: 'A2D-3', img: 'https://i.ibb.co/JWwPnHBF/download-64.jpg', size: 'A2' },
+            { id: 'A2D-4', img: 'https://i.ibb.co/7d0Fk2WG/Chat-GPT-Image-Jul-31-2026-10-16-13-PM.png', size: 'A2' },
+            { id: 'A2D-5', img: 'https://i.ibb.co/NgkFccPn/Chat-GPT-Image-Jul-27-2026-10-59-53-AM.png', size: 'A2' },
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        currentUploadedDataUrl = e.target.result;
-        window.roohiraApp.showToast("Artwork loaded! Click 'Place Artwork on Gang Sheet'", "info");
-      };
-      reader.readAsDataURL(file);
-    }
+            { id: 'DTF-1', img: 'https://i.ibb.co/Gf2ZJcDX/Screenshot-2026-08-04-005927.png', size: '1 Meter Roll' },
+            { id: 'DTF-2', img: 'https://i.ibb.co/kgbVVmCz/Screenshot-2026-08-04-005943.png', size: '1 Meter Roll' },
+            { id: 'DTF-3', img: 'https://i.ibb.co/sdzZGZfM/Screenshot-2026-08-04-093946.png', size: '1 Meter Roll' },
+            { id: 'DTF-4', img: 'https://i.ibb.co/d4KhsyDs/Screenshot-2026-08-04-093957.png', size: '1 Meter Roll' },
+            { id: 'DTF-5', img: 'https://i.ibb.co/ccmL02XZ/Screenshot-2026-08-04-094012.png', size: '1 Meter Roll' },
+            { id: 'DTF-6', img: 'https://i.ibb.co/C36TTh0n/Screenshot-2026-08-04-094044.png', size: '1 Meter Roll' }
+        ];
 
-    function addArtworkToSheet() {
-      if (!currentUploadedDataUrl) {
-        // Use luxury monogram logo default if no file uploaded
-        currentUploadedDataUrl = "https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png";
-      }
+        const PRICE_MATRIX = {
+            'A4':          { retail: 350,  wholesale: 230,  minQty: 10 },
+            'A3':          { retail: 600,  wholesale: 460,  minQty: 6  },
+            'A2':          { retail: 880,  wholesale: 680,  minQty: 3  },
+            '1 Meter Roll':{ retail: 1700, wholesale: 1490, minQty: 2  },
+        };
 
-      const copies = parseInt(document.getElementById("artCopiesInput").value, 10) || 1;
-      const targetW = parseFloat(document.getElementById("artWidthInches").value) || 6;
+        // Local card qty state (what user will add next)
+        const cardQty = {};
+        PRODUCTS.forEach(p => cardQty[p.id] = 1);
 
-      for (let i = 0; i < copies; i++) {
-        placedItems.push({
-          id: "ART-" + Date.now() + "-" + i,
-          url: currentUploadedDataUrl,
-          targetW: targetW
-        });
-      }
+        // DTF cart: array of { productId, id, img, size, qty }
+        let dtfCart = JSON.parse(localStorage.getItem('dtfCart') || '[]');
 
-      renderArtboard();
-      window.roohiraApp.showToast(`Placed ${copies} artwork piece(s) on gang sheet`, "success");
-    }
+        // ─── RENDER PRODUCT GRID ──────────────────────────────────────────────────
+        function renderGrid() {
+            const gridA4 = document.getElementById('a4-products-grid');
+            const gridA3 = document.getElementById('a3-products-grid');
+            const gridA2 = document.getElementById('a2-products-grid');
+            const grid1M = document.getElementById('dtf-products-grid');
+            gridA4.innerHTML = '';
+            gridA3.innerHTML = '';
+            gridA2.innerHTML = '';
+            grid1M.innerHTML = '';
+            PRODUCTS.forEach(p => {
+                const pm = PRICE_MATRIX[p.size];
+                const inCart = dtfCart.find(c => c.productId === p.id);
+                const inCartQty = inCart ? inCart.qty : 0;
+                const sizeTotalQty = getSizeTotalQty(p.size);
+                const isWholesale = sizeTotalQty >= pm.minQty;
+                const moreNeeded = pm.minQty - sizeTotalQty;
 
-    function renderArtboard() {
-      const board = document.getElementById("gangSheetArtboard");
-      const placeholder = document.getElementById("emptyBoardPlaceholder");
+                let statusHtml = '';
+                let statusClass = '';
+                if (inCartQty > 0) {
+                    if (isWholesale) {
+                        statusHtml = `✅ ${inCartQty} in DTF Cart · <strong style="color:#15803d;">Wholesale!</strong>`;
+                        statusClass = 'wholesale';
+                    } else {
+                        statusHtml = `${inCartQty} in DTF Cart · ${moreNeeded} more for wholesale`;
+                        statusClass = 'retail';
+                    }
+                }
 
-      if (placedItems.length === 0) {
-        board.innerHTML = `
-          <div id="emptyBoardPlaceholder" style="width: 100%; text-align: center; padding: 6rem 2rem; color: var(--text-light);">
-            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.8rem; color: #CFD8DC; margin-bottom: 0.75rem;"></i>
-            <h4 style="color: var(--text-muted); margin-bottom: 0.25rem;">No Artworks Placed Yet</h4>
-            <p style="font-size: 0.85rem;">Upload your logo or print design on the left panel to position it onto this roll.</p>
-          </div>
-        `;
-      } else {
-        board.innerHTML = placedItems.map((item, idx) => `
-          <div class="placed-artwork-box">
-            <button class="remove-art-btn" onclick="removeArtItem(${idx})" title="Remove"><i class="fa-solid fa-xmark"></i></button>
-            <img src="${item.url}" alt="Artwork">
-            <div class="placed-meta-badge">${item.targetW} Inches Wide</div>
-          </div>
-        `).join("");
-      }
+                const card = document.createElement('div');
+                card.className = 'dtf-card';
+                card.id = `card-${p.id}`;
+                card.innerHTML = `
+                    <div class="dtf-card-img-wrap" onclick="openPreview('${p.id}')">
+                        <img src="${p.img}" alt="${p.id}" draggable="false" oncontextmenu="return false;">
+                        <div class="id-badge">${p.id}</div>
+                        <div class="view-badge"><i data-lucide="zoom-in" style="width:14px;"></i> View</div>
+                    </div>
+                    <div class="dtf-card-body">
+                        <div class="card-id">${p.id}</div>
+                        <div class="card-size">${p.size} &nbsp;|&nbsp; Rs. ${pm.retail.toLocaleString()} / Rs. <span style="color:#22c55e;font-weight:800;">${pm.wholesale.toLocaleString()}</span></div>
+                        <div class="card-cart-status ${statusClass} ${inCartQty > 0 ? 'visible' : ''}" id="status-${p.id}">${statusHtml}</div>
+                        <div class="dtf-card-actions">
+                            <div class="qty-stepper">
+                                <button onclick="changeCardQty('${p.id}', -1)">−</button>
+                                <span class="qty-val" id="cardqty-${p.id}">${cardQty[p.id]}</span>
+                                <button onclick="changeCardQty('${p.id}', 1)">+</button>
+                            </div>
+                            <button class="btn-add-dtf" onclick="addToDtfCart('${p.id}')">
+                                <i data-lucide="plus" style="width:12px;"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                `;
+                if (p.size === 'A4') {
+                    gridA4.appendChild(card);
+                } else if (p.size === 'A3') {
+                    gridA3.appendChild(card);
+                } else if (p.size === 'A2') {
+                    gridA2.appendChild(card);
+                } else {
+                    grid1M.appendChild(card);
+                }
+            });
+            lucide.createIcons();
+        }
 
-      calculateDTFPricing();
-    }
+        // ─── CARD QTY ────────────────────────────────────────────────────────────
+        function changeCardQty(productId, delta) {
+            cardQty[productId] = Math.max(1, (cardQty[productId] || 1) + delta);
+            document.getElementById(`cardqty-${productId}`).innerText = cardQty[productId];
+        }
 
-    function removeArtItem(idx) {
-      placedItems.splice(idx, 1);
-      renderArtboard();
-    }
+        // ─── DTF CART LOGIC ───────────────────────────────────────────────────────
+        function getSizeTotalQty(size) {
+            return dtfCart.filter(c => c.size === size).reduce((s, c) => s + c.qty, 0);
+        }
 
-    function clearGangSheet() {
-      placedItems = [];
-      renderArtboard();
-    }
+        function addToDtfCart(productId) {
+            const p = PRODUCTS.find(x => x.id === productId);
+            const qty = cardQty[productId] || 1;
 
-    function addDTFSheetToCart() {
-      const w = document.getElementById("sheetWidthInput").value;
-      const l = document.getElementById("sheetLengthInput").value;
-      const film = document.getElementById("filmTypeSelect").value;
-      const priceText = document.getElementById("dtfCalculatedTotal").textContent.replace(/[^0-9]/g, "");
-      const price = parseInt(priceText, 10) || 3850;
+            const existing = dtfCart.find(c => c.productId === productId);
+            if (existing) {
+                existing.qty += qty;
+            } else {
+                dtfCart.push({ productId: p.id, id: p.id, img: p.img, size: p.size, qty });
+            }
 
-      const item = {
-        id: "DTF-GANG-" + Date.now(),
-        name: `DTF Gang Sheet (${w}" x ${l}") - ${film.toUpperCase()}`,
-        price: price,
-        image: placedItems.length > 0 ? placedItems[0].url : "https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png",
-        qty: 1,
-        size: `${w}x${l} in`,
-        color: film,
-        customNotes: `Total artworks arranged: ${placedItems.length}`
-      };
+            showDtfToast(`${productId} × ${qty} added to DTF Cart!`);
+            renderGrid();
+            renderDtfCart();
+        }
 
-      let cart = window.roohiraApp.getCart();
-      cart.push(item);
-      window.roohiraApp.saveCart(cart);
-      window.roohiraApp.showToast("DTF Gang sheet added to your bag!", "success");
-      window.roohiraApp.openCart();
-    }
+        function removeFromDtfCart(productId) {
+            dtfCart = dtfCart.filter(c => c.productId !== productId);
+            renderGrid();
+            renderDtfCart();
+        }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      calculateDTFPricing();
-    });
-  </script>
+        function changeDtfQty(productId, delta) {
+            const item = dtfCart.find(c => c.productId === productId);
+            if (!item) return;
+            item.qty = Math.max(1, item.qty + delta);
+            renderGrid();
+            renderDtfCart();
+        }
+
+        function clearDtfCart() {
+            dtfCart = [];
+            renderGrid();
+            renderDtfCart();
+        }
+
+        // ─── RENDER DTF CART ──────────────────────────────────────────────────────
+        function renderDtfCart() {
+            localStorage.setItem('dtfCart', JSON.stringify(dtfCart));
+            const body     = document.getElementById('dtf-cart-body');
+            const totalsEl = document.getElementById('dtf-cart-totals');
+            const badge    = document.getElementById('dtf-cart-badge');
+
+            const totalItems = dtfCart.reduce((s, c) => s + c.qty, 0);
+            badge.innerText = totalItems + ' item' + (totalItems !== 1 ? 's' : '');
+
+            // ── Empty state ──────────────────────────────────────────────────
+            if (dtfCart.length === 0) {
+                body.innerHTML =
+                    '<div style="text-align:center;padding:30px 0;color:#bbb;font-size:0.85rem;">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5" style="display:block;margin:0 auto 10px;"><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1"/><polyline points="16 3 12 7 8 3"/></svg>' +
+                    'No designs added yet.<br><span style="color:#ccc;font-size:0.78rem;">Add from the grid to start.</span></div>';
+                totalsEl.style.display = 'none';
+                updateSizeSummaryStrip();
+                return;
+            }
+
+            // ── Group by size ────────────────────────────────────────────────
+            const sizeGroups = {};
+            dtfCart.forEach(item => {
+                if (!sizeGroups[item.size]) sizeGroups[item.size] = [];
+                sizeGroups[item.size].push(item);
+            });
+
+            let cartHtml = '';
+            let subtotalRows = '';
+
+            // Compute grandTotal directly from dtfCart (bulletproof approach)
+            let grandTotal = 0;
+            dtfCart.forEach(item => {
+                const pm2 = PRICE_MATRIX[item.size];
+                const sTotal = getSizeTotalQty(item.size);
+                const iws = sTotal >= pm2.minQty;
+                grandTotal += (iws ? pm2.wholesale : pm2.retail) * item.qty;
+            });
+
+            for (const [size, items] of Object.entries(sizeGroups)) {
+                const pm = PRICE_MATRIX[size];
+                const sizeTotalQty = items.reduce((s, c) => s + c.qty, 0);
+                const isWholesale = sizeTotalQty >= pm.minQty;
+                const unitPrice = isWholesale ? pm.wholesale : pm.retail;
+                const pct = Math.min((sizeTotalQty / pm.minQty) * 100, 100);
+                const moreNeeded = pm.minQty - sizeTotalQty;
+                const sizeSubtotal = items.reduce((s, c) => s + (unitPrice * c.qty), 0);
+
+                const progressColor = isWholesale ? '#22c55e' : '#8B5A2B';
+                const wsPill = isWholesale
+                    ? '<span class="ws-pill unlocked">✅ Wholesale</span>'
+                    : '<span class="ws-pill locked">⏳ Retail</span>';
+                const wsText = isWholesale
+                    ? ('🟢 Wholesale Rs. ' + pm.wholesale.toLocaleString() + '/ea')
+                    : (moreNeeded + ' more for wholesale');
+
+                cartHtml += '<div class="size-group" style="margin-bottom:18px;border-bottom:1px solid #f0f0f0;padding-bottom:10px;">';
+                cartHtml += '<div class="size-group-header"><span>' + size + '</span>' + wsPill + '</div>';
+                cartHtml += '<div class="group-progress-wrap">';
+                cartHtml += '<div style="display:flex;justify-content:space-between;font-size:0.64rem;color:#999;margin-bottom:3px;">';
+                cartHtml += '<span>' + wsText + '</span><span>Total: ' + sizeTotalQty + ' / Min: ' + pm.minQty + '</span></div>';
+                cartHtml += '<div class="group-progress-track"><div class="group-progress-fill" style="width:' + pct + '%;background:' + progressColor + ';"></div></div>';
+                cartHtml += '</div>';
+                cartHtml += '<div class="size-items-list" style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">';
+
+                items.forEach(item => {
+                    const itemTotal = unitPrice * item.qty;
+                    cartHtml += '<div class="cart-item-row" style="display:flex;align-items:center;justify-content:space-between;background:#fafafa;border:1px solid #f0f0f0;border-radius:8px;padding:6px 8px;gap:8px;">';
+                    cartHtml += '<div style="display:flex;align-items:center;gap:8px;">';
+                    cartHtml += '<img src="' + item.img + '" alt="' + item.id + '" style="width:36px;height:36px;object-fit:contain;border-radius:4px;border:1px solid #eee;background:#fff;">';
+                    cartHtml += '<div><div style="font-weight:800;font-size:0.8rem;color:#111;">' + item.id + '</div>';
+                    cartHtml += '<div style="font-size:0.65rem;color:#718096;">Rs. ' + unitPrice.toLocaleString() + ' × ' + item.qty + '</div></div>';
+                    cartHtml += '</div>';
+                    cartHtml += '<div style="display:flex;align-items:center;gap:6px;">';
+                    cartHtml += '<div style="font-weight:800;font-size:0.82rem;color:#8B5A2B;min-width:56px;text-align:right;">Rs. ' + itemTotal.toLocaleString() + '</div>';
+                    cartHtml += '<div style="display:flex;align-items:center;gap:2px;">';
+                    cartHtml += '<button class="ci-qty-btn" onclick="changeDtfQty(\'' + item.productId + '\',-1)" style="width:20px;height:20px;font-size:0.75rem;">−</button>';
+                    cartHtml += '<span style="font-size:0.75rem;width:18px;text-align:center;font-weight:800;">' + item.qty + '</span>';
+                    cartHtml += '<button class="ci-qty-btn" onclick="changeDtfQty(\'' + item.productId + '\',1)" style="width:20px;height:20px;font-size:0.75rem;">+</button>';
+                    cartHtml += '<button onclick="removeFromDtfCart(\'' + item.productId + '\')" style="margin-left:3px;color:#ef4444;border:none;background:transparent;cursor:pointer;padding:2px;display:flex;align-items:center;"><i data-lucide="trash" style="width:13px;height:13px;color:#ef4444;"></i></button>';
+                    cartHtml += '</div></div></div>';
+                });
+
+                cartHtml += '</div></div>';
+
+                subtotalRows += '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#555;margin-bottom:4px;">';
+                subtotalRows += '<span>' + size + ' (' + sizeTotalQty + ' rolls @ ' + (isWholesale ? 'Wholesale' : 'Retail') + ')</span>';
+                subtotalRows += '<span style="font-weight:800;color:#111;">Rs. ' + sizeSubtotal.toLocaleString() + '</span></div>';
+            }
+
+            body.innerHTML = cartHtml;
+            totalsEl.style.display = 'block';
+            document.getElementById('dtf-total-stickers-qty').innerText = totalItems;
+            document.getElementById('dtf-subtotal-rows').innerHTML = subtotalRows;
+            document.getElementById('dtf-grand-total').innerText = 'Rs. ' + grandTotal.toLocaleString();
+
+            lucide.createIcons();
+
+            // Update real-time size summary strip
+            updateSizeSummaryStrip();
+        }
+
+        function updateSizeSummaryStrip() {
+            const sizeMap = {
+                'A4':           { chipId: 'sz-A4', sizeKey: 'A4' },
+                'A3':           { chipId: 'sz-A3', sizeKey: 'A3' },
+                'A2':           { chipId: 'sz-A2', sizeKey: 'A2' },
+                '1 Meter Roll': { chipId: 'sz-1M', sizeKey: '1 Meter Roll' },
+            };
+
+            for (const [size, cfg] of Object.entries(sizeMap)) {
+                const pm = PRICE_MATRIX[size];
+                const totalQty = getSizeTotalQty(size);
+                const isWholesale = totalQty >= pm.minQty;
+                const moreNeeded = pm.minQty - totalQty;
+
+                const chip = document.getElementById(cfg.chipId);
+                const qtyEl = document.getElementById(`${cfg.chipId}-qty`);
+                const statusEl = document.getElementById(`${cfg.chipId}-status`);
+
+                qtyEl.innerText = totalQty;
+
+                if (totalQty === 0) {
+                    chip.style.background = '#f5f5f5';
+                    chip.style.border = '1px solid #eee';
+                    qtyEl.style.color = '#ccc';
+                    statusEl.innerText = '—';
+                    statusEl.style.color = '#aaa';
+                } else if (isWholesale) {
+                    chip.style.background = '#dcfce7';
+                    chip.style.border = '1px solid #86efac';
+                    qtyEl.style.color = '#15803d';
+                    statusEl.innerText = '✅ Wholesale!';
+                    statusEl.style.color = '#15803d';
+                } else {
+                    chip.style.background = '#fff0f8';
+                    chip.style.border = '1px solid #fbcfe8';
+                    qtyEl.style.color = '#be185d';
+                    statusEl.innerText = `+${moreNeeded} wholesale`;
+                    statusEl.style.color = '#be185d';
+                }
+            }
+        }
+
+        // ─── PLACE ORDER (push to main cart) ─────────────────────────────────────
+        function placeOrderToMainCart() {
+            if (dtfCart.length === 0) { showDtfToast('DTF Cart is empty!'); return; }
+
+            dtfCart.forEach(item => {
+                const pm = PRICE_MATRIX[item.size];
+                const sizeTotalQty = getSizeTotalQty(item.size);
+                const isWholesale = sizeTotalQty >= pm.minQty;
+                const unitPrice = isWholesale ? pm.wholesale : pm.retail;
+                addToCart(`${item.id} (${item.size})`, unitPrice, item.img, item.size, 'DTF Pre-designed', item.qty);
+            });
+
+            showDtfToast(`✅ All DTF items added to cart!`);
+            clearDtfCart();
+            setTimeout(() => window.location.href = 'cart.html', 1200);
+        }
+
+        // ─── IMAGE PREVIEW ────────────────────────────────────────────────────────
+        function openPreview(productId) {
+            const p = PRODUCTS.find(x => x.id === productId);
+            const pm = PRICE_MATRIX[p.size];
+            const inCart = dtfCart.find(c => c.productId === productId);
+            const inCartQty = inCart ? inCart.qty : 0;
+            const sizeTotalQty = getSizeTotalQty(p.size);
+            const isWholesale = sizeTotalQty >= pm.minQty;
+
+            document.getElementById('prev-img').src = p.img;
+            document.getElementById('prev-id-label').innerText = p.id;
+            document.getElementById('prev-size-label').innerHTML = `Size: ${p.size} &nbsp;|&nbsp; Pre-designed`;
+            document.getElementById('prev-retail-price').innerText = `Rs. ${pm.retail.toLocaleString()}`;
+            document.getElementById('prev-wholesale-label').innerText = `Wholesale (${pm.minQty}+ ${p.size.includes('Roll') ? 'rolls' : 'sheets'})`;
+            document.getElementById('prev-wholesale-price').innerText = `Rs. ${pm.wholesale.toLocaleString()}`;
+
+            // Watermark
+            const wm = document.getElementById('wm-cells');
+            wm.innerHTML = Array(12).fill('<span>ROOHIRA COLLECTION</span>').join('');
+
+            const statusBox = document.getElementById('prev-cart-status');
+            const statusText = document.getElementById('prev-cart-status-text');
+
+            if (inCartQty > 0) {
+                const moreNeeded = pm.minQty - sizeTotalQty;
+                if (isWholesale) {
+                    statusBox.style.background = '#dcfce7';
+                    statusText.style.color = '#15803d';
+                    statusText.innerHTML = `✅ ${inCartQty} in DTF Cart &nbsp;|&nbsp; <strong>Wholesale rate active!</strong>`;
+                } else {
+                    statusBox.style.background = '#fff0f8';
+                    statusText.style.color = '#be185d';
+                    statusText.innerHTML = `${inCartQty} in DTF Cart &nbsp;|&nbsp; Add ${moreNeeded} more for wholesale`;
+                }
+            } else {
+                statusBox.style.background = '#f5f5f5';
+                statusText.style.color = '#888';
+                statusText.innerHTML = 'Not in DTF Cart yet';
+            }
+
+            document.getElementById('img-preview-modal').classList.add('open');
+        }
+
+        function closePreview(event) {
+            document.getElementById('img-preview-modal').classList.remove('open');
+        }
+
+        // ─── TOAST ───────────────────────────────────────────────────────────────
+        function showDtfToast(msg) {
+            const toast = document.getElementById('dtf-toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        // ─── INIT ─────────────────────────────────────────────────────────────────
+        renderGrid();
+        renderDtfCart();
+    </script>
 </body>
 </html>

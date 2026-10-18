@@ -1,473 +1,1067 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roohira Collection | Haute Couture & Luxury Fashion</title>
-  <meta name="description" content="Discover Roohira Collection - Sri Lanka's premier luxury fashion house offering handcrafted silk evening gowns, bespoke menswear, and royal sarees.">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
-  
-  <!-- FontAwesome 6 CDN -->
+  <title>Roohira Collection | Sri Lanka's Premier Fashion House</title>
+  <meta name="description" content="Discover Roohira Collection — premium custom tees, frocks, batik, embroidery and DTF printing with islandwide cash-on-delivery in Sri Lanka.">
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Custom Luxury Stylesheet -->
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
+
 
   <!-- Announcement Bar -->
   <div class="announcement-bar">
     <div>
-      <i class="fa-solid fa-gem text-gold"></i>
-      <span>Complimentary Islandwide Express Delivery on Orders Over LKR 50,000</span>
+      <i class="fa-solid fa-gem" style="color: var(--gold); margin-right: 6px;"></i>
+      <span>Islandwide Cash on Delivery &bull; Fast Express Shipping</span>
     </div>
     <div class="d-none-sm">
-      <span>Use Code: <strong>ROOHIRA10</strong> for 10% Off First Bespoke Order</span>
+      <span>Use Code: <strong>ROOHIRA10</strong> for 10% Off &bull; Call: 0757218786</span>
     </div>
   </div>
 
-  <!-- Main Navigation Header -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <!-- Brand Logo -->
-      <a href="index.html" class="site-logo">
-        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection Monogram">
-        <div class="brand-text">
-          <span>ROOHIRA</span>
-          <small>COLLECTION</small>
-        </div>
+  <!-- Main Navigation -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Roohira Collection Logo">
+      <div class="brand-text">
+        <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 600; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+        <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+      </div>
+    </a>
+    <ul class="nav-links" id="primary-nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="track-order.html">Track Order</a></li>
+      <li><a href="customize.html">Design Studio</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i data-lucide="instagram"></i></a>
+      <a href="https://web.facebook.com/roohiraonline" target="_blank" title="Facebook"><i data-lucide="facebook"></i></a>
+      <a href="login.html" title="Account"><i data-lucide="user"></i></a>
+      <a href="wishlist.html" style="position: relative;" title="Wishlist">
+        <i data-lucide="heart"></i>
+        <span id="wishlist-count">0</span>
       </a>
-
-      <!-- Navigation Menu -->
-      <nav class="nav-menu">
-        <a href="index.html" class="nav-link active">Home</a>
-        <a href="shop.html" class="nav-link">Shop All</a>
-        <a href="customize.html" class="nav-link text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
-        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
-        <a href="track.html" class="nav-link">Track Order</a>
-        <a href="admin.html" class="nav-link text-gold" title="Admin Control Room">
-          <i class="fa-solid fa-lock" style="font-size: 0.75rem;"></i> Admin
-        </a>
-      </nav>
-
-      <!-- Header Actions -->
-      <div class="header-actions">
-        <!-- Search Trigger -->
-        <a href="shop.html" class="action-btn" title="Search Collections">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </a>
-
-        <!-- User Profile / Auth -->
-        <div id="headerUserAction">
-          <a href="auth.html" class="action-btn" title="Sign In">
-            <i class="fa-regular fa-user"></i>
-          </a>
-        </div>
-
-        <!-- Wishlist -->
-        <a href="shop.html" class="action-btn d-none-sm" title="Saved Items">
-          <i class="fa-regular fa-heart"></i>
-        </a>
-
-        <!-- Cart Trigger -->
-        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <span class="badge-count cart-count-badge" style="display: none;">0</span>
-        </button>
-
-        <!-- Mobile Toggle -->
-        <button class="mobile-toggle action-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-      </div>
+      <a href="cart.html" style="position: relative;" title="Cart">
+        <i data-lucide="shopping-cart"></i>
+        <span id="cart-count">0</span>
+      </a>
+      <!-- Side Menu Bar Button (Desktop & Mobile) -->
+      <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="All Pages & Menu">
+        <i data-lucide="menu"></i>
+      </a>
     </div>
-  </header>
+  </nav>
 
-  <!-- Mobile Drawer Menu -->
-  <div class="modal-overlay" id="mobileMenuOverlay">
-    <div class="modal-content" style="max-width: 320px; height: 100vh; border-radius: 0; margin-left: 0; padding: 2rem 1.5rem;">
-      <div class="d-flex justify-between align-center" style="margin-bottom: 2rem;">
-        <span class="font-serif text-espresso" style="font-size: 1.3rem; font-weight: 600;">ROOHIRA</span>
-        <button id="closeMobileMenuBtn" style="font-size: 1.3rem;"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="d-flex flex-column gap-3" style="font-size: 1rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">
-        <a href="index.html" class="text-espresso">Home</a>
-        <a href="shop.html" class="text-espresso">Shop All</a>
-        <a href="shop.html?category=Women" class="text-espresso">Women's Couture</a>
-        <a href="shop.html?category=Men" class="text-espresso">Men's Sartorial</a>
-        <a href="shop.html?category=Accessories" class="text-espresso">Accessories</a>
-        <a href="track.html" class="text-espresso">Track Order</a>
-        <a href="orders.html" class="text-espresso">Order History</a>
-        <a href="profile.html" class="text-espresso">My Profile</a>
-        <a href="admin.html" class="text-gold"><i class="fa-solid fa-lock"></i> Admin Panel</a>
-      </div>
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+    <div style="padding: 0 0.5rem 1rem; border-bottom: 2px solid #1A120B; margin-bottom: 0.5rem;">
+      <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: #000000; margin: 0; font-weight: 700;">Navigation &amp; Pages</h3>
+      <span style="font-size: 0.72rem; color: #6D5D53; text-transform: uppercase; letter-spacing: 1px;">Roohira Collection</span>
     </div>
+    <a href="index.html"><i data-lucide="home" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Home</a>
+    <a href="shop.html"><i data-lucide="shopping-bag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Shop All</a>
+    <a href="track-order.html"><i data-lucide="truck" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Track Order</a>
+    <a href="customize.html"><i data-lucide="palette" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Design Studio</a>
+    <a href="dtf.html"><i data-lucide="printer" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> DTF Print Service</a>
+    <a href="offers.html"><i data-lucide="tag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Offers &amp; Discounts</a>
+    <a href="reviews.html"><i data-lucide="star" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Customer Reviews</a>
+    <a href="wishlist.html"><i data-lucide="heart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Wishlist</a>
+    <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
+    <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
+    <a href="login.html"><i data-lucide="log-in" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Login / Register</a>
   </div>
 
-  <!-- Hero Section -->
-  <section class="hero-section" style="position: relative; min-height: 85vh; display: flex; align-items: center; background: linear-gradient(rgba(26, 15, 10, 0.45), rgba(26, 15, 10, 0.65)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1920&q=85') center/cover no-repeat;">
-    <div class="container" style="position: relative; z-index: 10; padding: 4rem 1.5rem;">
-      <div style="max-width: 720px; color: var(--white);">
-        <span style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.85rem; font-weight: 700; color: var(--gold-light); display: inline-block; margin-bottom: 1.25rem;">
-          Autunno &bull; Inverno Collection 2026
-        </span>
-        <h1 style="color: var(--white); margin-bottom: 1.5rem; text-shadow: 0 4px 20px rgba(0,0,0,0.4);">
-          Timeless Elegance &amp; Contemporary Grace
-        </h1>
-        <p style="color: #E2D7CE; font-size: 1.15rem; margin-bottom: 2.5rem; line-height: 1.8; max-width: 600px;">
-          Handcrafted mulberry silks, tailored Italian velvet silhouettes, and heirloom heritage sarees designed for those who appreciate understated luxury.
-        </p>
-        <div class="d-flex flex-wrap gap-3">
-          <a href="shop.html" class="btn btn-gold btn-lg">
-            <span>Explore Collection</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </a>
-          <a href="shop.html?category=Women" class="btn btn-outline-white btn-lg">
-            <span>New Arrivals</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Value Pillars -->
-  <section class="section-padding-sm bg-cream" style="border-bottom: 1px solid var(--border);">
-    <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; text-align: center;">
-        <div style="padding: 1.5rem 1rem;">
-          <i class="fa-solid fa-scissors text-gold" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-          <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Artisanal Craftsmanship</h4>
-          <p style="font-size: 0.85rem;">Every garment is individually cut and finished by master tailors with obsessive detail.</p>
-        </div>
-        <div style="padding: 1.5rem 1rem;">
-          <i class="fa-solid fa-feather-pointed text-gold" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-          <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Pure Sustainable Fabrics</h4>
-          <p style="font-size: 0.85rem;">Ethically sourced Grade-A silks, French linen, and pure Mongolian cashmere blends.</p>
-        </div>
-        <div style="padding: 1.5rem 1rem;">
-          <i class="fa-solid fa-truck-fast text-gold" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-          <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">White-Glove Delivery</h4>
-          <p style="font-size: 0.85rem;">Delivered in signature monogram luxury gift boxes with live GPS tracking.</p>
-        </div>
-        <div style="padding: 1.5rem 1rem;">
-          <i class="fa-solid fa-shield-halved text-gold" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-          <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Bespoke Fit Guarantee</h4>
-          <p style="font-size: 0.85rem;">Complimentary sizing consultations and 14-day seamless exchange policy.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Curated Categories -->
-  <section class="section-padding">
-    <div class="container">
-      <div class="section-header">
-        <span class="subtitle">Curated Portfolios</span>
-        <h2>Explore By Category</h2>
-        <p>Immerse yourself in collections curated for gala evenings, formal soirees, and refined resort retreats.</p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
-        <!-- Card 1 -->
-        <a href="shop.html?category=Women" style="position: relative; height: 420px; overflow: hidden; border-radius: var(--radius-xs); display: block;" class="category-banner">
-          <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=800&q=80" alt="Women's Haute Couture" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease;">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(26, 15, 10, 0.85) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;">
-            <span style="color: var(--gold-light); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700;">Haute Couture</span>
-            <h3 style="color: var(--white); font-size: 1.75rem; margin-top: 0.25rem;">Women's Collection</h3>
-            <span style="color: var(--white); font-size: 0.85rem; text-decoration: underline; margin-top: 0.5rem;">Discover 18 Styles &rarr;</span>
-          </div>
-        </a>
-
-        <!-- Card 2 -->
-        <a href="shop.html?category=Men" style="position: relative; height: 420px; overflow: hidden; border-radius: var(--radius-xs); display: block;" class="category-banner">
-          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="Men's Sartorial" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease;">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(26, 15, 10, 0.85) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;">
-            <span style="color: var(--gold-light); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700;">Bespoke Sartorial</span>
-            <h3 style="color: var(--white); font-size: 1.75rem; margin-top: 0.25rem;">Men's Attire</h3>
-            <span style="color: var(--white); font-size: 0.85rem; text-decoration: underline; margin-top: 0.5rem;">Discover 12 Styles &rarr;</span>
-          </div>
-        </a>
-
-        <!-- Card 3 -->
-        <a href="shop.html?category=Accessories" style="position: relative; height: 420px; overflow: hidden; border-radius: var(--radius-xs); display: block;" class="category-banner">
-          <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80" alt="Luxury Accessories" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease;">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(26, 15, 10, 0.85) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;">
-            <span style="color: var(--gold-light); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700;">Handcrafted Accents</span>
-            <h3 style="color: var(--white); font-size: 1.75rem; margin-top: 0.25rem;">Luxury Accessories</h3>
-            <span style="color: var(--white); font-size: 0.85rem; text-decoration: underline; margin-top: 0.5rem;">Discover 15 Styles &rarr;</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Masterpieces Grid -->
-  <section class="section-padding bg-cream">
-    <div class="container">
-      <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 3rem;">
-        <div>
-          <span class="subtitle" style="color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.775rem; font-weight: 700; display: block; margin-bottom: 0.5rem;">Signature Selection</span>
-          <h2 style="margin: 0;">Featured Masterpieces</h2>
-        </div>
-        <a href="shop.html" class="btn btn-outline">
-          <span>View All Pieces</span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
-      </div>
-
-      <!-- Live Products Grid Container -->
-      <div class="product-grid" id="homeFeaturedProducts">
-        <!-- Rendered via JS -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Brand Story & Heritage Banner -->
-  <section class="section-padding bg-espresso" style="position: relative; overflow: hidden;">
-    <div class="container">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
-        <div>
-          <span style="color: var(--gold-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.25em; font-weight: 700; display: block; margin-bottom: 1rem;">
-            The Roohira Philosophy
+  <main>
+    <!-- Hero Section - Clean Dark Luxury Background (No BG Image) -->
+    <section class="hero-luxury" style="padding: 120px 6% 80px;">
+      <div style="max-width: 1200px; width: 100%; margin: 0 auto; position: relative; z-index: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3.5rem; align-items: center;">
+        <div style="color: var(--white);">
+          <span style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.85rem; font-weight: 700; color: #D4AF37; display: inline-block; margin-bottom: 1.25rem;">
+            Sri Lanka's Premier Fashion House
           </span>
-          <h2 style="color: var(--white); margin-bottom: 1.5rem; font-size: 2.4rem;">
-            Where Heritage Weaving Meets Modern Couture
-          </h2>
-          <p style="color: #D3C7BD; font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.8;">
-            Founded with an unwavering commitment to haute craftsmanship, Roohira Collection bridges age-old artisanal weaving traditions with modern architectural draping.
+          <h1 style="color: #FFFFFF; margin-bottom: 1.5rem; font-family: var(--font-serif); font-size: clamp(2.3rem, 5vw, 3.8rem); line-height: 1.2; font-weight: 700;">
+            Timeless Elegance &amp; Contemporary Grace
+          </h1>
+          <p style="color: #E2D7CE; font-size: 1.1rem; margin-bottom: 2.5rem; line-height: 1.8; max-width: 600px;">
+            Immerse yourself in our curated collection of heavyweight luxury tees, authentic designer frocks, custom embroidery, and high-precision DTF printing.
           </p>
-          <p style="color: #B5A89E; font-size: 0.95rem; margin-bottom: 2.5rem; line-height: 1.8;">
-            Each garment is produced in limited micro-batches, ensuring that every patron wears a piece as unique as it is timeless.
-          </p>
-          <div class="d-flex gap-4">
+
+          <!-- Action Buttons Bar -->
+          <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; margin-bottom: 40px;">
+            <a href="shop.html" class="btn btn-gold btn-lg">
+              <i data-lucide="compass" style="width: 18px; height: 18px;"></i> Explore Collection
+            </a>
+            <a href="customize.html" class="btn btn-outline-white btn-lg">
+              <i data-lucide="edit-3" style="width: 18px; height: 18px;"></i> Design Studio
+            </a>
+            <a href="dtf.html" style="color: #E6C875; padding: 14px 20px; font-weight: 700; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;">
+              <i data-lucide="printer" style="width: 17px; height: 17px;"></i> DTF Prints &rarr;
+            </a>
+          </div>
+
+          <!-- Quick Metrics Bar -->
+          <div style="display: flex; gap: 35px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 25px;">
             <div>
-              <h3 style="color: var(--gold); font-size: 2.2rem; font-family: var(--font-sans); font-weight: 700;">140+</h3>
-              <p style="color: #A99B90; font-size: 0.85rem;">Artisanal Hours per Saree</p>
+              <h4 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: #E6C875; margin: 0;">5,000+</h4>
+              <p style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">Orders Delivered</p>
             </div>
-            <div>
-              <h3 style="color: var(--gold); font-size: 2.2rem; font-family: var(--font-sans); font-weight: 700;">100%</h3>
-              <p style="color: #A99B90; font-size: 0.85rem;">Ethical Silk &amp; Velvet</p>
+            <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 35px;">
+              <h4 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: #E6C875; margin: 0;">220 GSM</h4>
+              <p style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">Heavy Cotton Luxury</p>
             </div>
-            <div>
-              <h3 style="color: var(--gold); font-size: 2.2rem; font-family: var(--font-sans); font-weight: 700;">10k+</h3>
-              <p style="color: #A99B90; font-size: 0.85rem;">Patrons Worldwide</p>
+            <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 35px;">
+              <h4 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: #E6C875; margin: 0;">100%</h4>
+              <p style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">COD Islandwide</p>
             </div>
           </div>
         </div>
 
-        <div style="position: relative;">
-          <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80" alt="Roohira Heritage Craftsmanship" style="border-radius: var(--radius-sm); box-shadow: var(--shadow-xl); border: 1px solid rgba(198, 162, 107, 0.3);">
-          <div style="position: absolute; -bottom: 20px; -left: 20px; background: var(--chocolate); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--gold); max-width: 260px; box-shadow: var(--shadow-lg);">
-            <div class="d-flex align-center gap-2" style="margin-bottom: 0.5rem;">
-              <i class="fa-solid fa-crown text-gold"></i>
-              <span style="color: var(--white); font-weight: 700; font-size: 0.85rem;">Bespoke Atelier</span>
+        <!-- Right: Modern Visual Hero Card with Full Look (No Cutoff) -->
+        <div style="position: relative; display: flex; justify-content: center; width: 100%;">
+          <div style="position: relative; width: 100%; max-width: 440px; border-radius: 0px; overflow: hidden; border: 2px solid #C6A26B; box-shadow: 0 20px 45px rgba(0,0,0,0.35); background: #FAF7F2;">
+            <img src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" alt="Roohira Luxury Collection" style="width: 100%; height: auto; max-height: 520px; object-fit: contain; display: block; margin: 0 auto; padding: 8px; background: #FAF7F2;">
+            
+            <div style="background: #1A120B; padding: 14px 18px; border-top: 1.5px solid #C6A26B; text-align: center;">
+              <span style="font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: #DFCA9B; font-weight: 800; display: block; margin-bottom: 2px;">Signature Heritage Line</span>
+              <h3 style="font-size: 1.15rem; font-family: 'Cinzel', serif; color: #FFFFFF; margin: 0; font-weight: 700;">Handcrafted Designer Frock</h3>
             </div>
-            <p style="color: #D3C7BD; font-size: 0.78rem; margin: 0;">Private sizing &amp; VIP tailoring sessions in our Colombo suite.</p>
+          </div>
+
+          <!-- Floating Badge 1: Quality Tag (Desktop only) -->
+          <div class="d-none-sm" style="position: absolute; top: 20px; left: -15px; background: #FFFFFF; border: 1.5px solid #1A120B; padding: 10px 16px; border-radius: 0px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; z-index: 5;">
+            <div style="width: 32px; height: 32px; background: #FAF7F2; display: flex; align-items: center; justify-content: center; color: #8B5A2B;">
+              <i data-lucide="award" style="width: 18px; height: 18px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; font-weight: 800; color: #1A120B;">Premium Quality</div>
+              <div style="font-size: 0.68rem; color: #8B5A2B; font-weight: 700;">Verified 5-Star Craft</div>
+            </div>
+          </div>
+
+          <!-- Floating Badge 2: Delivery (Desktop only) -->
+          <div class="d-none-sm" style="position: absolute; bottom: 65px; right: -15px; background: #FFFFFF; border: 1.5px solid #1A120B; padding: 10px 16px; border-radius: 0px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; z-index: 5;">
+            <div style="width: 32px; height: 32px; background: #FAF7F2; display: flex; align-items: center; justify-content: center; color: #8B5A2B;">
+              <i data-lucide="truck" style="width: 18px; height: 18px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; font-weight: 800; color: #1A120B;">Fast Islandwide</div>
+              <div style="font-size: 0.68rem; color: #8B5A2B; font-weight: 700;">Cash on Delivery</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Luxury Value Pillars (Matching Roohira Collection Web) -->
+    <section class="section-padding-sm bg-cream" style="border-bottom: 1px solid var(--border); padding: 3rem 0;">
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; text-align: center;">
+          <div style="padding: 1rem;">
+            <i class="fa-solid fa-scissors" style="color: var(--gold); font-size: 2rem; margin-bottom: 0.85rem; display: block;"></i>
+            <h4 style="font-size: 1.05rem; margin-bottom: 0.4rem; font-family: var(--font-serif); color: var(--espresso);">Artisanal Craftsmanship</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">Every custom garment is individually cut and finished by master tailors with obsessive detail.</p>
+          </div>
+          <div style="padding: 1rem;">
+            <i class="fa-solid fa-feather-pointed" style="color: var(--gold); font-size: 2rem; margin-bottom: 0.85rem; display: block;"></i>
+            <h4 style="font-size: 1.05rem; margin-bottom: 0.4rem; font-family: var(--font-serif); color: var(--espresso);">Heavyweight 220 GSM Cotton</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">Ethically sourced premium breathable fabrics engineered for supreme comfort &amp; longevity.</p>
+          </div>
+          <div style="padding: 1rem;">
+            <i class="fa-solid fa-truck-fast" style="color: var(--gold); font-size: 2rem; margin-bottom: 0.85rem; display: block;"></i>
+            <h4 style="font-size: 1.05rem; margin-bottom: 0.4rem; font-family: var(--font-serif); color: var(--espresso);">White-Glove Islandwide Delivery</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">Delivered directly to your doorstep with live tracking and flexible Cash on Delivery.</p>
+          </div>
+          <div style="padding: 1rem;">
+            <i class="fa-solid fa-shield-halved" style="color: var(--gold); font-size: 2rem; margin-bottom: 0.85rem; display: block;"></i>
+            <h4 style="font-size: 1.05rem; margin-bottom: 0.4rem; font-family: var(--font-serif); color: var(--espresso);">Bespoke Quality Guarantee</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">Direct WhatsApp care, personalized sizing consultations, and 100% satisfaction assurance.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Testimonials Carousel -->
-  <section class="section-padding">
-    <div class="container">
-      <div class="section-header">
-        <span class="subtitle">Patron Reflections</span>
-        <h2>Words from Discerning Clients</h2>
-        <p>Read what our international and local clientele say about their Roohira experience.</p>
+    <!-- Category Cards (Square / Kotuwata Cards) -->
+    <section class="section-padding bg-cream" style="padding: 4.5rem 6%; border-bottom: 1px solid rgba(60, 42, 33, 0.08);">
+      <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 35px;">
+          <span style="color: #8B5A2B; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 2px;">Shop By Category</span>
+          <h2 style="font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 3.5vw, 2.5rem); color: #000000; margin: 8px 0 6px; font-weight: 700;">Explore Our Collections</h2>
+          <p style="color: #6D5D53; font-size: 0.95rem; margin: 0;">Select a category to browse all exclusive products and new releases</p>
+        </div>
+
+        <div class="category-square-grid">
+          <!-- Card 1: T-Shirts -->
+          <a href="shop.html?category=T-Shirts" class="category-square-card">
+            <div class="category-square-thumb">
+              <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=700&q=80" alt="T-Shirts">
+              <div class="category-square-overlay">
+                <span class="category-square-view">View Category &rarr;</span>
+              </div>
+            </div>
+            <div class="category-square-info">
+              <h3>T-Shirts (220 GSM)</h3>
+              <p>Oversized &amp; Regular Cotton</p>
+            </div>
+          </a>
+
+          <!-- Card 2: Frocks & Dresses -->
+          <a href="shop.html?category=Frock" class="category-square-card">
+            <div class="category-square-thumb">
+              <img src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" alt="Frocks &amp; Dresses">
+              <div class="category-square-overlay">
+                <span class="category-square-view">View Category &rarr;</span>
+              </div>
+            </div>
+            <div class="category-square-info">
+              <h3>Frocks &amp; Dresses</h3>
+              <p>Batik, Casual &amp; Heritage</p>
+            </div>
+          </a>
+
+          <!-- Card 3: Embroidered Blouses -->
+          <a href="shop.html?category=Blouse" class="category-square-card">
+            <div class="category-square-thumb">
+              <img src="https://i.ibb.co/dzYtF9G/Chat-GPT-Image-Aug-4-2026-12-25-15-PM.png" alt="Embroidered Blouses">
+              <div class="category-square-overlay">
+                <span class="category-square-view">View Category &rarr;</span>
+              </div>
+            </div>
+            <div class="category-square-info">
+              <h3>Embroidered Blouses</h3>
+              <p>Hand-detailed Needlework</p>
+            </div>
+          </a>
+
+          <!-- Card 4: Design Studio (Customize) -->
+          <a href="customize.html" class="category-square-card">
+            <div class="category-square-thumb">
+              <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=700&q=80" alt="Custom Design Studio">
+              <div class="category-square-overlay">
+                <span class="category-square-view">Design Live &rarr;</span>
+              </div>
+            </div>
+            <div class="category-square-info">
+              <h3>Custom Design Studio</h3>
+              <p>Print Your Own Tees &amp; Hoodies</p>
+            </div>
+          </a>
+
+          <!-- Card 5: DTF Gang Sheets -->
+          <a href="dtf.html" class="category-square-card">
+            <div class="category-square-thumb">
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=700&q=80" alt="DTF Print Service">
+              <div class="category-square-overlay">
+                <span class="category-square-view">Order DTF &rarr;</span>
+              </div>
+            </div>
+            <div class="category-square-info">
+              <h3>DTF Print Service</h3>
+              <p>Instant Meters &amp; Auto Price</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exclusive New Arrivals Section - Compact Square Boxed Cards (Podi Kotu) -->
+    <section class="section" style="padding: 60px 6% 50px; background: #FFFFFF; border-bottom: 1px solid rgba(60, 42, 33, 0.08);">
+      <div style="text-align: center; margin-bottom: 35px;">
+        <span style="background: rgba(179, 135, 56, 0.12); color: #8B5A2B; padding: 5px 16px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; border: 1.5px solid rgba(179, 135, 56, 0.35); text-transform: uppercase;">EXCLUSIVE NEW ARRIVALS</span>
+        <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700; font-family: 'Cinzel', serif; margin-top: 10px; color: #1A120B;">New <span style="color: #8B5A2B;">Frocks &amp; Blouses</span> Collection</h2>
+        <p style="color: #6D5D53; font-size: 0.92rem; margin-top: 4px;">Handcrafted traditional Sri Lankan motifs blended with contemporary silhouettes</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-        <div style="background: var(--cream); padding: 2.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border);">
-          <div style="color: #E2A03F; font-size: 0.85rem; margin-bottom: 1rem;">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+      <div class="new-arrivals-grid">
+        
+        <!-- Podi Kotu Card 1: Long Design Frock -->
+        <div style="background: #FFFFFF; border: 1.5px solid #1A120B; border-radius: 0px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.25s ease, box-shadow 0.25s ease;">
+          <div style="position: relative; width: 100%; aspect-ratio: 1/1; background: #FAF7F2; overflow: hidden; border-bottom: 1.5px solid #1A120B; display: flex; align-items: center; justify-content: center;">
+            <span style="position: absolute; top: 10px; left: 10px; background: #DC143C; color: #FFFFFF; padding: 3px 8px; font-size: 0.65rem; font-weight: 800; z-index: 5;">13% OFF</span>
+            <span style="position: absolute; top: 10px; right: 10px; background: rgba(26,18,11,0.85); color: #FFFFFF; padding: 3px 8px; font-size: 0.62rem; font-weight: 700; z-index: 5;">FROCK</span>
+            <img id="na-img-1" src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" alt="Long Design Frock" style="width: 100%; height: 100%; object-fit: contain; padding: 8px; transition: opacity 0.3s ease;">
           </div>
-          <p style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--espresso); margin-bottom: 1.5rem; font-style: italic;">
-            "The Aura Silk Evening Gown stole the show at the Colombo Charity Gala. The weight of the mulberry silk and the contoured drape is comparable to top Parisian fashion houses."
-          </p>
-          <div class="d-flex align-center gap-2">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" alt="Dinithi">
-            <div>
-              <h5 style="margin: 0; font-size: 0.95rem;">Dinithi Jayawardena</h5>
-              <small style="color: var(--text-light); font-size: 0.75rem;">Verified Patron &bull; Colombo 03</small>
+          
+          <!-- Image Thumbnails Strip -->
+          <div style="display: flex; gap: 6px; padding: 8px 10px; background: #FAF7F2; border-bottom: 1px solid rgba(60, 42, 33, 0.08); justify-content: center;">
+            <img src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" onclick="naSwapImg('na-img-1',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1.5px solid #8B5A2B;" title="Dark Yellow">
+            <img src="https://i.ibb.co/5WMrGVJn/Chat-GPT-Image-Aug-3-2026-12-07-29-PM.png" onclick="naSwapImg('na-img-1',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Light Yellow">
+            <img src="https://i.ibb.co/twtnzycD/Chat-GPT-Image-Aug-3-2026-12-04-41-PM-1.png" onclick="naSwapImg('na-img-1',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Maroon">
+          </div>
+
+          <!-- Card Body -->
+          <div style="padding: 14px 12px; display: flex; flex-direction: column; flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 0.68rem; color: #8B5A2B; font-weight: 800; text-transform: uppercase;">Heritage Series</span>
+              <span style="font-size: 0.65rem; color: #1A120B; background: #FAF7F2; border: 1px solid rgba(60,42,33,0.15); padding: 1px 6px; font-weight: 700;">Free Size</span>
+            </div>
+            
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Cinzel', serif;">Long Design Frock</h3>
+            
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.15rem; font-weight: 800; color: #1A120B;">Rs. 2,250.00</span>
+              <span style="text-decoration: line-through; color: #8C7D73; font-size: 0.82rem;">Rs. 2,600.00</span>
+            </div>
+
+            <!-- Color Options -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.72rem; color: #6D5D53; font-weight: 600;">Color: <strong id="na-frock-color-label" style="color: #8B5A2B;">Dark Yellow</strong></span>
+              <div id="frock-color-circles" style="display: flex; gap: 6px;">
+                <div onclick="naPickColor('#e6a100','Dark Yellow','na-frock-color-label',this)" title="Dark Yellow" style="width: 18px; height: 18px; border-radius: 50%; background: #e6a100; cursor: pointer; border: 1px solid #1A120B; box-shadow: 0 0 0 2px #8B5A2B;"></div>
+                <div onclick="naPickColor('#f5e6c8','Light Yellow','na-frock-color-label',this)" title="Light Yellow" style="width: 18px; height: 18px; border-radius: 50%; background: #f5e6c8; cursor: pointer; border: 1px solid #1A120B;"></div>
+                <div onclick="naPickColor('#800000','Maroon','na-frock-color-label',this)" title="Maroon" style="width: 18px; height: 18px; border-radius: 50%; background: #800000; cursor: pointer; border: 1px solid #1A120B;"></div>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; gap: 6px; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(60, 42, 33, 0.08);">
+              <button onclick="naOrder('Long Design Frock',2250,'na-img-1','Free Size','na-frock-color-label',false)" style="flex: 1; background: #1A120B; color: #FFFFFF; border: 1px solid #1A120B; padding: 7px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <i data-lucide="shopping-bag" style="width: 13px; height: 13px;"></i> Add
+              </button>
+              <button onclick="naOrder('Long Design Frock',2250,'na-img-1','Free Size','na-frock-color-label',true)" style="flex: 1; background: #8B5A2B; color: #FFFFFF; border: 1px solid #8B5A2B; padding: 7px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <i data-lucide="zap" style="width: 13px; height: 13px;"></i> Buy
+              </button>
+              <a href="product-detail.html?id=23" style="background: #FAF7F2; color: #1A120B; border: 1px solid rgba(60,42,33,0.25); padding: 7px 10px; font-weight: 700; font-size: 0.75rem; text-decoration: none; display: flex; align-items: center;">View</a>
             </div>
           </div>
         </div>
 
-        <div style="background: var(--cream); padding: 2.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border);">
-          <div style="color: #E2A03F; font-size: 0.85rem; margin-bottom: 1rem;">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        <!-- Podi Kotu Card 2: Long Batik Frock -->
+        <div style="background: #FFFFFF; border: 1.5px solid #1A120B; border-radius: 0px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.25s ease, box-shadow 0.25s ease;">
+          <div style="position: relative; width: 100%; aspect-ratio: 1/1; background: #FAF7F2; overflow: hidden; border-bottom: 1.5px solid #1A120B; display: flex; align-items: center; justify-content: center;">
+            <span style="position: absolute; top: 10px; left: 10px; background: #DC143C; color: #FFFFFF; padding: 3px 8px; font-size: 0.65rem; font-weight: 800; z-index: 5;">19% OFF</span>
+            <span style="position: absolute; top: 10px; right: 10px; background: rgba(26,18,11,0.85); color: #FFFFFF; padding: 3px 8px; font-size: 0.62rem; font-weight: 700; z-index: 5;">BATIK</span>
+            <img id="na-img-2" src="https://i.ibb.co/cdSLGG9/Chat-GPT-Image-Aug-3-2026-04-59-27-PM.png" alt="Long Batik Frock" style="width: 100%; height: 100%; object-fit: contain; padding: 8px; transition: opacity 0.3s ease;">
           </div>
-          <p style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--espresso); margin-bottom: 1.5rem; font-style: italic;">
-            "The Emperor Velvet Tuxedo fits impeccably right out of the box. The packaging, monogram garment bag, and expedited tracking were pure luxury."
-          </p>
-          <div class="d-flex align-center gap-2">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" alt="Kasun">
-            <div>
-              <h5 style="margin: 0; font-size: 0.95rem;">Kasun Perera</h5>
-              <small style="color: var(--text-light); font-size: 0.75rem;">Verified Patron &bull; Colombo 07</small>
+          
+          <!-- Image Thumbnails Strip -->
+          <div style="display: flex; gap: 6px; padding: 8px 10px; background: #FAF7F2; border-bottom: 1px solid rgba(60, 42, 33, 0.08); justify-content: center;">
+            <img src="https://i.ibb.co/cdSLGG9/Chat-GPT-Image-Aug-3-2026-04-59-27-PM.png" onclick="naSwapImg('na-img-2',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1.5px solid #8B5A2B;" title="Blue">
+            <img src="https://i.ibb.co/yFMBjFbf/Chat-GPT-Image-Aug-3-2026-04-56-51-PM.png" onclick="naSwapImg('na-img-2',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Dark Yellow">
+            <img src="https://i.ibb.co/20B313Xw/Aug-3-2026-04-53-46-PM.png" onclick="naSwapImg('na-img-2',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Brown">
+            <img src="https://i.ibb.co/s9mgQnHb/Chat-GPT-Image-Aug-3-2026-04-46-45-PM.png" onclick="naSwapImg('na-img-2',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Maroon">
+          </div>
+
+          <!-- Card Body -->
+          <div style="padding: 14px 12px; display: flex; flex-direction: column; flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 0.68rem; color: #8B5A2B; font-weight: 800; text-transform: uppercase;">Traditional Fusion</span>
+              <div style="display: flex; gap: 4px;">
+                <span id="na-batik-sz-xl" onclick="naPickSize('XL','na-batik-sz-xl','na-batik-sz-2xl')" style="font-size: 0.65rem; color: #FFFFFF; background: #1A120B; border: 1px solid #1A120B; padding: 1px 6px; font-weight: 700; cursor: pointer;">XL</span>
+                <span id="na-batik-sz-2xl" onclick="naPickSize('2XL','na-batik-sz-2xl','na-batik-sz-xl')" style="font-size: 0.65rem; color: #1A120B; background: #FAF7F2; border: 1px solid rgba(60,42,33,0.18); padding: 1px 6px; font-weight: 700; cursor: pointer;">2XL</span>
+              </div>
+            </div>
+            
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Cinzel', serif;">Long Batik Frock</h3>
+            
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.15rem; font-weight: 800; color: #1A120B;">Rs. 1,500.00</span>
+              <span style="text-decoration: line-through; color: #8C7D73; font-size: 0.82rem;">Rs. 1,850.00</span>
+            </div>
+
+            <!-- Color Options -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.72rem; color: #6D5D53; font-weight: 600;">Color: <strong id="na-batik-color-label" style="color: #8B5A2B;">Blue</strong></span>
+              <div id="batik-color-circles" style="display: flex; gap: 5px;">
+                <div onclick="naPickColorImg('#0000ff','Blue','na-batik-color-label','na-img-2','https://i.ibb.co/cdSLGG9/Chat-GPT-Image-Aug-3-2026-04-59-27-PM.png',this)" title="Blue" style="width: 18px; height: 18px; border-radius: 50%; background: #0000ff; cursor: pointer; border: 1px solid #1A120B; box-shadow: 0 0 0 2px #8B5A2B;"></div>
+                <div onclick="naPickColorImg('#e6a100','Dark Yellow','na-batik-color-label','na-img-2','https://i.ibb.co/yFMBjFbf/Chat-GPT-Image-Aug-3-2026-04-56-51-PM.png',this)" title="Dark Yellow" style="width: 18px; height: 18px; border-radius: 50%; background: #e6a100; cursor: pointer; border: 1px solid #1A120B;"></div>
+                <div onclick="naPickColorImg('#8B4513','Brown','na-batik-color-label','na-img-2','https://i.ibb.co/20B313Xw/Aug-3-2026-04-53-46-PM.png',this)" title="Brown" style="width: 18px; height: 18px; border-radius: 50%; background: #8B4513; cursor: pointer; border: 1px solid #1A120B;"></div>
+                <div onclick="naPickColorImg('#800000','Maroon','na-batik-color-label','na-img-2','https://i.ibb.co/s9mgQnHb/Chat-GPT-Image-Aug-3-2026-04-46-45-PM.png',this)" title="Maroon" style="width: 18px; height: 18px; border-radius: 50%; background: #800000; cursor: pointer; border: 1px solid #1A120B;"></div>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; gap: 6px; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(60, 42, 33, 0.08);">
+              <button onclick="naOrder('Long Batik Frock',1500,'na-img-2',window.naBatikSize||'XL','na-batik-color-label',false)" style="flex: 1; background: #1A120B; color: #FFFFFF; border: 1px solid #1A120B; padding: 7px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <i data-lucide="shopping-bag" style="width: 13px; height: 13px;"></i> Add
+              </button>
+              <button onclick="naOrder('Long Batik Frock',1500,'na-img-2',window.naBatikSize||'XL','na-batik-color-label',true)" style="flex: 1; background: #8B5A2B; color: #FFFFFF; border: 1px solid #8B5A2B; padding: 7px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <i data-lucide="zap" style="width: 13px; height: 13px;"></i> Buy
+              </button>
+              <a href="product-detail.html?id=24" style="background: #FAF7F2; color: #1A120B; border: 1px solid rgba(60,42,33,0.25); padding: 7px 10px; font-weight: 700; font-size: 0.75rem; text-decoration: none; display: flex; align-items: center;">View</a>
             </div>
           </div>
         </div>
 
-        <div style="background: var(--cream); padding: 2.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border);">
-          <div style="color: #E2A03F; font-size: 0.85rem; margin-bottom: 1rem;">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        <!-- Podi Kotu Card 3: White Blouse with Embroidery -->
+        <div style="background: #FFFFFF; border: 1.5px solid #1A120B; border-radius: 0px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.25s ease, box-shadow 0.25s ease;">
+          <div style="position: relative; width: 100%; aspect-ratio: 1/1; background: #FAF7F2; overflow: hidden; border-bottom: 1.5px solid #1A120B; display: flex; align-items: center; justify-content: center;">
+            <span style="position: absolute; top: 10px; left: 10px; background: #DC143C; color: #FFFFFF; padding: 3px 8px; font-size: 0.65rem; font-weight: 800; z-index: 5;">12% OFF</span>
+            <span style="position: absolute; top: 10px; right: 10px; background: rgba(26,18,11,0.85); color: #FFFFFF; padding: 3px 8px; font-size: 0.62rem; font-weight: 700; z-index: 5;">BLOUSE</span>
+            <img id="na-img-3" src="https://i.ibb.co/dzYtF9G/Chat-GPT-Image-Aug-4-2026-12-25-15-PM.png" alt="White Blouse with Embroidery" style="width: 100%; height: 100%; object-fit: contain; padding: 8px; transition: opacity 0.3s ease;">
           </div>
-          <p style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--espresso); margin-bottom: 1.5rem; font-style: italic;">
-            "Wore the Varanasi Gold Zari Saree for my daughter's wedding reception. It's a genuine heirloom piece that will be passed down generations."
-          </p>
-          <div class="d-flex align-center gap-2">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" alt="Shanika">
-            <div>
-              <h5 style="margin: 0; font-size: 0.95rem;">Shanika De Silva</h5>
-              <small style="color: var(--text-light); font-size: 0.75rem;">Verified Patron &bull; Kandy</small>
+          
+          <!-- Image Thumbnails Strip -->
+          <div style="display: flex; gap: 6px; padding: 8px 10px; background: #FAF7F2; border-bottom: 1px solid rgba(60, 42, 33, 0.08); justify-content: center;">
+            <img src="https://i.ibb.co/dzYtF9G/Chat-GPT-Image-Aug-4-2026-12-25-15-PM.png" onclick="naSwapImg('na-img-3',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1.5px solid #8B5A2B;" title="Yellow">
+            <img src="https://i.ibb.co/TBM1752f/Chat-GPT-Image-Aug-4-2026-12-28-42-PM.png" onclick="naSwapImg('na-img-3',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Purple">
+            <img src="https://i.ibb.co/BH7rkYFB/Chat-GPT-Image-Aug-4-2026-12-36-48-PM.png" onclick="naSwapImg('na-img-3',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Blue">
+            <img src="https://i.ibb.co/1tzMntQr/Chat-GPT-Image-Aug-4-2026-12-38-24-PM.png" onclick="naSwapImg('na-img-3',this.src,this)" style="width: 36px; height: 36px; object-fit: cover; cursor: pointer; border: 1px solid rgba(60,42,33,0.2);" title="Green">
+          </div>
+
+          <!-- Card Body -->
+          <div style="padding: 14px 12px; display: flex; flex-direction: column; flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 0.68rem; color: #8B5A2B; font-weight: 800; text-transform: uppercase;">Hand Embroidery</span>
+              <div style="display: flex; gap: 3px;">
+                <span id="na-blouse-sz-xl" onclick="naPickBlouseSize('XL','na-blouse-sz-xl','na-blouse-sz-xxl','na-blouse-sz-xxxl')" style="font-size: 0.62rem; color: #FFFFFF; background: #1A120B; border: 1px solid #1A120B; padding: 1px 5px; font-weight: 700; cursor: pointer;">XL</span>
+                <span id="na-blouse-sz-xxl" onclick="naPickBlouseSize('XXL','na-blouse-sz-xxl','na-blouse-sz-xl','na-blouse-sz-xxxl')" style="font-size: 0.62rem; color: #1A120B; background: #FAF7F2; border: 1px solid rgba(60,42,33,0.18); padding: 1px 5px; font-weight: 700; cursor: pointer;">XXL</span>
+                <span id="na-blouse-sz-xxxl" onclick="naPickBlouseSize('XXXL','na-blouse-sz-xxxl','na-blouse-sz-xl','na-blouse-sz-xxl')" style="font-size: 0.62rem; color: #1A120B; background: #FAF7F2; border: 1px solid rgba(60,42,33,0.18); padding: 1px 5px; font-weight: 700; cursor: pointer;">3XL</span>
+              </div>
+            </div>
+            
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Cinzel', serif;">Embroidered Blouse</h3>
+            
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.15rem; font-weight: 800; color: #1A120B;">Rs. 1,490.00</span>
+              <span style="text-decoration: line-through; color: #8C7D73; font-size: 0.82rem;">Rs. 1,700.00</span>
+            </div>
+
+            <!-- Color Options -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.72rem; color: #6D5D53; font-weight: 600;">Color: <strong id="na-blouse-color-label" style="color: #8B5A2B;">Yellow</strong></span>
+              <div id="blouse-color-circles" style="display: flex; gap: 5px;">
+                <div onclick="naPickColorImg('#ffff00','Yellow','na-blouse-color-label','na-img-3','https://i.ibb.co/dzYtF9G/Chat-GPT-Image-Aug-4-2026-12-25-15-PM.png',this)" title="Yellow" style="width: 18px; height: 18px; border-radius: 50%; background: #ffff00; cursor: pointer; border: 1px solid #1A120B; box-shadow: 0 0 0 2px #8B5A2B;"></div>
+                <div onclick="naPickColorImg('#a020f0','Purple','na-blouse-color-label','na-img-3','https://i.ibb.co/TBM1752f/Chat-GPT-Image-Aug-4-2026-12-28-42-PM.png',this)" title="Purple" style="width: 18px; height: 18px; border-radius: 50%; background: #a020f0; cursor: pointer; border: 1px solid #1A120B;"></div>
+                <div onclick="naPickColorImg('#0000ff','Blue','na-blouse-color-label','na-img-3','https://i.ibb.co/BH7rkYFB/Chat-GPT-Image-Aug-4-2026-12-36-48-PM.png',this)" title="Blue" style="width: 18px; height: 18px; border-radius: 50%; background: #0000ff; cursor: pointer; border: 1px solid #1A120B;"></div>
+                <div onclick="naPickColorImg('#008000','Green','na-blouse-color-label','na-img-3','https://i.ibb.co/1tzMntQr/Chat-GPT-Image-Aug-4-2026-12-38-24-PM.png',this)" title="Green" style="width: 18px; height: 18px; border-radius: 50%; background: #008000; cursor: pointer; border: 1px solid #1A120B;"></div>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; gap: 6px; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(60, 42, 33, 0.08);">
+              <button onclick="naOrder('White Blouse with Embroidery',1490,'na-img-3',window.naBlouseSize||'XL','na-blouse-color-label',false)" style="flex: 1; background: #1A120B; color: #FFFFFF; border: 1px solid #1A120B; padding: 7px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <i data-lucide="shopping-bag" style="width: 13px; height: 13px;"></i> Add
+              </button>
+              <button onclick="naOrder('White Blouse with Embroidery',1490,'na-img-3',window.naBlouseSize||'XL','na-blouse-color-label',true)" style="flex: 1; background: #8B5A2B; color: #FFFFFF; border: 1px solid #8B5A2B; padding: 7px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                <i data-lucide="zap" style="width: 13px; height: 13px;"></i> Buy
+              </button>
+              <a href="product-detail.html?id=25" style="background: #FAF7F2; color: #1A120B; border: 1px solid rgba(60,42,33,0.25); padding: 7px 10px; font-weight: 700; font-size: 0.75rem; text-decoration: none; display: flex; align-items: center;">View</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Featured Products Section (Luxury Styling Matching Roohira Collection Web) -->
+    <section class="section-padding bg-cream" style="padding: 5rem 0;">
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;">
+          <div>
+            <span style="color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.775rem; font-weight: 700; display: block; margin-bottom: 0.5rem;">Signature Selection</span>
+            <h2 style="font-family: var(--font-serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--espresso); margin: 0;">Featured Masterpieces</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; max-width: 600px;">Explore our finest custom apparel, handcrafted batik, and luxury streetwear tailored for Sri Lanka.</p>
+          </div>
+          <a href="shop.html" class="btn btn-outline" style="padding: 0.75rem 1.75rem; font-size: 0.85rem; font-weight: 700;">
+            <span>View All Pieces</span>
+            <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+          </a>
+        </div>
+        <div class="product-grid" id="product-grid">
+          <!-- Injected dynamically via script.js displayProducts() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Story & Heritage Banner (Matching Roohira Collection Web) -->
+    <section class="section-padding" style="background: var(--espresso); color: var(--white); position: relative; overflow: hidden; padding: 5rem 0;">
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 4rem; align-items: center;">
+          <div>
+            <span style="color: var(--gold-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.25em; font-weight: 700; display: block; margin-bottom: 1rem;">
+              The Roohira Philosophy
+            </span>
+            <h2 style="color: var(--white); margin-bottom: 1.5rem; font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.25;">
+              Where Heritage Craft Meets Modern Couture
+            </h2>
+            <p style="color: #D3C7BD; font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.8;">
+              Founded with an unwavering commitment to fine craftsmanship, Roohira Collection bridges age-old artisanal Sri Lankan batik and embroidery traditions with modern streetwear draping.
+            </p>
+            <p style="color: #B5A89E; font-size: 0.95rem; margin-bottom: 2.5rem; line-height: 1.8;">
+              Each garment is produced with obsessive quality control, ensuring that every patron wears a piece as unique as it is comfortable.
+            </p>
+            <div style="display: flex; gap: 3rem; flex-wrap: wrap;">
+              <div>
+                <h3 style="color: var(--gold); font-size: 2.2rem; font-family: var(--font-sans); font-weight: 700; margin: 0;">5,000+</h3>
+                <p style="color: #A99B90; font-size: 0.85rem; margin-top: 4px;">Delighted Patrons</p>
+              </div>
+              <div>
+                <h3 style="color: var(--gold); font-size: 2.2rem; font-family: var(--font-sans); font-weight: 700; margin: 0;">220 GSM</h3>
+                <p style="color: #A99B90; font-size: 0.85rem; margin-top: 4px;">Heavy Cotton Purity</p>
+              </div>
+              <div>
+                <h3 style="color: var(--gold); font-size: 2.2rem; font-family: var(--font-sans); font-weight: 700; margin: 0;">100%</h3>
+                <p style="color: #A99B90; font-size: 0.85rem; margin-top: 4px;">COD Guaranteed</p>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(198,162,107,0.25); border-radius: 16px; padding: 3rem 2.5rem; max-width: 440px; margin: 0 auto; backdrop-filter: blur(10px);">
+              <i class="fa-solid fa-gem" style="color: var(--gold); font-size: 3rem; margin-bottom: 1.5rem;"></i>
+              <h3 style="color: var(--white); font-family: var(--font-serif); font-size: 1.7rem; margin-bottom: 1rem;">Bespoke Fashion Studio</h3>
+              <p style="color: #C0B5AB; font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem;">
+                Design your custom oversized tees, gang sheets, and monogrammed attire with our interactive studio.
+              </p>
+              <a href="customize.html" class="btn btn-gold btn-lg" style="width: 100%;">
+                <span>Enter Studio</span>
+                <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Luxury Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="logo-footer">
-            <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection Logo">
-            <span class="brand-title">ROOHIRA COLLECTION</span>
+    <!-- Direct Inquiry & Contact Form (Matching Roohira Collection Web Luxury Design) -->
+    <section class="section-padding bg-cream" style="padding: 5rem 0;">
+      <div style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem;">
+        <div style="background: var(--white); border-radius: var(--radius-sm); border: 1px solid var(--border); box-shadow: var(--shadow-luxury); padding: 3rem 2.5rem;">
+          <div style="text-align: center; margin-bottom: 2.5rem;">
+            <span style="color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.775rem; font-weight: 700; display: block; margin-bottom: 0.5rem;">Concierge Desk</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.2rem; color: var(--espresso); margin-bottom: 0.5rem;">Inquiries &amp; Bespoke Orders</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Have questions regarding sizes, bulk DTF printing, or customized orders? Our team is at your service.</p>
           </div>
-          <p style="color: #BBB0A6; font-size: 0.88rem; max-width: 320px; line-height: 1.7; margin-bottom: 1.5rem;">
-            Sri Lanka's luxury house of haute couture, bespoke menswear, and royal heirloom sarees. Crafted with passion, worn with pride.
-          </p>
-          <div class="social-links">
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://web.facebook.com/roohiraonline" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://wa.me/94757218786" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="tel:0757218786" aria-label="Hotline"><i class="fa-solid fa-phone"></i></a>
-          </div>
-          <div style="margin-top: 1rem; font-size: 0.8rem; color: #DFCA9B;">
-            <div><i class="fa-solid fa-phone"></i> Hotline: <strong>0757218786 / 075 721 8786</strong></div>
-            <div style="margin-top: 4px;"><i class="fa-regular fa-envelope"></i> Email: <strong>roohiraonline@gmail.com</strong></div>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h4>Boutique &amp; Bespoke</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html">All Collections</a></li>
-            <li><a href="customize.html"><i class="fa-solid fa-wand-magic-sparkles text-gold"></i> Custom Design Studio</a></li>
-            <li><a href="dtf.html"><i class="fa-solid fa-layer-group text-gold"></i> DTF Gang Sheet Builder</a></li>
-            <li><a href="shop.html?category=Women">Women's Couture</a></li>
-            <li><a href="shop.html?category=Men">Men's Sartorial</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Patron Concierge</h4>
-          <ul class="footer-links">
-            <li><a href="track.html">Track My Order</a></li>
-            <li><a href="orders.html">Order History</a></li>
-            <li><a href="profile.html">My Account</a></li>
-            <li><a href="auth.html">Sign In / Register</a></li>
-            <li><a href="admin.html">Admin Portal</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Privé Newsletter</h4>
-          <p style="color: #BBB0A6; font-size: 0.85rem; line-height: 1.6;">
-            Subscribe to receive private invitations to runway previews and limited edition releases.
-          </p>
-          <form class="newsletter-form" onsubmit="event.preventDefault(); window.roohiraApp.showToast('Thank you for subscribing to Roohira Privé.', 'success'); this.reset();">
-            <input type="email" placeholder="Your luxury email" required>
-            <button type="submit" class="btn btn-gold btn-sm">Join</button>
+          <form onsubmit="event.preventDefault(); sendEmailViaGmail();" style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <div>
+              <label class="form-label">Subject / Title</label>
+              <input type="text" id="email-subject" class="form-control" placeholder="Order inquiry or custom sizing..." required>
+            </div>
+            <div>
+              <label class="form-label">Your Message</label>
+              <textarea id="email-message" class="form-control" rows="4" placeholder="Tell us how we can assist you..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold btn-lg" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+              <i class="fa-regular fa-paper-plane" style="margin-right: 8px;"></i>
+              <span>Send Message Via Gmail</span>
+            </button>
           </form>
-          <small style="color: #8C8075; font-size: 0.72rem; display: block; margin-top: 0.5rem;">We respect your privacy. Unsubscribe anytime.</small>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <!-- Brand & Story -->
+      <div class="footer-col">
+        <a href="index.html" class="site-logo" style="margin-bottom: 1.25rem;">
+          <img src="logo.png" alt="Roohira Collection" style="height: 48px;">
+          <div class="brand-text">
+            <span style="color: var(--white); font-family: var(--font-serif); font-size: 1.4rem;">ROOHIRA</span>
+            <small style="color: var(--gold-light); font-size: 0.6rem; letter-spacing: 0.28em;">COLLECTION</small>
+          </div>
+        </a>
+        <p style="color: #C0B5AB; font-size: 0.9rem; line-height: 1.7; max-width: 320px; margin-bottom: 1.5rem;">
+          Sri Lanka's premier destination for custom apparel, handcrafted batik dresses, heavyweight t-shirts, and precision DTF printing with islandwide delivery.
+        </p>
+        <div class="social-links">
+          <a href="https://web.facebook.com/roohiraonline" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://wa.me/94757218786" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="tel:0757218786" title="Call Us"><i class="fa-solid fa-phone"></i></a>
         </div>
       </div>
 
-      <div class="footer-bottom">
-        <div>&copy; 2026 Roohira Collection. All Rights Reserved. Master of Timeless Elegance.</div>
-        <div class="d-flex gap-3">
-          <a href="#" style="color: inherit;">Privacy Policy</a>
-          <span>&bull;</span>
-          <a href="#" style="color: inherit;">Terms of Service</a>
-          <span>&bull;</span>
-          <a href="track.html" style="color: inherit;">Islandwide Logistics</a>
-        </div>
+      <!-- Quick Portals -->
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="customize.html">Custom Studio</a></li>
+          <li><a href="dtf.html">DTF Printing</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+        </ul>
+      </div>
+
+      <!-- Customer Service -->
+      <div class="footer-col">
+        <h4>Customer Care</h4>
+        <ul class="footer-links">
+          <li><a href="track-order.html">Track Your Order</a></li>
+          <li><a href="cart.html">Shopping Bag</a></li>
+          <li><a href="wishlist.html">Wishlist</a></li>
+          <li><a href="profile.html">My Account</a></li>
+          <li><a href="order-history.html">Order History</a></li>
+          <li><a href="index.html#email-subject">Contact &amp; Inquiries</a></li>
+        </ul>
+      </div>
+
+      <!-- Direct Contact & Hours -->
+      <div class="footer-col">
+        <h4>Direct Contact</h4>
+        <ul class="footer-links">
+          <li style="display: flex; align-items: center; gap: 10px; color: #C0B5AB;">
+            <i class="fa-solid fa-phone text-gold"></i>
+            <a href="tel:0757218786">075 721 8786</a>
+          </li>
+          <li style="display: flex; align-items: center; gap: 10px; color: #C0B5AB;">
+            <i class="fa-brands fa-whatsapp text-gold"></i>
+            <a href="https://wa.me/94757218786" target="_blank">WhatsApp Direct</a>
+          </li>
+          <li style="display: flex; align-items: center; gap: 10px; color: #C0B5AB;">
+            <i class="fa-solid fa-envelope text-gold"></i>
+            <a href="mailto:roohiraonline@gmail.com">roohiraonline@gmail.com</a>
+          </li>
+          <li style="display: flex; align-items: center; gap: 10px; color: #C0B5AB; font-size: 0.85rem;">
+            <i class="fa-solid fa-truck-fast text-gold"></i>
+            <span>Cash on Delivery Islandwide</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div class="footer-bottom">
+      <div>&copy; 2026 Roohira Collection. All Rights Reserved. Master of Timeless Elegance.</div>
+      <div class="d-flex gap-3">
+        <a href="shop.html">Privacy Policy</a>
+        <span>&bull;</span>
+        <a href="shop.html">Terms of Service</a>
+        <span>&bull;</span>
+        <a href="track-order.html">Islandwide Logistics</a>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- App-Style Mobile Bottom Navigation Bar -->
+  <div class="mobile-bottom-bar">
+    <a href="index.html" class="mobile-bottom-item active">
+      <i data-lucide="home"></i>
+      <span>Home</span>
+    </a>
+    <a href="shop.html" class="mobile-bottom-item">
+      <i data-lucide="shopping-bag"></i>
+      <span>Shop</span>
+    </a>
+    <a href="customize.html" class="mobile-bottom-item">
+      <i data-lucide="wand-2"></i>
+      <span>Design</span>
+    </a>
+    <a href="dtf.html" class="mobile-bottom-item">
+      <i data-lucide="printer"></i>
+      <span>DTF</span>
+    </a>
+    <a href="cart.html" class="mobile-bottom-item">
+      <i data-lucide="shopping-cart"></i>
+      <span>Cart</span>
+      <span class="badge-dot" id="mobile-bar-cart">0</span>
+    </a>
+  </div>
+
+  <!-- Firebase SDKs & App Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
-  <script src="db.js"></script>
-  <script src="app.js"></script>
+  <script src="script.js"></script>
   <script>
-    // Render featured products on Home Page
-    document.addEventListener("DOMContentLoaded", () => {
-      const grid = document.getElementById("homeFeaturedProducts");
-      if (!grid || !window.roohiraDB) return;
+    lucide.createIcons();
 
-      const products = window.roohiraDB.getProducts().slice(0, 8);
-      grid.innerHTML = products.map(p => `
-        <div class="product-card">
-          <div class="product-img-wrapper">
-            <img src="${p.image}" alt="${p.name}">
-            <div class="product-badges">
-              ${p.badge ? `<span class="badge ${p.badge === 'Sale' ? 'badge-sale' : 'badge-new'}">${p.badge}</span>` : ''}
-              ${p.stock <= 4 && p.stock > 0 ? `<span class="badge badge-low">Only ${p.stock} Left</span>` : ''}
-              ${p.stock === 0 ? `<span class="badge badge-out">Sold Out</span>` : ''}
-            </div>
-            <div class="card-quick-actions">
-              <button class="btn-quick-add" onclick="window.roohiraApp.addToCart('${p.id}', 1)">
-                <i class="fa-solid fa-bag-shopping"></i> Add to Bag
-              </button>
-              <a href="product.html?id=${p.id}" class="btn-quick-add" style="flex: 0 0 42px;" title="View Details">
-                <i class="fa-regular fa-eye"></i>
-              </a>
-            </div>
-          </div>
-          <div class="product-info">
-            <span class="product-category">${p.category}</span>
-            <h3 class="product-title">
-              <a href="product.html?id=${p.id}">${p.name}</a>
-            </h3>
-            <div class="product-rating">
-              <i class="fa-solid fa-star"></i>
-              <span>${p.rating} (${p.reviewsCount})</span>
-            </div>
-            <div class="product-price-box">
-              <span class="current-price">${window.roohiraApp.formatPrice(p.price)}</span>
-              ${p.oldPrice ? `<span class="old-price">${window.roohiraApp.formatPrice(p.oldPrice)}</span>` : ''}
-            </div>
-            <div class="stock-indicator">
-              <span class="stock-dot ${p.stock > 4 ? 'in' : (p.stock > 0 ? 'low' : 'out')}"></span>
-              <small style="color: var(--text-muted);">
-                ${p.stock > 4 ? 'In Stock' : (p.stock > 0 ? `Low Stock (${p.stock})` : 'Out of Stock')}
-              </small>
-            </div>
-          </div>
-        </div>
-      `).join("");
+    document.addEventListener('DOMContentLoaded', () => {
+        const heroTitle = document.querySelector('.hero-content h1');
+        const heroSubtitle = document.querySelector('.hero-content p');
+        const heroBtns = document.querySelector('.hero-content .hero-btns');
+        const heroStats = document.querySelector('.hero-content .hero-btns + div');
 
-      // Mobile Menu listeners
-      const mobileBtn = document.getElementById("mobileMenuBtn");
-      const overlay = document.getElementById("mobileMenuOverlay");
-      const closeBtn = document.getElementById("closeMobileMenuBtn");
-      if (mobileBtn && overlay) {
-        mobileBtn.addEventListener("click", () => overlay.classList.add("active"));
-        if (closeBtn) closeBtn.addEventListener("click", () => overlay.classList.remove("active"));
-        overlay.addEventListener("click", (e) => {
-          if (e.target.id === "mobileMenuOverlay") overlay.classList.remove("active");
+        function wrapWords(element) {
+            if (!element) return;
+            const nodes = Array.from(element.childNodes);
+            nodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent;
+                    const words = text.split(/(\s+)/);
+                    const fragment = document.createDocumentFragment();
+                    
+                    words.forEach(word => {
+                        if (word.trim().length > 0) {
+                            const span = document.createElement('span');
+                            span.className = 'word-drop';
+                            span.textContent = word;
+                            fragment.appendChild(span);
+                        } else {
+                            fragment.appendChild(document.createTextNode(word));
+                        }
+                    });
+                    node.parentNode.replaceChild(fragment, node);
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    wrapWords(node);
+                }
+            });
+        }
+
+        wrapWords(heroTitle);
+        wrapWords(heroSubtitle);
+
+        const titleWords = heroTitle ? heroTitle.querySelectorAll('.word-drop') : [];
+        const subtitleWords = heroSubtitle ? heroSubtitle.querySelectorAll('.word-drop') : [];
+        
+        let currentDelay = 0.1;
+        const delayStep = 0.08;
+
+        titleWords.forEach(word => {
+            word.style.animationDelay = `${currentDelay}s`;
+            currentDelay += delayStep;
         });
+
+        currentDelay += 0.15;
+
+        subtitleWords.forEach(word => {
+            word.style.animationDelay = `${currentDelay}s`;
+            currentDelay += delayStep * 0.7;
+        });
+
+        if (heroBtns) {
+            heroBtns.style.animation = `fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
+            heroBtns.style.animationDelay = `${currentDelay + 0.15}s`;
+        }
+        if (heroStats) {
+            heroStats.style.animation = `fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
+            heroStats.style.animationDelay = `${currentDelay + 0.3}s`;
+        }
+
+        if (typeof displayProducts !== 'undefined' && typeof products !== 'undefined') {
+            displayProducts(products.slice(0, 4));
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
       }
     });
+
+    function sendEmailViaGmail() {
+      const subjectInput = document.getElementById('email-subject');
+      const messageInput = document.getElementById('email-message');
+      
+      const subjectVal = subjectInput ? subjectInput.value.trim() : '';
+      const messageVal = messageInput ? messageInput.value.trim() : '';
+      
+      if (!messageVal) {
+        alert('Please enter your message / කරුණාකර පණිවිඩය ඇතුළත් කරන්න.');
+        return;
+      }
+      
+      const email = 'pythonstore2008@gmail.com';
+      const subject = encodeURIComponent(subjectVal || 'Customer Message');
+      const body = encodeURIComponent(messageVal);
+      
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
+      const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+      
+      const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        window.location.href = mailtoUrl;
+      } else {
+        const newWin = window.open(gmailUrl, '_blank');
+        if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+          window.location.href = mailtoUrl;
+        }
+      }
+      
+      if (subjectInput) subjectInput.value = '';
+      if (messageInput) messageInput.value = '';
+    }
+
+    let selectedHomeFrockColor = '#e6a100';
+    let selectedHomeFrockColorName = 'Dark Yellow';
+
+    const homeFrockImages = [
+      'https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png',
+      'https://i.ibb.co/5WMrGVJn/Chat-GPT-Image-Aug-3-2026-12-07-29-PM.png',
+      'https://i.ibb.co/twtnzycD/Chat-GPT-Image-Aug-3-2026-12-04-41-PM-1.png'
+    ];
+    let currentHomeFrockIndex = 0;
+
+    function setHomeFrockImage(index) {
+      currentHomeFrockIndex = index;
+      const imgEl = document.getElementById('home-frock-main-img');
+      if (imgEl) {
+        imgEl.style.opacity = '0.3';
+        setTimeout(() => {
+          imgEl.src = homeFrockImages[index];
+          imgEl.style.opacity = '1';
+        }, 150);
+      }
+      const thumbs = document.querySelectorAll('#home-frock-thumb-container .frock-thumb');
+      thumbs.forEach((t, i) => {
+        if (i === index) {
+          t.style.borderColor = '#8B5A2B';
+        } else {
+          t.style.borderColor = 'var(--border-color)';
+        }
+      });
+    }
+
+    // Auto-scroll images every 3.5 seconds
+    setInterval(() => {
+      currentHomeFrockIndex = (currentHomeFrockIndex + 1) % homeFrockImages.length;
+      setHomeFrockImage(currentHomeFrockIndex);
+    }, 3500);
+
+    function selectHomeFrockColor(hex, name, el) {
+      selectedHomeFrockColor = hex;
+      selectedHomeFrockColorName = name;
+      document.getElementById('selected-home-color-name').innerText = name;
+      const parent = el.parentElement;
+      parent.querySelectorAll('div').forEach(d => d.style.boxShadow = '0 0 0 1px var(--border-color)');
+      el.style.boxShadow = '0 0 0 2px #8B5A2B';
+    }
+
+    function orderHomeFrock(buyNow = false) {
+      const frock = products.find(p => p.id === '23') || {
+        name: 'Long Design Frock',
+        images: ['https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png']
+      };
+      addToCart(frock.name, 2250, frock.images[currentHomeFrockIndex], 'Free Size', selectedHomeFrockColor, 1);
+      if (buyNow) {
+        window.location.href = 'checkout.html';
+      }
+    }
+
+    // --- Long Batik Frock Card Logic ---
+    let selectedHomeBatikColor = '#0000ff';
+    let selectedHomeBatikColorName = 'Blue';
+    let selectedHomeBatikSize = 'XL';
+
+    function selectHomeBatikSize(size, el) {
+      selectedHomeBatikSize = size;
+      const parent = el.parentElement;
+      parent.querySelectorAll('span').forEach(s => {
+        s.style.background = 'var(--surface)';
+        s.style.color = 'var(--text-main)';
+        s.style.border = '1px solid var(--border-color)';
+      });
+      el.style.background = '#8B5A2B';
+      el.style.color = 'white';
+      el.style.border = 'none';
+    }
+
+    const homeBatikImages = [
+      'https://i.ibb.co/cdSLGG9/Chat-GPT-Image-Aug-3-2026-04-59-27-PM.png',
+      'https://i.ibb.co/yFMBjFbf/Chat-GPT-Image-Aug-3-2026-04-56-51-PM.png',
+      'https://i.ibb.co/20B313Xw/Aug-3-2026-04-53-46-PM.png',
+      'https://i.ibb.co/s9mgQnHb/Chat-GPT-Image-Aug-3-2026-04-46-45-PM.png'
+    ];
+    const homeBatikColorNames = ['Blue', 'Dark Yellow', 'Brown', 'Maroon'];
+    const homeBatikHexes = ['#0000ff', '#e6a100', '#8B4513', '#800000'];
+    let currentHomeBatikIndex = 0;
+
+    function setHomeBatikImage(index) {
+      currentHomeBatikIndex = index;
+      const imgEl = document.getElementById('home-batik-main-img');
+      if (imgEl) {
+        imgEl.style.opacity = '0.3';
+        setTimeout(() => {
+          imgEl.src = homeBatikImages[index];
+          imgEl.style.opacity = '1';
+        }, 150);
+      }
+      const thumbs = document.querySelectorAll('#home-batik-thumb-container .batik-thumb');
+      thumbs.forEach((t, i) => {
+        t.style.borderColor = (i === index) ? '#8B5A2B' : 'var(--border-color)';
+      });
+
+      // Highlight matching circle
+      const circles = document.querySelectorAll('#home-batik-color-circles > div');
+      circles.forEach((c, i) => {
+        c.style.boxShadow = (i === index) ? '0 0 0 2px #8B5A2B' : '0 0 0 1px var(--border-color)';
+      });
+      selectedHomeBatikColor = homeBatikHexes[index];
+      selectedHomeBatikColorName = homeBatikColorNames[index];
+      document.getElementById('selected-home-batik-color-name').innerText = selectedHomeBatikColorName;
+    }
+
+    function selectHomeBatikColor(index, hex, name, el) {
+      setHomeBatikImage(index);
+    }
+
+    // ======= Exclusive New Arrivals Slider =======
+
+
+    // ======= Exclusive New Arrivals Image Auto-scroll =======
+    window.naBatikSize = 'XL';
+    const naFrockImages = [
+      'https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png',
+      'https://i.ibb.co/5WMrGVJn/Chat-GPT-Image-Aug-3-2026-12-07-29-PM.png',
+      'https://i.ibb.co/twtnzycD/Chat-GPT-Image-Aug-3-2026-12-04-41-PM-1.png'
+    ];
+    const naFrockColors = ['Dark Yellow', 'Light Yellow', 'Maroon'];
+
+    const naBatikImages = [
+      'https://i.ibb.co/cdSLGG9/Chat-GPT-Image-Aug-3-2026-04-59-27-PM.png',
+      'https://i.ibb.co/yFMBjFbf/Chat-GPT-Image-Aug-3-2026-04-56-51-PM.png',
+      'https://i.ibb.co/20B313Xw/Aug-3-2026-04-53-46-PM.png',
+      'https://i.ibb.co/s9mgQnHb/Chat-GPT-Image-Aug-3-2026-04-46-45-PM.png'
+    ];
+    const naBatikColors = ['Blue', 'Dark Yellow', 'Brown', 'Maroon'];
+
+    let naFrockIdx = 0;
+    let naBatikIdx = 0;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Auto scroll images for Card 1 (Long Design Frock)
+      setInterval(() => {
+        naFrockIdx = (naFrockIdx + 1) % naFrockImages.length;
+        const imgEl = document.getElementById('na-img-1');
+        if (imgEl) {
+          imgEl.style.opacity = '0.3';
+          setTimeout(() => {
+            imgEl.src = naFrockImages[naFrockIdx];
+            imgEl.style.opacity = '1';
+            
+            // Highlight thumbnail
+            const container = imgEl.parentElement.nextElementSibling;
+            if (container) {
+              const thumbs = container.querySelectorAll('img');
+              thumbs.forEach((t, i) => {
+                t.style.borderColor = (i === naFrockIdx) ? '#8B5A2B' : 'var(--border-color)';
+              });
+            }
+
+            // Sync color label & color circle active state
+            document.getElementById('na-frock-color-label').innerText = naFrockColors[naFrockIdx];
+            const colorCircles = document.querySelectorAll('#frock-color-circles > div');
+            colorCircles.forEach((circle, i) => {
+              circle.style.boxShadow = (i === naFrockIdx) ? '0 0 0 2px #8B5A2B' : '0 0 0 1px var(--border-color)';
+            });
+          }, 150);
+        }
+      }, 3500);
+
+      // Auto scroll images for Card 2 (Long Batik Frock)
+      setInterval(() => {
+        naBatikIdx = (naBatikIdx + 1) % naBatikImages.length;
+        const imgEl = document.getElementById('na-img-2');
+        if (imgEl) {
+          imgEl.style.opacity = '0.3';
+          setTimeout(() => {
+            imgEl.src = naBatikImages[naBatikIdx];
+            imgEl.style.opacity = '1';
+
+            // Highlight thumbnail
+            const container = imgEl.parentElement.nextElementSibling;
+            if (container) {
+              const thumbs = container.querySelectorAll('img');
+              thumbs.forEach((t, i) => {
+                t.style.borderColor = (i === naBatikIdx) ? '#8B5A2B' : 'var(--border-color)';
+              });
+            }
+
+            // Sync color label & color circle active state
+            document.getElementById('na-batik-color-label').innerText = naBatikColors[naBatikIdx];
+            const colorCircles = document.querySelectorAll('#batik-color-circles > div');
+            colorCircles.forEach((circle, i) => {
+              circle.style.boxShadow = (i === naBatikIdx) ? '0 0 0 2px #8B5A2B' : '0 0 0 1px var(--border-color)';
+            });
+          }, 150);
+        }
+      }, 3500);
+    });
+
+    function naSwapImg(imgId, src, thumbEl) {
+      const imgEl = document.getElementById(imgId);
+      if (!imgEl) return;
+      imgEl.style.opacity = '0.3';
+      setTimeout(() => { imgEl.src = src; imgEl.style.opacity = '1'; }, 150);
+      
+      if (thumbEl && thumbEl.tagName === 'IMG') {
+        const siblings = thumbEl.parentElement ? thumbEl.parentElement.querySelectorAll('img') : [];
+        siblings.forEach(s => {
+          s.style.border = '1px solid rgba(60,42,33,0.2)';
+          s.style.opacity = '0.75';
+        });
+        thumbEl.style.border = '1.5px solid #8B5A2B';
+        thumbEl.style.opacity = '1';
+      } else {
+        const card = imgEl.closest('div[style*="border: 1.5px solid"]');
+        if (card) {
+          const thumbs = card.querySelectorAll('img[onclick*="naSwapImg"]');
+          thumbs.forEach(t => {
+            if (t.src === src) {
+              t.style.border = '1.5px solid #8B5A2B';
+              t.style.opacity = '1';
+            } else {
+              t.style.border = '1px solid rgba(60,42,33,0.2)';
+              t.style.opacity = '0.75';
+            }
+          });
+        }
+      }
+    }
+
+    function naPickColor(hex, name, labelId, el) {
+      const lbl = document.getElementById(labelId);
+      if (lbl) lbl.innerText = name;
+      const siblings = el.parentElement ? el.parentElement.querySelectorAll('div') : [];
+      siblings.forEach(s => s.style.boxShadow = 'none');
+      el.style.boxShadow = '0 0 0 2px #8B5A2B';
+    }
+
+    function naPickColorImg(hex, name, labelId, imgId, imgSrc, el) {
+      const lbl = document.getElementById(labelId);
+      if (lbl) lbl.innerText = name;
+      naSwapImg(imgId, imgSrc, el);
+      const siblings = el.parentElement ? el.parentElement.querySelectorAll('div') : [];
+      siblings.forEach(s => s.style.boxShadow = 'none');
+      el.style.boxShadow = '0 0 0 2px #8B5A2B';
+    }
+
+    window.naBlouseSize = 'XL';
+    function naPickBlouseSize(size, activeId, inactiveId1, inactiveId2) {
+      window.naBlouseSize = size;
+      const activeEl = document.getElementById(activeId);
+      const inactiveEl1 = document.getElementById(inactiveId1);
+      const inactiveEl2 = document.getElementById(inactiveId2);
+      if (activeEl) { activeEl.style.background = '#8B5A2B'; activeEl.style.color = 'white'; activeEl.style.border = 'none'; }
+      if (inactiveEl1) { inactiveEl1.style.background = 'var(--surface)'; inactiveEl1.style.color = 'var(--text-main)'; inactiveEl1.style.border = '1px solid var(--border-color)'; }
+      if (inactiveEl2) { inactiveEl2.style.background = 'var(--surface)'; inactiveEl2.style.color = 'var(--text-main)'; inactiveEl2.style.border = '1px solid var(--border-color)'; }
+    }
+
+    function naPickSize(size, activeId, inactiveId) {
+      window.naBatikSize = size;
+      const activeEl = document.getElementById(activeId);
+      const inactiveEl = document.getElementById(inactiveId);
+      if (activeEl) { activeEl.style.background = '#8B5A2B'; activeEl.style.color = 'white'; activeEl.style.border = 'none'; }
+      if (inactiveEl) { inactiveEl.style.background = 'var(--surface)'; inactiveEl.style.color = 'var(--text-main)'; inactiveEl.style.border = '1px solid var(--border-color)'; }
+    }
+
+    function naOrder(productName, price, imgId, size, colorLabelId, buyNow) {
+      const imgEl = document.getElementById(imgId);
+      const imgSrc = imgEl ? imgEl.src : '';
+      const colorEl = document.getElementById(colorLabelId);
+      const color = colorEl ? colorEl.innerText : '';
+      addToCart(productName, price, imgSrc, size, color, 1);
+      if (buyNow) window.location.href = 'checkout.html';
+    }
+
+    function naCardClick(el, cardNum) {
+      // Clicking a card slides to the next card; clicking the last card goes back to first
+      naResetAuto();
+      let next = naCurrentIndex + 1;
+      if (next >= naTotalCards) next = 0;
+      naScrollToCard(next);
+    }
   </script>
 </body>
+
 </html>

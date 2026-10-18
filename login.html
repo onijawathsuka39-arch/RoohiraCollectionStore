@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Roohira</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html">Customize</a></li>
+            <li><a href="offers.html">Offers</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="login.html" class="active"><i data-lucide="user"></i></a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #c8a96e; color: #0A0F1E; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <!-- Loading Overlay -->
+    <div id="auth-loading" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99999; flex-direction:column; align-items:center; justify-content:center; gap:18px; backdrop-filter: blur(8px);">
+        <div class="snake-loader-wrapper" style="position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+            <svg class="snake-svg" viewBox="0 0 100 100" style="width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.7)) drop-shadow(0 0 20px rgba(200, 169, 110, 0.4));">
+                <defs>
+                    <linearGradient id="snake-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#22c55e" />
+                        <stop offset="50%" stop-color="#c8a96e" />
+                        <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6" />
+                <circle class="snake-body" cx="50" cy="50" r="40" fill="none" stroke="url(#snake-gradient)" stroke-width="6" stroke-linecap="round" />
+            </svg>
+        </div>
+        <p style="color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:1px;">Please Wait...</p>
+    </div>
+
+    <main class="section" style="padding-top: 100px;">
+        <div class="auth-form glass">
+            <h2 style="text-align: center; margin-bottom: 30px;">Welcome <span style="color: #8B5A2B;">Back</span></h2>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="login-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter') doLogin()">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-container">
+                    <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+                    <button type="button" class="toggle-password" onclick="togglePass('login-pass', this)">
+                        <i class="eye-open" data-lucide="eye"></i>
+                        <i class="eye-closed" data-lucide="eye-off" style="display:none;"></i>
+                    </button>
+                </div>
+                <div style="text-align: right; margin-top: 8px;">
+                    <a href="#" onclick="forgotPassword(); return false;" style="color: #c8a96e; text-decoration: none; font-size: 0.85rem;">Forgot Password? (මුරපදය අමතකද?)</a>
+                </div>
+            </div>
+            <div id="login-error" style="display:none; background:#fdf2f2; color:#9b1c1c; padding:10px 15px; border-radius:10px; font-size:0.88rem; margin-bottom:10px; border-left:4px solid #DC143C;"></div>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="doLogin()">Sign In</button>
+            <p style="text-align: center; margin-top: 20px; color: var(--text-muted);">
+                Don't have an account? <a href="signup.html" style="color: #ff0000;">Create one</a>
+            </p>
+        </div>
+    </main>
+    <script>
+    // Toggle Password Visibility
+    function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const eyeOpen = btn.querySelector('.eye-open');
+        const eyeClosed = btn.querySelector('.eye-closed');
+        if (input.type === 'password') {
+            input.type = 'text';
+            eyeOpen.style.display = 'none';
+            eyeClosed.style.display = 'inline-block';
+        } else {
+            input.type = 'password';
+            eyeOpen.style.display = 'inline-block';
+            eyeClosed.style.display = 'none';
+        }
+    }
+
+    // Forgot Password flow via Firebase
+    function forgotPassword() {
+        const email = document.getElementById('login-email').value.trim();
+        const errEl = document.getElementById('login-error');
+        errEl.style.display = 'none';
+        
+        if (!email) {
+            errEl.textContent = '⚠️ කරුණාකර මුලින්ම ඔබගේ Email ලිපිනය ඇතුළත් කරන්න.';
+            errEl.style.background = '#fdf2f2';
+            errEl.style.color = '#9b1c1c';
+            errEl.style.borderLeft = '4px solid #DC143C';
+            errEl.style.display = 'block';
+            return;
+        }
+
+        document.getElementById('auth-loading').style.display = 'flex';
+
+        // Configure redirection URL dynamically to reset-password.html
+        const resetUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + 'reset-password.html';
+        const actionCodeSettings = {
+            url: resetUrl,
+            handleCodeInApp: true
+        };
+
+        auth.sendPasswordResetEmail(email, actionCodeSettings).then(() => {
+            document.getElementById('auth-loading').style.display = 'none';
+            errEl.textContent = '✉️ මුරපදය නැවත සැකසීමේ සබැඳිය (Password reset link) ඔබගේ Email ලිපිනයට යවා ඇත. කරුණාකර ඔබගේ Inbox/Spam පරික්ෂා කරන්න.';
+            errEl.style.background = '#edfdfd';
+            errEl.style.color = '#008080';
+            errEl.style.borderLeft = '4px solid #008080';
+            errEl.style.display = 'block';
+        }).catch((error) => {
+            document.getElementById('auth-loading').style.display = 'none';
+            let errMsg = 'Email එක යැවීමේදී දෝෂයක් ඇතිවිය. කරුණාකර නැවත උත්සාහ කරන්න.';
+            if (error.code === 'auth/user-not-found') {
+                errMsg = '⚠️ මෙම Email ලිපිනයෙන් ලියාපදිංචි වී ඇති ගිණුමක් සොයාගත නොහැක.';
+            } else if (error.code === 'auth/invalid-email') {
+                errMsg = '⚠️ ඇතුළත් කළ Email ලිපිනය වැරදියි.';
+            }
+            errEl.textContent = errMsg;
+            errEl.style.background = '#fdf2f2';
+            errEl.style.color = '#9b1c1c';
+            errEl.style.borderLeft = '4px solid #DC143C';
+            errEl.style.display = 'block';
+        });
+    }
+
+    function doLogin() {
+        const email = document.getElementById('login-email').value.trim();
+        const pass  = document.getElementById('login-pass').value;
+        const errEl = document.getElementById('login-error');
+        const btn   = document.getElementById('login-btn');
+        errEl.style.display = 'none';
+        errEl.style.background = '#fdf2f2';
+        errEl.style.color = '#9b1c1c';
+        errEl.style.borderLeft = '4px solid #DC143C';
+        if (!email || !pass) { errEl.textContent = '⚠️ Email සහ Password ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
+        document.getElementById('auth-loading').style.display = 'flex';
+        btn.disabled = true;
+        login(email, pass, function(errMsg) {
+            document.getElementById('auth-loading').style.display = 'none';
+            btn.disabled = false;
+            errEl.textContent = '⚠️ ' + errMsg;
+            errEl.style.display = 'block';
+        });
+    }
+    </script>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: #8B5A2B; font-weight: 800; font-family: 'Cinzel', serif; font-size: 1.8rem;">ROOHIRA</h4>
+                <p>Elevate your style with our premium, high-quality t-shirt collections.</p>
+                <div class="social-links">
+                    <a href="#"><i data-lucide="instagram"></i></a>
+                    <a href="#"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p>Call: 0757218786</p>
+                <p>Email: roohira@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Roohira. Powered by Roohira</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

@@ -1,0 +1,614 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews | Roohira</title>
+    <link rel="icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html">Customize</a></li>
+            <li><a href="offers.html">Offers</a></li>
+            <li><a href="reviews.html" class="active">Reviews</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="login.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="customize.html">Customize</a>
+        <a href="offers.html">Offers</a>
+        <a href="reviews.html" class="active">Reviews</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="profile.html">My Account</a>
+        <a href="cart.html">Cart</a>
+    </div>
+
+    <main class="reviews-container">
+        <div class="reviews-header">
+            <h1>Customer <span style="color: var(--accent-gold);">Reviews</span></h1>
+            <p>What our clients say about their Roohira T-shirts</p>
+        </div>
+
+        <!-- Dashboard: Average rating & Rating distribution -->
+        <div class="reviews-dashboard">
+            <div class="rating-overview-card glass">
+                <div class="average-rating-num" id="avg-rating">0.0</div>
+                <div class="stars-display" id="avg-stars">
+                    <!-- Dynamic stars -->
+                </div>
+                <div class="total-reviews-count" id="total-reviews-label">Based on 0 reviews</div>
+            </div>
+
+            <div class="rating-distribution-card glass">
+                <!-- 5 Stars -->
+                <div class="distribution-row">
+                    <span class="dist-label">5 <i data-lucide="star" style="width:14px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill" id="bar-5" style="width: 0%;"></div>
+                    </div>
+                    <span class="dist-count" id="count-5">0</span>
+                </div>
+                <!-- 4 Stars -->
+                <div class="distribution-row">
+                    <span class="dist-label">4 <i data-lucide="star" style="width:14px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill" id="bar-4" style="width: 0%;"></div>
+                    </div>
+                    <span class="dist-count" id="count-4">0</span>
+                </div>
+                <!-- 3 Stars -->
+                <div class="distribution-row">
+                    <span class="dist-label">3 <i data-lucide="star" style="width:14px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill" id="bar-3" style="width: 0%;"></div>
+                    </div>
+                    <span class="dist-count" id="count-3">0</span>
+                </div>
+                <!-- 2 Stars -->
+                <div class="distribution-row">
+                    <span class="dist-label">2 <i data-lucide="star" style="width:14px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill" id="bar-2" style="width: 0%;"></div>
+                    </div>
+                    <span class="dist-count" id="count-2">0</span>
+                </div>
+                <!-- 1 Star -->
+                <div class="distribution-row">
+                    <span class="dist-label">1 <i data-lucide="star" style="width:14px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill" id="bar-1" style="width: 0%;"></div>
+                    </div>
+                    <span class="dist-count" id="count-1">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-main-layout">
+            <!-- Feed side -->
+            <div class="reviews-feed-column">
+                <div class="feed-header">
+                    <h3>All Reviews</h3>
+                    <select class="feed-sort-select" id="sort-select" onchange="loadReviewsFromDb()">
+                        <option value="newest">Newest First</option>
+                        <option value="highest">Highest Rating</option>
+                        <option value="lowest">Lowest Rating</option>
+                    </select>
+                </div>
+                
+                <div class="reviews-feed-container" id="reviews-feed">
+                    <div class="no-reviews-placeholder">
+                        <i data-lucide="message-square"></i>
+                        <p>No reviews yet. Be the first to write a review!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form side -->
+            <div class="write-review-card glass">
+                <h3>Write a Review</h3>
+                <form class="review-form" id="review-form" onsubmit="submitReview(event)">
+                    <div class="form-group">
+                        <label>Your Rating</label>
+                        <div class="star-rating-select" id="rating-selector">
+                            <i data-lucide="star" data-rating="1" onclick="setRating(1)" onmouseenter="hoverRating(1)" onmouseleave="clearHoverRating()"></i>
+                            <i data-lucide="star" data-rating="2" onclick="setRating(2)" onmouseenter="hoverRating(2)" onmouseleave="clearHoverRating()"></i>
+                            <i data-lucide="star" data-rating="3" onclick="setRating(3)" onmouseenter="hoverRating(3)" onmouseleave="clearHoverRating()"></i>
+                            <i data-lucide="star" data-rating="4" onclick="setRating(4)" onmouseenter="hoverRating(4)" onmouseleave="clearHoverRating()"></i>
+                            <i data-lucide="star" data-rating="5" onclick="setRating(5)" onmouseenter="hoverRating(5)" onmouseleave="clearHoverRating()"></i>
+                        </div>
+                        <input type="hidden" id="selected-rating" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewer-name">Your Name</label>
+                        <input type="text" id="reviewer-name" placeholder="e.g. John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewer-comment">Review Description</label>
+                        <textarea id="reviewer-comment" rows="5" placeholder="Share your experience with our premium shirts..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-review-btn" id="submit-btn">
+                        <i data-lucide="send" style="width:16px;"></i> Submit Review
+                    </button>
+
+                    <div class="submit-success-msg" id="success-msg">
+                        Your review was successfully submitted! Thank you.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+        <footer class="footer" style="padding: 60px 10% 30px; border-top: 2px solid rgba(255, 20, 147, 0.3); background: #ffffff !important; color: #000000 !important;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left;">
+      <!-- Brand & About -->
+      <div>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #000000 !important;">
+          <span style="color: #8B5A2B !important;">Roohira</span> <span style="color: #000000 !important;">Collection</span>
+        </h3>
+        <p style="color: #000000 !important; font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px;">
+          Elevate your style with our premium, high-quality clothing collection. Designed for those who appreciate excellence.
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://web.facebook.com/roohiraonline" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;" title="Facebook"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+          <a href="https://www.instagram.com/" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;" title="Instagram"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+          <a href="https://wa.me/94757218786" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #25D366 !important; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;" title="WhatsApp"><i data-lucide="message-circle" style="width: 18px; height: 18px;"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Quick Links</h4>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+          <li><a href="shop.html" style="color: #000000 !important; text-decoration: none;">Shop All</a></li>
+          <li><a href="customize.html" style="color: #000000 !important; text-decoration: none;">Custom Design</a></li>
+          <li><a href="offers.html" style="color: #000000 !important; text-decoration: none;">Special Offers</a></li>
+          <li><a href="profile.html" style="color: #000000 !important; text-decoration: none;">My Account</a></li>
+          <li><a href="index.html#email-subject" style="color: #000000 !important; text-decoration: none;">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Contact Us</h4>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
+          <li>
+            <a href="tel:0757218786" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="phone" style="width: 16px; height: 16px; color: #8B5A2B;"></i> Call: 0757218786
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/94757218786" target="_blank" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="message-square" style="width: 16px; height: 16px; color: #25D366;"></i> WhatsApp: 0757218786
+            </a>
+          </li>
+          <li>
+            <a href="mailto:roohiraonline@gmail.com" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="mail" style="width: 16px; height: 16px; color: #8B5A2B;"></i> roohiraonline@gmail.com
+            </a>
+          </li>
+          <li>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="facebook" style="width: 16px; height: 16px; color: #8B5A2B;"></i> facebook.com/roohiraonline
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div style="border-top: 1px solid #e0e0e0; padding-top: 25px; text-align: center; color: #000000 !important; font-size: 0.85rem;">
+      <p style="color: #000000 !important;">&copy; 2026 Roohira Collection. All rights reserved.</p>
+    </div>
+  </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Local rating state
+        let currentRatingVal = 0;
+        let loggedInEmail = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check auth state
+            if (typeof auth !== 'undefined' && auth) {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        loggedInEmail = user.email;
+                        // Fetch user name from Firestore if possible
+                        db.collection('users').doc(user.uid).get().then((doc) => {
+                            if (doc.exists && doc.data().name) {
+                                document.getElementById('reviewer-name').value = doc.data().name;
+                            } else {
+                                document.getElementById('reviewer-name').value = user.email.split('@')[0];
+                            }
+                        }).catch(() => {
+                            document.getElementById('reviewer-name').value = user.email.split('@')[0];
+                        });
+                    }
+                });
+            } else {
+                // Fallback to local storage user
+                try {
+                    const localUser = JSON.parse(localStorage.getItem('roohira_user'));
+                    if (localUser && localUser.name) {
+                        document.getElementById('reviewer-name').value = localUser.name;
+                    }
+                } catch(e) {}
+            }
+
+            // Load initial reviews
+            loadReviewsFromDb();
+        });
+
+        // Interactive Rating Actions
+        function setRating(rating) {
+            currentRatingVal = rating;
+            document.getElementById('selected-rating').value = rating;
+            updateStarClasses();
+        }
+
+        function hoverRating(rating) {
+            const stars = document.querySelectorAll('#rating-selector i, #rating-selector svg');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('hovered');
+                } else {
+                    star.classList.remove('hovered');
+                }
+            });
+        }
+
+        function clearHoverRating() {
+            const stars = document.querySelectorAll('#rating-selector i, #rating-selector svg');
+            stars.forEach((star) => {
+                star.classList.remove('hovered');
+            });
+            updateStarClasses();
+        }
+
+        function updateStarClasses() {
+            const stars = document.querySelectorAll('#rating-selector i, #rating-selector svg');
+            stars.forEach((star, index) => {
+                if (index < currentRatingVal) {
+                    star.classList.add('selected');
+                    star.setAttribute('fill', 'currentColor');
+                } else {
+                    star.classList.remove('selected');
+                    star.removeAttribute('fill');
+                }
+            });
+        }
+
+        // Detect device / platform information
+        function getDeviceType() {
+            const width = window.innerWidth;
+            if (width < 768) {
+                return "Mobile Phone";
+            } else if (width < 1024) {
+                return "Tablet";
+            } else {
+                return "Desktop / Laptop";
+            }
+        }
+
+        // Submit review to DB
+        function submitReview(e) {
+            e.preventDefault();
+
+            const ratingInput = parseInt(document.getElementById('selected-rating').value);
+            const nameInput = document.getElementById('reviewer-name').value.trim();
+            const commentInput = document.getElementById('reviewer-comment').value.trim();
+            const submitBtn = document.getElementById('submit-btn');
+            const successMsg = document.getElementById('success-msg');
+
+            if (ratingInput === 0) {
+                alert('Please select a star rating / කරුණාකර තරු ශ්‍රේණිගත කිරීමක් තෝරන්න.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="spinner" style="display:inline-block; width:16px; height:16px; border:2px solid #fff; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite;"></i> Submitting...';
+
+            const reviewData = {
+                name: nameInput,
+                rating: ratingInput,
+                comment: commentInput,
+                timestamp: (typeof firebase !== 'undefined' ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()),
+                email: loggedInEmail || '',
+                device: getDeviceType()
+            };
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('reviews').add(reviewData)
+                    .then(() => {
+                        handleSuccessfulSubmit();
+                    })
+                    .catch((err) => {
+                        console.error("Firebase Firestore Error: ", err);
+                        // Save locally as fallback if offline/error
+                        saveReviewLocally(reviewData);
+                        handleSuccessfulSubmit();
+                    });
+            } else {
+                // Fallback to local storage if Firebase not loaded
+                saveReviewLocally(reviewData);
+                handleSuccessfulSubmit();
+            }
+        }
+
+        function saveReviewLocally(review) {
+            let localReviews = [];
+            try {
+                localReviews = JSON.parse(localStorage.getItem('local_customer_reviews')) || [];
+            } catch(e) {}
+            // Inject human readable local date
+            review.timestampLocal = new Date().toISOString();
+            localReviews.push(review);
+            localStorage.setItem('local_customer_reviews', JSON.stringify(localReviews));
+        }
+
+        function handleSuccessfulSubmit() {
+            const submitBtn = document.getElementById('submit-btn');
+            const successMsg = document.getElementById('success-msg');
+
+            // Reset Form Fields
+            document.getElementById('reviewer-comment').value = '';
+            setRating(0);
+
+            // Show Success Notification
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 6000);
+
+            // Reset Button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i data-lucide="send" style="width:16px;"></i> Submit Review';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Refresh feed
+            loadReviewsFromDb();
+        }
+
+        // Fetch reviews, calculate stats, render feed
+        function loadReviewsFromDb() {
+            const feedContainer = document.getElementById('reviews-feed');
+            const sortVal = document.getElementById('sort-select').value;
+
+            // Load local fallback reviews
+            let fallbackReviews = [];
+            try {
+                fallbackReviews = JSON.parse(localStorage.getItem('local_customer_reviews')) || [];
+            } catch(e) {}
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('reviews').get().then((querySnapshot) => {
+                    let reviews = [];
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        // Format Firebase timestamp
+                        let reviewDate = new Date();
+                        if (data.timestamp) {
+                            reviewDate = data.timestamp.seconds ? new Date(data.timestamp.seconds * 1000) : new Date(data.timestamp);
+                        }
+                        reviews.push({
+                            id: doc.id,
+                            name: data.name || 'Anonymous',
+                            rating: data.rating || 5,
+                            comment: data.comment || '',
+                            date: reviewDate,
+                            email: data.email || '',
+                            device: data.device || 'Web Device'
+                        });
+                    });
+
+                    // Add fallback reviews
+                    fallbackReviews.forEach((item, index) => {
+                        reviews.push({
+                            id: 'local_' + index,
+                            name: item.name || 'Anonymous',
+                            rating: item.rating || 5,
+                            comment: item.comment || '',
+                            date: new Date(item.timestampLocal || item.timestamp),
+                            email: item.email || '',
+                            device: item.device || 'Local Device'
+                        });
+                    });
+
+                    processAndRenderReviews(reviews, sortVal);
+                }).catch((err) => {
+                    console.error("Error getting Firestore reviews: ", err);
+                    renderOnlyLocal(fallbackReviews, sortVal);
+                });
+            } else {
+                renderOnlyLocal(fallbackReviews, sortVal);
+            }
+        }
+
+        function renderOnlyLocal(fallbackReviews, sortVal) {
+            let reviews = fallbackReviews.map((item, index) => ({
+                id: 'local_' + index,
+                name: item.name || 'Anonymous',
+                rating: item.rating || 5,
+                comment: item.comment || '',
+                date: new Date(item.timestampLocal || item.timestamp),
+                email: item.email || '',
+                device: item.device || 'Local Device'
+            }));
+            processAndRenderReviews(reviews, sortVal);
+        }
+
+        function processAndRenderReviews(reviews, sortVal) {
+            const feedContainer = document.getElementById('reviews-feed');
+            
+            // Calculate stats
+            const total = reviews.length;
+            document.getElementById('total-reviews-label').innerText = `Based on ${total} review${total === 1 ? '' : 's'}`;
+
+            if (total === 0) {
+                document.getElementById('avg-rating').innerText = '0.0';
+                document.getElementById('avg-stars').innerHTML = getStarsHtml(0);
+                resetDistributionBars();
+                feedContainer.innerHTML = `
+                    <div class="no-reviews-placeholder">
+                        <i data-lucide="message-square" style="width: 48px; height: 48px; color: var(--border-color); margin-bottom: 20px;"></i>
+                        <p>No reviews yet. Be the first to write a review!</p>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                return;
+            }
+
+            let sum = 0;
+            let counts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
+            
+            reviews.forEach((r) => {
+                sum += r.rating;
+                if (counts[r.rating] !== undefined) {
+                    counts[r.rating]++;
+                }
+            });
+
+            const avg = (sum / total).toFixed(1);
+            document.getElementById('avg-rating').innerText = avg;
+            document.getElementById('avg-stars').innerHTML = getStarsHtml(avg);
+
+            // Update distributions
+            for (let i = 1; i <= 5; i++) {
+                const count = counts[i];
+                const pct = ((count / total) * 100).toFixed(0);
+                document.getElementById(`count-${i}`).innerText = count;
+                document.getElementById(`bar-${i}`).style.width = `${pct}%`;
+            }
+
+            // Sort reviews
+            if (sortVal === 'newest') {
+                reviews.sort((a, b) => b.date - a.date);
+            } else if (sortVal === 'highest') {
+                reviews.sort((a, b) => b.rating - a.rating || b.date - a.date);
+            } else if (sortVal === 'lowest') {
+                reviews.sort((a, b) => a.rating - b.rating || b.date - a.date);
+            }
+
+            // Render feed
+            feedContainer.innerHTML = '';
+            reviews.forEach((r) => {
+                const avatarChar = r.name.charAt(0).toUpperCase();
+                const starsHtml = getStarsHtml(r.rating);
+                const formattedDate = r.date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                feedContainer.innerHTML += `
+                    <div class="review-card glass">
+                        <div class="review-card-top">
+                            <div class="reviewer-profile">
+                                <div class="reviewer-avatar">${avatarChar}</div>
+                                <div class="reviewer-details">
+                                    <h4>${escapeHtml(r.name)}</h4>
+                                    <span class="review-date">${formattedDate}</span>
+                                </div>
+                            </div>
+                            <div class="review-card-stars">
+                                ${starsHtml}
+                            </div>
+                        </div>
+                        <p class="review-comment">${escapeHtml(r.comment)}</p>
+                        <div class="review-device">
+                            <i data-lucide="tablet-smartphone" style="width:13px;height:13px;"></i>
+                            <span>via ${r.device}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function resetDistributionBars() {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`count-${i}`).innerText = '0';
+                document.getElementById(`bar-${i}`).style.width = '0%';
+            }
+        }
+
+        function getStarsHtml(rating) {
+            let html = '';
+            const floorRating = Math.floor(rating);
+            for (let i = 1; i <= 5; i++) {
+                if (i <= floorRating) {
+                    html += '<i data-lucide="star" style="width:16px;height:16px;fill:currentColor;"></i>';
+                } else if (i === floorRating + 1 && rating % 1 >= 0.5) {
+                    // Approximate half star with full star but we will draw full star to keep simple compatibility
+                    html += '<i data-lucide="star" style="width:16px;height:16px;fill:currentColor;"></i>';
+                } else {
+                    html += '<i data-lucide="star" class="empty" style="width:16px;height:16px;"></i>';
+                }
+            }
+            return html;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            display: inline-block;
+        }
+    </style>
+</body>
+
+</html>

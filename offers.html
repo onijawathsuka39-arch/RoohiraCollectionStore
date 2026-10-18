@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offers | Roohira</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html">Customize</a></li>
+            <li><a href="offers.html" class="active">Offers</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="login.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="customize.html">Customize</a>
+        <a href="offers.html">Offers</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="profile.html">My Account</a>
+        <a href="cart.html">Cart</a>
+    </div>
+
+    <main class="section" style="padding-top: 150px;">
+        <div class="section-title">
+            <h2>Special <span style="color: #ff0000;">Offers</span></h2>
+            <p>Don't miss out on these exclusive deals</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+            <!-- Offer Card 1: Price Drop -->
+            <div class="glass" style="padding: 40px; border: 1px solid rgba(220, 20, 60, 0.4); border-radius: 24px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(220, 20, 60, 0.08);">
+                <div>
+                    <span class="hero-tag" style="background: #DC143C; color: #fff; border-color: #DC143C; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;">PRICE DROP</span>
+                    <h3 style="margin: 20px 0 10px; font-size: 2.2rem; font-weight: 900; color: var(--text-main);">Rs. 1,800 <span style="font-size: 1.2rem; text-decoration: line-through; color: var(--text-muted); font-weight: 600;">Rs. 1,850</span></h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px; font-weight: 700; font-size: 1.05rem;">220 GSM Regular Fit Tees (A3 DTF Print)</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); opacity: 0.85; margin-bottom: 30px; line-height: 1.6;">Premium heavyweight cotton tees with vibrant A3 DTF graphics now available at a reduced price.</p>
+                </div>
+                <a href="shop.html?category=Regular Tee (Printed)" class="btn" style="width: 100%; text-align: center; background: #DC143C; color: white; border-radius: 50px; padding: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(220, 20, 60, 0.4); transition: 0.3s; text-decoration: none;">EXPLORE REGULAR TEES →</a>
+            </div>
+
+            <!-- Offer Card 2: Jumbo Print Scale -->
+            <div class="glass" style="padding: 40px; border: 1px solid var(--border-color); border-radius: 24px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <div>
+                    <span class="hero-tag" style="background: var(--text-main); color: var(--surface); border-color: var(--text-main); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;">JUMBO PRINT SCALE</span>
+                    <h3 style="margin: 20px 0 10px; font-size: 2.2rem; font-weight: 900; color: var(--text-main);">Rs. 2,100</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px; font-weight: 700; font-size: 1.05rem;">A2 Jumbo Size Print Upgrade</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); opacity: 0.85; margin-bottom: 30px; line-height: 1.6;">Go huge with our massive A2 oversized artwork print scale on your favorite 220 GSM regular fit tees.</p>
+                </div>
+                <a href="shop.html?category=Regular Tee (Printed)" class="btn" style="width: 100%; text-align: center; background: var(--text-main); color: var(--surface); border-radius: 50px; padding: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; text-decoration: none;">CHOOSE YOUR SIZE →</a>
+            </div>
+
+            <!-- Offer Card 3: Free Delivery -->
+            <div class="glass" style="padding: 40px; border: 1px solid rgba(46, 125, 50, 0.4); border-radius: 24px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(46, 125, 50, 0.08);">
+                <div>
+                    <span class="hero-tag" style="background: #2e7d32; color: #fff; border-color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;">FREE SHIPPING</span>
+                    <h3 style="margin: 20px 0 10px; font-size: 2rem; font-weight: 900; color: #2e7d32;">100% FREE DELIVERY</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px; font-weight: 700; font-size: 1.05rem;">Islandwide Delivery for 4+ Items</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); opacity: 0.85; margin-bottom: 30px; line-height: 1.6;">Mix & match any 4 or more items from our store and get completely free delivery anywhere in Sri Lanka.</p>
+                </div>
+                <a href="shop.html" class="btn" style="width: 100%; text-align: center; background: #2e7d32; color: white; border-radius: 50px; padding: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(46, 125, 50, 0.3); transition: 0.3s; text-decoration: none;">SHOP THE COLLECTION →</a>
+            </div>
+        </div>
+    </main>
+
+        <footer class="footer" style="padding: 60px 10% 30px; border-top: 2px solid rgba(255, 20, 147, 0.3); background: #ffffff !important; color: #000000 !important;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left;">
+      <!-- Brand & About -->
+      <div>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #000000 !important;">
+          <span style="color: #8B5A2B !important;">Roohira</span> <span style="color: #000000 !important;">Collection</span>
+        </h3>
+        <p style="color: #000000 !important; font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px;">
+          Elevate your style with our premium, high-quality clothing collection. Designed for those who appreciate excellence.
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <a href="https://web.facebook.com/roohiraonline" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;" title="Facebook"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+          <a href="https://www.instagram.com/" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;" title="Instagram"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+          <a href="https://wa.me/94757218786" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #25D366 !important; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s;" title="WhatsApp"><i data-lucide="message-circle" style="width: 18px; height: 18px;"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Quick Links</h4>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+          <li><a href="shop.html" style="color: #000000 !important; text-decoration: none;">Shop All</a></li>
+          <li><a href="customize.html" style="color: #000000 !important; text-decoration: none;">Custom Design</a></li>
+          <li><a href="offers.html" style="color: #000000 !important; text-decoration: none;">Special Offers</a></li>
+          <li><a href="profile.html" style="color: #000000 !important; text-decoration: none;">My Account</a></li>
+          <li><a href="index.html#email-subject" style="color: #000000 !important; text-decoration: none;">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Contact Us</h4>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
+          <li>
+            <a href="tel:0757218786" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="phone" style="width: 16px; height: 16px; color: #8B5A2B;"></i> Call: 0757218786
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/94757218786" target="_blank" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="message-square" style="width: 16px; height: 16px; color: #25D366;"></i> WhatsApp: 0757218786
+            </a>
+          </li>
+          <li>
+            <a href="mailto:roohiraonline@gmail.com" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="mail" style="width: 16px; height: 16px; color: #8B5A2B;"></i> roohiraonline@gmail.com
+            </a>
+          </li>
+          <li>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="facebook" style="width: 16px; height: 16px; color: #8B5A2B;"></i> facebook.com/roohiraonline
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div style="border-top: 1px solid #e0e0e0; padding-top: 25px; text-align: center; color: #000000 !important; font-size: 0.85rem;">
+      <p style="color: #000000 !important;">&copy; 2026 Roohira Collection. All rights reserved.</p>
+    </div>
+  </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Roohira</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html">Customize</a></li>
+            <li><a href="offers.html">Offers</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="login.html" class="active"><i data-lucide="user"></i></a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #c8a96e; color: #0A0F1E; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <!-- Loading Overlay -->
+    <div id="auth-loading" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99999; flex-direction:column; align-items:center; justify-content:center; gap:18px; backdrop-filter: blur(8px);">
+        <div class="snake-loader-wrapper" style="position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+            <svg class="snake-svg" viewBox="0 0 100 100" style="width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.7)) drop-shadow(0 0 20px rgba(200, 169, 110, 0.4));">
+                <defs>
+                    <linearGradient id="snake-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#22c55e" />
+                        <stop offset="50%" stop-color="#c8a96e" />
+                        <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6" />
+                <circle class="snake-body" cx="50" cy="50" r="40" fill="none" stroke="url(#snake-gradient)" stroke-width="6" stroke-linecap="round" />
+            </svg>
+        </div>
+        <p style="color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:1px;">Creating Account...</p>
+    </div>
+
+    <main class="section" style="padding-top: 100px;">
+        <div class="auth-form glass" style="max-width:500px;">
+            <h2 style="text-align: center; margin-bottom: 30px;">Join <span style="color: #8B5A2B;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span></h2>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="signup-name" placeholder="John Doe" onkeydown="if(event.key==='Enter') doSignup()">
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="signup-phone" placeholder="07X XXX XXXX" onkeydown="if(event.key==='Enter') doSignup()">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" id="signup-address" placeholder="No. 12, Main Street, Colombo" onkeydown="if(event.key==='Enter') doSignup()">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="signup-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter') doSignup()">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-container">
+                    <input type="password" id="signup-pass" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter') doSignup()">
+                    <button type="button" class="toggle-password" onclick="togglePass('signup-pass', this)">
+                        <i class="eye-open" data-lucide="eye"></i>
+                        <i class="eye-closed" data-lucide="eye-off" style="display:none;"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="signup-error" style="display:none; background:#fdf2f2; color:#9b1c1c; padding:10px 15px; border-radius:10px; font-size:0.88rem; margin-bottom:10px; border-left:4px solid #DC143C;"></div>
+            <button id="signup-btn" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="doSignup()">Create Account</button>
+            <p style="text-align: center; margin-top: 20px; color: var(--text-muted);">
+                Already have an account? <a href="login.html" style="color: #c8a96e;">Sign in</a>
+            </p>
+        </div>
+    </main>
+    <script>
+    function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const eyeOpen = btn.querySelector('.eye-open');
+        const eyeClosed = btn.querySelector('.eye-closed');
+        if (input.type === 'password') {
+            input.type = 'text';
+            eyeOpen.style.display = 'none';
+            eyeClosed.style.display = 'inline-block';
+        } else {
+            input.type = 'password';
+            eyeOpen.style.display = 'inline-block';
+            eyeClosed.style.display = 'none';
+        }
+    }
+
+    document.getElementById('signup-pass').addEventListener('input', function() {
+        this.classList.toggle('password-valid', this.value.length >= 6);
+    });
+
+    function doSignup() {
+        const name    = document.getElementById('signup-name').value.trim();
+        const phone   = document.getElementById('signup-phone').value.trim();
+        const address = document.getElementById('signup-address').value.trim();
+        const email   = document.getElementById('signup-email').value.trim();
+        const pass    = document.getElementById('signup-pass').value;
+        const errEl   = document.getElementById('signup-error');
+        const btn     = document.getElementById('signup-btn');
+        errEl.style.display = 'none';
+        if (!name)    { errEl.textContent = '⚠️ නම ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
+        if (!phone)   { errEl.textContent = '⚠️ දුරකථන අංකය ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
+        if (!address) { errEl.textContent = '⚠️ ලිපිනය ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
+        if (!email)   { errEl.textContent = '⚠️ Email ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
+        if (pass.length < 6) { errEl.textContent = '⚠️ Password අවම වශයෙන් අකුරු 6ක් විය යුතුයි.'; errEl.style.display='block'; return; }
+        document.getElementById('auth-loading').style.display = 'flex';
+        btn.disabled = true;
+        signup(name, email, pass, phone, address, function(errMsg) {
+            document.getElementById('auth-loading').style.display = 'none';
+            btn.disabled = false;
+            errEl.textContent = '⚠️ ' + errMsg;
+            errEl.style.display = 'block';
+        });
+    }
+    </script>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: #8B5A2B; font-weight: 800; font-family: 'Cinzel', serif; font-size: 1.8rem;">ROOHIRA</h4>
+                <p>Elevate your style with our premium, high-quality t-shirt collections.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p>Call: 0757218786</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Roohira. Powered by Roohira</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

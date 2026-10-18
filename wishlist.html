@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist | Roohira</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html">Customize</a></li>
+            <li><a href="offers.html">Offers</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="login.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" class="active" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #c8a96e; color: #0A0F1E; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="customize.html">Customize</a>
+        <a href="offers.html">Offers</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="profile.html">My Account</a>
+        <a href="cart.html">Cart</a>
+    </div>
+
+    <main class="section" style="padding-top: 150px; min-height: 80vh;">
+        <div class="section-title">
+            <h2>My <span style="color: #ff0000;">Wishlist</span></h2>
+            <p>Save items you love to purchase later</p>
+        </div>
+
+        <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+            <div id="wishlist-grid" class="product-grid">
+                <!-- Wishlist items will be rendered here dynamically -->
+            </div>
+            
+            <div id="wishlist-empty" style="display: none; text-align: center; padding: 80px 20px;">
+                <div class="glass" style="display: inline-block; padding: 40px 60px; border-radius: 24px; border: 1px dashed var(--border-color); max-width: 450px;">
+                    <i data-lucide="heart" style="width: 48px; height: 48px; color: #DC143C; margin-bottom: 20px; stroke-width: 1.5;"></i>
+                    <h3 style="margin-bottom: 10px; font-weight: 800;">Your Wishlist is Empty</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Explore our products and tap the heart icon on your favorite items to save them here.</p>
+                    <a href="shop.html" class="btn btn-primary" style="display: inline-block;">GO TO SHOP</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: #8B5A2B; font-weight: 800; font-family: 'Cinzel', serif; font-size: 1.8rem;">ROOHIRA</h4>
+                <p>Elevate your style with our premium, high-quality t-shirt collections. Designed for those who appreciate excellence.</p>
+                <div class="social-links">
+                    <a href="#"><i data-lucide="instagram"></i></a>
+                    <a href="#"><i data-lucide="facebook"></i></a>
+                    <a href="#"><i data-lucide="twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="shop.html">Shop All</a>
+                <a href="customize.html">Custom Design</a>
+                <a href="offers.html">Special Offers</a>
+                <a href="profile.html">My Account</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p><i data-lucide="phone" style="width: 16px; margin-right: 10px;"></i> Call: 0757218786</p>
+                <p><i data-lucide="message-circle" style="width: 16px; margin-right: 10px;"></i> WhatsApp: 0757218786</p>
+                <p><i data-lucide="mail" style="width: 16px; margin-right: 10px;"></i> roohira@gmail.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function renderWishlist() {
+            const grid = document.getElementById('wishlist-grid');
+            const emptyState = document.getElementById('wishlist-empty');
+            if (!grid || !emptyState) return;
+
+            wishlist = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
+            
+            if (wishlist.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            grid.innerHTML = '';
+
+            const wishedProducts = products.filter(p => wishlist.includes(p.id));
+            
+            wishedProducts.forEach(p => {
+                const hasSizes = p.sizes && typeof p.sizes === 'object';
+                const displayPrice = hasSizes ? Object.values(p.sizes)[0].price : p.price;
+                const displayOldPrice = hasSizes ? Object.values(p.sizes)[0].oldPrice : p.oldPrice;
+
+                let discountBadge = '';
+                if (displayOldPrice && displayOldPrice > displayPrice) {
+                    const discountPercent = Math.round(((displayOldPrice - displayPrice) / displayOldPrice) * 100);
+                    discountBadge = `<span style="position: absolute; top: 15px; left: 15px; background: #DC143C; color: white; padding: 5px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; z-index: 10;">${discountPercent}% OFF</span>`;
+                }
+
+                grid.innerHTML += `
+                <div class="product-card glass" style="cursor: pointer; position: relative;" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                    <div class="product-image" style="overflow: hidden; position: relative; width: 100%; aspect-ratio: 1/1; border-radius: 15px;">
+                        ${discountBadge}
+                        <div class="wishlist-overlay-btn" onclick="event.stopPropagation(); removeWishlistItem('${p.id}')" 
+                             style="position: absolute; top: 15px; right: 15px; background: var(--surface); border: 1px solid var(--border-color); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 12; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"
+                             title="Remove from Wishlist">
+                            <i data-lucide="trash-2" style="width: 18px; height: 18px; color: #ff4444;"></i>
+                        </div>
+                        <img src="${p.images[0]}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <span style="font-size: 0.7rem; color: #DC143C; font-weight: 800; display: block; margin-bottom: 5px;">${p.category || ''}</span>
+                        <h3 style="margin-top: 0;">${p.name}</h3>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <p class="price">Rs. ${displayPrice.toLocaleString()}.00</p>
+                            ${displayOldPrice ? `<p style="text-decoration: line-through; color: var(--text-muted); font-size: 0.8rem;">Rs. ${displayOldPrice.toLocaleString()}</p>` : ''}
+                        </div>
+                    </div>
+                    ${p.stock === 0 ? '' : `
+                    <div class="add-to-cart" onclick="event.stopPropagation(); addToCart('${p.name}', ${displayPrice}, '${p.images[0]}')">
+                        <i data-lucide="plus"></i>
+                    </div>
+                    `}
+                </div>`;
+            });
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function removeWishlistItem(productId) {
+            toggleWishlist(productId);
+            showNotification('Removed from Wishlist!');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderWishlist();
+        });
+    </script>
+</body>
+
+</html>

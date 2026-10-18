@@ -1,94 +1,65 @@
 <?php
-/**
- * ROOHIRA WEB STORE - CONTACT & DIRECT INQUIRY EMAIL SENDER
- * Endpoint: send_email.php
- * Method: POST (JSON body: { email, subject, message, name, phone })
- * Official Email: roohiraonline@gmail.com
- * Backend Alerts: pythonstore2008@gmail.com
- */
+// Enable CORS for frontend requests
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
 
-header('Content-Type: application/json; charset=UTF-8');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
+// Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
+    exit(0);
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Method Not Allowed. Use POST.']);
-    exit;
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Read raw POST data
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
 
-// Read raw input
-$rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true);
+    $customerEmail = isset($data['email']) ? trim($data['email']) : '';
+    $subject = isset($data['subject']) ? trim($data['subject']) : '';
+    $message = isset($data['message']) ? trim($data['message']) : '';
 
-if (!$data) {
-    $data = $_POST;
-}
-
-$email   = filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL);
-$name    = htmlspecialchars(trim($data['name'] ?? 'Valued Patron'));
-$phone   = htmlspecialchars(trim($data['phone'] ?? 'Not provided'));
-$subject = htmlspecialchars(trim($data['subject'] ?? 'Roohira Web Store Inquiry'));
-$message = htmlspecialchars(trim($data['message'] ?? ''));
-
-if (!$email) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'A valid email address is required.']);
-    exit;
-}
-
-if (empty($message)) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Message content cannot be empty.']);
-    exit;
-}
-
-$recipients = [
-    'roohiraonline@gmail.com',
-    'pythonstore2008@gmail.com'
-];
-
-$emailSubject = "[Roohira Store Alert] " . $subject;
-
-$emailBody = "
-==================================================
-ROOHIRA WEB STORE - NEW CUSTOMER INQUIRY
-==================================================
-Customer Name: {$name}
-Customer Email: {$email}
-Customer Phone: {$phone}
-Date & Time: " . date('Y-m-d H:i:s') . "
---------------------------------------------------
-Message:
-{$message}
-==================================================
-Sent from Roohira Collection Web Application.
-";
-
-$headers  = "From: roohiraonline@gmail.com\r\n";
-$headers .= "Reply-To: {$email}\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion();
-
-$mailSent = false;
-foreach ($recipients as $to) {
-    if (@mail($to, $emailSubject, $emailBody, $headers)) {
-        $mailSent = true;
+    // Validate input data
+    if (empty($customerEmail) || !filter_var($customerEmail, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['status' => 'error', 'message' => 'කරුණාකර වලංගු Email ලිපිනයක් ඇතුළත් කරන්න. (Please enter a valid email address.)']);
+        exit;
     }
+
+    if (empty($message)) {
+        echo json_encode(['status' => 'error', 'message' => 'කරුණාකර පණිවිඩය ඇතුළත් කරන්න. (Please enter your message.)']);
+        exit;
+    }
+
+    $to = "pythonstore2008@gmail.com";
+    $emailSubject = "Roohira Store - Web Message: " . (empty($subject) ? "Inquiry" : $subject);
+
+    // Email Body construction
+    $emailBody = "You received a new message from Roohira Store contact form:\n\n";
+    $emailBody .= "----------------------------------------\n";
+    $emailBody .= "From Email: " . $customerEmail . "\n";
+    $emailBody .= "Subject: " . $subject . "\n";
+    $emailBody .= "Date: " . date("Y-m-d H:i:s") . "\n";
+    $emailBody .= "----------------------------------------\n\n";
+    $emailBody .= "Message:\n" . $message . "\n\n";
+    $emailBody .= "----------------------------------------\n";
+    $emailBody .= "You can reply directly to this email to contact the customer.";
+
+    // Headers
+    // Using a system email for From header to ensure delivery, and Reply-To for customer replies
+    $headers = "From: noreply@roohirastore.com\r\n";
+    $headers .= "Reply-To: " . $customerEmail . "\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
+
+    if (mail($to, $emailSubject, $emailBody, $headers)) {
+        echo json_encode(['status' => 'success', 'message' => 'පණිවිඩය සාර්ථකව යවන ලදී! (Message sent successfully!)']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'පණිවිඩය යැවීමට නොහැකි විය. Server එකෙහි mail configuration පරීක්ෂා කරන්න. (Failed to send message. Please check server mail configuration.)']);
+    }
+    exit;
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    exit;
 }
-
-// Log locally for debugging or offline inspection
-$logEntry = date('[Y-m-d H:i:s]') . " From: {$email} | Subject: {$subject} | Message: " . substr($message, 0, 80) . "...\n";
-@file_put_contents(__DIR__ . '/email_logs.txt', $logEntry, FILE_APPEND);
-
-echo json_encode([
-    'success' => true,
-    'message' => 'Your message has been transmitted to Roohira Concierge successfully.',
-    'mailSent' => $mailSent,
-    'debug_recipient' => $recipients[0]
-]);
+?>

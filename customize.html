@@ -1,537 +1,1439 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bespoke 3D Custom Design Studio | Roohira Collection</title>
-  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .studio-layout {
-      display: grid;
-      grid-template-columns: 340px 1fr 340px;
-      gap: 1.5rem;
-      min-height: calc(100vh - 180px);
-      align-items: start;
-    }
-    .studio-panel {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1.5rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .canvas-stage-wrapper {
-      background: #FFFFFF;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 580px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-    }
-    .garment-canvas-container {
-      position: relative;
-      width: 440px;
-      height: 480px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-    }
-    .garment-base-svg {
-      width: 100%;
-      height: 100%;
-      transition: filter 0.3s ease;
-    }
-    .print-safe-area {
-      position: absolute;
-      top: 26%;
-      left: 28%;
-      width: 44%;
-      height: 48%;
-      border: 2px dashed rgba(198, 162, 107, 0.6);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      overflow: hidden;
-      cursor: move;
-      background: rgba(255, 255, 255, 0.1);
-    }
-    .custom-art-layer {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-      pointer-events: none;
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.25));
-    }
-    .custom-text-layer {
-      font-weight: 700;
-      text-align: center;
-      line-height: 1.2;
-      pointer-events: none;
-      word-break: break-word;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    .color-swatch-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .color-swatch-circle.active,
-    .color-swatch-circle:hover {
-      border-color: var(--gold);
-      transform: scale(1.15);
-    }
-    @media (max-width: 1100px) {
-      .studio-layout {
-        grid-template-columns: 1fr;
-      }
-      .garment-canvas-container {
-        width: 360px;
-        height: 400px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Design Studio | Roohira Store</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #DC143C;
+        }
+
+        .customize-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .preview-box {
+            position: relative;
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            min-height: 600px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .tshirt-base {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            background-color: #ffffff;
+            transition: 0.3s;
+            -webkit-mask-image: url('https://i.ibb.co/NnQrQr7y/T-Shirt.png');
+            mask-image: url('https://i.ibb.co/NnQrQr7y/T-Shirt.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+
+        .tshirt-img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .sticker-wrapper {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            cursor: move;
+            z-index: 10;
+            border: 2px dashed transparent;
+            transform-origin: center center;
+            touch-action: none;
+        }
+
+        .sticker-wrapper.active {
+            border-color: var(--primary);
+            z-index: 100;
+        }
+
+        .sticker-wrapper.locked {
+            cursor: default !important;
+            border: none !important;
+        }
+
+        .sticker-wrapper img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .sticker-size-tag {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .sticker-wrapper.active .sticker-size-tag {
+            display: block;
+        }
+
+        .handle {
+            position: absolute;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 120;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+        }
+
+        .sticker-wrapper.active:not(.locked) .handle {
+            display: flex;
+        }
+
+        .sticker-delete {
+            top: -17px;
+            left: -17px;
+            background: #ff0000;
+        }
+
+        .resize-handle {
+            bottom: -17px;
+            right: -17px;
+        }
+
+        .rotate-handle {
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-section {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .control-section h4 {
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .color-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid red;
+            transition: 0.2s;
+        }
+
+        .color-dot.active {
+            border-color: green;
+            transform: scale(1.1);
+        }
+
+        .selector-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .selector-btn {
+            padding: 10px 5px;
+            border: 1px solid var(--border-color);
+            background: var(--surface);
+            color: var(--text-main);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .selector-btn.active {
+            background: var(--primary-dark);
+            color: var(--primary-light);
+            border-color: var(--primary-dark);
+        }
+
+        .sticker-grid {
+            display: grid;
+            grid-template-rows: repeat(3, 70px);
+            grid-auto-flow: column;
+            grid-auto-columns: 70px;
+            gap: 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 12px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-page, var(--primary-light));
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sticker-grid::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .sticker-grid::-webkit-scrollbar-track {
+            background: var(--border-light);
+            border-radius: 10px;
+            margin: 5px;
+        }
+
+        .sticker-grid::-webkit-scrollbar-thumb {
+            background: var(--accent-gold);
+            border-radius: 10px;
+        }
+
+        .sticker-item {
+            width: 100%;
+            height: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .sticker-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .sticker-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            color: var(--text-main);
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        #btn-finish {
+            width: 100%;
+            height: 50px;
+            background: var(--primary-dark);
+            color: var(--primary-light);
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        #btn-cart {
+            display: none;
+            width: 100%;
+            height: 50px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .sticker-summary {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        @media (max-width: 900px) {
+            .customize-layout {
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
+                gap: 20px;
+                overflow-x: hidden;
+            }
+
+            .preview-box {
+                min-height: unset;
+                height: auto;
+                aspect-ratio: 1 / 1;
+                padding: 10px;
+                width: 100%;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .tshirt-base {
+                width: 90%;
+                max-width: 100%;
+                height: auto;
+            }
+
+            .control-section {
+                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+            }
+
+            .selector-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+    </style>
 </head>
-<body style="background-color: var(--cream);">
 
-  <!-- Announcement Bar -->
-  <div class="announcement-bar">
-    <div>
-      <i class="fa-solid fa-wand-magic-sparkles text-gold"></i>
-      <span>Roohira Bespoke Studio &bull; Real-time 3D Garment Customizer &amp; Live Preview</span>
+<body>
+    <nav id="navbar" class="scrolled">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Logo">
+            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="customize.html" class="active">Design Studio</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="profile.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="All Pages & Menu"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <div style="padding: 0 0.5rem 1rem; border-bottom: 2px solid #1A120B; margin-bottom: 0.5rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: #000000; margin: 0; font-weight: 700;">Navigation &amp; Pages</h3>
+            <span style="font-size: 0.72rem; color: #6D5D53; text-transform: uppercase; letter-spacing: 1px;">Roohira Collection</span>
+        </div>
+        <a href="index.html"><i data-lucide="home" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Home</a>
+        <a href="shop.html"><i data-lucide="shopping-bag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Shop All</a>
+        <a href="track-order.html"><i data-lucide="truck" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Track Order</a>
+        <a href="customize.html"><i data-lucide="palette" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Design Studio</a>
+        <a href="dtf.html"><i data-lucide="printer" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> DTF Print Service</a>
+        <a href="offers.html"><i data-lucide="tag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Offers &amp; Discounts</a>
+        <a href="reviews.html"><i data-lucide="star" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Customer Reviews</a>
+        <a href="wishlist.html"><i data-lucide="heart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Wishlist</a>
+        <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
+        <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
+        <a href="login.html"><i data-lucide="log-in" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Login / Register</a>
     </div>
-    <div class="d-none-sm">
-      <span>Complimentary Islandwide Courier Delivery on Custom Orders</span>
+
+    <div id="product-selection-overlay"
+        style="position: fixed; inset: 0; background: var(--glass); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px);">
+        <div style="max-width: 900px; width: 95%; text-align: center;">
+            <h2
+                style="font-weight: 900; margin-bottom: 30px; font-size: 2.2rem; letter-spacing: -1px; color: var(--primary-dark);">
+                CHOOSE YOUR CANVAS</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+                <!-- Regular Tee Card -->
+                <div class="selection-card"
+                    onclick="startCustomizing('Regular Tee', 1300, 'https://i.ibb.co/NnQrQr7y/T-Shirt.png')"
+                    style="background: var(--surface); padding: 25px; border-radius: 24px; border: 1px solid var(--border-color); cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 40px var(--shadow-color); width: 260px; text-align: left; position: relative;">
+                    <div
+                        style="background: var(--bg-page, var(--primary-light)); border-radius: 18px; padding: 20px; margin-bottom: 18px; transition: 0.3s;">
+                        <img src="https://i.ibb.co/NnQrQr7y/T-Shirt.png"
+                            style="width: 100%; height: 160px; object-fit: contain;">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="margin: 0; font-weight: 900; font-size: 1.2rem; color: var(--text-main);">Regular
+                                Tee</h3>
+                            <p style="opacity: 0.5; font-size: 0.75rem; margin: 4px 0 12px 0; font-weight: 600;">220 GSM
+                                PREMIUM</p>
+                        </div>
+                        <div
+                            style="background: var(--primary-dark); color: var(--primary-light); font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; font-weight: 800;">
+                            BASE</div>
+                    </div>
+                    <div style="font-size: 1.4rem; font-weight: 900; color: var(--accent-gold);">Rs. 1300</div>
+                    <div
+                        style="margin-top: 15px; height: 45px; background: var(--primary-dark); color: var(--primary-light); display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px;">
+                        START DESIGNING</div>
+                </div>
+
+                <!-- Waffle T-shirt Card -->
+                <div class="selection-card"
+                    onclick="startCustomizing('Waffle T-shirt', 1450, 'https://i.ibb.co/RTGD6DPx/12.png')"
+                    style="background: var(--surface); padding: 25px; border-radius: 24px; border: 1px solid var(--border-color); cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 40px var(--shadow-color); width: 260px; text-align: left; position: relative;">
+                    <div
+                        style="background: var(--bg-page, var(--primary-light)); border-radius: 18px; padding: 20px; margin-bottom: 18px; transition: 0.3s;">
+                        <img src="https://i.ibb.co/RTGD6DPx/12.png"
+                            style="width: 100%; height: 160px; object-fit: contain;">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="margin: 0; font-weight: 900; font-size: 1.2rem; color: var(--text-main);">Waffle T-shirt</h3>
+                            <p style="opacity: 0.5; font-size: 0.75rem; margin: 4px 0 12px 0; font-weight: 600;">240 GSM
+                                PREMIUM</p>
+                        </div>
+                        <div
+                            style="background: var(--primary-dark); color: var(--primary-light); font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; font-weight: 800;">
+                            BASE</div>
+                    </div>
+                    <div style="font-size: 1.4rem; font-weight: 900; color: var(--accent-gold);">Rs. 1450</div>
+                    <div
+                        style="margin-top: 15px; height: 45px; background: var(--primary-dark); color: var(--primary-light); display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px;">
+                        START DESIGNING</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="site-logo">
-        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
-        <div class="brand-text">
-          <span>ROOHIRA</span>
-          <small>COLLECTION</small>
+    <main class="section" style="padding-top: 100px;">
+        <div class="customize-layout">
+            <div class="preview-box">
+                <div class="tshirt-base" id="canvas">
+                    <img src="https://i.ibb.co/NnQrQr7y/T-Shirt.png" class="tshirt-img">
+                </div>
+                <button onclick="toggleModal(true)"
+                    style="position: absolute; bottom: 20px; right: 20px; background: var(--surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 15px; border-radius: 10px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                    <i data-lucide="info" style="width: 14px;"></i> SIZE CHART
+                </button>
+            </div>
+
+            <div class="controls-panel">
+                <div class="control-section">
+                    <h4><i data-lucide="shirt"></i> 1. T-Shirt Config</h4>
+                    <div class="color-grid" style="margin-bottom: 15px;">
+                        <div class="color-dot active" style="background: #ffffff;" data-name="White"
+                            onclick="setTshirtColor('#ffffff', 'White', this)"></div>
+                        <div class="color-dot" style="background: #ff0000;" data-name="Red"
+                            onclick="setTshirtColor('#ff0000', 'Red', this)"></div>
+                        <div class="color-dot" style="background: #2b2b2b;" data-name="Black"
+                            onclick="setTshirtColor('#2b2b2b', 'Black', this)"></div>
+                        <div class="color-dot" style="background: #0000ff;" data-name="Blue"
+                            onclick="setTshirtColor('#0000ff', 'Blue', this)"></div>
+                        <div class="color-dot" style="background: #008000;" data-name="Green"
+                            onclick="setTshirtColor('#008000', 'Green', this)"></div>
+                        <div class="color-dot" style="background: #ffff00;" data-name="Yellow"
+                            onclick="setTshirtColor('#ffff00', 'Yellow', this)"></div>
+                        <div class="color-dot" style="background: #808080;" data-name="Gray"
+                            onclick="setTshirtColor('#808080', 'Gray', this)"></div>
+                        <div class="color-dot" style="background: #00f2ff;" data-name="Light Blue"
+                            onclick="setTshirtColor('#00f2ff', 'Light Blue', this)"></div>
+                        <div class="color-dot" style="background: #e100ff;" data-name="Pink"
+                            onclick="setTshirtColor('#e100ff', 'Pink', this)"></div>
+                    </div>
+                    <div class="selector-grid">
+                        <div class="selector-btn" onclick="setTshirtSize('S', this)">S</div>
+                        <div class="selector-btn active" onclick="setTshirtSize('M', this)">M</div>
+                        <div class="selector-btn" onclick="setTshirtSize('L', this)">L</div>
+                        <div class="selector-btn" onclick="setTshirtSize('XL', this)">XL</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4><i data-lucide="image"></i> 2. Select Stickers</h4>
+                    <div class="category-tabs"
+                        style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; align-items: center;">
+                        <div class="selector-btn active"
+                            style="padding: 5px 15px; font-size: 0.7rem; white-space: nowrap;"
+                            onclick="filterStickers('all', this)">All Designs</div>
+                        <div class="selector-btn" style="padding: 5px 15px; font-size: 0.7rem; white-space: nowrap;"
+                            onclick="filterStickers('bw', this)">Black & White</div>
+                        <div class="selector-btn" style="padding: 5px 15px; font-size: 0.7rem; white-space: nowrap;"
+                            onclick="filterStickers('roohira', this)">Roohira Collection</div>
+                        <div class="selector-btn" style="padding: 5px 15px; font-size: 0.7rem; white-space: nowrap;"
+                            onclick="filterStickers('custom', this)">Your Stickers</div>
+                    </div>
+                    <input type="file" id="custom-sticker-input" accept="image/*" style="display: none;" onchange="handleStickerUpload(event)">
+                    <div class="sticker-grid" id="main-sticker-grid">
+                        <!-- Black & White Collection -->
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/MyV1gShG/download-28.png')"><img
+                                src="https://i.ibb.co/MyV1gShG/download-28.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/k2V8LGH8/download-29.png')"><img
+                                src="https://i.ibb.co/k2V8LGH8/download-29.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/XfMfT2Pc/download-30.png')"><img
+                                src="https://i.ibb.co/XfMfT2Pc/download-30.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/v9nFCm5/download-31.png')"><img
+                                src="https://i.ibb.co/v9nFCm5/download-31.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/0jNxLvYv/Believe.png')"><img
+                                src="https://i.ibb.co/0jNxLvYv/Believe.png"></div>
+                        <!-- Nike -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png')">
+                            <img src="https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png">
+                        </div>
+                        <!-- BMW -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png')">
+                            <img src="https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png">
+                        </div>
+                        <!-- Infinity -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/0VKQ1GX2/download-23.png')"><img
+                                src="https://i.ibb.co/0VKQ1GX2/download-23.png"></div>
+
+                        <!-- NEW BRANDS -->
+                        <!-- Ferrari -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/8g3YLLRP/download-25.png')"><img
+                                src="https://i.ibb.co/8g3YLLRP/download-25.png"></div>
+                        <!-- Porsche -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/rf382jbv/download-26.png')"><img
+                                src="https://i.ibb.co/rf382jbv/download-26.png"></div>
+                        <!-- Lamborghini -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/gFXHwFCX/download-27.png')"><img
+                                src="https://i.ibb.co/gFXHwFCX/download-27.png"></div>
+                        <!-- Mustang -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png')">
+                            <img src="https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png">
+                        </div>
+                        <!-- Flintstones -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png')">
+                            <img
+                                src="https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png">
+                        </div>
+
+                        <!-- Space -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png')">
+                            <img src="https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png">
+                        </div>
+                        <!-- Urban -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png')">
+                            <img src="https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png">
+                        </div>
+
+                        <!-- NEW ADDITIONS -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/jnJPTYN/download-34.png')"><img
+                                src="https://i.ibb.co/jnJPTYN/download-34.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/prLnyfzg/download-35.png')"><img
+                                src="https://i.ibb.co/prLnyfzg/download-35.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/WW2ZJCcC/download-36.png')"><img
+                                src="https://i.ibb.co/WW2ZJCcC/download-36.png"></div>
+
+                        <!-- Graphics -->
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/gMrCJPnN/A3-1.png')"><img
+                                src="https://i.ibb.co/gMrCJPnN/A3-1.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/QFRLTykz/A3-2.png')"><img
+                                src="https://i.ibb.co/QFRLTykz/A3-2.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/S7f8ZfJs/A3-3.png')"><img
+                                src="https://i.ibb.co/S7f8ZfJs/A3-3.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/tMccn0qh/A3-4.png')"><img
+                                src="https://i.ibb.co/tMccn0qh/A3-4.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/B5s9qhyX/A3-5.png')"><img
+                                src="https://i.ibb.co/B5s9qhyX/A3-5.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/bj43Hcks/A3-6.png')"><img
+                                src="https://i.ibb.co/bj43Hcks/A3-6.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/7B5DZmx/A3-7.png')"><img
+                                src="https://i.ibb.co/7B5DZmx/A3-7.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/SXdG9PTc/A3-8.png')"><img
+                                src="https://i.ibb.co/SXdG9PTc/A3-8.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/tp3krXPp/A3-9.png')"><img
+                                src="https://i.ibb.co/tp3krXPp/A3-9.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/VY90dG3G/A3-10.png')"><img
+                                src="https://i.ibb.co/VY90dG3G/A3-10.png"></div>
+                        <div class="sticker-item" data-cat="roohira"
+                            onclick="addNewSticker('https://i.ibb.co/1JQ00QMd/A3-11.png')"><img
+                                src="https://i.ibb.co/1JQ00QMd/A3-11.png"></div>
+                        <!-- NEW CUSTOMER ADDITIONS -->
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png')"><img src="https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png"></div>
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png')"><img src="https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png"></div>
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png')"><img src="https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png"></div>
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png')"><img src="https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png"></div>
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png')"><img src="https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png"></div>
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png')"><img src="https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png"></div>
+                        <div class="sticker-item" data-cat="roohira" onclick="addNewSticker('https://i.ibb.co/zHGbqMn0/honor-design.png')"><img src="https://i.ibb.co/zHGbqMn0/honor-design.png"></div>
+                    </div>
+
+                    <!-- Custom Sticker Upload Panel -->
+                    <div style="margin-top: 15px; padding: 14px; background: var(--bg-page, var(--primary-light)); border-radius: 14px; border: 1px dashed var(--border-color);">
+                        <button onclick="triggerUpload()" style="width: 100%; padding: 11px; background: var(--primary-dark); color: var(--primary-light); border: none; border-radius: 10px; font-weight: 800; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 0.5px;">
+                            <i data-lucide="upload-cloud" style="width: 16px; height: 16px;"></i>
+                            UPLOAD YOUR STICKER
+                        </button>
+                        <div style="margin-top: 10px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.65rem; color: var(--accent-gold);">
+                            <i data-lucide="cloud" style="width: 12px; height: 12px; flex-shrink: 0; margin-top: 1px;"></i>
+                            <span><b>☁️ Cloud Upload:</b> Your sticker uploads to the cloud so it appears on <b>any device</b> when viewed via WhatsApp link or invoice. PNG format recommended for clear backgrounds.</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.62rem; color: var(--accent-gold); margin-top: 10px; background: rgba(220, 20, 60, 0.07); padding: 10px; border-radius: 8px; border: 1px dashed rgba(220, 20, 60, 0.3); display: flex; align-items: flex-start; gap: 8px;">
+                        <i data-lucide="info" style="width: 14px; flex-shrink: 0; margin-top: 1px;"></i>
+                        <span>
+                            <b>Note -:This preview is for placement only. The final product will be printed in original HD quality.)
+                        </span>
+                    </p>
+                </div>
+
+                <div class="control-section" id="sticker-size-control" style="display: none;">
+                    <h4><i data-lucide="ruler"></i> 3. Sticker Pricing (Select Size)</h4>
+                    <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px;">Select the printed size for the
+                        active design:</p>
+                    <div class="selector-grid">
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A2', this)">A2</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A3', this)">A3</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A4', this)">A4</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A5', this)">A5</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A6', this)">A6</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <span style="font-weight: 800;">TOTAL ESTIMATE</span>
+                        <span style="font-weight: 900; color: var(--accent-gold); font-size: 1.2rem;">Rs. <span
+                                id="grand-total-display">1300</span>.00</span>
+                    </div>
+                    <div id="sticker-summary-box" class="sticker-summary"></div>
+                    <div style="margin-top: 20px;">
+                        <button id="btn-finish" onclick="finishDesign()">FINISH & SAVE</button>
+                        <button id="btn-cart" onclick="addCustomToCart()">ADD TO CART</button>
+                        <button id="btn-edit" class="btn" style="display: none; width: 100%; margin-top: 10px;"
+                            onclick="enableEditing()">EDIT DESIGN</button>
+                        <button class="btn"
+                            style="width: 100%; margin-top: 10px; background: var(--border-light); color: var(--primary-dark); font-size: 0.75rem;"
+                            onclick="resetDesign()">RESET DESIGN</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </a>
+    </main>
 
-      <nav class="nav-menu">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="shop.html" class="nav-link">Shop All</a>
-        <a href="customize.html" class="nav-link active text-gold"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Studio</a>
-        <a href="dtf.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> DTF Print</a>
-        <a href="track.html" class="nav-link">Track Order</a>
-        <a href="admin.html" class="nav-link text-gold"><i class="fa-solid fa-lock"></i> Admin</a>
-      </nav>
-
-      <div class="header-actions">
-        <div id="headerUserAction">
-          <a href="auth.html" class="action-btn" title="Sign In"><i class="fa-regular fa-user"></i></a>
+    <div id="size-modal" class="modal">
+        <div class="modal-content">
+            <i data-lucide="x" class="close-modal" onclick="toggleModal(false)"></i>
+            <h3 style="margin-bottom: 20px;">T-Shirt Size Chart</h3>
+            <img src="https://i.ibb.co/pvGrdQMD/Size-Chart-01.jpg" style="width: 100%; border-radius: 10px;"
+                alt="Size Chart">
         </div>
-        <button class="action-btn" data-toggle="cart" title="Shopping Bag">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <span class="badge-count cart-count-badge" style="display: none;">0</span>
-        </button>
-      </div>
     </div>
-  </header>
 
-  <!-- Studio Main Section -->
-  <section class="section-padding-sm">
-    <div class="container">
-      
-      <!-- Studio Header -->
-      <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 1.5rem;">
-        <div>
-          <span style="color: var(--gold-dark); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Atelier Bespoke Workshop</span>
-          <h1 style="font-size: 2.2rem; margin: 0.25rem 0;">Custom Design Studio</h1>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline btn-sm" onclick="resetStudio()">
-            <i class="fa-solid fa-rotate-right"></i> Reset Canvas
-          </button>
-          <a href="https://wa.me/94757218786?text=Hello%20Roohira%20Concierge%2C%20I%20need%20custom%20design%20consultation." target="_blank" class="btn btn-sm" style="background: #25D366; color: white;">
-            <i class="fa-brands fa-whatsapp"></i> Live Consultation
-          </a>
-        </div>
-      </div>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+        let currentTshirtType = 'Regular Tee';
+        let baseTshirtPrice = 1300;
+        let activeStickers = [];
+        let isLocked = false;
+        let currentTshirtSize = 'M';
+        let selectedColor = '#ffffff';
+        let selectedColorName = 'White';
 
-      <!-- Studio Layout Grid -->
-      <div class="studio-layout">
-        
-        <!-- Left Panel: Garment, View & Colors -->
-        <div class="studio-panel">
-          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
-            <i class="fa-solid fa-shirt text-gold"></i> 1. Select Garment
-          </h3>
+        // ─────────────────────────────────────────────────────────────────────
+        // ImgBB Free API Key — get yours FREE at https://imgbb.com/
+        //   1. Register at imgbb.com (free, no credit card)
+        //   2. Go to https://api.imgbb.com/ and copy your API key
+        //   3. Paste it below replacing YOUR_IMGBB_KEY_HERE
+        // ─────────────────────────────────────────────────────────────────────
+        const IMGBB_API_KEY = '05f9ffbbbadb71e449b28e2d1adf8975';
 
-          <!-- Apparel Type Selector -->
-          <div class="form-group">
-            <label class="form-label">Garment Silhouette</label>
-            <select id="garmentTypeSelect" class="form-control" onchange="changeGarmentType(this.value)">
-              <option value="tshirt">Heavyweight Bespoke T-Shirt</option>
-              <option value="frock">Silk Flare Frock / Dress</option>
-              <option value="hoodie">Luxury Terry Cotton Hoodie</option>
-            </select>
-          </div>
+        function triggerUpload() {
+            if (isLocked) return;
+            document.getElementById('custom-sticker-input').click();
+        }
 
-          <!-- View Switcher (Front vs Back) -->
-          <div class="form-group">
-            <label class="form-label">Perspective View</label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-              <button id="viewFrontBtn" class="btn btn-primary btn-sm active" onclick="switchView('front')">
-                <i class="fa-solid fa-eye"></i> Front View
-              </button>
-              <button id="viewBackBtn" class="btn btn-outline btn-sm" onclick="switchView('back')">
-                <i class="fa-solid fa-arrow-rotate-left"></i> Back View
-              </button>
-            </div>
-          </div>
+        function handleStickerUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-          <!-- Color Swatches -->
-          <div class="form-group">
-            <label class="form-label">Fabric Color: <strong id="selectedColorLabel" class="text-gold">Black (#1A0F0A)</strong></label>
-            <div class="d-flex flex-wrap gap-2" id="colorSwatchesContainer">
-              <!-- Colors injected via JS -->
-            </div>
-          </div>
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file.');
+                return;
+            }
 
-          <!-- Sizing Selection -->
-          <div class="form-group" style="margin: 0;">
-            <label class="form-label">Select Size</label>
-            <select id="customSizeSelect" class="form-control">
-              <option value="XS">XS (Extra Small)</option>
-              <option value="S">S (Small)</option>
-              <option value="M" selected>M (Medium)</option>
-              <option value="L">L (Large)</option>
-              <option value="XL">XL (Extra Large)</option>
-              <option value="XXL">XXL (Double Extra Large)</option>
-              <option value="XXXL">XXXL (Triple Extra Large)</option>
-              <option value="Free Size">Free Size (Custom Fit)</option>
-            </select>
-          </div>
-        </div>
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB limit.');
+                return;
+            }
 
-        <!-- Center: Interactive Canvas Stage -->
-        <div class="canvas-stage-wrapper">
-          <div class="garment-canvas-container" id="canvasContainer">
-            <!-- Dynamic SVG Garment Mockup -->
-            <svg id="garmentSvg" viewBox="0 0 500 500" class="garment-base-svg">
-              <defs>
-                <filter id="shadowFilter">
-                  <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.18"/>
-                </filter>
-              </defs>
-              <!-- Dynamic Garment Path with Fabric Fill -->
-              <path id="garmentBodyPath" d="M160,100 C185,130 315,130 340,100 L440,175 L385,245 L345,215 L350,450 L150,450 L155,215 L115,245 L60,175 Z" 
-                    fill="#1A0F0A" stroke="#C6A26B" stroke-width="2" filter="url(#shadowFilter)"/>
-              <!-- Collar Stitching Detail -->
-              <path id="garmentCollar" d="M160,100 C190,135 310,135 340,100 C310,115 190,115 160,100 Z" fill="#2E1A11" opacity="0.6"/>
-            </svg>
+            if (typeof showNotification === 'function') {
+                showNotification('\u2601\ufe0f Uploading to cloud...');
+            }
 
-            <!-- Printable Safe Area Overlay with Live Artwork & Text Layers -->
-            <div class="print-safe-area" id="printSafeArea">
-              <img id="customArtImg" class="custom-art-layer" style="display: none;" src="" alt="Custom Artwork">
-              <div id="customTextDisplay" class="custom-text-layer" style="display: none; color: #FAF7F2; font-size: 1.2rem; font-family: 'Playfair Display';">
-                Roohira Bespoke
-              </div>
-            </div>
-          </div>
+            // Get HD version of image (max 1000px, preserve PNG transparency)
+            getHDImage(file, function(hdBase64) {
 
-          <!-- Bottom Stage Indicator -->
-          <div class="d-flex align-center justify-between w-100" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--text-muted);">
-            <div><i class="fa-solid fa-lock text-gold"></i> Live 2D/3D Mockup Simulation &bull; Vector Precision</div>
-            <div id="canvasViewIndicator" style="font-weight: 600; text-transform: uppercase;">Viewing: Front</div>
-          </div>
-        </div>
+                // ── TIER 1: ImgBB Cloud Upload ─────────────────────────────
+                // Uploads to imgbb.com CDN → URL works on ANY device, anywhere
+                function tryImgBB() {
+                    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'YOUR_IMGBB_KEY_HERE') {
+                        console.info('ImgBB key not set, skipping to server upload.');
+                        tryServer();
+                        return;
+                    }
+                    const base64Data = hdBase64.split(',')[1]; // Strip data:image/...;base64, prefix
+                    const imgbbForm = new FormData();
+                    imgbbForm.append('key', IMGBB_API_KEY);
+                    imgbbForm.append('image', base64Data);
 
-        <!-- Right Panel: Artwork, Text & Add to Cart -->
-        <div class="studio-panel">
-          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
-            <i class="fa-solid fa-palette text-gold"></i> 2. Personalize &amp; Order
-          </h3>
+                    fetch('https://api.imgbb.com/1/upload', {
+                        method: 'POST',
+                        body: imgbbForm
+                    })
+                    .then(res => { if (!res.ok) throw new Error('ImgBB HTTP ' + res.status); return res.json(); })
+                    .then(data => {
+                        if (data && data.success) {
+                            const imgUrl = data.data.url;
+                            if (typeof showNotification === 'function') {
+                                showNotification('\u2705 Cloud upload done! Any device can view this.');
+                            }
+                            // Store HD mapping locally for instant display without re-fetch
+                            try { localStorage.setItem('hd_mapping_' + imgUrl, hdBase64); } catch(e) {}
+                            addNewSticker(imgUrl);
+                            addCustomStickerToGrid(imgUrl);
+                        } else {
+                            throw new Error('ImgBB rejected: ' + JSON.stringify(data));
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('ImgBB upload failed, trying server:', err);
+                        tryServer();
+                    });
+                }
 
-          <!-- Upload Artwork Image -->
-          <div class="form-group">
-            <label class="form-label">Upload Custom Artwork / Logo</label>
-            <input type="file" id="artworkFileInput" class="form-control" accept="image/*" onchange="handleArtworkUpload(event)">
-            <small style="color: var(--text-light); font-size: 0.72rem; display: block; margin-top: 4px;">PNG, JPG, SVG or WEBP with transparent background recommended.</small>
-          </div>
+                // ── TIER 2: Server upload.php ──────────────────────────────
+                // Saves to InfinityFree hosting → works on same domain only
+                function tryServer() {
+                    const serverForm = new FormData();
+                    serverForm.append('sticker', file);
 
-          <!-- Custom Text / Slogan -->
-          <div class="form-group">
-            <label class="form-label">Custom Monogram / Text</label>
-            <input type="text" id="customTextInput" class="form-control" placeholder="e.g. Master of Timeless Elegance" oninput="updateCustomText(this.value)">
-          </div>
+                    fetch('upload.php', {
+                        method: 'POST',
+                        body: serverForm
+                    })
+                    .then(res => { if (!res.ok) throw new Error('Server error ' + res.status); return res.json(); })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            if (typeof showNotification === 'function') {
+                                showNotification('\u2714\ufe0f Uploaded to server (same-site devices only).');
+                            }
+                            try { localStorage.setItem('hd_mapping_' + data.full_url, hdBase64); } catch(e) {}
+                            addNewSticker(data.full_url);
+                            addCustomStickerToGrid(data.full_url);
+                        } else {
+                            throw new Error(data.message || 'Server upload failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('Server upload failed, using offline fallback:', err);
+                        tryOffline();
+                    });
+                }
 
-          <!-- Text Font & Color -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
-            <div>
-              <label class="form-label">Font Family</label>
-              <select id="textFontSelect" class="form-control" onchange="updateTextFont(this.value)">
-                <option value="'Playfair Display', serif">Playfair Display</option>
-                <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-                <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
-                <option value="monospace">Luxury Monospace</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">Text Color</label>
-              <select id="textColorSelect" class="form-control" onchange="updateTextColor(this.value)">
-                <option value="#C6A26B">Champagne Gold</option>
-                <option value="#FAF7F2">Luxury Cream</option>
-                <option value="#FFFFFF">Crisp White</option>
-                <option value="#1A0F0A">Espresso Black</option>
-                <option value="#E2A03F">Golden Ochre</option>
-              </select>
-            </div>
-          </div>
+                // ── TIER 3: Offline Base64 Fallback ───────────────────────
+                // Stores only in localStorage → this device only
+                function tryOffline() {
+                    if (typeof showNotification === 'function') {
+                        showNotification('\ud83d\udcf1 Saved locally (this device only).');
+                    }
+                    getFallbackImage(file, function(fallbackBase64) {
+                        try { localStorage.setItem('hd_mapping_' + fallbackBase64, hdBase64); } catch(e) {}
+                        addNewSticker(fallbackBase64);
+                        addCustomStickerToGrid(fallbackBase64);
+                    });
+                }
 
-          <!-- Text Size Slider -->
-          <div class="form-group">
-            <div class="d-flex justify-between" style="font-size: 0.78rem; margin-bottom: 4px;">
-              <span>Text Scale</span>
-              <span id="textScaleVal">1.2rem</span>
-            </div>
-            <input type="range" id="textScaleRange" min="0.7" max="2.4" step="0.1" value="1.2" class="form-control" style="padding: 0;" oninput="updateTextScale(this.value)">
-          </div>
+                // Start with best option first
+                tryImgBB();
+            });
 
-          <!-- Pricing & Checkout -->
-          <div style="background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 1.15rem; margin-top: 1.25rem;">
-            <div class="d-flex justify-between align-center" style="margin-bottom: 0.5rem;">
-              <span style="font-size: 0.85rem; color: var(--text-muted);">Bespoke Unit Rate:</span>
-              <strong style="font-size: 1.35rem; color: var(--espresso);" id="customStudioPrice">LKR 6,500</strong>
-            </div>
-            <small style="color: var(--text-light); font-size: 0.72rem; display: block; margin-bottom: 1rem;">Includes high-density DTF printing + luxury garment blank.</small>
+            event.target.value = '';
+        }
 
-            <button class="btn btn-gold btn-block btn-lg" onclick="addCustomToBag()">
-              <i class="fa-solid fa-bag-shopping"></i> Add Custom Design to Bag
-            </button>
-            <button class="btn btn-outline btn-block btn-sm" style="margin-top: 0.5rem;" onclick="orderCustomViaWhatsApp()">
-              <i class="fa-brands fa-whatsapp"></i> Order Directly via WhatsApp
-            </button>
-          </div>
+        // Helper to get HD (1000px) quality image and preserve format (PNG transparency)
+        function getHDImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1000;
+                    
+                    if (width > height) {
+                        if (width > maxDim) {
+                            height = Math.round(height * maxDim / width);
+                            width = maxDim;
+                        }
+                    } else {
+                        if (height > maxDim) {
+                            width = Math.round(width * maxDim / height);
+                            height = maxDim;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const format = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                    const dataUrl = format === 'image/png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.9);
+                    callback(dataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
 
-        </div>
+        // Helper to get compressed fallback (150px) image and preserve format (PNG transparency)
+        function getFallbackImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 150;
+                    
+                    if (width > height) {
+                        if (width > maxDim) {
+                            height = Math.round(height * maxDim / width);
+                            width = maxDim;
+                        }
+                    } else {
+                        if (height > maxDim) {
+                            width = Math.round(width * maxDim / height);
+                            height = maxDim;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const format = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                    const dataUrl = format === 'image/png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.7);
+                    callback(dataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
 
-      </div>
+        function addCustomStickerToGrid(url, autoSwitch = true) {
+            const grid = document.getElementById('main-sticker-grid');
+            if (!grid) return;
+            
+            // Avoid duplicate custom stickers in grid
+            const existing = Array.from(grid.querySelectorAll('.sticker-item img')).find(img => img.dataset.url === url || img.src === url);
+            if (existing) return;
+            
+            const item = document.createElement('div');
+            item.className = 'sticker-item';
+            item.dataset.cat = 'custom';
+            item.onclick = function() {
+                addNewSticker(url);
+            };
+            
+            const img = document.createElement('img');
+            const localHd = localStorage.getItem('hd_mapping_' + url);
+            img.src = localHd || url;
+            img.dataset.url = url;
+            item.appendChild(img);
+            
+            grid.insertBefore(item, grid.firstChild);
+            
+            if (autoSwitch) {
+                const customTab = document.querySelector('.category-tabs .selector-btn[onclick*="custom"]');
+                if (customTab) {
+                    filterStickers('custom', customTab);
+                }
+            }
+        }
 
-    </div>
-  </section>
+        function startCustomizing(type, price, img) {
+            currentTshirtType = type;
+            baseTshirtPrice = price;
 
-  <!-- Luxury Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="logo-footer">
-            <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection Logo">
-            <span class="brand-title">ROOHIRA COLLECTION</span>
-          </div>
-          <p style="color: #BBB0A6; font-size: 0.88rem; max-width: 320px; line-height: 1.7; margin-bottom: 1.5rem;">
-            Sri Lanka's luxury house of haute couture, bespoke menswear, and royal heirloom sarees. Crafted with passion, worn with pride.
-          </p>
-          <div class="social-links">
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://web.facebook.com/roohiraonline" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://wa.me/94757218786" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="tel:0757218786"><i class="fa-solid fa-phone"></i></a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>Boutique &amp; Bespoke</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html">All Collections</a></li>
-            <li><a href="customize.html">Custom Design Studio</a></li>
-            <li><a href="dtf.html">DTF Gang Sheet Builder</a></li>
-            <li><a href="track.html">Track Order</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div>&copy; 2026 Roohira Collection. All Rights Reserved. Master of Timeless Elegance.</div>
-      </div>
-    </div>
-  </footer>
+            // Adjust available color options based on selected canvas
+            const colorGrid = document.querySelector('.color-grid');
+            if (type === 'Waffle T-shirt') {
+                colorGrid.innerHTML = `
+                    <div class="color-dot active" style="background: #c4956a;" data-name="Light Brown"
+                        onclick="setTshirtColor('#c4956a', 'Light Brown', this)"></div>
+                    <div class="color-dot" style="background: #f5e6c8;" data-name="Light Yellow"
+                        onclick="setTshirtColor('#f5e6c8', 'Light Yellow', this)"></div>
+                `;
+                // Set default color
+                setTshirtColor('#c4956a', 'Light Brown', null);
+            } else {
+                colorGrid.innerHTML = `
+                    <div class="color-dot active" style="background: #ffffff;" data-name="White"
+                        onclick="setTshirtColor('#ffffff', 'White', this)"></div>
+                    <div class="color-dot" style="background: #ff0000;" data-name="Red"
+                        onclick="setTshirtColor('#ff0000', 'Red', this)"></div>
+                    <div class="color-dot" style="background: #2b2b2b;" data-name="Black"
+                        onclick="setTshirtColor('#2b2b2b', 'Black', this)"></div>
+                    <div class="color-dot" style="background: #0000ff;" data-name="Blue"
+                        onclick="setTshirtColor('#0000ff', 'Blue', this)"></div>
+                    <div class="color-dot" style="background: #008000;" data-name="Green"
+                        onclick="setTshirtColor('#008000', 'Green', this)"></div>
+                    <div class="color-dot" style="background: #ffff00;" data-name="Yellow"
+                        onclick="setTshirtColor('#ffff00', 'Yellow', this)"></div>
+                    <div class="color-dot" style="background: #808080;" data-name="Gray"
+                        onclick="setTshirtColor('#808080', 'Gray', this)"></div>
+                    <div class="color-dot" style="background: #00f2ff;" data-name="Light Blue"
+                        onclick="setTshirtColor('#00f2ff', 'Light Blue', this)"></div>
+                    <div class="color-dot" style="background: #e100ff;" data-name="Pink"
+                        onclick="setTshirtColor('#e100ff', 'Pink', this)"></div>
+                `;
+                // Set default color
+                setTshirtColor('#ffffff', 'White', null);
+            }
 
-  <script src="db.js"></script>
-  <script src="app.js"></script>
-  <script>
-    // Palette swatches
-    const COLOR_SWATCHES = [
-      { name: "Espresso Black", hex: "#1A0F0A" },
-      { name: "Crisp White", hex: "#FFFFFF" },
-      { name: "Dark Yellow", hex: "#D49E10" },
-      { name: "Light Yellow", hex: "#F3D86B" },
-      { name: "Rich Maroon", hex: "#5C1318" },
-      { name: "Champagne Gold", hex: "#C6A26B" },
-      { name: "Royal Mocha", hex: "#4A2E1F" }
-    ];
+            const overlay = document.getElementById('product-selection-overlay');
+            overlay.style.transition = '0.4s';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            setTimeout(() => { overlay.style.display = 'none'; }, 400);
+            updateTotal();
+        }
 
-    let currentGarment = "tshirt";
-    let currentView = "front";
-    let activeColor = COLOR_SWATCHES[0];
-    let customArtUrl = null;
+        const stickerMap = {
+            'https://i.ibb.co/gMrCJPnN/A3-1.png': 'S1', 'https://i.ibb.co/QFRLTykz/A3-2.png': 'S2',
+            'https://i.ibb.co/S7f8ZfJs/A3-3.png': 'S3', 'https://i.ibb.co/tMccn0qh/A3-4.png': 'S4',
+            'https://i.ibb.co/B5s9qhyX/A3-5.png': 'S5', 'https://i.ibb.co/bj43Hcks/A3-6.png': 'S6',
+            'https://i.ibb.co/7B5DZmx/A3-7.png': 'S7', 'https://i.ibb.co/SXdG9PTc/A3-8.png': 'S8',
+            'https://i.ibb.co/tp3krXPp/A3-9.png': 'S9', 'https://i.ibb.co/VY90dG3G/A3-10.png': 'S10',
+            'https://i.ibb.co/1JQ00QMd/A3-11.png': 'S11',
+            'https://i.ibb.co/XkDb3jmB/Nike.png': 'S12',
+            'https://i.ibb.co/gLS0w69Y/Python-BMW.png': 'S13',
+            'https://i.ibb.co/4w34h3hZ/Python-Infinity-w.png': 'S14',
+            'https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png': 'S15',
+            'https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png': 'S16',
+            'https://i.ibb.co/0VKQ1GX2/download-23.png': 'S17',
+            'https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png': 'S18',
+            'https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png': 'S19',
+            'https://i.ibb.co/8g3YLLRP/download-25.png': 'S20',
+            'https://i.ibb.co/rf382jbv/download-26.png': 'S21',
+            'https://i.ibb.co/gFXHwFCX/download-27.png': 'S22',
+            'https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png': 'S23',
+            'https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png': 'S24',
+            'https://i.ibb.co/MyV1gShG/download-28.png': 'S25',
+            'https://i.ibb.co/k2V8LGH8/download-29.png': 'S26',
+            'https://i.ibb.co/XfMfT2Pc/download-30.png': 'S27',
+            'https://i.ibb.co/v9nFCm5/download-31.png': 'S28',
+            'https://i.ibb.co/0jNxLvYv/Believe.png': 'S29',
+            'https://i.ibb.co/jnJPTYN/download-34.png': 'S30',
+            'https://i.ibb.co/prLnyfzg/download-35.png': 'S31',
+            'https://i.ibb.co/WW2ZJCcC/download-36.png': 'S32',
+            'https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png': 'S33',
+            'https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png': 'S34',
+            'https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png': 'S35',
+            'https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png': 'S36',
+            'https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png': 'S37',
+            'https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png': 'S38',
+            'https://i.ibb.co/zHGbqMn0/honor-design.png': 'S39'
+        };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // Render color swatches
-      const container = document.getElementById("colorSwatchesContainer");
-      container.innerHTML = COLOR_SWATCHES.map((c, i) => `
-        <div class="color-swatch-circle ${i === 0 ? 'active' : ''}" 
-             style="background-color: ${c.hex};" 
-             title="${c.name}" 
-             onclick="selectStudioColor(${i})">
-        </div>
-      `).join("");
-    });
+        function toggleModal(show) { document.getElementById('size-modal').style.display = show ? 'flex' : 'none'; }
+        function setTshirtColor(color, name, btn) {
+            if (isLocked) return;
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            selectedColor = color; selectedColorName = name;
+            
+            const base = document.querySelector('.tshirt-base');
+            const img = document.querySelector('.tshirt-img');
+            
+            if (currentTshirtType === 'Waffle T-shirt') {
+                base.style.maskImage = 'none';
+                base.style.webkitMaskImage = 'none';
+                base.style.backgroundColor = 'transparent';
+                img.style.mixBlendMode = 'normal';
+                
+                if (color === '#c4956a') {
+                    img.src = 'https://i.ibb.co/RTGD6DPx/12.png'; // Light Brown
+                } else if (color === '#f5e6c8') {
+                    img.src = 'https://i.ibb.co/cKzdSStx/23.png'; // Light Yellow
+                }
+            } else {
+                base.style.webkitMaskImage = "url('https://i.ibb.co/NnQrQr7y/T-Shirt.png')";
+                base.style.maskImage = "url('https://i.ibb.co/NnQrQr7y/T-Shirt.png')";
+                base.style.backgroundColor = color;
+                img.style.mixBlendMode = 'multiply';
+                img.src = 'https://i.ibb.co/NnQrQr7y/T-Shirt.png';
+            }
+            autoSave();
+        }
+        function setTshirtSize(size, btn) {
+            if (isLocked) return;
+            document.querySelectorAll('.selector-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            currentTshirtSize = size;
+            autoSave();
+        }
+        function addNewSticker(url, pos = null) {
+            if (isLocked) return;
+            const id = pos ? pos.id : 'sticker-' + Math.random().toString(36).substr(2, 9);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'sticker-wrapper';
+            wrapper.id = id;
+            wrapper.style.width = pos ? pos.w : '160px';
+            wrapper.dataset.rotation = pos ? pos.r : 0;
+            if (pos) { wrapper.style.top = pos.t; wrapper.style.left = pos.l; wrapper.style.transform = `translate(-50%, -50%) rotate(${pos.r}deg)`; }
+            
+            const initialPrice = pos && pos.p !== undefined ? pos.p : 580;
+            const initialSzName = pos && pos.sz !== undefined ? pos.sz : 'A3';
+            
+            // Check if there is a local HD version in localStorage
+            const localHd = localStorage.getItem('hd_mapping_' + url);
+            const displayUrl = localHd || url;
 
-    function selectStudioColor(index) {
-      activeColor = COLOR_SWATCHES[index];
-      document.querySelectorAll(".color-swatch-circle").forEach((el, i) => {
-        el.classList.toggle("active", i === index);
-      });
-      document.getElementById("selectedColorLabel").textContent = `${activeColor.name} (${activeColor.hex})`;
-      document.getElementById("garmentBodyPath").setAttribute("fill", activeColor.hex);
-    }
+            wrapper.innerHTML = `
+                <img src="${displayUrl}">
+                <div class="sticker-size-tag">${initialSzName}</div>
+                <div class="handle sticker-delete" onclick="event.stopPropagation(); removeSticker('${id}')"><i data-lucide="trash-2" style="width:16px"></i></div>
+                <div class="handle resize-handle"><i data-lucide="maximize-2" style="width:16px"></i></div>
+                <div class="handle rotate-handle"><i data-lucide="rotate-cw" style="width:16px"></i></div>
+            `;
+            document.getElementById('canvas').appendChild(wrapper);
+            activeStickers.push({ id, url, price: initialPrice, szName: initialSzName });
+            initInteractions(wrapper);
+            selectSticker(id);
+            updateTotal();
+            lucide.createIcons();
+            autoSave();
+        }
+        function setStickerSize(sz, btn) {
+            const activeEl = document.querySelector('.sticker-wrapper.active');
+            if (!activeEl) return;
+            const sticker = activeStickers.find(s => s.id === activeEl.id);
+            if (sticker) {
+                const prices = { 'A2': 800, 'A3': 580, 'A4': 320, 'A5': 150, 'A6': 100 };
+                sticker.szName = sz;
+                sticker.price = prices[sz];
+                const tag = activeEl.querySelector('.sticker-size-tag');
+                if (tag) tag.innerText = sz;
 
-    function changeGarmentType(type) {
-      currentGarment = type;
-      const path = document.getElementById("garmentBodyPath");
-      const priceEl = document.getElementById("customStudioPrice");
-      
-      if (type === "frock") {
-        // Frock silhouette path
-        path.setAttribute("d", "M175,90 C200,120 300,120 325,90 L395,150 L355,200 L320,180 L305,250 L420,460 L80,460 L195,250 L180,180 L145,200 L105,150 Z");
-        priceEl.textContent = "LKR 12,500";
-      } else if (type === "hoodie") {
-        // Hoodie silhouette path
-        path.setAttribute("d", "M150,90 C180,140 320,140 350,90 L455,185 L395,255 L350,225 L355,460 L145,460 L150,225 L105,255 L45,185 Z");
-        priceEl.textContent = "LKR 8,900";
-      } else {
-        // T-Shirt default
-        path.setAttribute("d", "M160,100 C185,130 315,130 340,100 L440,175 L385,245 L345,215 L350,450 L150,450 L155,215 L115,245 L60,175 Z");
-        priceEl.textContent = "LKR 6,500";
-      }
-    }
+                document.querySelectorAll('.sz-btn').forEach(b => b.classList.remove('active'));
+                if (btn) btn.classList.add('active');
+                updateTotal();
+                autoSave();
+            }
+        }
+        function removeSticker(id) {
+            if (isLocked) return;
+            const el = document.getElementById(id); if (el) el.remove();
+            activeStickers = activeStickers.filter(s => s.id !== id);
+            updateTotal();
+            autoSave();
+        }
+        function updateTotal() {
+            let total = baseTshirtPrice;
+            const summaryBox = document.getElementById('sticker-summary-box');
+            summaryBox.innerHTML = `<div class="summary-item"><span>Base (${currentTshirtType})</span><span>Rs. ${baseTshirtPrice}</span></div>`;
+            activeStickers.forEach((s, idx) => {
+                const price = s.price || 100;
+                const sz = s.szName || 'A6';
+                total += price;
+                summaryBox.innerHTML += `<div class="summary-item"><span>Design ${idx + 1} (${sz})</span><span>Rs. ${price}</span></div>`;
+            });
+            document.getElementById('grand-total-display').innerText = total.toLocaleString();
+        }
+        function selectSticker(id) {
+            if (isLocked) return;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.classList.remove('active'));
+            const activeEl = document.getElementById(id);
+            if (activeEl) {
+                activeEl.classList.add('active');
+                document.getElementById('sticker-size-control').style.display = 'block';
+                const sticker = activeStickers.find(s => s.id === id);
+                if (sticker) {
+                    document.querySelectorAll('.sz-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.innerText === sticker.szName);
+                    });
+                }
+            } else {
+                document.getElementById('sticker-size-control').style.display = 'none';
+            }
+        }
+        function initInteractions(el) {
+            let isDragging = false, isResizing = false, isRotating = false;
+            let startX, startY, startW, startAngle, startRotation, startDist = 0;
+            const canvas = document.getElementById('canvas');
+            const getDist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+            const start = (e) => {
+                if (isLocked) return;
+                selectSticker(el.id);
+                const touches = e.touches;
+                if (touches && touches.length === 2) { isResizing = true; startDist = getDist(touches); startW = el.offsetWidth; }
+                else {
+                    const t = touches ? touches[0] : e;
+                    if (e.target.closest('.resize-handle')) { isResizing = true; startX = t.clientX; startW = el.offsetWidth; }
+                    else if (e.target.closest('.rotate-handle')) {
+                        isRotating = true;
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2, centerY = rect.top + rect.height / 2;
+                        startAngle = Math.atan2(t.clientY - centerY, t.clientX - centerX);
+                        startRotation = parseFloat(el.dataset.rotation || 0);
+                    } else { isDragging = true; startX = t.clientX - el.offsetLeft; startY = t.clientY - el.offsetTop; }
+                }
+                e.stopPropagation();
+            };
+            const move = (e) => {
+                if (!isDragging && !isResizing && !isRotating) return;
+                const touches = e.touches;
+                if (touches && touches.length === 2 && isResizing) {
+                    const dist = getDist(touches);
+                    const scale = dist / startDist;
+                    const newW = startW * scale;
+                    if (newW > 40 && newW < 380) el.style.width = newW + 'px';
+                } else {
+                    const t = touches ? touches[0] : e;
+                    if (isDragging) {
+                        el.style.left = (((t.clientX - startX) / canvas.offsetWidth) * 100) + '%';
+                        el.style.top = (((t.clientY - startY) / canvas.offsetHeight) * 100) + '%';
+                    } else if (isResizing) {
+                        const newW = startW + (t.clientX - startX);
+                        if (newW > 40 && newW < 380) el.style.width = newW + 'px';
+                    } else if (isRotating) {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2, centerY = rect.top + rect.height / 2;
+                        const currentAngle = Math.atan2(t.clientY - centerY, t.clientX - centerX);
+                        const rotation = startRotation + (currentAngle - startAngle) * (180 / Math.PI);
+                        el.dataset.rotation = rotation;
+                        el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+                    }
+                }
+                updateTotal();
+                if (e.touches) e.preventDefault();
+            };
+            const end = () => { if (isDragging || isResizing || isRotating) autoSave(); isDragging = isResizing = isRotating = false; };
+            el.addEventListener('mousedown', start); el.addEventListener('touchstart', start, { passive: false });
+            window.addEventListener('mousemove', move); window.addEventListener('touchmove', move, { passive: false });
+            window.addEventListener('mouseup', end); window.addEventListener('touchend', end);
+        }
+        function autoSave() {
+            const canvas = document.getElementById('canvas');
+            const canvasW = canvas ? canvas.offsetWidth : 1;
+            const data = {
+                tshirtType: currentTshirtType,
+                basePrice: baseTshirtPrice,
+                color: selectedColor, colorName: selectedColorName, size: currentTshirtSize,
+                stickers: activeStickers.map(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return null;
+                    // Store width as % of canvas so invoice/production previews scale exactly
+                    const pxW = parseFloat(el.style.width) || el.offsetWidth;
+                    const pctW = ((pxW / canvasW) * 100).toFixed(4) + '%';
+                    return { id: s.id, url: s.url, t: el.style.top, l: el.style.left, w: pctW, r: el.dataset.rotation, sz: s.szName, p: s.price };
+                }).filter(s => s !== null)
+            };
+            localStorage.setItem('roohira_custom_design', JSON.stringify(data));
+        }
+        function loadSavedDesign() {
+            const saved = localStorage.getItem('roohira_custom_design');
+            if (saved) {
+                const data = JSON.parse(saved);
+                currentTshirtType = data.tshirtType || 'Regular Tee';
+                baseTshirtPrice = data.basePrice || 1300;
 
-    function switchView(view) {
-      currentView = view;
-      document.getElementById("viewFrontBtn").className = view === "front" ? "btn btn-primary btn-sm active" : "btn btn-outline btn-sm";
-      document.getElementById("viewBackBtn").className = view === "back" ? "btn btn-primary btn-sm active" : "btn btn-outline btn-sm";
-      document.getElementById("canvasViewIndicator").textContent = `Viewing: ${view.toUpperCase()}`;
-      
-      // Toggle collar line for back view
-      const collar = document.getElementById("garmentCollar");
-      if (view === "back") {
-        collar.style.opacity = "0.2";
-      } else {
-        collar.style.opacity = "0.6";
-      }
-    }
+                // Set color dots grid based on type
+                const colorGrid = document.querySelector('.color-grid');
+                if (currentTshirtType === 'Waffle T-shirt') {
+                    colorGrid.innerHTML = `
+                        <div class="color-dot" style="background: #c4956a;" data-name="Light Brown"
+                            onclick="setTshirtColor('#c4956a', 'Light Brown', this)"></div>
+                        <div class="color-dot" style="background: #f5e6c8;" data-name="Light Yellow"
+                            onclick="setTshirtColor('#f5e6c8', 'Light Yellow', this)"></div>
+                    `;
+                } else {
+                    colorGrid.innerHTML = `
+                        <div class="color-dot" style="background: #ffffff;" data-name="White"
+                            onclick="setTshirtColor('#ffffff', 'White', this)"></div>
+                        <div class="color-dot" style="background: #ff0000;" data-name="Red"
+                            onclick="setTshirtColor('#ff0000', 'Red', this)"></div>
+                        <div class="color-dot" style="background: #2b2b2b;" data-name="Black"
+                            onclick="setTshirtColor('#2b2b2b', 'Black', this)"></div>
+                        <div class="color-dot" style="background: #0000ff;" data-name="Blue"
+                            onclick="setTshirtColor('#0000ff', 'Blue', this)"></div>
+                        <div class="color-dot" style="background: #008000;" data-name="Green"
+                            onclick="setTshirtColor('#008000', 'Green', this)"></div>
+                        <div class="color-dot" style="background: #ffff00;" data-name="Yellow"
+                            onclick="setTshirtColor('#ffff00', 'Yellow', this)"></div>
+                        <div class="color-dot" style="background: #808080;" data-name="Gray"
+                            onclick="setTshirtColor('#808080', 'Gray', this)"></div>
+                        <div class="color-dot" style="background: #00f2ff;" data-name="Light Blue"
+                            onclick="setTshirtColor('#00f2ff', 'Light Blue', this)"></div>
+                        <div class="color-dot" style="background: #e100ff;" data-name="Pink"
+                            onclick="setTshirtColor('#e100ff', 'Pink', this)"></div>
+                    `;
+                }
 
-    function handleArtworkUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+                // Activate color dot
+                const targetDot = [...colorGrid.querySelectorAll('.color-dot')].find(d => {
+                    const onclickVal = d.getAttribute('onclick');
+                    return d.style.backgroundColor === data.color || (onclickVal && onclickVal.includes(data.color));
+                });
+                setTshirtColor(data.color, data.colorName, targetDot);
+                setTshirtSize(data.size, null);
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        customArtUrl = e.target.result;
-        const artImg = document.getElementById("customArtImg");
-        artImg.src = customArtUrl;
-        artImg.style.display = "block";
-        window.roohiraApp.showToast("Artwork uploaded to canvas successfully!", "success");
-      };
-      reader.readAsDataURL(file);
-    }
+                // Highlight active size button
+                const sizeBtns = document.querySelectorAll('.selector-grid .selector-btn');
+                sizeBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.innerText === data.size);
+                });
 
-    function updateCustomText(val) {
-      const display = document.getElementById("customTextDisplay");
-      if (val.trim() === "") {
-        display.style.display = "none";
-      } else {
-        display.style.display = "block";
-        display.textContent = val;
-      }
-    }
+                // Remove overlay since we loaded a saved design
+                const overlay = document.getElementById('product-selection-overlay');
+                if (overlay) overlay.style.display = 'none';
 
-    function updateTextFont(font) {
-      document.getElementById("customTextDisplay").style.fontFamily = font;
-    }
+                data.stickers.forEach(s => {
+                    addNewSticker(s.url, s);
+                    // Reload custom stickers into selection grid on startup (without auto-switching tab)
+                    if (!stickerMap[s.url]) {
+                        addCustomStickerToGrid(s.url, false);
+                    }
+                });
+            } else { setTshirtColor('#ffffff', 'White', null); setTshirtSize('M', null); }
+        }
+        function resetDesign() { if (confirm("Reset design?")) { localStorage.removeItem('roohira_custom_design'); location.reload(); } }
+        function finishDesign() {
+            if (activeStickers.length === 0) { alert('Add at least one sticker!'); return; }
+            isLocked = true;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.classList.add('locked'));
+            document.getElementById('btn-finish').style.display = 'none';
+            document.getElementById('btn-cart').style.display = 'block';
+            document.getElementById('btn-edit').style.display = 'block';
+        }
+        function enableEditing() {
+            isLocked = false;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.classList.remove('locked'));
+            document.getElementById('btn-finish').style.display = 'block';
+            document.getElementById('btn-cart').style.display = 'none';
+            document.getElementById('btn-edit').style.display = 'none';
+        }
+        function addCustomToCart() {
+            try {
+                const canvas = document.getElementById('canvas');
+                const canvasW = canvas ? canvas.offsetWidth : 1;
 
-    function updateTextColor(color) {
-      document.getElementById("customTextDisplay").style.color = color;
-    }
+                const details = activeStickers.map(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return null;
+                    // Save width as % of canvas for accurate scaling on invoice
+                    const pxW = parseFloat(el.style.width) || el.offsetWidth;
+                    const pctW = ((pxW / canvasW) * 100).toFixed(4) + '%';
+                    
+                    let uVal = stickerMap[s.url] || s.url;
+                    if (uVal.startsWith('data:')) {
+                        uVal = 'offline_' + s.id;
+                        // Copy HD mapping to this offline key so it can be resolved locally
+                        const localHd = localStorage.getItem('hd_mapping_' + s.url);
+                        if (localHd) {
+                            try {
+                                localStorage.setItem('hd_mapping_' + uVal, localHd);
+                            } catch (e) {
+                                console.warn("Failed to copy HD mapping", e);
+                            }
+                        }
+                    }
+                    return { u: uVal, sz: s.szName, p: s.price, t: el.style.top, l: el.style.left, w: pctW, r: el.dataset.rotation || 0 };
+                }).filter(d => d !== null);
 
-    function updateTextScale(scale) {
-      document.getElementById("customTextDisplay").style.fontSize = scale + "rem";
-      document.getElementById("textScaleVal").textContent = scale + "rem";
-    }
+                const total = baseTshirtPrice + activeStickers.reduce((sum, s) => sum + (s.price || 250), 0);
 
-    function resetStudio() {
-      selectStudioColor(0);
-      document.getElementById("customTextInput").value = "";
-      document.getElementById("artworkFileInput").value = "";
-      document.getElementById("customArtImg").style.display = "none";
-      document.getElementById("customTextDisplay").style.display = "none";
-      customArtUrl = null;
-      window.roohiraApp.showToast("Canvas restored to blank atelier state.", "info");
-    }
+                // Safe cart checking & initialization
+                let tempCart;
+                if (typeof cart !== 'undefined') {
+                    tempCart = cart;
+                } else if (window.cart !== undefined) {
+                    tempCart = window.cart;
+                } else {
+                    try {
+                        tempCart = JSON.parse(localStorage.getItem('roohira_cart')) || [];
+                    } catch (e) {
+                        tempCart = [];
+                    }
+                    if (!Array.isArray(tempCart)) tempCart = [];
+                    window.cart = tempCart;
+                }
 
-    function addCustomToBag() {
-      const size = document.getElementById("customSizeSelect").value;
-      const text = document.getElementById("customTextInput").value.trim();
-      const priceText = document.getElementById("customStudioPrice").textContent.replace(/[^0-9]/g, "");
-      const price = parseInt(priceText, 10) || 6500;
+                tempCart.push({
+                    id: 'custom-' + Date.now(),
+                    name: currentTshirtType + ' (Custom)',
+                    price: total,
+                    quantity: 1,
+                    size: currentTshirtSize,
+                    color: selectedColorName,
+                    isCustom: true,
+                    customStickers: details,
+                    image: currentTshirtType === 'Waffle T-shirt' ? (selectedColor === '#c4956a' ? 'https://i.ibb.co/RTGD6DPx/12.png' : 'https://i.ibb.co/cKzdSStx/23.png') : 'https://i.ibb.co/NnQrQr7y/T-Shirt.png',
+                    basePrice: baseTshirtPrice
+                });
 
-      const customItem = {
-        id: "BESPOKE-" + Date.now(),
-        name: `Bespoke Custom ${currentGarment.toUpperCase()} (${currentView.toUpperCase()})`,
-        price: price,
-        image: customArtUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
-        qty: 1,
-        size: size,
-        color: activeColor.name,
-        customNotes: `Text: "${text || 'None'}" & Color: ${activeColor.name}`
-      };
+                if (typeof saveCart === 'function') {
+                    if (typeof cart !== 'undefined') {
+                        try { cart = tempCart; } catch (e) { window.cart = tempCart; }
+                    }
+                    saveCart();
+                } else {
+                    localStorage.setItem('roohira_cart', JSON.stringify(tempCart));
+                    if (typeof updateCartCount === 'function') updateCartCount();
+                }
 
-      let cart = window.roohiraApp.getCart();
-      cart.push(customItem);
-      window.roohiraApp.saveCart(cart);
-      window.roohiraApp.showToast("Custom design created and added to your bag!", "success");
-      window.roohiraApp.openCart();
-    }
-
-    function orderCustomViaWhatsApp() {
-      const size = document.getElementById("customSizeSelect").value;
-      const text = document.getElementById("customTextInput").value.trim();
-      const price = document.getElementById("customStudioPrice").textContent;
-      
-      const msg = `*ROOHIRA BESPOKE STUDIO - CUSTOM ORDER*%0A%0A` +
-        `*Garment:* ${currentGarment.toUpperCase()}%0A` +
-        `*Color:* ${activeColor.name} (${activeColor.hex})%0A` +
-        `*Size:* ${size}%0A` +
-        `*Custom Text:* ${text || 'None'}%0A` +
-        `*Artwork Attached:* ${customArtUrl ? 'Yes' : 'No'}%0A` +
-        `*Estimated Price:* ${price}%0A%0A` +
-        `Please confirm my custom printing and tailoring!`;
-
-      window.open(`https://wa.me/94757218786?text=${msg}`, '_blank');
-    }
-  </script>
+                localStorage.removeItem('roohira_custom_design');
+                window.location.href = 'cart.html';
+            } catch (err) {
+                console.error("Cart Error:", err);
+                alert("Something went wrong: " + err.message);
+            }
+        }
+        window.onload = () => { loadSavedDesign(); updateCartCount(); lucide.createIcons(); };
+        function filterStickers(cat, btn) {
+            document.querySelectorAll('.category-tabs .selector-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const items = document.querySelectorAll('#main-sticker-grid .sticker-item');
+            items.forEach(item => {
+                if (cat === 'all' || item.dataset.cat === cat) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
+
 </html>
