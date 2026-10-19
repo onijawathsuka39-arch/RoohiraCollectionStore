@@ -1,10 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Checkout | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -12,11 +18,11 @@
 <body>
     <nav id="navbar" class="scrolled">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span
-                style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span
-                    style="color: #8B5A2B;">ROOHIRA</span> <span
-                    style="color: var(--primary-dark);">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -391,56 +397,51 @@
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 
-    <!-- Checkout Auth Guard: Redirect if not logged in -->
+    <!-- Checkout Auth Verification: Prompts luxury sign-in modal ONLY if NOT signed in -->
     <script>
-        // Show a brief auth-checking overlay
         (function() {
-            const overlay = document.createElement('div');
-            overlay.id = 'checkout-auth-overlay';
-            overlay.style.cssText = 'position:fixed;inset:0;background:#0A0F1E;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;';
-            overlay.innerHTML = `
-                <svg viewBox="0 0 100 100" style="width:70px;height:70px;filter:drop-shadow(0 0 10px rgba(255,20,147,0.7));">
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6"/>
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="url(#cg)" stroke-width="6" stroke-linecap="round"
-                        style="stroke-dasharray:200;animation:spin 1s linear infinite;transform-origin:center;">
-                        <defs>
-                            <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#8B5A2B"/>
-                                <stop offset="100%" stop-color="#c8a96e"/>
-                            </linearGradient>
-                        </defs>
-                    </circle>
-                </svg>
-                <p style="color:#fff;font-size:1rem;font-weight:700;letter-spacing:1px;">Verifying Account...</p>
-                <style>@keyframes spin{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}</style>
-            `;
-            document.body.appendChild(overlay);
-
-            // Wait for Firebase Auth to resolve
-            function removeOverlay() {
-                const el = document.getElementById('checkout-auth-overlay');
-                if (el) el.remove();
+            // If already signed in, proceed immediately without any prompt
+            if (typeof isUserLoggedIn === 'function' && isUserLoggedIn()) {
+                return;
             }
 
+            // Wait a brief moment for Firebase Auth to restore session from IndexedDB if needed
+            let authChecked = false;
             if (typeof auth !== 'undefined' && auth) {
+                const timer = setTimeout(() => {
+                    if (!authChecked && (typeof isUserLoggedIn !== 'function' || !isUserLoggedIn())) {
+                        if (typeof showAuthRequiredModal === 'function') {
+                            showAuthRequiredModal('place your order', 'checkout.html');
+                        }
+                    }
+                }, 850);
+
                 auth.onAuthStateChanged(function(user) {
-                    if (!user) {
-                        // Not logged in - redirect to login with redirect param
-                        window.location.href = 'login.html?redirect=checkout.html';
+                    authChecked = true;
+                    clearTimeout(timer);
+                    if (user) {
+                        const synced = {
+                            uid: user.uid,
+                            name: user.displayName || user.email.split('@')[0],
+                            email: user.email
+                        };
+                        try { localStorage.setItem('roohira_user', JSON.stringify(synced)); } catch(e) {}
+                        currentUser = synced;
+                        if (typeof fillCheckoutUserFields === 'function') fillCheckoutUserFields(synced);
                     } else {
-                        removeOverlay();
+                        if (typeof isUserLoggedIn !== 'function' || !isUserLoggedIn()) {
+                            if (typeof showAuthRequiredModal === 'function') {
+                                showAuthRequiredModal('place your order', 'checkout.html');
+                            }
+                        }
                     }
                 });
             } else {
-                // Firebase not loaded yet - check localStorage fallback
-                setTimeout(function() {
-                    const localUser = localStorage.getItem('roohira_user');
-                    if (!localUser) {
-                        window.location.href = 'login.html?redirect=checkout.html';
-                    } else {
-                        removeOverlay();
+                if (typeof isUserLoggedIn !== 'function' || !isUserLoggedIn()) {
+                    if (typeof showAuthRequiredModal === 'function') {
+                        showAuthRequiredModal('place your order', 'checkout.html');
                     }
-                }, 800);
+                }
             }
         })();
     </script>

@@ -1,10 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order History | Roohira</title>
+    <title>Order History | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -231,8 +237,11 @@
 <body>
     <nav id="navbar" class="scrolled">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -359,136 +368,161 @@
             return `invoice.html?data=${encodeURIComponent(encodedData)}`;
         }
 
-        if (typeof auth !== 'undefined' && auth) {
-            auth.onAuthStateChanged(function(user) {
-                if (!user) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                
-                // Load order history from Firestore
-                db.collection('orders')
-                    .where('userEmail', '==', user.email)
-                    .get()
-                    .then(function(snapshot) {
-                        document.getElementById('loading-spinner').style.display = 'none';
-                        const ordersList = [];
-                        snapshot.forEach(doc => ordersList.push({ docId: doc.id, ...doc.data() }));
-                        
-                        // Sort by date descending
-                        ordersList.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        function fetchAndRenderOrdersForEmail(email) {
+            if (!email) return;
+            db.collection('orders')
+                .where('userEmail', '==', email)
+                .get()
+                .then(function(snapshot) {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    const ordersList = [];
+                    snapshot.forEach(doc => ordersList.push({ docId: doc.id, ...doc.data() }));
+                    
+                    // Sort by date descending
+                    ordersList.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
-                        if (ordersList.length === 0) {
-                            document.getElementById('no-orders-view').style.display = 'block';
-                            return;
+                    if (ordersList.length === 0) {
+                        document.getElementById('no-orders-view').style.display = 'block';
+                        return;
+                    }
+
+                    const listEl = document.getElementById('orders-history-list');
+                    listEl.style.display = 'block';
+
+                    listEl.innerHTML = ordersList.map((o, idx) => {
+                        const status = o.status || 'pending';
+                        let statusClass = 'status-pending';
+                        let statusText = '🕐 Pending';
+                        if (status === 'confirmed') {
+                            statusClass = 'status-confirmed';
+                            statusText = '✅ Confirmed';
+                        } else if (status === 'cancelled') {
+                            statusClass = 'status-cancelled';
+                            statusText = '❌ Cancelled';
                         }
 
-                        const listEl = document.getElementById('orders-history-list');
-                        listEl.style.display = 'block';
+                        const subtotal = (o.items || []).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                        const deliveryFee = Math.max(0, (o.total || 0) - subtotal);
+                        const invoiceUrl = buildUserInvoiceLink(o);
 
-                        listEl.innerHTML = ordersList.map((o, idx) => {
-                            const status = o.status || 'pending';
-                            let statusClass = 'status-pending';
-                            let statusText = '🕐 Pending';
-                            if (status === 'confirmed') {
-                                statusClass = 'status-confirmed';
-                                statusText = '✅ Confirmed';
-                            } else if (status === 'cancelled') {
-                                statusClass = 'status-cancelled';
-                                statusText = '❌ Cancelled';
-                            }
+                        const itemsHtml = (o.items || []).map(item => `
+                            <tr>
+                                <td>
+                                    <strong>${item.name}</strong><br>
+                                    <span style="font-size:0.75rem; color:var(--text-muted);">Color: ${item.color}</span>
+                                </td>
+                                <td>${item.size || '–'}</td>
+                                <td>${item.quantity || 1}</td>
+                                <td>Rs. ${(item.price || 0).toLocaleString()}</td>
+                                <td style="font-weight:700; text-align:right;">Rs. ${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                            </tr>
+                        `).join('');
 
-                            const subtotal = (o.items || []).reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                            const deliveryFee = Math.max(0, (o.total || 0) - subtotal);
-                            const invoiceUrl = buildUserInvoiceLink(o);
-
-                            const itemsHtml = (o.items || []).map(item => `
-                                <tr>
-                                    <td>
-                                        <strong>${item.name}</strong><br>
-                                        <span style="font-size:0.75rem; color:var(--text-muted);">Color: ${item.color}</span>
-                                    </td>
-                                    <td>${item.size || '–'}</td>
-                                    <td>${item.quantity || 1}</td>
-                                    <td>Rs. ${(item.price || 0).toLocaleString()}</td>
-                                    <td style="font-weight:700; text-align:right;">Rs. ${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
-                                </tr>
-                            `).join('');
-
-                            return `
-                                <div class="order-card">
-                                    <div class="order-header" onclick="toggleOrderAccordion('${o.docId}')">
-                                        <div class="order-header-info">
-                                            <span style="font-weight:800;">Order #${(o.id || o.docId).toString().slice(-6)}</span>
-                                            <span class="order-status ${statusClass}">${statusText}</span>
-                                            <span style="color:var(--text-muted); font-size:0.85rem;">${o.date || '–'}</span>
+                        return `
+                            <div class="order-card">
+                                <div class="order-header" onclick="toggleOrderAccordion('${o.docId}')">
+                                    <div class="order-header-info">
+                                        <span style="font-weight:800;">Order #${(o.id || o.docId).toString().slice(-6)}</span>
+                                        <span class="order-status ${statusClass}">${statusText}</span>
+                                        <span style="color:var(--text-muted); font-size:0.85rem;">${o.date || '–'}</span>
+                                    </div>
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-weight:800; color:var(--green);">Rs. ${(o.total || 0).toLocaleString()}</span>
+                                        <i data-lucide="chevron-down" id="arrow-${o.docId}" class="order-arrow" style="width:18px;"></i>
+                                    </div>
+                                </div>
+                                <div class="order-body" id="body-${o.docId}">
+                                    <div class="details-grid">
+                                        <div class="detail-field">
+                                            <h4>Phone Number</h4>
+                                            <p>${o.userPhone || '–'}</p>
                                         </div>
-                                        <div style="display:flex; align-items:center; gap:10px;">
-                                            <span style="font-weight:800; color:var(--green);">Rs. ${(o.total || 0).toLocaleString()}</span>
-                                            <i data-lucide="chevron-down" id="arrow-${o.docId}" class="order-arrow" style="width:18px;"></i>
+                                        <div class="detail-field" style="grid-column: span 2;">
+                                            <h4>Shipping Address</h4>
+                                            <p>${o.userAddress || '–'}</p>
                                         </div>
                                     </div>
-                                    <div class="order-body" id="body-${o.docId}">
-                                        <div class="details-grid">
-                                            <div class="detail-field">
-                                                <h4>Phone Number</h4>
-                                                <p>${o.userPhone || '–'}</p>
-                                            </div>
-                                            <div class="detail-field" style="grid-column: span 2;">
-                                                <h4>Shipping Address</h4>
-                                                <p>${o.userAddress || '–'}</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <table class="order-items-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Product</th>
-                                                    <th>Size</th>
-                                                    <th>Qty</th>
-                                                    <th>Price</th>
-                                                    <th style="text-align:right;">Subtotal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                ${itemsHtml}
-                                            </tbody>
-                                        </table>
+                                    
+                                    <table class="order-items-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Size</th>
+                                                <th>Qty</th>
+                                                <th>Price</th>
+                                                <th style="text-align:right;">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${itemsHtml}
+                                        </tbody>
+                                    </table>
 
-                                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-top:15px; font-size:0.9rem;">
-                                            <div style="display:flex; justify-content:space-between; width:220px;">
-                                                <span style="color:var(--text-muted);">Items Subtotal:</span>
-                                                <span>Rs. ${subtotal.toLocaleString()}.00</span>
-                                            </div>
-                                            <div style="display:flex; justify-content:space-between; width:220px;">
-                                                <span style="color:var(--text-muted);">Delivery Fee:</span>
-                                                <span>${deliveryFee === 0 ? 'FREE' : 'Rs. ' + deliveryFee.toLocaleString() + '.00'}</span>
-                                            </div>
+                                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-top:15px; font-size:0.9rem;">
+                                        <div style="display:flex; justify-content:space-between; width:220px;">
+                                            <span style="color:var(--text-muted);">Items Subtotal:</span>
+                                            <span>Rs. ${subtotal.toLocaleString()}.00</span>
                                         </div>
+                                        <div style="display:flex; justify-content:space-between; width:220px;">
+                                            <span style="color:var(--text-muted);">Delivery Fee:</span>
+                                            <span>${deliveryFee === 0 ? 'FREE' : 'Rs. ' + deliveryFee.toLocaleString() + '.00'}</span>
+                                        </div>
+                                    </div>
 
-                                        <div class="order-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                                            <div class="total-amount">Grand Total: Rs. ${(o.total || 0).toLocaleString()}.00</div>
-                                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                                                <a href="track-order.html?id=${encodeURIComponent(o.waybill_id || o.tracking_id || o.id || o.docId)}" class="view-bill-btn" style="background:linear-gradient(135deg, #8B5A2B, #663B15); color:#fff; border-color:#8B5A2B;">
-                                                    <i data-lucide="truck" style="width:16px;"></i> Track Shipment
-                                                </a>
-                                                <a href="${invoiceUrl}" target="_blank" class="view-bill-btn">
-                                                    <i data-lucide="file-text" style="width:16px;"></i> View Bill / Invoice
-                                                </a>
-                                            </div>
+                                    <div class="order-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                        <div class="total-amount">Grand Total: Rs. ${(o.total || 0).toLocaleString()}.00</div>
+                                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                            <a href="track-order.html?id=${encodeURIComponent(o.waybill_id || o.tracking_id || o.id || o.docId)}" class="view-bill-btn" style="background:linear-gradient(135deg, #8B5A2B, #663B15); color:#fff; border-color:#8B5A2B;">
+                                                <i data-lucide="truck" style="width:16px;"></i> Track Shipment
+                                            </a>
+                                            <a href="${invoiceUrl}" target="_blank" class="view-bill-btn">
+                                                <i data-lucide="file-text" style="width:16px;"></i> View Bill / Invoice
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            `;
-                        }).join('');
+                            </div>
+                        `;
+                    }).join('');
 
-                        lucide.createIcons();
-                    })
-                    .catch(function(err) {
-                        console.error(err);
-                        document.getElementById('loading-spinner').innerHTML = '<p style="color:#ef4444;">Failed to load order history.</p>';
-                    });
+                    lucide.createIcons();
+                })
+                .catch(function(err) {
+                    console.error(err);
+                    document.getElementById('loading-spinner').innerHTML = '<p style="color:#ef4444;">Failed to load order history.</p>';
+                });
+        }
+
+        if (typeof auth !== 'undefined' && auth) {
+            auth.onAuthStateChanged(function(user) {
+                if (user && user.email) {
+                    fetchAndRenderOrdersForEmail(user.email);
+                } else {
+                    let localUser = null;
+                    try { localUser = JSON.parse(localStorage.getItem('roohira_user')); } catch (e) {}
+                    if (localUser && localUser.email) {
+                        fetchAndRenderOrdersForEmail(localUser.email);
+                    } else {
+                        setTimeout(() => {
+                            let retryUser = null;
+                            try { retryUser = JSON.parse(localStorage.getItem('roohira_user')); } catch (e) {}
+                            if (!retryUser && (!auth.currentUser)) {
+                                window.location.href = 'login.html';
+                            } else if (retryUser && retryUser.email) {
+                                fetchAndRenderOrdersForEmail(retryUser.email);
+                            }
+                        }, 1000);
+                    }
+                }
             });
+        } else {
+            let localUser = null;
+            try { localUser = JSON.parse(localStorage.getItem('roohira_user')); } catch (e) {}
+            if (localUser && localUser.email) {
+                fetchAndRenderOrdersForEmail(localUser.email);
+            } else {
+                window.location.href = 'login.html';
+            }
         }
 
         function clearAllUserOrders() {

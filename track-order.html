@@ -5,7 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Your Order | Roohira Collection</title>
-    <link rel="icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -18,11 +23,9 @@
 
 
     <script>
-        // Apply stored theme immediately to prevent flashing
-        (function () {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        })();
+        // Force light mode unconditionally
+        localStorage.setItem('theme', 'light');
+        document.documentElement.setAttribute('data-theme', 'light');
     </script>
 
     <style>
@@ -679,8 +682,11 @@
     <!-- Navbar with Theme Toggle Button -->
     <nav id="navbar">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -689,9 +695,6 @@
             <li><a href="customize.html">Design Studio</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="javascript:void(0)" id="theme-toggle-btn" title="Toggle Light/Dark Theme" style="cursor: pointer; display: flex; align-items: center; justify-content: center; color: #8B5A2B;">
-                <i data-lucide="sun" id="theme-icon"></i>
-            </a>
             <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
             <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
             <a href="profile.html"><i data-lucide="user"></i></a>
@@ -1248,31 +1251,24 @@
             return statusStr;
         }
 
-        // Theme Toggle Manager
+        // Exclusive Light Mode Manager
         function initTheme() {
-            const currentTheme = localStorage.getItem('theme') || 'dark';
-            applyTheme(currentTheme);
-
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
             const themeBtn = document.getElementById('theme-toggle-btn');
+            if (themeBtn) themeBtn.remove();
             const mobileThemeBtn = document.getElementById('mobile-theme-toggle-btn');
-
-            if (themeBtn) {
-                themeBtn.onclick = toggleTheme;
-            }
-            if (mobileThemeBtn) {
-                mobileThemeBtn.onclick = toggleTheme;
-            }
+            if (mobileThemeBtn) mobileThemeBtn.remove();
         }
 
         function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme') || 'dark';
-            const next = current === 'dark' ? 'light' : 'dark';
-            applyTheme(next);
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
         }
 
         function applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
             if (window.lucide) {
                 lucide.createIcons();
             }

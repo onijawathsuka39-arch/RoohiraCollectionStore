@@ -1,10 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | Roohira</title>
+    <title>My Profile | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -12,8 +18,11 @@
 <body>
     <nav id="navbar" class="scrolled">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -78,7 +87,13 @@
                     </a>
                 </div>
 
-                <button class="btn btn-outline" style="margin-top: 40px; width: 100%;" onclick="logout()">Sign
+                <div style="margin-top: 15px;">
+                    <a href="admin.html" class="btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; background: rgba(139, 90, 43, 0.1); border: 1.5px solid #8B5A2B; color: #8B5A2B; font-weight: 800; padding: 12px;">
+                        <i data-lucide="shield" style="width:18px;"></i> Open Executive Admin Control Suite
+                    </a>
+                </div>
+
+                <button class="btn btn-outline" style="margin-top: 25px; width: 100%;" onclick="logout()">Sign
                     Out</button>
             </div>
         </div>
@@ -99,41 +114,94 @@
     <script>
         lucide.createIcons();
 
-        // Use Firebase Auth state to protect this page
+        // 1. Immediately hydrate profile from localStorage so on refresh there is NO flicker or redirect error
+        function hydrateProfileFromLocal() {
+            let user = null;
+            try {
+                user = JSON.parse(localStorage.getItem('roohira_user'));
+            } catch(e) {}
+
+            if (user) {
+                const nameEl = document.getElementById('profile-name');
+                const emailEl = document.getElementById('profile-email');
+                const initialEl = document.getElementById('profile-initial');
+                const wlCountEl = document.getElementById('profile-wishlist-count');
+                
+                if (nameEl) nameEl.innerText = user.name || 'Valued Customer';
+                if (emailEl) emailEl.innerText = user.email || '';
+                if (initialEl) initialEl.innerText = (user.name || 'U').charAt(0).toUpperCase();
+                
+                const wl = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
+                if (wlCountEl) wlCountEl.innerText = wl.length;
+            }
+            return user;
+        }
+
+        const localUser = hydrateProfileFromLocal();
+
+        // 2. Auth state handling with graceful Firestore fallback
         if (typeof auth !== 'undefined' && auth) {
             auth.onAuthStateChanged(function(firebaseUser) {
-                if (!firebaseUser) {
-                    // Not logged in — redirect to login
-                    window.location.href = 'login.html';
-                    return;
+                if (firebaseUser) {
+                    const fallbackName = firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split('@')[0] : 'Customer');
+                    
+                    if (typeof db !== 'undefined' && db) {
+                        db.collection('users').doc(firebaseUser.uid).get().then(function(doc) {
+                            const name = (doc.exists && doc.data().name) ? doc.data().name : fallbackName;
+                            const email = firebaseUser.email;
+                            
+                            document.getElementById('profile-name').innerText = name;
+                            document.getElementById('profile-email').innerText = email;
+                            document.getElementById('profile-initial').innerText = name.charAt(0).toUpperCase();
+
+                            // Sync back to local storage
+                            const updatedUser = {
+                                uid: firebaseUser.uid,
+                                name: name,
+                                email: email,
+                                phone: (doc.exists && doc.data().phone) || '',
+                                address: (doc.exists && doc.data().address) || ''
+                            };
+                            localStorage.setItem('roohira_user', JSON.stringify(updatedUser));
+                            if (typeof currentUser !== 'undefined') currentUser = updatedUser;
+
+                            const wl = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
+                            const wlEl = document.getElementById('profile-wishlist-count');
+                            if (wlEl) wlEl.innerText = wl.length;
+
+                            if (typeof loadProfile === 'function') loadProfile();
+                        }).catch(function(err) {
+                            console.warn('Firestore profile fetch error (using fallback):', err);
+                            document.getElementById('profile-name').innerText = fallbackName;
+                            document.getElementById('profile-email').innerText = firebaseUser.email;
+                            document.getElementById('profile-initial').innerText = fallbackName.charAt(0).toUpperCase();
+                            if (typeof loadProfile === 'function') loadProfile();
+                        });
+                    } else {
+                        document.getElementById('profile-name').innerText = fallbackName;
+                        document.getElementById('profile-email').innerText = firebaseUser.email;
+                        document.getElementById('profile-initial').innerText = fallbackName.charAt(0).toUpperCase();
+                        if (typeof loadProfile === 'function') loadProfile();
+                    }
+                } else {
+                    // Firebase auth state has no user; check if we have a valid local storage user
+                    const cached = localStorage.getItem('roohira_user');
+                    if (!cached) {
+                        // Truly not logged in — redirect to login
+                        window.location.href = 'login.html';
+                    } else {
+                        // User exists locally, load profile smoothly
+                        if (typeof loadProfile === 'function') loadProfile();
+                    }
                 }
-                // Fetch profile from Firestore
-                db.collection('users').doc(firebaseUser.uid).get().then(function(doc) {
-                    const name = doc.exists ? doc.data().name : firebaseUser.email.split('@')[0];
-                    document.getElementById('profile-name').innerText = name;
-                    document.getElementById('profile-email').innerText = firebaseUser.email;
-                    document.getElementById('profile-initial').innerText = name.charAt(0).toUpperCase();
-                    // Set dynamic wishlist length
-                    const wl = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
-                    document.getElementById('profile-wishlist-count').innerText = wl.length;
-                    // Load orders
-                    if (typeof loadProfile === 'function') loadProfile();
-                });
             });
         } else {
-            // Fallback to localStorage if Firebase not configured yet
-            document.addEventListener('DOMContentLoaded', function() {
-                const user = JSON.parse(localStorage.getItem('roohira_user'));
-                if (!user) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                document.getElementById('profile-name').innerText = user.name;
-                document.getElementById('profile-email').innerText = user.email;
-                document.getElementById('profile-initial').innerText = user.name.charAt(0).toUpperCase();
-                const wl = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
-                document.getElementById('profile-wishlist-count').innerText = wl.length;
-            });
+            // Fallback if Firebase not configured
+            if (!localUser) {
+                window.location.href = 'login.html';
+            } else {
+                if (typeof loadProfile === 'function') loadProfile();
+            }
         }
     </script>
 </body>

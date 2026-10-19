@@ -1,92 +1,182 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | Roohira</title>
+    <title>Create Account | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
+    <!-- Main Navigation Bar -->
     <nav id="navbar" class="scrolled">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="shop.html">Shop</a></li>
-            <li><a href="customize.html">Customize</a></li>
-            <li><a href="offers.html">Offers</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="customize.html">Design Studio</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="login.html" class="active"><i data-lucide="user"></i></a>
-            <a href="cart.html" style="position: relative;">
-                <i data-lucide="shopping-cart"></i>
-                <span id="cart-count"
-                    style="position: absolute; top: -10px; right: -10px; background: #c8a96e; color: #0A0F1E; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            <a href="login.html" title="Sign In"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative;" title="Wishlist">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count">0</span>
             </a>
-            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+            <a href="cart.html" style="position: relative;" title="Cart">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="Menu"><i data-lucide="menu"></i></a>
         </div>
     </nav>
 
+    <!-- Side Drawer Menu for Mobile -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <div style="padding: 0 0.5rem 1rem; border-bottom: 2px solid var(--espresso); margin-bottom: 0.5rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--espresso); margin: 0; font-weight: 700;">Navigation &amp; Pages</h3>
+            <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Roohira Collection</span>
+        </div>
+        <a href="index.html"><i data-lucide="home" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Home</a>
+        <a href="shop.html"><i data-lucide="shopping-bag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Shop All</a>
+        <a href="track-order.html"><i data-lucide="truck" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Track Order</a>
+        <a href="customize.html"><i data-lucide="palette" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Design Studio</a>
+        <a href="dtf.html"><i data-lucide="printer" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> DTF Print Service</a>
+        <a href="offers.html"><i data-lucide="tag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Offers &amp; Discounts</a>
+        <a href="reviews.html"><i data-lucide="star" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Customer Reviews</a>
+        <a href="wishlist.html"><i data-lucide="heart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Wishlist</a>
+        <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
+        <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
+        <a href="login.html"><i data-lucide="log-in" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Login / Register</a>
+        <a href="admin.html" style="background: rgba(139, 90, 43, 0.08); color: #8B5A2B; font-weight: 700; border-top: 1px solid rgba(139, 90, 43, 0.2);"><i data-lucide="shield" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Admin Control Center</a>
+    </div>
+
     <!-- Loading Overlay -->
-    <div id="auth-loading" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99999; flex-direction:column; align-items:center; justify-content:center; gap:18px; backdrop-filter: blur(8px);">
+    <div id="auth-loading" style="display:none; position:fixed; inset:0; background:rgba(26,15,10,0.75); z-index:99999; flex-direction:column; align-items:center; justify-content:center; gap:18px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
         <div class="snake-loader-wrapper" style="position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-            <svg class="snake-svg" viewBox="0 0 100 100" style="width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.7)) drop-shadow(0 0 20px rgba(200, 169, 110, 0.4));">
+            <svg class="snake-svg" viewBox="0 0 100 100" style="width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(198, 162, 107, 0.7));">
                 <defs>
                     <linearGradient id="snake-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#22c55e" />
-                        <stop offset="50%" stop-color="#c8a96e" />
+                        <stop offset="0%" stop-color="#C6A26B" />
+                        <stop offset="50%" stop-color="#8B5A2B" />
                         <stop offset="100%" stop-color="transparent" stop-opacity="0" />
                     </linearGradient>
                 </defs>
-                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6" />
                 <circle class="snake-body" cx="50" cy="50" r="40" fill="none" stroke="url(#snake-gradient)" stroke-width="6" stroke-linecap="round" />
             </svg>
         </div>
-        <p style="color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:1px;">Creating Account...</p>
+        <p style="color:#FAF7F2;font-size:1.05rem;font-weight:700;letter-spacing:1px;font-family:var(--font-sans);">Creating your patron account...</p>
     </div>
 
-    <main class="section" style="padding-top: 100px;">
-        <div class="auth-form glass" style="max-width:500px;">
-            <h2 style="text-align: center; margin-bottom: 30px;">Join <span style="color: #8B5A2B;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span></h2>
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="signup-name" placeholder="John Doe" onkeydown="if(event.key==='Enter') doSignup()">
+    <main class="section" style="padding-top: 110px; min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+        <div class="auth-form" style="max-width: 520px; width: 100%;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <h2 style="font-family: var(--font-serif); font-size: 2.1rem; color: var(--espresso); margin-bottom: 6px;">
+                    Join <span style="color: var(--gold-dark);">Roohira</span>
+                </h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Register for an exclusive luxury shopping experience</p>
             </div>
+
             <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="signup-phone" placeholder="07X XXX XXXX" onkeydown="if(event.key==='Enter') doSignup()">
+                <label>Full Name *</label>
+                <input type="text" id="signup-name" placeholder="e.g. Kasun Perera" autocomplete="name" onkeydown="if(event.key==='Enter') doSignup()">
             </div>
+
             <div class="form-group">
-                <label>Address</label>
-                <input type="text" id="signup-address" placeholder="No. 12, Main Street, Colombo" onkeydown="if(event.key==='Enter') doSignup()">
+                <label>Phone Number *</label>
+                <input type="tel" id="signup-phone" placeholder="07X XXX XXXX" autocomplete="tel" onkeydown="if(event.key==='Enter') doSignup()">
             </div>
+
             <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="signup-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter') doSignup()">
+                <label>Delivery Address *</label>
+                <input type="text" id="signup-address" placeholder="No. 12, Main Street, Colombo" autocomplete="street-address" onkeydown="if(event.key==='Enter') doSignup()">
             </div>
+
             <div class="form-group">
-                <label>Password</label>
+                <label>Email Address *</label>
+                <input type="email" id="signup-email" placeholder="e.g. kasun@gmail.com" autocomplete="email" onkeydown="if(event.key==='Enter') doSignup()">
+            </div>
+
+            <div class="form-group">
+                <label>Password (Min. 6 Characters) *</label>
                 <div class="password-container">
-                    <input type="password" id="signup-pass" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter') doSignup()">
-                    <button type="button" class="toggle-password" onclick="togglePass('signup-pass', this)">
+                    <input type="password" id="signup-pass" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter') doSignup()">
+                    <button type="button" class="toggle-password" onclick="togglePass('signup-pass', this)" title="Show/Hide Password">
                         <i class="eye-open" data-lucide="eye"></i>
                         <i class="eye-closed" data-lucide="eye-off" style="display:none;"></i>
                     </button>
                 </div>
             </div>
-            <div id="signup-error" style="display:none; background:#fdf2f2; color:#9b1c1c; padding:10px 15px; border-radius:10px; font-size:0.88rem; margin-bottom:10px; border-left:4px solid #DC143C;"></div>
-            <button id="signup-btn" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="doSignup()">Create Account</button>
-            <p style="text-align: center; margin-top: 20px; color: var(--text-muted);">
-                Already have an account? <a href="login.html" style="color: #c8a96e;">Sign in</a>
-            </p>
+
+            <div id="signup-error" style="display:none; background:#fdf2f2; color:#9b1c1c; padding:12px 16px; border-radius:8px; font-size:0.88rem; margin-bottom:14px; border-left:4px solid #b91c1c;"></div>
+
+            <button id="signup-btn" class="btn btn-primary btn-block" style="margin-top: 8px; padding: 14px;" onclick="doSignup()">
+                <i data-lucide="user-plus" style="width: 18px; height: 18px; margin-right: 6px;"></i> Create Patron Account
+            </button>
+
+            <div style="text-align: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border);">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Already have an account? <a href="login.html" style="color: var(--gold-dark); font-weight: 700; text-decoration: underline;">Sign In Here</a>
+                </p>
+            </div>
         </div>
     </main>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: var(--gold-light); font-weight: 800; font-family: var(--font-serif); font-size: 1.6rem; letter-spacing: 1px;">ROOHIRA</h4>
+                <p>Elevate your style with our premium bespoke garments and heavyweight 220 GSM luxury collections.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i data-lucide="instagram"></i></a>
+                    <a href="https://web.facebook.com/roohiraonline" target="_blank" title="Facebook"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Navigation</h4>
+                <a href="shop.html">Shop Catalog</a>
+                <a href="track-order.html">Track Order</a>
+                <a href="customize.html">Design Studio</a>
+                <a href="offers.html">Special Offers</a>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <p><i data-lucide="phone" style="width: 15px; height: 15px; margin-right: 6px; vertical-align: middle;"></i> Hotline: 0757218786</p>
+                <p><i data-lucide="mail" style="width: 15px; height: 15px; margin-right: 6px; vertical-align: middle;"></i> Email: roohira@gmail.com</p>
+                <p><i data-lucide="truck" style="width: 15px; height: 15px; margin-right: 6px; vertical-align: middle;"></i> Cash On Delivery Islandwide</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Roohira Collection. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+
     <script>
+    'use strict';
     function togglePass(inputId, btn) {
         const input = document.getElementById(inputId);
         const eyeOpen = btn.querySelector('.eye-open');
@@ -111,15 +201,23 @@
         const phone   = document.getElementById('signup-phone').value.trim();
         const address = document.getElementById('signup-address').value.trim();
         const email   = document.getElementById('signup-email').value.trim();
-        const pass    = document.getElementById('signup-pass').value;
+        const pass    = document.getElementById('signup-pass').value.trim();
         const errEl   = document.getElementById('signup-error');
         const btn     = document.getElementById('signup-btn');
         errEl.style.display = 'none';
+
         if (!name)    { errEl.textContent = '⚠️ නම ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
         if (!phone)   { errEl.textContent = '⚠️ දුරකථන අංකය ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
         if (!address) { errEl.textContent = '⚠️ ලිපිනය ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
         if (!email)   { errEl.textContent = '⚠️ Email ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
         if (pass.length < 6) { errEl.textContent = '⚠️ Password අවම වශයෙන් අකුරු 6ක් විය යුතුයි.'; errEl.style.display='block'; return; }
+
+        if (email.toLowerCase() === 'adminroohira@gmail.com') {
+            errEl.innerHTML = '⚠️ මෙම Email ලිපිනය Admin ගිණුමට වෙන් කර ඇත. කරුණාකර <a href="login.html?redirect=admin.html&admin=required" style="color:var(--espresso);font-weight:700;text-decoration:underline;">Login පිටුවෙන් Sign In වන්න</a>.';
+            errEl.style.display = 'block';
+            return;
+        }
+
         document.getElementById('auth-loading').style.display = 'flex';
         btn.disabled = true;
         signup(name, email, pass, phone, address, function(errMsg) {
@@ -129,31 +227,9 @@
             errEl.style.display = 'block';
         });
     }
+
+    lucide.createIcons();
     </script>
-
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4 style="color: #8B5A2B; font-weight: 800; font-family: 'Cinzel', serif; font-size: 1.8rem;">ROOHIRA</h4>
-                <p>Elevate your style with our premium, high-quality t-shirt collections.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Contact Us</h4>
-                <p>Call: 0757218786</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Roohira. Powered by Roohira</p>
-        </div>
-    </footer>
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="script.js"></script>
-    <script>lucide.createIcons();</script>
 </body>
 
 </html>

@@ -9,7 +9,7 @@
   <link rel="icon" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -81,61 +81,65 @@
     <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
     <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
     <a href="login.html"><i data-lucide="log-in" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Login / Register</a>
+    <a href="admin.html" style="background: rgba(139, 90, 43, 0.08); color: #8B5A2B; font-weight: 700; border-top: 1px solid rgba(139, 90, 43, 0.2);"><i data-lucide="shield" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Admin Control Center</a>
   </div>
 
   <main>
-    <!-- Hero Section - Clean Dark Luxury Background (No BG Image) -->
-    <section class="hero-luxury" style="padding: 120px 6% 80px;">
-      <div style="max-width: 1200px; width: 100%; margin: 0 auto; position: relative; z-index: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3.5rem; align-items: center;">
+    <!-- Hero Section - Ultra-Modern Luxury Atelier Layout (No Banner Background Image, Fully Mobile Responsive) -->
+    <section class="hero-luxury" style="padding: clamp(90px, 12vh, 130px) 6% clamp(50px, 8vh, 80px);">
+      <div style="max-width: 1200px; width: 100%; margin: 0 auto; position: relative; z-index: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; align-items: center;">
         <div style="color: var(--white);">
-          <span style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.85rem; font-weight: 700; color: #D4AF37; display: inline-block; margin-bottom: 1.25rem;">
-            Sri Lanka's Premier Fashion House
-          </span>
-          <h1 style="color: #FFFFFF; margin-bottom: 1.5rem; font-family: var(--font-serif); font-size: clamp(2.3rem, 5vw, 3.8rem); line-height: 1.2; font-weight: 700;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(198, 162, 107, 0.12); border: 1px solid rgba(198, 162, 107, 0.35); padding: 6px 14px; margin-bottom: 1.25rem;">
+            <i data-lucide="crown" style="width: 14px; height: 14px; color: #DFCA9B;"></i>
+            <span style="font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.76rem; font-weight: 700; color: #DFCA9B;">
+              Sri Lanka's Premier Fashion House
+            </span>
+          </div>
+          <h1 style="color: #FFFFFF; margin-bottom: 1.25rem; font-family: var(--font-serif); font-size: clamp(2.2rem, 5.2vw, 3.8rem); line-height: 1.15; font-weight: 700; letter-spacing: -0.01em;">
             Timeless Elegance &amp; Contemporary Grace
           </h1>
-          <p style="color: #E2D7CE; font-size: 1.1rem; margin-bottom: 2.5rem; line-height: 1.8; max-width: 600px;">
+          <p style="color: #E2D7CE; font-size: clamp(0.95rem, 2vw, 1.12rem); margin-bottom: 2.2rem; line-height: 1.75; max-width: 580px; font-weight: 400;">
             Immerse yourself in our curated collection of heavyweight luxury tees, authentic designer frocks, custom embroidery, and high-precision DTF printing.
           </p>
 
           <!-- Action Buttons Bar -->
-          <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; margin-bottom: 40px;">
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 35px;">
             <a href="shop.html" class="btn btn-gold btn-lg">
               <i data-lucide="compass" style="width: 18px; height: 18px;"></i> Explore Collection
             </a>
             <a href="customize.html" class="btn btn-outline-white btn-lg">
               <i data-lucide="edit-3" style="width: 18px; height: 18px;"></i> Design Studio
             </a>
-            <a href="dtf.html" style="color: #E6C875; padding: 14px 20px; font-weight: 700; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;">
-              <i data-lucide="printer" style="width: 17px; height: 17px;"></i> DTF Prints &rarr;
+            <a href="dtf.html" style="color: #DFCA9B; padding: 12px 16px; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;">
+              <i data-lucide="printer" style="width: 16px; height: 16px;"></i> DTF Prints &rarr;
             </a>
           </div>
 
           <!-- Quick Metrics Bar -->
-          <div style="display: flex; gap: 35px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 25px;">
+          <div style="display: flex; gap: clamp(15px, 4vw, 35px); border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 22px; flex-wrap: wrap;">
             <div>
-              <h4 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: #E6C875; margin: 0;">5,000+</h4>
-              <p style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">Orders Delivered</p>
+              <h4 style="font-family: var(--font-sans); font-size: 1.7rem; font-weight: 800; color: #DFCA9B; margin: 0;">5,000+</h4>
+              <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">Orders Delivered</p>
             </div>
-            <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 35px;">
-              <h4 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: #E6C875; margin: 0;">220 GSM</h4>
-              <p style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">Heavy Cotton Luxury</p>
+            <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: clamp(15px, 4vw, 35px);">
+              <h4 style="font-family: var(--font-sans); font-size: 1.7rem; font-weight: 800; color: #DFCA9B; margin: 0;">220 GSM</h4>
+              <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">Heavy Cotton Luxury</p>
             </div>
-            <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 35px;">
-              <h4 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; color: #E6C875; margin: 0;">100%</h4>
-              <p style="font-size: 0.8rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">COD Islandwide</p>
+            <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: clamp(15px, 4vw, 35px);">
+              <h4 style="font-family: var(--font-sans); font-size: 1.7rem; font-weight: 800; color: #DFCA9B; margin: 0;">100%</h4>
+              <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 600;">COD Islandwide</p>
             </div>
           </div>
         </div>
 
-        <!-- Right: Modern Visual Hero Card with Full Look (No Cutoff) -->
-        <div style="position: relative; display: flex; justify-content: center; width: 100%;">
-          <div style="position: relative; width: 100%; max-width: 440px; border-radius: 0px; overflow: hidden; border: 2px solid #C6A26B; box-shadow: 0 20px 45px rgba(0,0,0,0.35); background: #FAF7F2;">
-            <img src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" alt="Roohira Luxury Collection" style="width: 100%; height: auto; max-height: 520px; object-fit: contain; display: block; margin: 0 auto; padding: 8px; background: #FAF7F2;">
+        <!-- Right: Modern Visual Hero Card (Hidden on Mobile for Fast Clean User Experience) -->
+        <div class="hero-image-col" style="position: relative; display: flex; justify-content: center; width: 100%;">
+          <div style="position: relative; width: 100%; max-width: 440px; border-radius: 0px; overflow: hidden; border: 2px solid #C6A26B; box-shadow: 0 25px 50px rgba(0,0,0,0.4); background: #FAF7F2;">
+            <img src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" alt="Roohira Luxury Collection" style="width: 100%; height: auto; max-height: 500px; object-fit: contain; display: block; margin: 0 auto; padding: 10px; background: #FAF7F2;">
             
             <div style="background: #1A120B; padding: 14px 18px; border-top: 1.5px solid #C6A26B; text-align: center;">
               <span style="font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: #DFCA9B; font-weight: 800; display: block; margin-bottom: 2px;">Signature Heritage Line</span>
-              <h3 style="font-size: 1.15rem; font-family: 'Cinzel', serif; color: #FFFFFF; margin: 0; font-weight: 700;">Handcrafted Designer Frock</h3>
+              <h3 style="font-size: 1.15rem; font-family: 'Playfair Display', Georgia, serif; color: #FFFFFF; margin: 0; font-weight: 700;">Handcrafted Designer Frock</h3>
             </div>
           </div>
 
@@ -198,7 +202,7 @@
       <div style="max-width: 1200px; margin: 0 auto;">
         <div style="text-align: center; margin-bottom: 35px;">
           <span style="color: #8B5A2B; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 2px;">Shop By Category</span>
-          <h2 style="font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 3.5vw, 2.5rem); color: #000000; margin: 8px 0 6px; font-weight: 700;">Explore Our Collections</h2>
+          <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.8rem, 3.5vw, 2.5rem); color: #000000; margin: 8px 0 6px; font-weight: 700;">Explore Our Collections</h2>
           <p style="color: #6D5D53; font-size: 0.95rem; margin: 0;">Select a category to browse all exclusive products and new releases</p>
         </div>
 
@@ -280,7 +284,7 @@
     <section class="section" style="padding: 60px 6% 50px; background: #FFFFFF; border-bottom: 1px solid rgba(60, 42, 33, 0.08);">
       <div style="text-align: center; margin-bottom: 35px;">
         <span style="background: rgba(179, 135, 56, 0.12); color: #8B5A2B; padding: 5px 16px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; border: 1.5px solid rgba(179, 135, 56, 0.35); text-transform: uppercase;">EXCLUSIVE NEW ARRIVALS</span>
-        <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700; font-family: 'Cinzel', serif; margin-top: 10px; color: #1A120B;">New <span style="color: #8B5A2B;">Frocks &amp; Blouses</span> Collection</h2>
+        <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700; font-family: 'Playfair Display', Georgia, serif; margin-top: 10px; color: #1A120B;">New <span style="color: #8B5A2B;">Frocks &amp; Blouses</span> Collection</h2>
         <p style="color: #6D5D53; font-size: 0.92rem; margin-top: 4px;">Handcrafted traditional Sri Lankan motifs blended with contemporary silhouettes</p>
       </div>
 
@@ -308,7 +312,7 @@
               <span style="font-size: 0.65rem; color: #1A120B; background: #FAF7F2; border: 1px solid rgba(60,42,33,0.15); padding: 1px 6px; font-weight: 700;">Free Size</span>
             </div>
             
-            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Cinzel', serif;">Long Design Frock</h3>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Playfair Display', Georgia, serif;">Long Design Frock</h3>
             
             <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
               <span style="font-size: 1.15rem; font-weight: 800; color: #1A120B;">Rs. 2,250.00</span>
@@ -364,7 +368,7 @@
               </div>
             </div>
             
-            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Cinzel', serif;">Long Batik Frock</h3>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Playfair Display', Georgia, serif;">Long Batik Frock</h3>
             
             <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
               <span style="font-size: 1.15rem; font-weight: 800; color: #1A120B;">Rs. 1,500.00</span>
@@ -422,7 +426,7 @@
               </div>
             </div>
             
-            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Cinzel', serif;">Embroidered Blouse</h3>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #1A120B; margin: 0 0 6px; font-family: 'Playfair Display', Georgia, serif;">Embroidered Blouse</h3>
             
             <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
               <span style="font-size: 1.15rem; font-weight: 800; color: #1A120B;">Rs. 1,490.00</span>

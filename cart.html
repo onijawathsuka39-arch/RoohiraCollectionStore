@@ -1,10 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart | Roohira</title>
+    <title>Shopping Cart | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -12,8 +18,11 @@
 <body>
     <nav id="navbar" class="scrolled">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: var(--primary-dark);">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -79,7 +88,7 @@
     <footer class="footer">
         <div class="footer-grid">
             <div class="footer-col">
-                <h4 style="color: #8B5A2B; font-weight: 800; font-family: 'Cinzel', serif; font-size: 1.8rem;">ROOHIRA</h4>
+                <h4 style="color: var(--gold-light); font-weight: 800; font-family: var(--font-serif); font-size: 1.8rem;">ROOHIRA</h4>
                 <p>Elevate your style with our premium, high-quality t-shirt collections. Designed for those who
                     appreciate excellence.</p>
                 <div class="social-links">
@@ -112,180 +121,15 @@
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 
-    <!-- Auth Guard Modal Styles -->
-    <style>
-        #auth-guard-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            background: rgba(10, 15, 30, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            align-items: center;
-            justify-content: center;
-            animation: fadeInModal 0.3s ease;
-        }
-        #auth-guard-modal.show { display: flex; }
-        @keyframes fadeInModal {
-            from { opacity: 0; transform: scale(0.95); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-        .auth-guard-box {
-            background: linear-gradient(135deg, #0d1226 0%, #12192e 100%);
-            border: 1px solid rgba(255, 20, 147, 0.25);
-            border-radius: 24px;
-            padding: 42px 36px;
-            max-width: 420px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 30px 80px rgba(255, 20, 147, 0.15), 0 8px 32px rgba(0,0,0,0.5);
-            position: relative;
-        }
-        .auth-guard-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, rgba(255,20,147,0.15), rgba(200,169,110,0.15));
-            border: 2px solid rgba(255, 20, 147, 0.4);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 2rem;
-        }
-        .auth-guard-box h3 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-        .auth-guard-box h3 span { color: #8B5A2B; }
-        .auth-guard-box p {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.92rem;
-            margin-bottom: 28px;
-            line-height: 1.6;
-        }
-        .auth-guard-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .auth-guard-btn-primary {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 24px;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            background: linear-gradient(135deg, #8B5A2B, #c8186e);
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 20px rgba(255, 20, 147, 0.35);
-        }
-        .auth-guard-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 20, 147, 0.5);
-        }
-        .auth-guard-btn-secondary {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 24px;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            border: 2px solid rgba(200, 169, 110, 0.5);
-            background: transparent;
-            color: #c8a96e;
-            text-decoration: none;
-            transition: all 0.25s ease;
-        }
-        .auth-guard-btn-secondary:hover {
-            background: rgba(200, 169, 110, 0.1);
-            border-color: #c8a96e;
-            transform: translateY(-2px);
-        }
-        .auth-guard-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.4);
-            font-size: 1.4rem;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
-            transition: color 0.2s;
-        }
-        .auth-guard-close:hover { color: #fff; }
-    </style>
-
-    <!-- Auth Guard Modal -->
-    <div id="auth-guard-modal">
-        <div class="auth-guard-box">
-            <button class="auth-guard-close" onclick="closeAuthModal()">&times;</button>
-            <div class="auth-guard-icon">🔐</div>
-            <h3>Sign In to <span>Checkout</span></h3>
-            <p>Order place කිරීමට ඔබේ account එකට sign in කරන්න.<br>Account නොමැතිනම් නොමිලේ create කරන්න!</p>
-            <div class="auth-guard-buttons">
-                <a id="auth-signin-btn" href="login.html?redirect=checkout.html" class="auth-guard-btn-primary">
-                    🔑 Sign In to My Account
-                </a>
-                <a id="auth-signup-btn" href="signup.html?redirect=checkout.html" class="auth-guard-btn-secondary">
-                    ✨ Create New Account
-                </a>
-            </div>
-        </div>
-    </div>
-
     <script>
         function proceedToCheckout() {
-            // Check Firebase Auth state
-            if (typeof auth !== 'undefined' && auth) {
-                auth.onAuthStateChanged(function(user) {
-                    if (user) {
-                        // Logged in - go to checkout
-                        window.location.href = 'checkout.html';
-                    } else {
-                        // Not logged in - show modal
-                        showAuthModal();
-                    }
-                });
+            if (isUserLoggedIn()) {
+                window.location.href = 'checkout.html';
             } else {
-                // Firebase not ready, check localStorage fallback
-                const localUser = localStorage.getItem('roohira_user');
-                if (localUser) {
-                    window.location.href = 'checkout.html';
-                } else {
-                    showAuthModal();
-                }
+                showAuthRequiredModal('proceed to checkout', 'checkout.html');
             }
         }
-
-        function showAuthModal() {
-            const modal = document.getElementById('auth-guard-modal');
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAuthModal() {
-            const modal = document.getElementById('auth-guard-modal');
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        // Close modal when clicking outside the box
-        document.getElementById('auth-guard-modal').addEventListener('click', function(e) {
+    </script>) {
             if (e.target === this) closeAuthModal();
         });
     </script>

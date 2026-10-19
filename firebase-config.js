@@ -1,12 +1,11 @@
 // Firebase Configuration for Roohira Store
 const firebaseConfig = {
-    apiKey: "AIzaSyBRVpoxdo0fc_SnPKctaBEuG8H4g7NrphQ",
-    authDomain: "python-store-7e509.firebaseapp.com",
-    databaseURL: "https://python-store-7e509-default-rtdb.firebaseio.com",
-    projectId: "python-store-7e509",
-    storageBucket: "python-store-7e509.firebasestorage.app",
-    messagingSenderId: "779484643049",
-    appId: "1:779484643049:web:0223baeeccc54dd6da7a78"
+    apiKey: "AIzaSyBCiDkYVnK4BTuYvbGuxN_PD8XTVd7hX9k",
+    authDomain: "roohira-collection.firebaseapp.com",
+    projectId: "roohira-collection",
+    storageBucket: "roohira-collection.firebasestorage.app",
+    messagingSenderId: "816288596637",
+    appId: "1:816288596637:web:f566e57be1f98a0dbe8a74"
 };
 
 // Initialize Firebase

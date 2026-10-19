@@ -4,827 +4,1757 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Executive Suite | Roohira Collection</title>
-  <link rel="icon" type="image/png" href="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg: #F8F5F0;
+      --surface: #FFFFFF;
+      --surface-subtle: #FAF7F2;
+      --border: rgba(198, 162, 107, 0.28);
+      --border-dark: #1A0F0A;
+      --text: #1A0F0A;
+      --text-muted: #6B5B52;
+      --gold: #8B5A2B;
+      --gold-light: #C6A26B;
+      --gold-bg: rgba(139, 90, 43, 0.08);
+      --green: #15803d;
+      --green-bg: rgba(34, 197, 94, 0.12);
+      --amber: #b45309;
+      --amber-bg: rgba(245, 158, 11, 0.12);
+      --red: #b91c1c;
+      --red-bg: rgba(239, 68, 68, 0.12);
+      --blue: #1d4ed8;
+      --blue-bg: rgba(59, 130, 246, 0.12);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --shadow: 0 4px 20px rgba(26, 15, 10, 0.06);
+      --shadow-lg: 0 12px 35px rgba(26, 15, 10, 0.12);
+      --radius: 12px;
+      --sidebar-w: 260px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TopBar */
+    .topbar {
+      height: 70px;
+      background: var(--surface);
+      border-bottom: 1.5px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-wrap img {
+      height: 42px;
+      width: auto;
+    }
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+    .brand-title span { color: var(--gold); }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--green-bg);
+      color: var(--green);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      border: 1px solid transparent;
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: #FFFFFF;
+    }
+    .btn-gold:hover {
+      background: #734821;
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover {
+      background: var(--surface-subtle);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.76rem;
+    }
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    /* Layout */
+    .admin-layout {
+      display: flex;
+      flex: 1;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1.5px solid var(--border);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .nav-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 10px 14px 4px;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .nav-btn:hover {
+      background: var(--surface-subtle);
+      color: var(--text);
+    }
+    .nav-btn.active {
+      background: var(--gold-bg);
+      color: var(--gold);
+      border-color: rgba(139, 90, 43, 0.25);
+    }
+    .nav-btn .badge-pill {
+      margin-left: auto;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--text);
+      font-family: var(--font-mono);
+    }
+    .nav-btn.active .badge-pill {
+      background: var(--gold);
+      color: #FFFFFF;
+    }
+
+    /* Content */
+    .main-content {
+      flex: 1;
+      padding: 24px 28px;
+      overflow-y: auto;
+    }
+
+    /* KPI Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stat-lbl {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+    .stat-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      font-family: var(--font-sans);
+    }
+
+    /* Tab Pane */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .pane-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .search-box {
+      padding: 8px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+      font-family: inherit;
+      width: 240px;
+      background: var(--surface);
+      transition: border 0.2s;
+    }
+    .search-box:focus { border-color: var(--gold); }
+
+    /* Tables */
+    .table-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.84rem;
+    }
+    table.data-table th {
+      background: var(--surface-subtle);
+      padding: 12px 16px;
+      font-weight: 800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      border-bottom: 1.5px solid var(--border);
+      white-space: nowrap;
+    }
+    table.data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(198, 162, 107, 0.15);
+      vertical-align: middle;
+      color: var(--text);
+    }
+    table.data-table tr:hover td {
+      background: rgba(139, 90, 43, 0.03);
+    }
+    table.data-table tr:last-child td { border-bottom: none; }
+
+    /* Tags & Badges */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tag-pending { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag-confirmed { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34, 197, 94, 0.3); }
+    .tag-shipped { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.3); }
+    .tag-delivered { background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag-cancelled { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .tag-stock { background: var(--green-bg); color: var(--green); }
+    .tag-out { background: var(--red-bg); color: var(--red); }
+
+    /* Order Accordion */
+    .order-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .order-item:last-child { border-bottom: none; }
+    .order-summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .order-summary-row:hover {
+      background: var(--surface-subtle);
+    }
+    .order-detail-box {
+      display: none;
+      background: var(--surface-subtle);
+      border-top: 1px solid var(--border);
+      padding: 20px 22px;
+    }
+    .order-detail-box.open { display: block; }
+    .order-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .info-group .lbl {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .info-group .val {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 15, 10, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1.5px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: var(--surface-subtle);
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+    .form-control {
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      background: #FFFFFF;
+      color: var(--text);
+    }
+    .form-control:focus {
+      border-color: var(--gold);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* Toast */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: var(--text);
+      box-shadow: var(--shadow-lg);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .admin-layout { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1.5px solid var(--border);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px 14px;
+        gap: 8px;
+      }
+      .nav-label { display: none; }
+      .nav-btn {
+        width: auto;
+        white-space: nowrap;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+      }
+      .main-content { padding: 18px 14px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="logo.png" alt="Roohira Logo">
+      <div>
+        <div class="brand-title">ROOHIRA <span>ADMIN</span></div>
+        <small style="font-size: 0.65rem; color: var(--gold); font-weight: 800; letter-spacing: 1px;">EXECUTIVE COMMAND SUITE</small>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="live-badge" title="Firebase Firestore Live Sync Connected">
+        <span class="pulse-dot"></span>
+        <span id="syncStatusText">Real-Time Sync Active</span>
+      </div>
+      <a href="database.html" class="btn btn-outline btn-sm" title="View Raw Firestore Database Tables">
+        <i class="fa-solid fa-database"></i> <span>Raw Database</span>
+      </a>
+      <a href="index.html" class="btn btn-gold btn-sm" target="_blank" title="Open Customer Boutique">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> <span>View Store</span>
+      </a>
+      <button onclick="adminLogout()" class="btn btn-outline btn-sm" style="color: var(--red); border-color: rgba(185, 28, 28, 0.35);" title="Sign out of Admin Suite">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+      </button>
+    </div>
+  </header>
+
   <div class="admin-layout">
-    
-    <!-- Admin Sidebar -->
-    <aside class="admin-sidebar">
-      <div class="admin-sidebar-header">
-        <img src="https://i.ibb.co/Wr3csLS/Roohira-Collection-Monogram-Logo-1.png" alt="Roohira Collection">
-        <div>
-          <h4>ROOHIRA</h4>
-          <small>EXECUTIVE ATELIER</small>
-        </div>
-      </div>
-
-      <nav class="admin-nav">
-        <a href="#dashboard" class="admin-nav-item active" onclick="switchAdminTab('dashboard', this)">
-          <i class="fa-solid fa-chart-line"></i>
-          <span>Dashboard</span>
-        </a>
-        <a href="#orders" class="admin-nav-item" onclick="switchAdminTab('orders', this)">
-          <i class="fa-solid fa-boxes-packing"></i>
-          <span>Orders Management</span>
-        </a>
-        <a href="#products" class="admin-nav-item" onclick="switchAdminTab('products', this)">
-          <i class="fa-solid fa-shirt"></i>
-          <span>Products Catalog</span>
-        </a>
-        <a href="#stock" class="admin-nav-item" onclick="switchAdminTab('stock', this)">
-          <i class="fa-solid fa-layer-group"></i>
-          <span>Stock &amp; Inventory</span>
-        </a>
-        <a href="#customers" class="admin-nav-item" onclick="switchAdminTab('customers', this)">
-          <i class="fa-solid fa-users"></i>
-          <span>Patron Customers</span>
-        </a>
-        <a href="#sql" class="admin-nav-item" onclick="switchAdminTab('sql', this)">
-          <i class="fa-solid fa-database text-gold"></i>
-          <span class="text-gold">SQL Database Dump</span>
-        </a>
-      </nav>
-
-      <div style="padding: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
-        <a href="index.html" class="btn btn-outline-white btn-sm btn-block" target="_blank">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          <span>View Boutique</span>
-        </a>
-      </div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="nav-label">Management</div>
+      <button class="nav-btn active" onclick="switchTab('dashboard', this)">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('orders', this)">
+        <i class="fa-solid fa-boxes-packing"></i>
+        <span>Orders</span>
+        <span class="badge-pill" id="badgeOrderCount">0</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('products', this)">
+        <i class="fa-solid fa-shirt"></i>
+        <span>Products Catalog</span>
+        <span class="badge-pill" id="badgeProductCount">0</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('customers', this)">
+        <i class="fa-solid fa-users"></i>
+        <span>Customers</span>
+        <span class="badge-pill" id="badgeCustomerCount">0</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('waitlist', this)">
+        <i class="fa-solid fa-bell"></i>
+        <span>Waitlist</span>
+        <span class="badge-pill" id="badgeWaitlistCount">0</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('reviews', this)">
+        <i class="fa-solid fa-star"></i>
+        <span>Reviews</span>
+        <span class="badge-pill" id="badgeReviewCount">0</span>
+      </button>
+      <div class="nav-label" style="margin-top: 10px;">Database Engine</div>
+      <a href="database.html" class="nav-btn" style="text-decoration: none; color: var(--gold);">
+        <i class="fa-solid fa-database"></i>
+        <span>Database Hub</span>
+        <span class="badge-pill" style="background: var(--gold); color: #fff;">PRO</span>
+      </a>
     </aside>
 
-    <!-- Admin Main Body -->
-    <main class="admin-main">
-      
-      <!-- Topbar -->
-      <div class="admin-topbar">
-        <div class="d-flex align-center gap-3">
-          <h2 style="font-size: 1.45rem; margin: 0;" id="adminSectionHeading">Executive Dashboard</h2>
-          <!-- Real-Time Sync Indicator -->
-          <div class="d-flex align-center gap-1" style="background: var(--success-bg); color: var(--success); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: var(--radius-full);">
-            <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--success); display: inline-block; animation: pulseGlow 1.5s infinite;"></span>
-            <span>Real-Time Multi-Device Sync Active</span>
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- ========================================================== -->
+      <!-- TAB 1: DASHBOARD -->
+      <!-- ========================================================== -->
+      <div id="tab-dashboard" class="tab-pane active">
+        <div class="pane-header">
+          <div class="pane-title"><i class="fa-solid fa-chart-pie" style="color: var(--gold);"></i> Executive Overview</div>
+          <button class="btn btn-gold btn-sm" onclick="openAddProductModal()">
+            <i class="fa-solid fa-plus"></i> Add New Product
+          </button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-lbl">Gross Revenue</span>
+            <span class="stat-val" id="kpiRevenue" style="color: var(--gold);">LKR 0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-lbl">Total Orders</span>
+            <span class="stat-val" id="kpiOrders">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-lbl">Pending Orders</span>
+            <span class="stat-val" id="kpiPending" style="color: var(--amber);">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-lbl">Live Catalog</span>
+            <span class="stat-val" id="kpiProducts">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-lbl">Patrons Registered</span>
+            <span class="stat-val" id="kpiCustomers">0</span>
           </div>
         </div>
 
-        <div class="d-flex align-center gap-3">
-          <button class="btn btn-outline btn-sm" onclick="openFirebaseSettingsModal()">
-            <i class="fa-solid fa-cloud text-gold"></i>
-            <span>Firebase Config</span>
-          </button>
-          <div class="d-flex align-center gap-2">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Admin" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold);">
-            <div style="font-size: 0.85rem; line-height: 1.2;">
-              <strong>Concierge Admin</strong>
-              <small style="color: var(--text-light); display: block;">Superuser</small>
+        <!-- Recent Orders Snapshot -->
+        <div class="table-card" style="margin-top: 14px;">
+          <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="font-weight: 800; font-size: 0.95rem;">Recent Orders (Real-Time Live Feed)</h4>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('orders', document.querySelectorAll('.nav-btn')[1])">View All Orders &rarr;</button>
+          </div>
+          <div id="recentOrdersContainer" style="padding: 12px 18px;">
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Listening for real-time customer orders...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- TAB 2: ORDERS MANAGEMENT -->
+      <!-- ========================================================== -->
+      <div id="tab-orders" class="tab-pane">
+        <div class="pane-header">
+          <div class="pane-title">
+            <i class="fa-solid fa-boxes-stacked" style="color: var(--gold);"></i> Orders Management
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <select id="orderStatusFilter" class="form-control" style="padding: 7px 12px; font-size: 0.82rem;" onchange="filterOrdersList()">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <input type="text" id="orderSearchInput" class="search-box" placeholder="🔍 Search by Order ID, Name, Phone..." oninput="filterOrdersList()">
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div id="ordersListWrap">
+            <div style="padding: 30px; text-align: center; color: var(--text-muted);">
+              <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px; color: var(--gold);"></i>
+              <p>Connecting to Firestore real-time orders feed...</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Tab Content Wrapper -->
-      <div class="admin-content">
-
-        <!-- ===================================================================
-             TAB 1: DASHBOARD OVERVIEW
-             =================================================================== -->
-        <div id="tab-dashboard" class="admin-tab-pane">
-          
-          <!-- KPI Cards -->
-          <div class="stat-cards-grid">
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3 id="statTotalSales">LKR 0</h3>
-                <p>Total Gross Sales</p>
-              </div>
-              <div class="stat-icon"><i class="fa-solid fa-coins text-gold"></i></div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3 id="statTotalOrders">0</h3>
-                <p>Total Orders Placed</p>
-              </div>
-              <div class="stat-icon"><i class="fa-solid fa-boxes-stacked text-espresso"></i></div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3 id="statTotalCustomers">0</h3>
-                <p>Registered Patrons</p>
-              </div>
-              <div class="stat-icon"><i class="fa-solid fa-users text-espresso"></i></div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-info">
-                <h3 id="statLowStock" style="color: var(--warning);">0</h3>
-                <p>Low Stock Warnings</p>
-              </div>
-              <div class="stat-icon" style="background: var(--warning-bg);"><i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i></div>
-            </div>
+      <!-- ========================================================== -->
+      <!-- TAB 3: PRODUCTS CATALOG -->
+      <!-- ========================================================== -->
+      <div id="tab-products" class="tab-pane">
+        <div class="pane-header">
+          <div class="pane-title">
+            <i class="fa-solid fa-shirt" style="color: var(--gold);"></i> Products Catalog
           </div>
-
-          <!-- Recent Orders in Dashboard -->
-          <div class="admin-table-card">
-            <div class="table-header-bar">
-              <h3 style="font-size: 1.15rem; margin: 0;">Recent Haute Orders</h3>
-              <a href="#orders" onclick="switchAdminTab('orders', document.querySelectorAll('.admin-nav-item')[1])" class="btn btn-outline btn-sm">View All Orders</a>
-            </div>
-            <div style="overflow-x: auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Order Ref</th>
-                    <th>Patron Name</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Current Status</th>
-                    <th>Instant Update Status</th>
-                  </tr>
-                </thead>
-                <tbody id="dashOrdersTbody">
-                  <!-- Rendered via JS -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ===================================================================
-             TAB 2: ORDERS MANAGEMENT
-             =================================================================== -->
-        <div id="tab-orders" class="admin-tab-pane" style="display: none;">
-          <div class="admin-table-card">
-            <div class="table-header-bar">
-              <div class="d-flex align-center gap-2">
-                <h3 style="font-size: 1.15rem; margin: 0;">All Client Orders</h3>
-                <span class="badge badge-new" id="ordersTableCount">0</span>
-              </div>
-              <div class="d-flex gap-2">
-                <select id="adminOrderStatusFilter" class="form-control" style="width: auto; height: 36px; padding: 0.3rem 0.8rem; font-size: 0.85rem;" onchange="renderAdminOrders()">
-                  <option value="All">All Statuses</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div>
-            <div style="overflow-x: auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer &amp; Phone</th>
-                    <th>Shipping Destination</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Update In Real-Time</th>
-                  </tr>
-                </thead>
-                <tbody id="adminOrdersTbody">
-                  <!-- Rendered via JS -->
-                </tbody>
-              </table>
-            </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="productSearchInput" class="search-box" placeholder="🔍 Search products..." oninput="filterProductsList()">
+            <button class="btn btn-gold" onclick="openAddProductModal()">
+              <i class="fa-solid fa-plus"></i> Add New Product
+            </button>
           </div>
         </div>
 
-        <!-- ===================================================================
-             TAB 3: PRODUCTS MANAGEMENT
-             =================================================================== -->
-        <div id="tab-products" class="admin-tab-pane" style="display: none;">
-          <div class="admin-table-card">
-            <div class="table-header-bar">
-              <div class="d-flex align-center gap-2">
-                <h3 style="font-size: 1.15rem; margin: 0;">Garment Catalog</h3>
-                <span class="badge badge-new" id="productsTableCount">0</span>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="openAddProductModal()">
-                <i class="fa-solid fa-plus"></i> Add New Garment
-              </button>
-            </div>
-            <div style="overflow-x: auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Title &amp; ID</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Current Stock</th>
-                    <th>Badge</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="adminProductsTbody">
-                  <!-- Rendered via JS -->
-                </tbody>
-              </table>
-            </div>
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table" id="productsTable">
+              <thead>
+                <tr>
+                  <th>Garment</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock Qty</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                    Loading product catalog...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- TAB 4: CUSTOMERS -->
+      <!-- ========================================================== -->
+      <div id="tab-customers" class="tab-pane">
+        <div class="pane-header">
+          <div class="pane-title">
+            <i class="fa-solid fa-users" style="color: var(--gold);"></i> Patron Customers
+          </div>
+          <input type="text" id="customerSearchInput" class="search-box" placeholder="🔍 Search patrons..." oninput="filterCustomersList()">
+        </div>
+
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Orders</th>
+                  <th>Total Spent</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="customersTbody">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                    Loading patrons list...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- TAB 5: WAITLIST -->
+      <!-- ========================================================== -->
+      <div id="tab-waitlist" class="tab-pane">
+        <div class="pane-header">
+          <div class="pane-title">
+            <i class="fa-solid fa-bell" style="color: var(--gold);"></i> New Drop Waitlist
+          </div>
+          <input type="text" class="search-box" placeholder="🔍 Search waitlist..." oninput="filterWaitlistList(this.value)">
+        </div>
+
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Patron Name</th>
+                  <th>Phone Number</th>
+                  <th>Joined Date</th>
+                  <th>WhatsApp</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="waitlistTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- TAB 6: REVIEWS -->
+      <!-- ========================================================== -->
+      <div id="tab-reviews" class="tab-pane">
+        <div class="pane-header">
+          <div class="pane-title">
+            <i class="fa-solid fa-star" style="color: var(--gold);"></i> Customer Reviews
           </div>
         </div>
 
-        <!-- ===================================================================
-             TAB 4: STOCK & INVENTORY MANAGEMENT
-             =================================================================== -->
-        <div id="tab-stock" class="admin-tab-pane" style="display: none;">
-          <div class="admin-table-card">
-            <div class="table-header-bar">
-              <div>
-                <h3 style="font-size: 1.15rem; margin: 0;">Live Stock Control Room</h3>
-                <small style="color: var(--text-muted);">Stock changes propagate to all customer devices in sub-second real-time.</small>
-              </div>
-              <button class="btn btn-outline btn-sm" onclick="restockAllProducts()">
-                <i class="fa-solid fa-boxes-packing"></i> Bulk Restock (+5 all)
-              </button>
-            </div>
-            <div style="overflow-x: auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Unit Price</th>
-                    <th>Stock Level</th>
-                    <th>Inline Stock Adjuster</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="adminStockTbody">
-                  <!-- Rendered via JS -->
-                </tbody>
-              </table>
-            </div>
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="reviewsTbody"></tbody>
+            </table>
           </div>
         </div>
-
-        <!-- ===================================================================
-             TAB 5: PATRON CUSTOMERS
-             =================================================================== -->
-        <div id="tab-customers" class="admin-tab-pane" style="display: none;">
-          <div class="admin-table-card">
-            <div class="table-header-bar">
-              <h3 style="font-size: 1.15rem; margin: 0;">Registered Patrons Registry</h3>
-              <span class="badge badge-gold" id="customersTableCount">0 Patrons</span>
-            </div>
-            <div style="overflow-x: auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Patron ID</th>
-                    <th>Name</th>
-                    <th>Email Address</th>
-                    <th>Contact Phone</th>
-                    <th>Joined Date</th>
-                    <th>Total Orders</th>
-                    <th>Total Spend</th>
-                  </tr>
-                </thead>
-                <tbody id="adminCustomersTbody">
-                  <!-- Rendered via JS -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===================================================================
-             TAB 6: SQL DATABASE DUMP & BACKUP (THE SQL REQUIREMENT)
-             =================================================================== -->
-        <div id="tab-sql" class="admin-tab-pane" style="display: none;">
-          <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
-            <div class="d-flex justify-between align-center flex-wrap gap-2" style="margin-bottom: 1.5rem;">
-              <div>
-                <h3 style="font-size: 1.35rem; margin: 0; display: flex; align-items: center; gap: 8px;">
-                  <i class="fa-solid fa-database text-gold"></i>
-                  <span>Relational SQL Database Engine Exporter</span>
-                </h3>
-                <p style="margin-top: 4px; font-size: 0.88rem;">
-                  Full MySQL, PostgreSQL &amp; MariaDB dump engine. Generates complete schema tables (`products`, `orders`, `order_items`, `customers`) and executes direct `INSERT INTO` queries matching the live system.
-                </p>
-              </div>
-              <div class="d-flex gap-2">
-                <button class="btn btn-gold btn-sm" onclick="downloadSQLFile()">
-                  <i class="fa-solid fa-download"></i> Download .SQL File
-                </button>
-                <button class="btn btn-outline btn-sm" onclick="copySQLToClipboard()">
-                  <i class="fa-regular fa-copy"></i> Copy SQL Queries
-                </button>
-              </div>
-            </div>
-
-            <!-- SQL Code Box with Syntax Highlighting -->
-            <pre class="sql-code-box" id="sqlViewerBox">Loading real-time SQL dump...</pre>
-          </div>
-        </div>
-
       </div>
 
     </main>
   </div>
 
-  <!-- Modal: Add / Edit Product -->
-  <div class="modal-overlay" id="productModal">
-    <div class="modal-content" style="max-width: 650px;">
+  <!-- ========================================================== -->
+  <!-- MODAL: ADD / EDIT PRODUCT -->
+  <!-- ========================================================== -->
+  <div class="modal-backdrop" id="productModal">
+    <div class="modal-card">
       <div class="modal-header">
-        <h3 id="productModalTitle" style="font-size: 1.25rem; margin: 0;">Add New Garment</h3>
-        <button onclick="closeProductModal()" style="font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button>
+        <h3 id="productModalTitle">Add New Luxury Product</h3>
+        <button class="btn btn-outline btn-icon" onclick="closeProductModal()">&times;</button>
       </div>
-      <form id="productForm" onsubmit="handleSaveProductForm(event)">
-        <input type="hidden" id="prodEditId">
+      <form id="productForm" onsubmit="handleSaveProduct(event)">
         <div class="modal-body">
+          <input type="hidden" id="pfId">
+
           <div class="form-group">
-            <label class="form-label">Garment Title *</label>
-            <input type="text" id="prodFormName" class="form-control" required placeholder="e.g. Royal Silk Evening Gown">
+            <label>Product Name *</label>
+            <input type="text" id="pfName" class="form-control" placeholder="e.g. Vintage Roohira Silk Frock" required>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Category *</label>
-              <select id="prodFormCategory" class="form-control" required>
-                <option value="Women">Women's Couture</option>
-                <option value="Men">Men's Sartorial</option>
-                <option value="Accessories">Luxury Accessories</option>
+              <label>Category *</label>
+              <select id="pfCategory" class="form-control">
+                <option value="Regular Tee (Printed)">Regular Tee (220 GSM)</option>
+                <option value="Oversized Tee (Printed)">Oversized Tee (220 GSM)</option>
+                <option value="Frock">Frocks & Dresses</option>
+                <option value="Blouse">Embroidered Blouses</option>
+                <option value="DTF Print">DTF Print Service</option>
+                <option value="Custom">Custom Atelier</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Initial Stock Count *</label>
-              <input type="number" id="prodFormStock" class="form-control" required min="0" value="10">
+              <label>Stock Status *</label>
+              <select id="pfStockStatus" class="form-control">
+                <option value="in_stock">In Stock (Active)</option>
+                <option value="out_of_stock">Out of Stock</option>
+              </select>
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Price (LKR) *</label>
-              <input type="number" id="prodFormPrice" class="form-control" required min="1000" step="500" placeholder="38500">
+              <label>Price in LKR *</label>
+              <input type="number" id="pfPrice" class="form-control" placeholder="1800" min="0" required>
             </div>
             <div class="form-group">
-              <label class="form-label">Original Price (LKR) (Optional)</label>
-              <input type="number" id="prodFormOldPrice" class="form-control" placeholder="45000">
+              <label>Old / Original Price in LKR (Optional)</label>
+              <input type="number" id="pfOldPrice" class="form-control" placeholder="1950" min="0">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Stock Quantity Units</label>
+              <input type="number" id="pfStock" class="form-control" placeholder="10" min="0" value="10">
+            </div>
+            <div class="form-group">
+              <label>Badge Tag (Optional)</label>
+              <input type="text" id="pfBadge" class="form-control" placeholder="e.g. Best Seller, New Drop">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">High-Res Image URL *</label>
-            <input type="url" id="prodFormImage" class="form-control" required placeholder="https://images.unsplash.com/photo-..." oninput="updateImagePreview(this.value)">
-            <div id="imagePreviewBox" style="margin-top: 8px; display: none; width: 80px; height: 100px; border-radius: var(--radius-xs); overflow: hidden; border: 1px solid var(--border);">
-              <img id="imagePreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
+            <label>Main Image URL *</label>
+            <input type="url" id="pfImage" class="form-control" placeholder="https://i.ibb.co/..." required oninput="previewModalImage(this.value)">
+          </div>
+
+          <div id="imagePreviewContainer" style="display: none; text-align: center; padding: 10px; background: var(--surface-subtle); border-radius: 8px;">
+            <img id="imagePreviewElem" src="" alt="Preview" style="max-height: 140px; border-radius: 6px; border: 1px solid var(--border);">
           </div>
 
           <div class="form-group">
-            <label class="form-label">Garment Description</label>
-            <textarea id="prodFormDesc" class="form-control" rows="3" placeholder="Artisanal mulberry silk with contoured waist silhouette..."></textarea>
+            <label>Available Sizes (Comma separated)</label>
+            <input type="text" id="pfSizes" class="form-control" placeholder="S, M, L, XL, XXL" value="S, M, L, XL">
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div class="form-group">
-              <label class="form-label">Sizes (Comma separated)</label>
-              <input type="text" id="prodFormSizes" class="form-control" value="XS, S, M, L, XL">
+          <div class="form-group">
+            <label style="display:flex; justify-content:space-between; align-items:center;">
+              <span>Garment Colors (Site Color Dots)</span>
+              <small style="color:var(--text-muted); font-size:0.75rem;">Click chips or enter custom hex</small>
+            </label>
+            <div id="adminPresetChips" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;"></div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <input type="color" id="adminCustomColorPicker" value="#000000" style="width: 40px; height: 34px; padding: 0; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; background: transparent;">
+              <input type="text" id="adminCustomColorHex" placeholder="#000000" style="width: 100px; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: var(--font-mono); font-size: 0.8rem;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="addAdminSelectedColorFromInput()">
+                <i class="fa-solid fa-plus"></i> Add Color
+              </button>
             </div>
-            <div class="form-group">
-              <label class="form-label">Colors (Comma separated)</label>
-              <input type="text" id="prodFormColors" class="form-control" value="Espresso Brown, Champagne Gold, Ivory">
-            </div>
+            <div style="background: var(--surface-subtle); border: 1px dashed var(--border); border-radius: 8px; padding: 8px 10px; min-height: 42px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px;" id="adminSelectedColorsList"></div>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="pfDesc" class="form-control" rows="3" placeholder="Crafted with pure 220 GSM heavyweight luxury cotton..."></textarea>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeProductModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary btn-sm">Save Garment</button>
+          <button type="button" class="btn btn-outline" onclick="closeProductModal()">Cancel</button>
+          <button type="submit" class="btn btn-gold" id="btnSaveProduct">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Real-Time
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal: Firebase Settings -->
-  <div class="modal-overlay" id="firebaseModal">
-    <div class="modal-content" style="max-width: 600px;">
-      <div class="modal-header">
-        <h3 style="font-size: 1.25rem; margin: 0;"><i class="fa-solid fa-cloud text-gold"></i> Firebase Cloud Sync Setup</h3>
-        <button onclick="closeFirebaseModal()" style="font-size: 1.2rem;"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size: 0.88rem; margin-bottom: 1rem;">
-          Connect your Google Firebase Project for live cloud database synchronization and native 1-click Google Account Sign-In!
-        </p>
-        <div class="form-group">
-          <label class="form-label">Firebase Config JSON Object</label>
-          <textarea id="firebaseConfigInput" class="form-control" rows="6" placeholder='{
-  "apiKey": "AIzaSy...",
-  "authDomain": "your-app.firebaseapp.com",
-  "projectId": "your-app",
-  "storageBucket": "your-app.appspot.com",
-  "messagingSenderId": "...",
-  "appId": "..."
-}'></textarea>
-        </div>
-        <small style="color: var(--text-light); font-size: 0.78rem; display: block;">
-          Note: Even without Firebase credentials, the system automatically runs the high-fidelity Local Reactive &amp; Broadcast Engine!
-        </small>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeFirebaseModal()">Close</button>
-        <button type="button" class="btn btn-gold btn-sm" onclick="saveFirebaseCredentials()">Save Configuration</button>
-      </div>
-    </div>
-  </div>
+  <!-- Audio chime for live incoming orders -->
+  <audio id="orderAlertChime" preload="auto">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+  </audio>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
-  <script src="db.js"></script>
-  <script src="app.js"></script>
+  <script src="script.js"></script>
+
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      refreshAllAdminPanels();
+    'use strict';
 
-      // Subscribe to real-time events!
-      if (window.roohiraDB) {
-        window.roohiraDB.subscribe((type) => {
-          refreshAllAdminPanels();
+    // Verify Admin Authorization
+    const isAdmin = localStorage.getItem('roohira_admin') === 'true';
+    let sessionUser = null;
+    try { sessionUser = JSON.parse(localStorage.getItem('roohira_user') || 'null'); } catch(e) {}
+
+    if (!isAdmin && (!sessionUser || sessionUser.email !== 'adminroohira@gmail.com')) {
+      window.location.replace('login.html?redirect=admin.html&admin=required');
+    }
+
+    function adminLogout() {
+      localStorage.removeItem('roohira_admin');
+      if (sessionUser && sessionUser.email === 'adminroohira@gmail.com') {
+        localStorage.removeItem('roohira_user');
+      }
+      if (typeof auth !== 'undefined' && auth) {
+        auth.signOut().finally(() => {
+          window.location.href = 'login.html';
         });
+      } else {
+        window.location.href = 'login.html';
       }
-    });
-
-    function refreshAllAdminPanels() {
-      updateDashboardKPIs();
-      renderDashboardOrders();
-      renderAdminOrders();
-      renderAdminProducts();
-      renderAdminStock();
-      renderAdminCustomers();
-      renderSQLViewer();
     }
 
-    // Tab Switching
-    function switchAdminTab(tabKey, navElement) {
-      document.querySelectorAll(".admin-tab-pane").forEach(pane => pane.style.display = "none");
-      document.querySelectorAll(".admin-nav-item").forEach(item => item.classList.remove("active"));
-      
-      const targetPane = document.getElementById("tab-" + tabKey);
-      if (targetPane) targetPane.style.display = "block";
-      if (navElement) navElement.classList.add("active");
+    let liveOrders = [];
+    let liveProducts = [];
+    let liveCustomers = [];
+    let liveWaitlist = [];
+    let liveReviews = [];
+    let initialOrdersLoaded = false;
 
-      // Update heading
-      const titles = {
-        dashboard: "Executive Dashboard",
-        orders: "Haute Orders Management",
-        products: "Garments & Collections Catalog",
-        stock: "Live Stock & Inventory Control Room",
-        customers: "Patrons & VIP Client Registry",
-        sql: "Relational SQL Database Engine"
-      };
-      document.getElementById("adminSectionHeading").textContent = titles[tabKey] || "Executive Suite";
-
-      if (tabKey === "sql") renderSQLViewer();
+    // Tab Switcher
+    function switchTab(tabName, btnElem) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById('tab-' + tabName);
+      if (target) target.classList.add('active');
+      if (btnElem) btnElem.classList.add('active');
     }
 
-    // Dashboard KPIs
-    function updateDashboardKPIs() {
-      const orders = window.roohiraDB.getOrders();
-      const products = window.roohiraDB.getProducts();
-      const customers = window.roohiraDB.getCustomers();
-
-      const grossSales = orders.reduce((sum, o) => sum + (o.total || 0), 0);
-      const lowStockCount = products.filter(p => p.stock <= 4).length;
-
-      document.getElementById("statTotalSales").textContent = window.roohiraApp.formatPrice(grossSales);
-      document.getElementById("statTotalOrders").textContent = orders.length;
-      document.getElementById("statTotalCustomers").textContent = customers.length;
-      document.getElementById("statLowStock").textContent = lowStockCount;
-
-      document.getElementById("ordersTableCount").textContent = orders.length + " Orders";
-      document.getElementById("productsTableCount").textContent = products.length + " Pieces";
-      document.getElementById("customersTableCount").textContent = customers.length + " Patrons";
+    // Toast Alert
+    function showAdminToast(msg, type = 'gold') {
+      const existing = document.querySelector('.toast-msg');
+      if (existing) existing.remove();
+      const div = document.createElement('div');
+      div.className = 'toast-msg';
+      div.innerHTML = `<i class="fa-solid fa-circle-check" style="color: ${type === 'green' ? '#22c55e' : (type === 'red' ? '#ef4444' : '#C6A26B')};"></i> <span>${msg}</span>`;
+      document.body.appendChild(div);
+      setTimeout(() => div.remove(), 3500);
     }
 
-    // Dashboard Orders table
-    function renderDashboardOrders() {
-      const orders = window.roohiraDB.getOrders().slice(0, 5);
-      const tbody = document.getElementById("dashOrdersTbody");
-      if (!tbody) return;
-
-      tbody.innerHTML = orders.map(o => `
-        <tr>
-          <td><strong class="text-espresso">${o.orderId}</strong></td>
-          <td>${(o.customer && o.customer.name) || 'Patron'}</td>
-          <td>${new Date(o.createdAt || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</td>
-          <td><strong>${window.roohiraApp.formatPrice(o.total)}</strong></td>
-          <td><span class="status-pill status-${(o.status || 'pending').toLowerCase()}">${o.status}</span></td>
-          <td>
-            <select class="form-control" style="height: 32px; padding: 2px 8px; font-size: 0.8rem; width: auto;" onchange="handleAdminStatusChange('${o.orderId}', this.value)">
-              <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
-              <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-              <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
-              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-            </select>
-          </td>
-        </tr>
-      `).join("");
+    // Play Alert Chime
+    function playOrderChime() {
+      try {
+        const audio = document.getElementById('orderAlertChime');
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play().catch(e => console.log('Audio autoplay prevented'));
+        }
+      } catch (err) {}
     }
 
-    // Orders tab table
-    function renderAdminOrders() {
-      const filter = document.getElementById("adminOrderStatusFilter").value;
-      let orders = window.roohiraDB.getOrders();
-      if (filter !== "All") {
-        orders = orders.filter(o => (o.status || 'Pending').toLowerCase() === filter.toLowerCase());
+    // ========================================================
+    // REAL-TIME FIRESTORE LISTENERS
+    // ========================================================
+    function initRealtimeListeners() {
+      if (typeof db === 'undefined' || !db) {
+        document.getElementById('syncStatusText').textContent = 'Firebase Not Connected';
+        return;
       }
 
-      const tbody = document.getElementById("adminOrdersTbody");
-      if (!tbody) return;
+      document.getElementById('syncStatusText').textContent = 'Live Sync: roohira-collection';
 
-      tbody.innerHTML = orders.map(o => `
-        <tr>
-          <td>
-            <strong class="text-espresso">${o.orderId}</strong><br>
-            <small style="color: var(--text-light);">${new Date(o.createdAt || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</small>
-          </td>
-          <td>
-            <strong>${(o.customer && o.customer.name) || 'Patron'}</strong><br>
-            <small style="color: var(--text-muted);">${(o.customer && o.customer.phone) || ''}</small>
-          </td>
-          <td style="max-width: 200px; font-size: 0.825rem; color: var(--text-muted);">
-            ${(o.customer && o.customer.address) || 'N/A'}
-          </td>
-          <td>
-            ${(o.items || []).map(i => `<span style="font-size: 0.8rem; display: block;">${i.qty}x ${i.name} (${i.size || 'Std'})</span>`).join("")}
-          </td>
-          <td><strong class="text-espresso">${window.roohiraApp.formatPrice(o.total)}</strong></td>
-          <td><span class="status-pill status-${(o.status || 'pending').toLowerCase()}">${o.status}</span></td>
-          <td>
-            <select class="form-control" style="height: 32px; padding: 2px 8px; font-size: 0.8rem; width: auto;" onchange="handleAdminStatusChange('${o.orderId}', this.value)">
-              <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
-              <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-              <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
-              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-            </select>
-          </td>
-        </tr>
-      `).join("");
-    }
+      // 1. Orders Real-Time Listener
+      db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        const prevCount = liveOrders.length;
+        liveOrders = [];
+        snapshot.forEach(doc => {
+          liveOrders.push({ _docId: doc.id, ...doc.data() });
+        });
 
-    function handleAdminStatusChange(orderId, newStatus) {
-      window.roohiraDB.updateOrderStatus(orderId, newStatus);
-      window.roohiraApp.showToast(`Order ${orderId} updated to ${newStatus}. All devices synced!`, "success");
-    }
+        // If new order arrived while dashboard open, play chime & alert!
+        if (initialOrdersLoaded && liveOrders.length > prevCount) {
+          playOrderChime();
+          const newest = liveOrders[0];
+          showAdminToast(`🔔 NEW ORDER RECEIVED! #${String(newest.id || newest._docId).slice(-6)} from ${newest.userName || 'Customer'} (LKR ${newest.total || 0})`, 'green');
+        }
+        initialOrdersLoaded = true;
 
-    // Products Tab
-    function renderAdminProducts() {
-      const products = window.roohiraDB.getProducts();
-      const tbody = document.getElementById("adminProductsTbody");
-      if (!tbody) return;
-
-      tbody.innerHTML = products.map(p => `
-        <tr>
-          <td>
-            <img src="${p.image}" alt="${p.name}" style="width: 48px; height: 60px; object-fit: cover; border-radius: var(--radius-xs);">
-          </td>
-          <td>
-            <strong class="text-espresso">${p.name}</strong><br>
-            <small style="color: var(--text-light); font-family: monospace;">${p.id}</small>
-          </td>
-          <td><span class="badge" style="background: var(--cream); color: var(--espresso); border: 1px solid var(--border);">${p.category}</span></td>
-          <td><strong>${window.roohiraApp.formatPrice(p.price)}</strong></td>
-          <td>
-            <span class="stock-dot ${p.stock > 4 ? 'in' : (p.stock > 0 ? 'low' : 'out')}"></span>
-            <strong>${p.stock}</strong> units
-          </td>
-          <td>${p.badge ? `<span class="badge badge-new">${p.badge}</span>` : '-'}</td>
-          <td>
-            <div class="d-flex gap-1">
-              <button class="btn btn-outline btn-sm" onclick="openEditProductModal('${p.id}')" title="Edit">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button class="btn btn-sm" style="color: var(--danger); border: 1px solid var(--border);" onclick="handleDeleteProduct('${p.id}')" title="Delete">
-                <i class="fa-regular fa-trash-can"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    // Stock Tab
-    function renderAdminStock() {
-      const products = window.roohiraDB.getProducts();
-      const tbody = document.getElementById("adminStockTbody");
-      if (!tbody) return;
-
-      tbody.innerHTML = products.map(p => `
-        <tr>
-          <td>
-            <div class="d-flex align-center gap-2">
-              <img src="${p.image}" alt="${p.name}" style="width: 40px; height: 50px; object-fit: cover; border-radius: var(--radius-xs);">
-              <strong class="text-espresso">${p.name}</strong>
-            </div>
-          </td>
-          <td>${p.category}</td>
-          <td>${window.roohiraApp.formatPrice(p.price)}</td>
-          <td>
-            <span style="font-size: 1.15rem; font-weight: 700; ${p.stock <= 4 ? 'color: var(--danger);' : 'color: var(--espresso);'}">
-              ${p.stock}
-            </span>
-          </td>
-          <td>
-            <div class="qty-stepper">
-              <button onclick="adjustProductStock('${p.id}', ${p.stock - 1})">-</button>
-              <span style="width: 40px;">${p.stock}</span>
-              <button onclick="adjustProductStock('${p.id}', ${p.stock + 1})">+</button>
-            </div>
-          </td>
-          <td>
-            ${p.stock <= 0 ? '<span class="badge badge-out">Out of Stock</span>' : 
-             (p.stock <= 4 ? '<span class="badge badge-low">Low Stock</span>' : '<span class="badge badge-stock">In Stock</span>')}
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    function adjustProductStock(id, newStock) {
-      window.roohiraDB.updateStock(id, newStock);
-      window.roohiraApp.showToast("Stock updated across all devices instantly.", "info");
-    }
-
-    function restockAllProducts() {
-      const products = window.roohiraDB.getProducts();
-      products.forEach(p => {
-        window.roohiraDB.updateStock(p.id, p.stock + 5);
+        renderOrders();
+        updateKPIs();
+      }, err => {
+        console.error("Firestore Orders listener error:", err);
       });
-      window.roohiraApp.showToast("Added +5 units to all products.", "success");
-    }
 
-    // Customers Tab
-    function renderAdminCustomers() {
-      const customers = window.roohiraDB.getCustomers();
-      const tbody = document.getElementById("adminCustomersTbody");
-      if (!tbody) return;
+      // 2. Products Real-Time Listener
+      db.collection('products').onSnapshot(snapshot => {
+        const dbMap = {};
+        snapshot.forEach(doc => {
+          dbMap[doc.id] = { id: doc.id, ...doc.data() };
+        });
 
-      tbody.innerHTML = customers.map(c => `
-        <tr>
-          <td><code style="font-weight: 600;">${c.id}</code></td>
-          <td><strong>${c.name}</strong></td>
-          <td>${c.email}</td>
-          <td>${c.phone || 'N/A'}</td>
-          <td>${c.joinedDate || '2026-10-01'}</td>
-          <td><span class="badge" style="background: var(--cream); color: var(--espresso);">${c.totalOrders || 0} Orders</span></td>
-          <td><strong class="text-espresso">${window.roohiraApp.formatPrice(c.totalSpent || 0)}</strong></td>
-        </tr>
-      `).join("");
-    }
+        // Merge with static base catalog from script.js
+        const merged = [];
+        if (typeof products !== 'undefined') {
+          products.forEach(p => merged.push({ ...p }));
+        }
 
-    // SQL Dump Tab
-    function renderSQLViewer() {
-      const box = document.getElementById("sqlViewerBox");
-      if (box && window.roohiraDB) {
-        box.textContent = window.roohiraDB.generateSQLDump();
-      }
-    }
+        // Apply dbMap items
+        Object.keys(dbMap).forEach(docId => {
+          const dbP = dbMap[docId];
+          const idx = merged.findIndex(m => String(m.id) === String(docId));
+          if (idx >= 0) {
+            merged[idx] = { ...merged[idx], ...dbP };
+          } else if (!dbP.isDeleted && !dbP.deleted) {
+            merged.unshift({ id: docId, ...dbP });
+          }
+        });
 
-    function downloadSQLFile() {
-      window.roohiraDB.downloadSQLFile();
-      window.roohiraApp.showToast("roohira_collection_db.sql downloaded successfully!", "success");
-    }
+        liveProducts = merged.filter(p => !p.isDeleted && !p.deleted);
+        renderProducts();
+        updateKPIs();
+      }, err => {
+        console.error("Firestore Products listener error:", err);
+      });
 
-    function copySQLToClipboard() {
-      const sql = window.roohiraDB.generateSQLDump();
-      navigator.clipboard.writeText(sql).then(() => {
-        window.roohiraApp.showToast("SQL script copied to clipboard!", "success");
+      // 3. Customers / Users Real-Time Listener
+      db.collection('users').onSnapshot(snapshot => {
+        liveCustomers = [];
+        snapshot.forEach(doc => {
+          liveCustomers.push({ _docId: doc.id, ...doc.data() });
+        });
+        renderCustomers();
+        updateKPIs();
+      }, err => {
+        console.error("Firestore Users listener error:", err);
+      });
+
+      // 4. Waitlist Real-Time Listener
+      db.collection('waitlist').onSnapshot(snapshot => {
+        liveWaitlist = [];
+        snapshot.forEach(doc => {
+          liveWaitlist.push({ _docId: doc.id, ...doc.data() });
+        });
+        renderWaitlist();
+        updateKPIs();
+      }, err => {
+        console.error("Firestore Waitlist listener error:", err);
+      });
+
+      // 5. Reviews Real-Time Listener
+      db.collection('reviews').onSnapshot(snapshot => {
+        liveReviews = [];
+        snapshot.forEach(doc => {
+          liveReviews.push({ _docId: doc.id, ...doc.data() });
+        });
+        renderReviews();
+        updateKPIs();
+      }, err => {
+        console.error("Firestore Reviews listener error:", err);
       });
     }
 
-    // Product Modal (Add & Edit)
+    // ========================================================
+    // UPDATE KPI METRICS
+    // ========================================================
+    function updateKPIs() {
+      // Revenue & Orders
+      let totalRevenue = 0;
+      let pendingCount = 0;
+      liveOrders.forEach(o => {
+        const amt = parseFloat(o.total) || 0;
+        if (o.status !== 'cancelled') totalRevenue += amt;
+        if (!o.status || o.status === 'pending') pendingCount++;
+      });
+
+      document.getElementById('kpiRevenue').textContent = 'LKR ' + totalRevenue.toLocaleString();
+      document.getElementById('kpiOrders').textContent = liveOrders.length;
+      document.getElementById('kpiPending').textContent = pendingCount;
+      document.getElementById('kpiProducts').textContent = liveProducts.length;
+      document.getElementById('kpiCustomers').textContent = liveCustomers.length;
+
+      // Badges
+      document.getElementById('badgeOrderCount').textContent = liveOrders.length;
+      document.getElementById('badgeProductCount').textContent = liveProducts.length;
+      document.getElementById('badgeCustomerCount').textContent = liveCustomers.length;
+      document.getElementById('badgeWaitlistCount').textContent = liveWaitlist.length;
+      document.getElementById('badgeReviewCount').textContent = liveReviews.length;
+
+      // Recent Orders Snapshot on Dashboard
+      const recentBox = document.getElementById('recentOrdersContainer');
+      if (recentBox) {
+        if (!liveOrders.length) {
+          recentBox.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem; padding: 10px;">No customer orders placed yet.</p>';
+        } else {
+          recentBox.innerHTML = liveOrders.slice(0, 5).map(o => `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(198,162,107,0.15);">
+              <div>
+                <strong style="font-size: 0.88rem;">#${String(o.id || o._docId).slice(-6)} &bull; ${o.userName || 'Customer'}</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">${o.userPhone || 'No Phone'} &bull; ${(o.items || []).length} Garment(s)</div>
+              </div>
+              <div style="text-align: right;">
+                <strong style="color: var(--gold); font-size: 0.88rem;">LKR ${(parseFloat(o.total)||0).toLocaleString()}</strong>
+                <div><span class="tag tag-${o.status || 'pending'}">${(o.status || 'pending').toUpperCase()}</span></div>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+    }
+
+    // ========================================================
+    // ORDERS SECTION
+    // ========================================================
+    function renderOrders() {
+      filterOrdersList();
+    }
+
+    function filterOrdersList() {
+      const q = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
+      const statusFilter = document.getElementById('orderStatusFilter')?.value || 'all';
+
+      const filtered = liveOrders.filter(o => {
+        const matchesStatus = (statusFilter === 'all') || (o.status || 'pending') === statusFilter;
+        const matchesSearch = !q ||
+          String(o.id || '').toLowerCase().includes(q) ||
+          String(o._docId || '').toLowerCase().includes(q) ||
+          String(o.userName || '').toLowerCase().includes(q) ||
+          String(o.userPhone || '').toLowerCase().includes(q) ||
+          String(o.userEmail || '').toLowerCase().includes(q) ||
+          String(o.city || '').toLowerCase().includes(q);
+        return matchesStatus && matchesSearch;
+      });
+
+      const wrap = document.getElementById('ordersListWrap');
+      if (!wrap) return;
+
+      if (!filtered.length) {
+        wrap.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted);"><i class="fa-solid fa-box-open" style="font-size: 2rem; margin-bottom: 10px; color: var(--gold);"></i><p>No orders matching filter criteria.</p></div>';
+        return;
+      }
+
+      wrap.innerHTML = filtered.map(o => {
+        const status = o.status || 'pending';
+        const orderId = String(o.id || o._docId);
+        const orderShort = orderId.slice(-8);
+        const dateStr = o.timestamp && o.timestamp.toDate ? o.timestamp.toDate().toLocaleString() : (o.date || 'Recent');
+        const phone = o.userPhone || '';
+        const items = o.items || [];
+
+        // WhatsApp invoice text
+        const waMsg = encodeURIComponent(
+          `*Roohira Collection - Order #${orderShort}*\n` +
+          `Hello ${o.userName || 'Customer'},\n` +
+          `Your order status: *${status.toUpperCase()}*\n` +
+          `Items: ${items.map(i => `${i.name} (${i.size||'M'}) x${i.quantity}`).join(', ')}\n` +
+          `Total: LKR ${(parseFloat(o.total)||0).toLocaleString()}\n` +
+          `Payment: Cash On Delivery (Islandwide)\n\n` +
+          `Thank you for shopping with Roohira!`
+        );
+
+        return `
+          <div class="order-item" id="order-item-${o._docId}">
+            <div class="order-summary-row" onclick="toggleOrderAccordion('${o._docId}')">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-chevron-right" id="arrow-${o._docId}" style="transition: transform 0.2s; color: var(--gold); font-size: 0.8rem;"></i>
+                <div>
+                  <strong style="font-size: 0.95rem; font-family: var(--font-mono);">#${orderShort}</strong>
+                  <span style="font-size: 0.88rem; font-weight: 700; margin-left: 8px;">${o.userName || 'Guest Customer'}</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                <span class="tag tag-${status}">${status.toUpperCase()}</span>
+                <span style="font-weight: 800; color: var(--gold); font-size: 0.95rem;">LKR ${(parseFloat(o.total)||0).toLocaleString()}</span>
+                <span style="font-size: 0.78rem; color: var(--text-muted);">${dateStr}</span>
+              </div>
+            </div>
+
+            <!-- Detail Accordion Box -->
+            <div class="order-detail-box" id="detail-${o._docId}">
+              <div class="order-grid-2">
+                <div class="info-group">
+                  <div class="lbl">Customer Name</div>
+                  <div class="val">${o.userName || 'N/A'}</div>
+                </div>
+                <div class="info-group">
+                  <div class="lbl">Primary Phone</div>
+                  <div class="val"><a href="tel:${phone}" style="color: var(--gold);">${phone || 'N/A'}</a></div>
+                </div>
+                <div class="info-group">
+                  <div class="lbl">Secondary Phone</div>
+                  <div class="val">${o.userPhone2 || 'None'}</div>
+                </div>
+                <div class="info-group">
+                  <div class="lbl">Email</div>
+                  <div class="val">${o.userEmail || 'N/A'}</div>
+                </div>
+                <div class="info-group" style="grid-column: 1 / -1;">
+                  <div class="lbl">Shipping Address</div>
+                  <div class="val">${o.userAddress || [o.streetAddress, o.city, o.district, o.postal].filter(Boolean).join(', ') || 'N/A'}</div>
+                </div>
+              </div>
+
+              <!-- Items Table -->
+              <div style="margin-bottom: 18px;">
+                <div class="info-group" style="margin-bottom: 8px;"><div class="lbl">Purchased Items</div></div>
+                <table class="data-table" style="background: #FFFFFF; border-radius: 8px; border: 1px solid var(--border);">
+                  <thead>
+                    <tr>
+                      <th>Item Description</th>
+                      <th>Size</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${items.map(it => `
+                      <tr>
+                        <td><strong>${it.name}</strong></td>
+                        <td>${it.size || 'M'}</td>
+                        <td>${it.quantity || 1}</td>
+                        <td>LKR ${(it.price||0).toLocaleString()}</td>
+                        <td><strong>LKR ${((it.price||0) * (it.quantity||1)).toLocaleString()}</strong></td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Action Bar -->
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--border); padding-top: 14px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">Change Status:</span>
+                  <button class="btn btn-sm btn-outline" style="border-color: var(--green); color: var(--green);" onclick="adminUpdateOrderStatus('${o._docId}', 'confirmed')">
+                    <i class="fa-solid fa-check"></i> Confirm
+                  </button>
+                  <button class="btn btn-sm btn-outline" style="border-color: var(--blue); color: var(--blue);" onclick="adminUpdateOrderStatus('${o._docId}', 'shipped')">
+                    <i class="fa-solid fa-truck-fast"></i> Shipped
+                  </button>
+                  <button class="btn btn-sm btn-outline" style="border-color: #047857; color: #047857;" onclick="adminUpdateOrderStatus('${o._docId}', 'delivered')">
+                    <i class="fa-solid fa-circle-check"></i> Delivered
+                  </button>
+                  <button class="btn btn-sm btn-outline" style="border-color: var(--red); color: var(--red);" onclick="adminUpdateOrderStatus('${o._docId}', 'cancelled')">
+                    <i class="fa-solid fa-ban"></i> Cancel
+                  </button>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${waMsg}" target="_blank" class="btn btn-sm" style="background: #25D366; color: #fff;">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp Bill
+                  </a>
+                  <a href="invoice.html?id=${orderId}" target="_blank" class="btn btn-sm btn-outline">
+                    <i class="fa-solid fa-print"></i> Invoice
+                  </a>
+                  <button class="btn btn-sm btn-outline" style="color: var(--red); border-color: var(--red);" onclick="adminDeleteOrder('${o._docId}')">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleOrderAccordion(docId) {
+      const box = document.getElementById('detail-' + docId);
+      const arrow = document.getElementById('arrow-' + docId);
+      if (!box) return;
+      const isOpen = box.classList.contains('open');
+      box.classList.toggle('open');
+      if (arrow) arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+    }
+
+    function adminUpdateOrderStatus(docId, newStatus) {
+      if (!db || !docId) return;
+      db.collection('orders').doc(docId).update({
+        status: newStatus,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        showAdminToast(`Order status updated to ${newStatus.toUpperCase()}! Devices synced.`, 'green');
+      }).catch(err => {
+        alert('Update failed: ' + err.message);
+      });
+    }
+
+    function adminDeleteOrder(docId) {
+      if (!confirm('Are you sure you want to permanently delete this order?')) return;
+      db.collection('orders').doc(docId).delete().then(() => {
+        showAdminToast('Order deleted.', 'red');
+      }).catch(err => alert(err.message));
+    }
+
+    // ========================================================
+    // PRODUCTS SECTION (Add / Edit / Stock / Delete)
+    // ========================================================
+    function renderProducts() {
+      filterProductsList();
+    }
+
+    function filterProductsList() {
+      const q = (document.getElementById('productSearchInput')?.value || '').toLowerCase().trim();
+      const tbody = document.getElementById('productsTbody');
+      if (!tbody) return;
+
+      const filtered = liveProducts.filter(p => {
+        return !q ||
+          String(p.name || '').toLowerCase().includes(q) ||
+          String(p.category || '').toLowerCase().includes(q) ||
+          String(p.id || '').toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: var(--text-muted);">No garments found matching search.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const isOut = p.stockStatus === 'out_of_stock' || Number(p.stock) === 0;
+        const imgUrl = Array.isArray(p.images) && p.images[0] ? p.images[0] : (p.image || 'logo.png');
+        const price = (p.sizes && p.sizes['M'] && p.sizes['M'].price) ? p.sizes['M'].price : (p.price || 1800);
+
+        return `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="${imgUrl}" alt="${p.name}" style="width: 44px; height: 52px; object-fit: contain; background: #FAF7F2; border: 1px solid var(--border); border-radius: 4px;">
+                <div>
+                  <strong style="font-size: 0.9rem; color: var(--text);">${p.name}</strong>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">ID: ${p.id}</div>
+                </div>
+              </div>
+            </td>
+            <td><span style="font-size: 0.8rem; font-weight: 700; color: var(--gold);">${p.category || 'Garment'}</span></td>
+            <td><strong>LKR ${Number(price).toLocaleString()}</strong></td>
+            <td>
+              <span style="font-weight: 800; ${isOut ? 'color: var(--red);' : ''}">${p.stock !== undefined ? p.stock : 10}</span>
+            </td>
+            <td>
+              <span class="tag ${isOut ? 'tag-out' : 'tag-stock'}">${isOut ? 'OUT OF STOCK' : 'IN STOCK'}</span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-sm btn-outline" onclick="openEditProductModal('${p.id}')" title="Edit Product">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline" style="${isOut ? 'color: var(--green); border-color: var(--green);' : 'color: var(--amber); border-color: var(--amber);'}" onclick="adminToggleProductStock('${p.id}', '${isOut ? 'in_stock' : 'out_of_stock'}')" title="Toggle Stock">
+                  ${isOut ? '<i class="fa-solid fa-check"></i> In Stock' : '<i class="fa-solid fa-ban"></i> Out'}
+                </button>
+                <button class="btn btn-sm btn-outline" style="color: var(--red); border-color: var(--red);" onclick="adminDeleteProduct('${p.id}', '${(p.name||'').replace(/'/g, "\\'")}')">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Admin Product Color Builder
+    let adminSelectedColors = ['#000000'];
+    const adminPresetPalette = [
+      { name: 'Black', hex: '#000000' },
+      { name: 'White', hex: '#FFFFFF' },
+      { name: 'Red', hex: '#DC143C' },
+      { name: 'Navy', hex: '#001F5B' },
+      { name: 'Blue', hex: '#1E90FF' },
+      { name: 'Forest Green', hex: '#228B22' },
+      { name: 'Yellow', hex: '#FFD700' },
+      { name: 'Salmon Pink', hex: '#FA8072' },
+      { name: 'Brown', hex: '#8B4513' },
+      { name: 'Sage', hex: '#77815C' },
+      { name: 'Purple', hex: '#6A0DAD' },
+      { name: 'Beige', hex: '#F5F5DC' },
+      { name: 'Orange', hex: '#FF6B35' },
+      { name: 'Grey', hex: '#808080' }
+    ];
+
+    function renderAdminPresetChips() {
+      const container = document.getElementById('adminPresetChips');
+      if (!container) return;
+      container.innerHTML = adminPresetPalette.map(c => {
+        const isSel = adminSelectedColors.some(hex => hex.toLowerCase() === c.hex.toLowerCase());
+        return `
+          <button type="button" onclick="toggleAdminColorSelection('${c.hex}')" 
+            style="display:inline-flex; align-items:center; gap:5px; background:var(--surface); border:1px solid ${isSel ? 'var(--gold)' : 'var(--border)'}; border-radius:20px; padding:3px 9px; cursor:pointer; color:var(--text); font-size:0.75rem; transition:all 0.15s ease;">
+            <span style="width:12px; height:12px; border-radius:50%; background:${c.hex}; border:1px solid rgba(0,0,0,0.2); display:inline-block;"></span>
+            <span>${c.name}</span>
+            ${isSel ? '<i class="fa-solid fa-check" style="font-size:0.65rem; color:var(--gold);"></i>' : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderAdminSelectedColors() {
+      const list = document.getElementById('adminSelectedColorsList');
+      if (!list) return;
+      if (!adminSelectedColors.length) {
+        list.innerHTML = '<span style="color:var(--text-muted); font-size:0.75rem;">No colors selected yet. Click a chip above or add custom color.</span>';
+        return;
+      }
+      list.innerHTML = adminSelectedColors.map(hex => `
+        <span style="display:inline-flex; align-items:center; gap:5px; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:2px 8px; font-size:0.75rem; color:var(--text);">
+          <span style="width:13px; height:13px; border-radius:50%; background:${hex}; border:1px solid rgba(0,0,0,0.2); display:inline-block;"></span>
+          <span style="font-family:var(--font-mono); font-size:0.72rem;">${hex.toUpperCase()}</span>
+          <button type="button" onclick="removeAdminColorSelection('${hex}')" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:0 2px; line-height:1;" title="Remove">&times;</button>
+        </span>
+      `).join('');
+    }
+
+    function toggleAdminColorSelection(hex) {
+      const lower = hex.toLowerCase();
+      const idx = adminSelectedColors.findIndex(h => h.toLowerCase() === lower);
+      if (idx > -1) {
+        adminSelectedColors.splice(idx, 1);
+      } else {
+        adminSelectedColors.push(hex);
+      }
+      renderAdminPresetChips();
+      renderAdminSelectedColors();
+    }
+
+    function removeAdminColorSelection(hex) {
+      const lower = hex.toLowerCase();
+      adminSelectedColors = adminSelectedColors.filter(h => h.toLowerCase() !== lower);
+      renderAdminPresetChips();
+      renderAdminSelectedColors();
+    }
+
+    function addAdminSelectedColorFromInput() {
+      const hexInput = document.getElementById('adminCustomColorHex');
+      const picker = document.getElementById('adminCustomColorPicker');
+      let val = (hexInput.value || picker.value || '').trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val) || /^#[0-9A-Fa-f]{3}$/.test(val)) {
+        if (!adminSelectedColors.some(h => h.toLowerCase() === val.toLowerCase())) {
+          adminSelectedColors.push(val);
+          renderAdminPresetChips();
+          renderAdminSelectedColors();
+        }
+        hexInput.value = '';
+      } else {
+        alert('Please enter a valid Hex color code (e.g. #FF5733)');
+      }
+    }
+
     function openAddProductModal() {
-      document.getElementById("prodEditId").value = "";
-      document.getElementById("productModalTitle").textContent = "Add New Bespoke Garment";
-      document.getElementById("prodFormName").value = "";
-      document.getElementById("prodFormCategory").value = "Women";
-      document.getElementById("prodFormPrice").value = "";
-      document.getElementById("prodFormOldPrice").value = "";
-      document.getElementById("prodFormStock").value = "10";
-      document.getElementById("prodFormImage").value = "";
-      document.getElementById("prodFormDesc").value = "";
-      document.getElementById("imagePreviewBox").style.display = "none";
-      document.getElementById("productModal").classList.add("active");
+      document.getElementById('productForm').reset();
+      document.getElementById('pfId').value = '';
+      document.getElementById('productModalTitle').textContent = 'Add New Luxury Garment';
+      document.getElementById('imagePreviewContainer').style.display = 'none';
+      adminSelectedColors = ['#000000'];
+      renderAdminPresetChips();
+      renderAdminSelectedColors();
+      document.getElementById('productModal').classList.add('open');
     }
 
     function openEditProductModal(id) {
-      const p = window.roohiraDB.getProductById(id);
+      const p = liveProducts.find(item => String(item.id) === String(id));
       if (!p) return;
 
-      document.getElementById("prodEditId").value = p.id;
-      document.getElementById("productModalTitle").textContent = "Edit Garment: " + p.name;
-      document.getElementById("prodFormName").value = p.name;
-      document.getElementById("prodFormCategory").value = p.category;
-      document.getElementById("prodFormPrice").value = p.price;
-      document.getElementById("prodFormOldPrice").value = p.oldPrice || "";
-      document.getElementById("prodFormStock").value = p.stock;
-      document.getElementById("prodFormImage").value = p.image;
-      document.getElementById("prodFormDesc").value = p.description || "";
-      document.getElementById("prodFormSizes").value = (p.sizes || []).join(", ");
-      document.getElementById("prodFormColors").value = (p.colors || []).join(", ");
-      
-      updateImagePreview(p.image);
-      document.getElementById("productModal").classList.add("active");
+      document.getElementById('pfId').value = p.id;
+      document.getElementById('productModalTitle').textContent = 'Edit: ' + p.name;
+      document.getElementById('pfName').value = p.name || '';
+      document.getElementById('pfCategory').value = p.category || 'Regular Tee (Printed)';
+      document.getElementById('pfStockStatus').value = p.stockStatus || (p.stock === 0 ? 'out_of_stock' : 'in_stock');
+
+      const price = (p.sizes && p.sizes['M'] && p.sizes['M'].price) ? p.sizes['M'].price : (p.price || 1800);
+      const oldPrice = (p.sizes && p.sizes['M'] && p.sizes['M'].oldPrice) ? p.sizes['M'].oldPrice : (p.oldPrice || '');
+
+      document.getElementById('pfPrice').value = price;
+      document.getElementById('pfOldPrice').value = oldPrice;
+      document.getElementById('pfStock').value = p.stock !== undefined ? p.stock : 10;
+      document.getElementById('pfBadge').value = p.badge || '';
+
+      const img = Array.isArray(p.images) && p.images[0] ? p.images[0] : (p.image || '');
+      document.getElementById('pfImage').value = img;
+      previewModalImage(img);
+
+      adminSelectedColors = (p.colors && Array.isArray(p.colors) && p.colors.length) ? [...p.colors] : ['#000000'];
+      renderAdminPresetChips();
+      renderAdminSelectedColors();
+
+      document.getElementById('pfDesc').value = p.desc || p.description || '';
+      document.getElementById('productModal').classList.add('open');
     }
 
     function closeProductModal() {
-      document.getElementById("productModal").classList.remove("active");
+      document.getElementById('productModal').classList.remove('open');
     }
 
-    function updateImagePreview(url) {
-      const box = document.getElementById("imagePreviewBox");
-      const img = document.getElementById("imagePreviewImg");
-      if (url && url.startsWith("http")) {
+    function previewModalImage(url) {
+      const box = document.getElementById('imagePreviewContainer');
+      const img = document.getElementById('imagePreviewElem');
+      if (url && url.startsWith('http')) {
         img.src = url;
-        box.style.display = "block";
+        box.style.display = 'block';
       } else {
-        box.style.display = "none";
+        box.style.display = 'none';
       }
     }
 
-    function handleSaveProductForm(e) {
+    function handleSaveProduct(e) {
       e.preventDefault();
-      const id = document.getElementById("prodEditId").value;
-      const name = document.getElementById("prodFormName").value.trim();
-      const category = document.getElementById("prodFormCategory").value;
-      const price = parseFloat(document.getElementById("prodFormPrice").value);
-      const oldPrice = parseFloat(document.getElementById("prodFormOldPrice").value) || null;
-      const stock = parseInt(document.getElementById("prodFormStock").value) || 0;
-      const image = document.getElementById("prodFormImage").value.trim();
-      const desc = document.getElementById("prodFormDesc").value.trim();
-      const sizesStr = document.getElementById("prodFormSizes").value;
-      const colorsStr = document.getElementById("prodFormColors").value;
+      const btn = document.getElementById('btnSaveProduct');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
-      const sizes = sizesStr.split(",").map(s => s.trim()).filter(Boolean);
-      const colors = colorsStr.split(",").map(c => c.trim()).filter(Boolean);
+      const id = document.getElementById('pfId').value.trim() || ('roohira_' + Date.now());
+      const name = document.getElementById('pfName').value.trim();
+      const category = document.getElementById('pfCategory').value;
+      const stockStatus = document.getElementById('pfStockStatus').value;
+      const price = parseFloat(document.getElementById('pfPrice').value) || 1800;
+      const oldPrice = parseFloat(document.getElementById('pfOldPrice').value) || (price + 200);
+      const stock = parseInt(document.getElementById('pfStock').value) || (stockStatus === 'out_of_stock' ? 0 : 10);
+      const image = document.getElementById('pfImage').value.trim();
+      const badge = document.getElementById('pfBadge').value.trim();
+      const desc = document.getElementById('pfDesc').value.trim();
+      const sizesStr = document.getElementById('pfSizes').value.trim();
+
+      const sizesObj = {};
+      sizesStr.split(',').map(s => s.trim()).filter(Boolean).forEach(sz => {
+        sizesObj[sz] = { price, oldPrice };
+      });
 
       const productPayload = {
+        id,
         name,
         category,
+        sections: ['Mens', 'Womens', 'Unisexs'],
+        images: [image],
+        gsm: '220 GSM',
+        brand: 'Roohira',
+        sizes: Object.keys(sizesObj).length ? sizesObj : { 'M': { price, oldPrice } },
         price,
         oldPrice,
-        stock,
-        image,
-        description: desc,
-        sizes: sizes.length ? sizes : ["Standard"],
-        colors: colors.length ? colors : ["Standard Luxury"]
+        colors: adminSelectedColors.length ? adminSelectedColors : ['#000000'],
+        stock: stockStatus === 'out_of_stock' ? 0 : stock,
+        status: stockStatus,
+        badge,
+        desc,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      if (id) productPayload.id = id;
-
-      window.roohiraDB.saveProduct(productPayload);
-      closeProductModal();
-      window.roohiraApp.showToast(`Garment "${name}" saved and synced across all devices!`, "success");
-    }
-
-    function handleDeleteProduct(id) {
-      const p = window.roohiraDB.getProductById(id);
-      if (!p) return;
-      if (confirm(`Are you sure you want to delete "${p.name}"? This action will remove it from all connected stores.`)) {
-        window.roohiraDB.deleteProduct(id);
-        window.roohiraApp.showToast(`Deleted "${p.name}".`, "info");
+      if (typeof db !== 'undefined' && db) {
+        db.collection('products').doc(id).set(productPayload, { merge: true })
+          .then(() => {
+            closeProductModal();
+            showAdminToast(`Garment "${name}" saved and synced to all devices in real-time!`, 'green');
+          })
+          .catch(err => {
+            alert('Failed to save product: ' + err.message);
+          })
+          .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Real-Time';
+          });
+      } else {
+        alert('Database connection unavailable.');
+        btn.disabled = false;
       }
     }
 
-    // Firebase Modal
-    function openFirebaseSettingsModal() {
-      const cfg = localStorage.getItem("roohira_firebase_config") || 
-                  (window.roohiraFirebaseConfig ? JSON.stringify(window.roohiraFirebaseConfig, null, 2) : "");
-      document.getElementById("firebaseConfigInput").value = cfg;
-      document.getElementById("firebaseModal").classList.add("active");
+    function adminToggleProductStock(productId, newStatus) {
+      if (!db) return;
+      db.collection('products').doc(productId).set({
+        id: productId,
+        status: newStatus,
+        stock: newStatus === 'out_of_stock' ? 0 : 10,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true }).then(() => {
+        showAdminToast(`Stock updated to ${newStatus.replace('_', ' ').toUpperCase()}`, 'green');
+      }).catch(err => alert(err.message));
     }
 
-    function closeFirebaseModal() {
-      document.getElementById("firebaseModal").classList.remove("active");
+    function adminDeleteProduct(productId, name) {
+      if (!confirm(`Delete garment "${name}" from store catalog? It will be removed immediately from all devices.`)) return;
+      if (!db) return;
+      db.collection('products').doc(productId).set({
+        id: productId,
+        isDeleted: true,
+        deletedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true }).then(() => {
+        showAdminToast(`Garment "${name}" deleted from boutique catalog.`, 'red');
+      }).catch(err => alert(err.message));
     }
 
-    function saveFirebaseCredentials() {
-      const val = document.getElementById("firebaseConfigInput").value.trim();
-      try {
-        if (val) {
-          const parsed = JSON.parse(val);
-          window.roohiraDB.saveFirebaseConfig(parsed);
-          window.roohiraApp.showToast("Firebase cloud configuration saved successfully!", "success");
-        } else {
-          localStorage.removeItem("roohira_firebase_config");
-          window.roohiraApp.showToast("Firebase credentials cleared. Running local reactive engine.", "info");
-        }
-        closeFirebaseModal();
-      } catch (err) {
-        alert("Invalid JSON format. Please ensure you paste valid Firebase config JSON.");
+    // ========================================================
+    // CUSTOMERS SECTION
+    // ========================================================
+    function renderCustomers() {
+      filterCustomersList();
+    }
+
+    function filterCustomersList() {
+      const q = (document.getElementById('customerSearchInput')?.value || '').toLowerCase().trim();
+      const tbody = document.getElementById('customersTbody');
+      if (!tbody) return;
+
+      const filtered = liveCustomers.filter(c => {
+        return !q ||
+          String(c.name || '').toLowerCase().includes(q) ||
+          String(c.email || '').toLowerCase().includes(q) ||
+          String(c.phone || '').toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">No patron customers found.</td></tr>';
+        return;
       }
+
+      tbody.innerHTML = filtered.map(c => {
+        // Calculate patron spend
+        let userOrders = liveOrders.filter(o => o.userEmail && o.userEmail.toLowerCase() === (c.email||'').toLowerCase());
+        let totalSpent = userOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+
+        return `
+          <tr>
+            <td><strong>${c.name || 'Patron'}</strong></td>
+            <td>${c.email || 'N/A'}</td>
+            <td><a href="tel:${c.phone}" style="color: var(--gold);">${c.phone || 'N/A'}</a></td>
+            <td><span class="badge-pill" style="font-weight: 800;">${userOrders.length}</span></td>
+            <td><strong>LKR ${totalSpent.toLocaleString()}</strong></td>
+            <td>
+              <span class="tag ${c.blocked ? 'tag-cancelled' : 'tag-confirmed'}">${c.blocked ? 'BLOCKED' : 'ACTIVE'}</span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-sm btn-outline" onclick="adminToggleBlockCustomer('${c._docId}', ${!c.blocked})">
+                  ${c.blocked ? 'Unblock' : 'Block'}
+                </button>
+                <button class="btn btn-sm btn-outline" style="color: var(--red); border-color: var(--red);" onclick="adminDeleteCustomer('${c._docId}')">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
+
+    function adminToggleBlockCustomer(docId, blocked) {
+      db.collection('users').doc(docId).update({ blocked }).then(() => {
+        showAdminToast(blocked ? 'Patron blocked.' : 'Patron unblocked.', 'green');
+      });
+    }
+
+    function adminDeleteCustomer(docId) {
+      if (!confirm('Delete this patron account record from database?')) return;
+      db.collection('users').doc(docId).delete().then(() => {
+        showAdminToast('Customer record removed.', 'red');
+      });
+    }
+
+    // ========================================================
+    // WAITLIST SECTION
+    // ========================================================
+    function renderWaitlist() {
+      const tbody = document.getElementById('waitlistTbody');
+      if (!tbody) return;
+      if (!liveWaitlist.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: var(--text-muted);">No entries on drop waitlist.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = liveWaitlist.map(w => `
+        <tr>
+          <td><strong>${w.name || 'Patron'}</strong></td>
+          <td><a href="tel:${w.phone}" style="color: var(--gold);">${w.phone || 'N/A'}</a></td>
+          <td>${w.joinedAt ? new Date(w.joinedAt).toLocaleDateString() : 'Recent'}</td>
+          <td>
+            <a href="https://wa.me/${(w.phone||'').replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(w.name||'')},%20Roohira%20New%20Drop%20is%20now%20live!" target="_blank" class="btn btn-sm" style="background:#25D366;color:#fff;">
+              <i class="fa-brands fa-whatsapp"></i> Notify
+            </a>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline" style="color: var(--red); border-color: var(--red);" onclick="adminDeleteWaitlist('${w._docId}')">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function adminDeleteWaitlist(docId) {
+      db.collection('waitlist').doc(docId).delete().then(() => showAdminToast('Waitlist entry deleted.', 'red'));
+    }
+
+    // ========================================================
+    // REVIEWS SECTION
+    // ========================================================
+    function renderReviews() {
+      const tbody = document.getElementById('reviewsTbody');
+      if (!tbody) return;
+      if (!liveReviews.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: var(--text-muted);">No reviews submitted yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = liveReviews.map(r => `
+        <tr>
+          <td><strong>${r.userName || r.name || 'Verified Customer'}</strong></td>
+          <td><span style="color: #eab308; font-weight: 800;">${'★'.repeat(r.rating || 5)}</span> (${r.rating || 5}/5)</td>
+          <td>${r.comment || ''}</td>
+          <td>${r.timestamp && r.timestamp.toDate ? r.timestamp.toDate().toLocaleDateString() : 'Recent'}</td>
+          <td>
+            <button class="btn btn-sm btn-outline" style="color: var(--red); border-color: var(--red);" onclick="adminDeleteReview('${r._docId}')">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function adminDeleteReview(docId) {
+      db.collection('reviews').doc(docId).delete().then(() => showAdminToast('Review removed.', 'red'));
+    }
+
+    // INITIALIZATION
+    window.addEventListener('DOMContentLoaded', () => {
+      initRealtimeListeners();
+    });
   </script>
 </body>
 </html>

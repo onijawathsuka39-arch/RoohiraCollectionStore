@@ -11,10 +11,10 @@
     }
 })();
 
-// Apply stored theme immediately to avoid flash of light theme
+// Force pure light theme unconditionally across all devices
 (function () {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    localStorage.setItem('theme', 'light');
+    document.documentElement.setAttribute('data-theme', 'light');
 })();
 
 // Centralized Color Configuration (Hex to Name Mapping)
@@ -755,7 +755,7 @@ function displayProducts(filteredProducts) {
                     <span class="product-card-category">${p.category || 'Roohira Apparel'}</span>
                     <div class="product-card-rating">
                         <i data-lucide="star" style="width: 11px; height: 11px; fill: #B38738;"></i>
-                        <span>4.9</span>
+                        <span>${(p.rating || 5.0).toFixed(1)}</span>
                     </div>
                 </div>
 
@@ -1274,31 +1274,139 @@ function renderCart() {
 // --- Auth System ---
 let currentUser = JSON.parse(localStorage.getItem('roohira_user')) || null;
 
+// Helper: Safely resolve whether any patron is signed in (Firebase Auth, local storage session, or admin)
+function getLoggedInUser() {
+    if (currentUser && (currentUser.email || currentUser.uid)) {
+        return currentUser;
+    }
+    try {
+        const local = JSON.parse(localStorage.getItem('roohira_user') || 'null');
+        if (local && (local.email || local.uid || local.name)) {
+            currentUser = local;
+            return local;
+        }
+    } catch (e) {}
+    if (typeof auth !== 'undefined' && auth && auth.currentUser) {
+        const fbUser = {
+            uid: auth.currentUser.uid,
+            name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0],
+            email: auth.currentUser.email
+        };
+        try { localStorage.setItem('roohira_user', JSON.stringify(fbUser)); } catch (e) {}
+        currentUser = fbUser;
+        return fbUser;
+    }
+    return null;
+}
+
+function isUserLoggedIn() {
+    return getLoggedInUser() !== null;
+}
+
+function closeAuthRequiredModal() {
+    const modal = document.getElementById('roohira-auth-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            if (modal && !modal.classList.contains('active')) {
+                modal.remove();
+            }
+        }, 320);
+    }
+    document.body.style.overflow = '';
+}
+
+function showAuthRequiredModal(actionText = 'place your order', redirectPage = 'checkout.html') {
+    let modal = document.getElementById('roohira-auth-modal');
+    if (modal) modal.remove();
+
+    const redirectUrl = encodeURIComponent(redirectPage);
+
+    modal = document.createElement('div');
+    modal.id = 'roohira-auth-modal';
+    modal.innerHTML = `
+        <div class="roohira-auth-backdrop" onclick="closeAuthRequiredModal()"></div>
+        <div class="roohira-auth-dialog">
+            <button class="roohira-auth-close" onclick="closeAuthRequiredModal()" aria-label="Close">&times;</button>
+            <div class="roohira-auth-badge">
+                <div class="roohira-auth-icon-circle">
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="roohira-auth-brand">ROOHIRA COLLECTION</div>
+            <h3 class="roohira-auth-title">Sign In Required</h3>
+            <p class="roohira-auth-subtitle">
+                Order එක තහවුරු කිරීමට කරුණාකර ඔබගේ <b>Roohira Account</b> එකට Sign In වන්න.<br>
+                ගිණුමක් නොමැතිනම් මිනිත්තුවකින් නොමිලේ Create කරගත හැක.
+            </p>
+            <div class="roohira-auth-perks">
+                <div class="roohira-auth-perk"><span class="perk-dot">✦</span> Safe & Encrypted Checkout</div>
+                <div class="roohira-auth-perk"><span class="perk-dot">✦</span> Instant WhatsApp & E-Invoice</div>
+                <div class="roohira-auth-perk"><span class="perk-dot">✦</span> Live Order Tracking</div>
+            </div>
+            <div class="roohira-auth-actions">
+                <a href="login.html?redirect=${redirectUrl}" class="roohira-auth-btn-primary">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    <span>Sign In to My Account</span>
+                </a>
+                <a href="signup.html?redirect=${redirectUrl}" class="roohira-auth-btn-secondary">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    <span>Create New Account</span>
+                </a>
+            </div>
+            <button class="roohira-auth-cancel-btn" onclick="closeAuthRequiredModal()">Continue Browsing</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
+}
+
 // Sync Auth State with Firebase
 if (typeof auth !== 'undefined' && auth) {
     auth.onAuthStateChanged(user => {
         if (user) {
-            db.collection('users').doc(user.uid).get().then(doc => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    const syncedUser = { uid: user.uid, name: userData.name, email: user.email, phone: userData.phone || '', address: userData.address || '' };
-                    localStorage.setItem('roohira_user', JSON.stringify(syncedUser));
-                    currentUser = syncedUser;
-                } else {
-                    // Auto-create Firestore doc for existing Auth users who signed up before Firestore was configured
-                    const autoData = { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email, phone: '', address: '', createdAt: new Date().toISOString() };
-                    db.collection('users').doc(user.uid).set(autoData).catch(err => console.warn('Auto user doc create failed:', err));
-                    localStorage.setItem('roohira_user', JSON.stringify(autoData));
-                    currentUser = autoData;
-                }
-                startNotificationListener();
-            }).catch(err => {
-                console.error("Error syncing user profile:", err);
-                startNotificationListener();
-            });
+            if (typeof db !== 'undefined' && db) {
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        const syncedUser = { uid: user.uid, name: userData.name, email: user.email, phone: userData.phone || '', address: userData.address || '' };
+                        localStorage.setItem('roohira_user', JSON.stringify(syncedUser));
+                        currentUser = syncedUser;
+                    } else {
+                        // Auto-create Firestore doc for existing Auth users who signed up before Firestore was configured
+                        const autoData = { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email, phone: '', address: '', createdAt: new Date().toISOString() };
+                        db.collection('users').doc(user.uid).set(autoData).catch(err => console.warn('Auto user doc create failed:', err));
+                        localStorage.setItem('roohira_user', JSON.stringify(autoData));
+                        currentUser = autoData;
+                    }
+                    startNotificationListener();
+                }).catch(err => {
+                    console.warn("User profile sync note:", err);
+                    startNotificationListener();
+                });
+            }
         } else {
-            localStorage.removeItem('roohira_user');
-            currentUser = null;
+            // Transient unauthenticated or initializing state from Firebase Auth.
+            // DO NOT wipe localStorage.roohira_user here because on page refresh
+            // Firebase Auth starts with user=null while restoring session from IndexedDB.
+            // Only user-initiated logout() should clear localStorage.roohira_user.
             if (notificationListenerUnsubscribe) {
                 notificationListenerUnsubscribe();
                 notificationListenerUnsubscribe = null;
@@ -1308,109 +1416,248 @@ if (typeof auth !== 'undefined' && auth) {
 }
 
 function login(email, password, onError) {
-    if (typeof auth === 'undefined' || !auth) {
-        if (onError) onError('Firebase configure කර නැත. firebase-config.js check කරන්න.');
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanPass  = (password || '').trim();
+
+    if (!cleanEmail || !cleanPass) {
+        if (onError) onError('Email සහ Password ඇතුළත් කරන්න.');
         return;
     }
+
+    // 1. SPECIFIC ADMIN AUTHENTICATION CHECK
+    if (cleanEmail === 'adminroohira@gmail.com' && cleanPass === 'admin2008') {
+        const adminData = {
+            uid: 'admin_roohira_executive',
+            name: 'Roohira Administrator',
+            email: 'adminroohira@gmail.com',
+            phone: '0757218786',
+            role: 'admin',
+            isAdmin: true
+        };
+        localStorage.setItem('roohira_admin', 'true');
+        localStorage.setItem('roohira_user', JSON.stringify(adminData));
+        currentUser = adminData;
+
+        // Sync with Firebase Auth in background if possible
+        if (typeof auth !== 'undefined' && auth) {
+            auth.signInWithEmailAndPassword('adminroohira@gmail.com', 'admin2008').catch(() => {
+                auth.createUserWithEmailAndPassword('adminroohira@gmail.com', 'admin2008').catch(() => {});
+            });
+        }
+
+        setTimeout(() => {
+            window.location.href = 'admin.html';
+        }, 300);
+        return;
+    }
+
     // Check for redirect parameter
     const urlParams = new URLSearchParams(window.location.search);
     const redirectTo = urlParams.get('redirect') || 'profile.html';
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            // Check Firestore for blocked status before allowing entry
-            if (typeof db !== 'undefined' && db) {
-                db.collection('users').doc(user.uid).get().then(doc => {
-                    if (doc.exists && doc.data().blocked === true) {
-                        // Sign them back out immediately
-                        auth.signOut();
-                        if (onError) onError('⛔ ඔබගේ account block කර ඇත. Admin හා සම්බන්ධ වන්න.');
-                        return;
-                    }
-                    const userData = doc.exists
-                        ? { uid: user.uid, name: doc.data().name, email: user.email, phone: doc.data().phone||'', address: doc.data().address||'' }
-                        : { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email };
-                    localStorage.setItem('roohira_user', JSON.stringify(userData));
-                    currentUser = userData;
-                    window.location.href = redirectTo;
-                }).catch(() => {
-                    // Firestore unreachable — allow login anyway
+    // Check local accounts storage
+    let localUsers = [];
+    try { localUsers = JSON.parse(localStorage.getItem('roohira_local_users') || '[]'); } catch(e) {}
+    const foundLocal = localUsers.find(u => u.email && u.email.toLowerCase() === cleanEmail && u.password === cleanPass);
+
+    if (typeof auth !== 'undefined' && auth) {
+        auth.signInWithEmailAndPassword(cleanEmail, cleanPass)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                if (typeof db !== 'undefined' && db) {
+                    db.collection('users').doc(user.uid).get().then(doc => {
+                        if (doc.exists && doc.data().blocked === true) {
+                            auth.signOut();
+                            if (onError) onError('⛔ ඔබගේ account එක block කර ඇත. Admin හා සම්බන්ධ වන්න.');
+                            return;
+                        }
+                        const userData = doc.exists
+                            ? { uid: user.uid, name: doc.data().name || user.displayName || user.email.split('@')[0], email: user.email, phone: doc.data().phone||'', address: doc.data().address||'' }
+                            : { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email };
+                        localStorage.setItem('roohira_user', JSON.stringify(userData));
+                        currentUser = userData;
+                        window.location.href = redirectTo;
+                    }).catch(() => {
+                        const quickUser = { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email };
+                        localStorage.setItem('roohira_user', JSON.stringify(quickUser));
+                        currentUser = quickUser;
+                        window.location.href = redirectTo;
+                    });
+                } else {
                     const quickUser = { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email };
                     localStorage.setItem('roohira_user', JSON.stringify(quickUser));
                     currentUser = quickUser;
                     window.location.href = redirectTo;
-                });
-            } else {
-                const quickUser = { uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email };
-                localStorage.setItem('roohira_user', JSON.stringify(quickUser));
-                currentUser = quickUser;
-                window.location.href = redirectTo;
-            }
-        })
-        .catch((error) => {
-            let msg = 'Login failed. නැවත try කරන්න.';
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') msg = 'Email හෝ Password වැරදියි.';
-            else if (error.code === 'auth/invalid-email') msg = 'Email format එක වැරදියි.';
-            else if (error.code === 'auth/too-many-requests') msg = 'ඉතා වාර ගණනක් try කළා. ටිකක් wait කරලා try කරන්න.';
-            if (onError) onError(msg); else alert(msg);
-        });
+                }
+            })
+            .catch((error) => {
+                console.warn('Firebase signIn error:', error);
+                // Check if account exists in local fallback store
+                if (foundLocal) {
+                    const safeUser = { uid: foundLocal.uid, name: foundLocal.name, email: foundLocal.email, phone: foundLocal.phone, address: foundLocal.address };
+                    localStorage.setItem('roohira_user', JSON.stringify(safeUser));
+                    currentUser = safeUser;
+                    window.location.href = redirectTo;
+                    return;
+                }
+
+                let msg = 'Login කිරීම අසාර්ථක විය. නැවත උත්සාහ කරන්න.';
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    msg = 'Email හෝ Password වැරදියි. කරුණාකර නිවැරදි තොරතුරු ඇතුළත් කරන්න.';
+                } else if (error.code === 'auth/invalid-email') {
+                    msg = 'Email ලිපිනයේ ආකෘතිය වැරදියි.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    msg = 'ඉතා වාර ගණනක් උත්සාහ කර ඇත. මඳ වේලාවකින් නැවත උත්සාහ කරන්න.';
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    msg = 'Firebase Authentication සක්‍රීය කර නැත. කරුණාකර Firebase Console > Authentication හි Email/Password provider සක්‍රීය කරන්න.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    msg = 'අන්තර්ජාල සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.';
+                }
+                if (onError) onError(msg); else alert(msg);
+            });
+    } else if (foundLocal) {
+        const safeUser = { uid: foundLocal.uid, name: foundLocal.name, email: foundLocal.email, phone: foundLocal.phone, address: foundLocal.address };
+        localStorage.setItem('roohira_user', JSON.stringify(safeUser));
+        currentUser = safeUser;
+        window.location.href = redirectTo;
+    } else {
+        if (onError) onError('Authentication සේවාව සම්බන්ධ කරගත නොහැක.');
+    }
 }
 
 function signup(name, email, password, phone, address, onError) {
-    if (typeof auth === 'undefined' || !auth) {
-        if (onError) onError('Firebase configure කර නැත. firebase-config.js check කරන්න.');
+    const cleanName    = (name || '').trim();
+    const cleanEmail   = (email || '').trim().toLowerCase();
+    const cleanPass    = (password || '').trim();
+    const cleanPhone   = (phone || '').trim();
+    const cleanAddress = (address || '').trim();
+
+    if (!cleanName || !cleanEmail || !cleanPass) {
+        if (onError) onError('අවශ්‍ය සියලුම තොරතුරු ඇතුළත් කරන්න.');
         return;
     }
+
     // Check for redirect parameter
     const urlParams = new URLSearchParams(window.location.search);
     const redirectTo = urlParams.get('redirect') || 'profile.html';
 
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            const userData = { uid: user.uid, name: name, email: email, phone: phone || '', address: address || '', createdAt: new Date().toISOString() };
-            if (typeof db !== 'undefined' && db) {
-                db.collection('users').doc(user.uid).set(userData)
-                    .then(() => {
-                        localStorage.setItem('roohira_user', JSON.stringify(userData));
-                        currentUser = userData;
-                        window.location.href = redirectTo;
-                    })
-                    .catch(err => {
-                        console.error('Firestore save error:', err);
-                        user.delete().then(() => {
-                            let msg = 'Database එකට දත්ත ඇතුලත් කිරීම අසාර්ථක විය. Firestore Rules -> read, write: if true ලෙස සකසා නැවත උත්සාහ කරන්න.';
-                            if (onError) onError(msg); else alert(msg);
-                        }).catch(() => {
-                            if (onError) onError('Database දෝෂයකි: ' + err.message); else alert('Database error: ' + err.message);
-                        });
-                    });
-            } else {
+    let localUsers = [];
+    try { localUsers = JSON.parse(localStorage.getItem('roohira_local_users') || '[]'); } catch(e) {}
+    const existingIndex = localUsers.findIndex(u => u.email && u.email.toLowerCase() === cleanEmail);
+
+    const localAccountData = {
+        uid: 'local_' + Date.now(),
+        name: cleanName,
+        email: cleanEmail,
+        password: cleanPass,
+        phone: cleanPhone,
+        address: cleanAddress,
+        createdAt: new Date().toISOString()
+    };
+
+    if (typeof auth !== 'undefined' && auth) {
+        auth.createUserWithEmailAndPassword(cleanEmail, cleanPass)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                const userData = {
+                    uid: user.uid,
+                    name: cleanName,
+                    email: cleanEmail,
+                    phone: cleanPhone,
+                    address: cleanAddress,
+                    createdAt: new Date().toISOString()
+                };
+
+                // Sync display name with Firebase Auth
+                if (user.updateProfile) {
+                    user.updateProfile({ displayName: cleanName }).catch(() => {});
+                }
+
+                // Update local accounts
+                if (existingIndex >= 0) localUsers[existingIndex] = { ...userData, password: cleanPass };
+                else localUsers.push({ ...userData, password: cleanPass });
+                localStorage.setItem('roohira_local_users', JSON.stringify(localUsers));
+
+                // Set session
                 localStorage.setItem('roohira_user', JSON.stringify(userData));
                 currentUser = userData;
-                window.location.href = redirectTo;
-            }
-        })
-        .catch((error) => {
-            let msg = 'Account create කිරීම අසාර්ථකයි.';
-            if (error.code === 'auth/email-already-in-use') msg = 'මෙම Email ලෙස දැනටමත් account තිබේ. Login කරන්න.';
-            else if (error.code === 'auth/invalid-email') msg = 'Email format එක වැරදියි.';
-            else if (error.code === 'auth/weak-password') msg = 'Password ශක්තිමත් නැත. අවම 6 characters.';
-            if (onError) onError(msg); else alert(msg);
-        });
+
+                if (typeof db !== 'undefined' && db) {
+                    db.collection('users').doc(user.uid).set(userData)
+                        .then(() => {
+                            window.location.href = redirectTo;
+                        })
+                        .catch(err => {
+                            console.warn('Firestore user save note:', err);
+                            // Do NOT delete the created auth user!
+                            window.location.href = redirectTo;
+                        });
+                } else {
+                    window.location.href = redirectTo;
+                }
+            })
+            .catch((error) => {
+                console.warn('Firebase createUser error:', error);
+
+                if (error.code === 'auth/email-already-in-use') {
+                    if (onError) onError('මෙම Email ලිපිනය දැනටමත් ලියාපදිංචි කර ඇත. කරුණාකර Login වන්න.');
+                    return;
+                }
+                if (error.code === 'auth/weak-password') {
+                    if (onError) onError('මුරපදය ප්‍රමාණවත් තරම් ශක්තිමත් නැත. අවම වශයෙන් අකුරු 6ක් භාවිතා කරන්න.');
+                    return;
+                }
+                if (error.code === 'auth/invalid-email') {
+                    if (onError) onError('ඇතුළත් කළ Email ලිපිනය වලංගු නොවේ.');
+                    return;
+                }
+
+                // If Firebase Auth provider is disabled in console or network fails, fallback to local registration
+                if (error.code === 'auth/operation-not-allowed' || error.code === 'auth/network-request-failed' || error.code === 'auth/configuration-not-found') {
+                    if (existingIndex >= 0) {
+                        if (onError) onError('මෙම Email ලිපිනය දැනටමත් ලියාපදිංචි කර ඇත. කරුණාකර Login වන්න.');
+                        return;
+                    }
+                    localUsers.push(localAccountData);
+                    localStorage.setItem('roohira_local_users', JSON.stringify(localUsers));
+                    const safeUser = { uid: localAccountData.uid, name: cleanName, email: cleanEmail, phone: cleanPhone, address: cleanAddress };
+                    localStorage.setItem('roohira_user', JSON.stringify(safeUser));
+                    currentUser = safeUser;
+
+                    if (typeof db !== 'undefined' && db) {
+                        db.collection('users').doc(safeUser.uid).set(safeUser).catch(() => {});
+                    }
+                    window.location.href = redirectTo;
+                    return;
+                }
+
+                let msg = 'Account create කිරීම අසාර්ථක විය: ' + (error.message || 'නැවත උත්සාහ කරන්න.');
+                if (onError) onError(msg);
+            });
+    } else {
+        // Fallback local registration
+        if (existingIndex >= 0) {
+            if (onError) onError('මෙම Email ලිපිනය දැනටමත් ලියාපදිංචි කර ඇත. කරුණාකර Login වන්න.');
+            return;
+        }
+        localUsers.push(localAccountData);
+        localStorage.setItem('roohira_local_users', JSON.stringify(localUsers));
+        const safeUser = { uid: localAccountData.uid, name: cleanName, email: cleanEmail, phone: cleanPhone, address: cleanAddress };
+        localStorage.setItem('roohira_user', JSON.stringify(safeUser));
+        currentUser = safeUser;
+        window.location.href = redirectTo;
+    }
 }
 
 function logout() {
+    localStorage.removeItem('roohira_admin');
+    localStorage.removeItem('roohira_user');
+    currentUser = null;
     if (typeof auth !== 'undefined' && auth) {
-        auth.signOut().then(() => {
-            localStorage.removeItem('roohira_user');
-            currentUser = null;
+        auth.signOut().finally(() => {
             window.location.href = 'login.html';
         });
     } else {
-        localStorage.removeItem('roohira_user');
-        currentUser = null;
         window.location.href = 'login.html';
     }
 }
@@ -1532,6 +1779,12 @@ let orders = JSON.parse(localStorage.getItem('roohira_orders')) || [];
 
 function placeOrder() {
     if (cart.length === 0) { alert('Your cart is empty!'); return; }
+
+    // AUTH GUARD: Patron must be signed in to place an order
+    if (!isUserLoggedIn()) {
+        showAuthRequiredModal('place your order', 'checkout.html');
+        return;
+    }
 
     // Check if any product in the cart is out of stock in our synced products list
     for (const item of cart) {
@@ -1700,34 +1953,48 @@ function placeOrder() {
 
         const whatsappUrl = `https://wa.me/94757218786?text=${encodeURIComponent(message)}`;
 
+        const activePatron = getLoggedInUser();
         const dbOrder = {
             id: orderID,
             date: now.toLocaleDateString(),
-            items: [...cart],
+            items: cart.map(item => {
+                const p = (products && products.find(prod => prod.name === item.name)) || {};
+                return {
+                    name: item.name || '',
+                    price: Number(item.price) || 0,
+                    quantity: Number(item.quantity) || 1,
+                    size: item.size || 'Free',
+                    color: item.color ? (colorNames[item.color] || item.color) : 'Default',
+                    image: item.image || (p.images && p.images[0] ? p.images[0] : ''),
+                    isCustom: Boolean(item.isCustom || (item.id && String(item.id).startsWith('custom-'))),
+                    customStickers: Array.isArray(item.customStickers) ? item.customStickers : []
+                };
+            }),
             total: grandTotal,
             subtotal: subtotal,
             deliveryFee: deliveryFee,
             userEmail: email,
             userName: name,
+            userId: activePatron ? (activePatron.uid || activePatron.id || '') : '',
             userPhone: phone,
-            userPhone2: phone2,
+            userPhone2: phone2 || '',
             userAddress: fullAddress,
-            streetAddress: address,
-            city: city,
-            district: district,
-            postal: postal,
-            notes: notes,
+            streetAddress: address || '',
+            city: city || '',
+            district: district || '',
+            postal: postal || '',
+            notes: notes || '',
             paymentMethod: paymentMethod,
             status: 'pending',
-            timestamp: (typeof firebase !== 'undefined' ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString())
+            createdAt: new Date().toISOString(),
+            timestamp: (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString())
         };
         orders.push(dbOrder);
         localStorage.setItem('roohira_orders', JSON.stringify(orders));
         
         if (typeof db !== 'undefined' && db) {
             db.collection('orders').add(dbOrder).catch(e => {
-                console.error("Error saving order to database:", e);
-                alert("⚠️ Error: Order could not be saved to Firestore. Firestore Rules update කරන්න (allow read, write: if true).");
+                console.warn("Order saved locally, Firestore sync note:", e);
             });
         }
 
@@ -1874,10 +2141,18 @@ function loadProfile() {
     const initialEl = document.getElementById('profile-initial');
     const orderCountEl = document.getElementById('order-count');
     const historyEl = document.getElementById('order-history');
+
+    // Re-check localStorage if currentUser is not loaded yet
+    if (!currentUser) {
+        try {
+            currentUser = JSON.parse(localStorage.getItem('roohira_user'));
+        } catch (e) {}
+    }
+
     if (currentUser) {
-        if (nameEl) nameEl.innerText = currentUser.name;
-        if (emailEl) emailEl.innerText = currentUser.email;
-        if (initialEl) initialEl.innerText = currentUser.name.charAt(0).toUpperCase();
+        if (nameEl) nameEl.innerText = currentUser.name || 'User';
+        if (emailEl) emailEl.innerText = currentUser.email || '';
+        if (initialEl) initialEl.innerText = (currentUser.name || 'U').charAt(0).toUpperCase();
 
         const renderOrdersList = (ordersList) => {
             if (orderCountEl) orderCountEl.innerText = ordersList.length;
@@ -1931,7 +2206,19 @@ function loadProfile() {
             renderOrdersList(userOrders.reverse());
         }
     } else {
-        if (window.location.pathname.includes('profile.html')) { window.location.href = 'login.html'; }
+        // Safe grace period: on page load/refresh, allow Firebase Auth / local storage to resolve
+        setTimeout(() => {
+            let lateUser = null;
+            try { lateUser = JSON.parse(localStorage.getItem('roohira_user')); } catch (e) {}
+            if (!lateUser && typeof auth !== 'undefined' && auth && !auth.currentUser) {
+                if (window.location.pathname.includes('profile.html')) {
+                    window.location.href = 'login.html';
+                }
+            } else if (lateUser) {
+                currentUser = lateUser;
+                loadProfile();
+            }
+        }, 1200);
     }
 }
 
@@ -1962,57 +2249,28 @@ function handleOfferNotification() {
     }
 }
 
-// Centralized Light/Dark Theme Toggle System
+// Exclusive Light Theme System (No toggle buttons)
 function initThemeToggle() {
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
+    localStorage.setItem('theme', 'light');
+    document.documentElement.setAttribute('data-theme', 'light');
 
-    // Header Theme Toggle Icon Button
-    const navIcons = document.querySelector('.nav-icons');
-    if (navIcons && !document.getElementById('theme-toggle')) {
-        const themeBtn = document.createElement('a');
-        themeBtn.href = '#';
-        themeBtn.id = 'theme-toggle';
-        themeBtn.title = 'Toggle Light/Dark Theme';
-        themeBtn.style.cursor = 'pointer';
-        themeBtn.style.display = 'flex';
-        themeBtn.style.alignItems = 'center';
-        themeBtn.style.justifyContent = 'center';
-        themeBtn.style.color = 'var(--accent-pink)';
-        themeBtn.innerHTML = `<i data-lucide="${currentTheme === 'dark' ? 'sun' : 'moon'}"></i>`;
-
-        // Insert before account user icon or first child
-        const userIcon = navIcons.querySelector('a[href*="profile"], a[href*="login"]');
-        if (userIcon) {
-            navIcons.insertBefore(themeBtn, userIcon);
-        } else {
-            navIcons.insertBefore(themeBtn, navIcons.firstChild);
-        }
-
-        themeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleTheme();
-        });
-    }
+    // Remove any theme toggle buttons from DOM if present
+    const mainToggle = document.getElementById('theme-toggle');
+    if (mainToggle) mainToggle.remove();
+    const btn = document.getElementById('theme-toggle-btn');
+    if (btn) btn.remove();
+    const mobBtn = document.getElementById('mobile-theme-toggle-btn');
+    if (mobBtn) mobBtn.remove();
+    const mobTog = document.getElementById('mobile-theme-toggle');
+    if (mobTog) mobTog.remove();
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function toggleTheme() {
-    const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-
-    const mainToggle = document.getElementById('theme-toggle');
-    if (mainToggle) {
-        mainToggle.innerHTML = `<i data-lucide="${newTheme === 'dark' ? 'sun' : 'moon'}"></i>`;
-    }
-    const mobileToggle = document.getElementById('mobile-theme-toggle');
-    if (mobileToggle) {
-        mobileToggle.innerHTML = `<i data-lucide="${newTheme === 'dark' ? 'sun' : 'moon'}"></i> Theme: ${newTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}`;
-    }
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    // Light mode exclusively
+    localStorage.setItem('theme', 'light');
+    document.documentElement.setAttribute('data-theme', 'light');
 }
 
 // --- Free Delivery Promo Bar (Disabled) ---
@@ -2143,85 +2401,186 @@ function updateWishlistCount() {
     });
 }
 
-// Function to sync products from Firestore
+// Store base catalog to merge with dynamic database updates cleanly
+const baseStaticProducts = JSON.parse(JSON.stringify(products));
+let productsListenerUnsubscribe = null;
+
+// Function to sync products from Firestore in REAL-TIME across all devices
 function syncProducts(callback) {
-    // Call the callback immediately so the UI is responsive
+    // Initial responsive callback
     if (callback) {
-        try {
-            callback();
-        } catch (e) {
-            console.error("Error in immediate syncProducts callback:", e);
-        }
+        try { callback(); } catch (e) { console.error("Callback error:", e); }
     }
 
     if (typeof db === 'undefined' || !db) {
-        console.warn("Firestore 'db' is not initialized yet. Skipping Firestore sync.");
+        console.warn("Firestore 'db' is not initialized yet.");
         return;
     }
 
-    db.collection('products').get().then(snapshot => {
-        const dbProducts = {};
+    // Unsubscribe from previous listener if one exists to prevent duplicate listeners
+    if (productsListenerUnsubscribe) {
+        productsListenerUnsubscribe();
+    }
+
+    // Real-Time onSnapshot listener: Updates immediately on all devices whenever admin modifies products
+    productsListenerUnsubscribe = db.collection('products').onSnapshot(snapshot => {
+        const dbProductsMap = {};
         snapshot.forEach(doc => {
-            dbProducts[doc.id] = doc.data();
+            dbProductsMap[doc.id] = { id: doc.id, ...doc.data() };
         });
-        
-        let changed = false;
-        // Loop backwards because we might delete elements
+
+        // Reset products array to pristine base catalog copy
+        products.length = 0;
+        baseStaticProducts.forEach(item => {
+            products.push(JSON.parse(JSON.stringify(item)));
+        });
+
+        // 1. Apply stock, price, colors, sizes & deletion updates to base products
         for (let i = products.length - 1; i >= 0; i--) {
             const p = products[i];
-            if (dbProducts[p.id]) {
-                const dbP = dbProducts[p.id];
+            const dbP = dbProductsMap[p.id];
+            if (dbP) {
                 if (dbP.isDeleted === true || dbP.deleted === true) {
                     products.splice(i, 1);
-                    changed = true;
-                } else if (dbP.status === 'out_of_stock' && p.stock !== 0) {
-                    p.stock = 0;
-                    changed = true;
-                } else if (dbP.status === 'in_stock' && p.stock === 0) {
-                    p.stock = 10;
-                    changed = true;
+                } else {
+                    if (dbP.status === 'out_of_stock') {
+                        p.stock = 0;
+                        p.stockStatus = 'out_of_stock';
+                    } else if (dbP.status === 'in_stock') {
+                        p.stock = dbP.stock !== undefined ? Number(dbP.stock) : 10;
+                        p.stockStatus = 'in_stock';
+                    }
+                    if (dbP.name) p.name = dbP.name;
+                    if (dbP.category) p.category = dbP.category;
+                    if (dbP.desc) p.desc = dbP.desc;
+                    if (dbP.description) p.desc = dbP.description;
+                    if (dbP.images && Array.isArray(dbP.images) && dbP.images.length) p.images = dbP.images;
+                    else if (dbP.image) p.images = [dbP.image];
+
+                    // Price & Old Price Sync
+                    if (dbP.price !== undefined) {
+                        p.price = Number(dbP.price);
+                    }
+                    if (dbP.oldPrice !== undefined) {
+                        p.oldPrice = Number(dbP.oldPrice);
+                    }
+
+                    // Sizes & Pricing Sync
+                    if (dbP.sizes && typeof dbP.sizes === 'object' && Object.keys(dbP.sizes).length) {
+                        p.sizes = dbP.sizes;
+                    } else if (dbP.price !== undefined && p.sizes && typeof p.sizes === 'object') {
+                        Object.keys(p.sizes).forEach(sz => {
+                            if (typeof p.sizes[sz] === 'object') {
+                                p.sizes[sz].price = Number(dbP.price);
+                                if (dbP.oldPrice !== undefined) p.sizes[sz].oldPrice = Number(dbP.oldPrice);
+                            } else {
+                                p.sizes[sz] = Number(dbP.price);
+                            }
+                        });
+                    }
+
+                    // Colors Sync
+                    if (dbP.colors && Array.isArray(dbP.colors) && dbP.colors.length) {
+                        p.colors = dbP.colors;
+                    }
+
+                    if (dbP.gsm) p.gsm = dbP.gsm;
+                    if (dbP.brand) p.brand = dbP.brand;
                 }
             }
         }
 
-        // If something changed, trigger updates dynamically
-        if (changed) {
-            console.log("Firestore products synced. Dynamic update triggered.");
-            if (window.location.pathname.includes('shop.html')) {
-                if (typeof filterShop === 'function') filterShop();
+        // 2. Add dynamic products added via Admin Panel or Database Hub
+        Object.keys(dbProductsMap).forEach(docId => {
+            const dbP = dbProductsMap[docId];
+            if (dbP.isDeleted === true || dbP.deleted === true) return;
+            const exists = products.find(p => String(p.id) === String(docId));
+            if (!exists) {
+                const price = Number(dbP.price) || 1800;
+                const oldPrice = Number(dbP.oldPrice) || (price + 200);
+                const stockQty = dbP.status === 'out_of_stock' ? 0 : (dbP.stock !== undefined ? Number(dbP.stock) : 10);
+                const dynamicProduct = {
+                    id: String(docId),
+                    name: dbP.name || 'Roohira Garment',
+                    category: dbP.category || 'Regular Tee (Printed)',
+                    sections: dbP.sections || ['Mens', 'Womens', 'Unisexs'],
+                    images: Array.isArray(dbP.images) && dbP.images.length ? dbP.images : [dbP.image || 'logo.png'],
+                    gsm: dbP.gsm || '220 GSM',
+                    brand: dbP.brand || 'Roohira',
+                    price: price,
+                    oldPrice: oldPrice,
+                    sizes: dbP.sizes || {
+                        'S': { price: price, oldPrice: oldPrice },
+                        'M': { price: price, oldPrice: oldPrice },
+                        'L': { price: price, oldPrice: oldPrice },
+                        'XL': { price: price, oldPrice: oldPrice }
+                    },
+                    colors: Array.isArray(dbP.colors) && dbP.colors.length ? dbP.colors : ['#000000'],
+                    stock: stockQty,
+                    stockStatus: dbP.status || (stockQty === 0 ? 'out_of_stock' : 'in_stock'),
+                    desc: dbP.desc || dbP.description || 'Exclusive luxury collection piece handcrafted by Roohira.'
+                };
+                products.unshift(dynamicProduct); // Show newly added products at top
             }
-            if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
-                if (typeof displayProducts === 'function') displayProducts(products.slice(0, 4));
-            }
-            if (window.location.pathname.includes('wishlist.html')) {
-                if (typeof renderWishlist === 'function') renderWishlist();
-            }
-            if (window.location.pathname.includes('product-detail.html')) {
+        });
+
+        console.log("⚡ [Real-Time Multi-Device Sync] Products synced successfully:", products.length);
+
+        // Immediate dynamic UI refresh without full page reload
+        if (window.location.pathname.includes('shop.html')) {
+            if (typeof filterShop === 'function') filterShop();
+            else if (typeof filterProducts === 'function') {
                 const urlParams = new URLSearchParams(window.location.search);
-                const pid = urlParams.get('id') || '1';
-                const currentProduct = products.find(p => p.id === pid);
-                if (!currentProduct) {
-                    alert('This product is no longer available.');
-                    window.location.href = 'shop.html';
-                } else if (currentProduct.stock === 0) {
-                    const addToCartBtn = document.getElementById('add-to-cart-btn');
-                    if (addToCartBtn) {
-                        addToCartBtn.innerHTML = '<i data-lucide="slash"></i> OUT OF STOCK';
-                        addToCartBtn.disabled = true;
-                        addToCartBtn.style.background = '#555';
-                        addToCartBtn.style.opacity = '0.6';
-                        addToCartBtn.style.cursor = 'not-allowed';
-                    }
-                    const stockSection = document.getElementById('stock-urgency-section');
-                    if (stockSection) stockSection.style.display = 'none';
-                }
+                const catParam = urlParams.get('category');
+                filterProducts(catParam || 'All');
             }
         }
-        
-        // Trigger a custom event to notify that products are synced
-        document.dispatchEvent(new CustomEvent('productsSynced'));
-    }).catch(err => {
-        console.error("Error syncing products from Firestore:", err);
+        if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+            if (typeof displayProducts === 'function') displayProducts(products.slice(0, 4));
+        }
+        if (window.location.pathname.includes('wishlist.html')) {
+            if (typeof renderWishlist === 'function') renderWishlist();
+        }
+        if (window.location.pathname.includes('product-detail.html')) {
+            if (typeof loadAndRenderProductDetail === 'function') {
+                loadAndRenderProductDetail();
+            } else {
+                const urlParams = new URLSearchParams(window.location.search);
+                const pid = urlParams.get('id') || '1';
+                const currentProduct = products.find(p => String(p.id) === String(pid));
+                if (currentProduct) {
+                    const priceEl = document.getElementById('detail-price');
+                    if (priceEl) {
+                        const curP = (currentProduct.sizes && currentProduct.sizes['M']) ? currentProduct.sizes['M'].price : (currentProduct.price || 1800);
+                        const oldP = (currentProduct.sizes && currentProduct.sizes['M']) ? currentProduct.sizes['M'].oldPrice : currentProduct.oldPrice;
+                        let html = `Rs. ${curP.toLocaleString()}.00`;
+                        if (oldP) html += ` <span class="old-price">Rs. ${oldP.toLocaleString()}</span>`;
+                        priceEl.innerHTML = html;
+                    }
+                    const addToCartBtn = document.getElementById('add-to-cart-btn');
+                    if (addToCartBtn) {
+                        if (currentProduct.stock === 0) {
+                            addToCartBtn.innerHTML = '<i data-lucide="slash"></i> OUT OF STOCK';
+                            addToCartBtn.disabled = true;
+                            addToCartBtn.style.background = '#888';
+                            addToCartBtn.style.opacity = '0.6';
+                            addToCartBtn.style.cursor = 'not-allowed';
+                        } else {
+                            addToCartBtn.innerHTML = '<i data-lucide="shopping-bag"></i> ADD TO CART';
+                            addToCartBtn.disabled = false;
+                            addToCartBtn.style.background = '';
+                            addToCartBtn.style.opacity = '1';
+                            addToCartBtn.style.cursor = 'pointer';
+                        }
+                    }
+                }
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        document.dispatchEvent(new CustomEvent('productsSynced', { detail: products }));
+    }, err => {
+        console.error("Firestore onSnapshot error:", err);
     });
 }
 

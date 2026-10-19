@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details | Roohira</title>
-    <link rel="icon" href="logo.png">
+    <title>Product Details | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <nav id="navbar">
         <a href="index.html" class="logo">
-            <img src="logo.png" alt="Roohira Logo">
-            <span style="font-family: 'Cinzel', 'Plus Jakarta Sans', serif; font-size: 1.15rem; font-weight: 800; letter-spacing: 1.5px;"><span style="color: #8B5A2B;">ROOHIRA</span> <span style="color: #000000;">COLLECTION</span></span>
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -106,6 +114,19 @@
                 <div class="detail-price-wrapper">
                     <p id="detail-price" class="current-price">Rs. 0.00</p>
                 </div>
+                
+                <!-- Product Rating Overview Header -->
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; cursor: pointer;" onclick="scrollToReviews()">
+                    <div style="display: flex; gap: 3px; color: #C6A26B; font-size: 0.92rem;" id="pdp-header-stars">
+                        <i data-lucide="star" style="width: 15px; height: 15px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 15px; height: 15px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 15px; height: 15px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 15px; height: 15px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 15px; height: 15px; fill: currentColor;"></i>
+                    </div>
+                    <span id="pdp-header-rating-num" style="font-weight: 800; font-size: 0.88rem; color: #1A120B;">5.0</span>
+                    <span id="pdp-header-review-count" style="font-size: 0.8rem; color: #8B5A2B; font-weight: 700; text-decoration: underline;">(0 Reviews &bull; Rate Now)</span>
+                </div>
             </div>
             
             <div class="detail-desc-box">
@@ -126,30 +147,7 @@
                 </div>
             </div>
 
-            <div id="print-size-wrapper" style="display: none; background: #FAF7F2; border: 1.5px solid #1A120B; padding: 16px; border-radius: 0px; margin-top: 10px;">
-                <div class="option-label" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <span style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #1A120B; display: flex; align-items: center; gap: 6px;">
-                        <i data-lucide="sparkles" style="width: 15px; height: 15px; color: #8B5A2B;"></i> Sticker / Print Size
-                    </span>
-                    <span style="font-size: 0.72rem; font-weight: 700; color: #6D5D53;">Choose Print Scale</span>
-                </div>
-                <div class="print-size-options" id="detail-print-sizes">
-                    <div class="print-size-card active" id="chip-a3" onclick="selectPrintSize('A3')">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <span style="font-size: 0.92rem; font-weight: 800; color: #1A120B;">A3 Print</span>
-                            <span class="print-size-badge" style="font-size: 0.62rem; font-weight: 800; text-transform: uppercase; background: #8B5A2B; color: white; padding: 2px 7px;">Standard</span>
-                        </div>
-                        <div style="font-size: 1rem; font-weight: 800; color: #1A120B;">Rs. 1,800 <span style="font-size: 0.75rem; text-decoration: line-through; color: #8C7D73; font-weight: 600;">1,850</span></div>
-                    </div>
-                    <div class="print-size-card" id="chip-a2" onclick="selectPrintSize('A2')">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <span style="font-size: 0.92rem; font-weight: 800; color: #1A120B;">A2 Print</span>
-                            <span class="print-size-badge" style="font-size: 0.62rem; font-weight: 800; text-transform: uppercase; background: rgba(60,42,33,0.15); color: #1A120B; padding: 2px 7px;">Jumbo</span>
-                        </div>
-                        <div style="font-size: 1rem; font-weight: 800; color: #1A120B;">Rs. 2,100</div>
-                    </div>
-                </div>
-            </div>
+            <!-- Print size selector removed as requested -->
 
             <div>
                 <h4 class="option-label">Select Color</h4>
@@ -244,6 +242,94 @@
             </div>
         </div>
     </div>
+
+    <!-- Product Customer Ratings & Reviews Section -->
+    <section class="pdp-reviews-section" id="pdp-reviews-section">
+        <div class="pdp-reviews-header">
+            <div>
+                <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px; color: #8B5A2B; font-weight: 800; display: block; margin-bottom: 4px;">Verified Patron Feedback</span>
+                <h2 class="pdp-reviews-title">Customer Ratings &amp; Reviews</h2>
+            </div>
+            <button class="pdp-rate-btn" onclick="toggleRateForm()">
+                <i data-lucide="star" style="width: 16px; height: 16px; fill: currentColor;"></i> Rate This Product
+            </button>
+        </div>
+
+        <!-- Rating Overview Summary Card -->
+        <div class="pdp-rating-summary-card">
+            <div class="pdp-rating-num-box">
+                <div class="pdp-rating-score" id="pdp-avg-score">5.0</div>
+                <div>
+                    <div class="pdp-rating-stars-gold" id="pdp-avg-stars-summary">
+                        <i data-lucide="star" style="width: 20px; height: 20px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 20px; height: 20px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 20px; height: 20px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 20px; height: 20px; fill: currentColor;"></i>
+                        <i data-lucide="star" style="width: 20px; height: 20px; fill: currentColor;"></i>
+                    </div>
+                    <div class="pdp-rating-count-label" id="pdp-total-count-label">Based on 0 verified ratings</div>
+                </div>
+            </div>
+            <div style="font-size: 0.85rem; color: #6D5D53; max-width: 420px; line-height: 1.6;">
+                100% Genuine reviews from verified Roohira patrons. Share your rating to help fellow patrons discover exceptional craftsmanship.
+            </div>
+        </div>
+
+        <!-- Inline Review Submission Form -->
+        <div class="pdp-review-form-panel" id="pdp-review-form-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin: 0; color: #1A120B; font-weight: 700;">Rate &amp; Review This Garment</h3>
+                <button onclick="toggleRateForm()" style="background: none; border: none; font-size: 1.3rem; cursor: pointer; color: #6D5D53;">&times;</button>
+            </div>
+            
+            <form onsubmit="submitProductReview(event)">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; color: #1A120B;">Your Rating *</label>
+                    <div class="pdp-star-picker" id="pdp-star-picker">
+                        <i data-lucide="star" data-val="1" onclick="setPdpRating(1)" onmouseenter="hoverPdpRating(1)" onmouseleave="clearHoverPdpRating()"></i>
+                        <i data-lucide="star" data-val="2" onclick="setPdpRating(2)" onmouseenter="hoverPdpRating(2)" onmouseleave="clearHoverPdpRating()"></i>
+                        <i data-lucide="star" data-val="3" onclick="setPdpRating(3)" onmouseenter="hoverPdpRating(3)" onmouseleave="clearHoverPdpRating()"></i>
+                        <i data-lucide="star" data-val="4" onclick="setPdpRating(4)" onmouseenter="hoverPdpRating(4)" onmouseleave="clearHoverPdpRating()"></i>
+                        <i data-lucide="star" data-val="5" onclick="setPdpRating(5)" onmouseenter="hoverPdpRating(5)" onmouseleave="clearHoverPdpRating()"></i>
+                    </div>
+                    <input type="hidden" id="pdp-rating-input" value="5">
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label style="display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: #1A120B;">Your Name *</label>
+                        <input type="text" id="pdp-reviewer-name" class="form-control" placeholder="e.g. Nimalka Fernando" required style="width: 100%; padding: 10px 14px; border: 1.5px solid #1A120B; background: #FAF7F2; outline: none; font-size: 0.9rem;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: #1A120B;">Email (Optional)</label>
+                        <input type="email" id="pdp-reviewer-email" class="form-control" placeholder="your@email.com" style="width: 100%; padding: 10px 14px; border: 1.5px solid #1A120B; background: #FAF7F2; outline: none; font-size: 0.9rem;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: #1A120B;">Your Review &amp; Experience *</label>
+                    <textarea id="pdp-reviewer-comment" rows="3" required placeholder="Describe fabric quality, fit, finish, or islandwide delivery experience..." style="width: 100%; padding: 10px 14px; border: 1.5px solid #1A120B; background: #FAF7F2; outline: none; font-size: 0.9rem; resize: vertical;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="submit" id="pdp-submit-review-btn" class="btn btn-gold" style="padding: 10px 22px; font-weight: 700; font-size: 0.85rem;">
+                        <i data-lucide="send" style="width: 15px; height: 15px;"></i> Submit Rating
+                    </button>
+                    <button type="button" onclick="toggleRateForm()" style="background: none; border: 1px solid #1A120B; padding: 10px 18px; font-size: 0.85rem; font-weight: 700; cursor: pointer;">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Product Reviews Grid -->
+        <div class="pdp-reviews-grid" id="pdp-reviews-grid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #8C7D73;">
+                <i data-lucide="loader" style="width: 24px; height: 24px; animation: spin 1s linear infinite;"></i>
+                <p style="margin-top: 8px; font-size: 0.88rem;">Loading verified patron reviews...</p>
+            </div>
+        </div>
+    </section>
 </main>
 
     <!-- Size Chart Modal -->
@@ -262,7 +348,7 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left;">
       <!-- Brand & About -->
       <div>
-        <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #000000 !important;">
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #000000 !important;">
           <span style="color: #8B5A2B !important;">Roohira</span> <span style="color: #000000 !important;">Collection</span>
         </h3>
         <p style="color: #000000 !important; font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px;">
@@ -340,197 +426,258 @@
         let currentSlide = 0;
         let autoScrollInterval = null;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            syncProducts(() => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const pid = urlParams.get('id') || '1';
-                product = products.find(p => p.id === pid) || products[0];
+        function loadAndRenderProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pid = urlParams.get('id') || '1';
+            product = products.find(p => String(p.id) === String(pid)) || products[0];
 
-                if (product) {
-                    // Check for 220 GSM Regular Tee print size selector
-                    const is220GsmRegular = (product.category === 'Regular Tee (Printed)' && (product.gsm === '220 GSM' || !product.gsm));
-                    const printWrapper = document.getElementById('print-size-wrapper');
-                    if (is220GsmRegular && printWrapper) {
-                        printWrapper.style.display = 'block';
-                    }
+            if (!product) return;
 
-                    if (product.category === 'Oversized Tee (Printed)' && !product.sizeChartImg) {
-                        const scSection = document.getElementById('size-chart-link');
-                        if (scSection) scSection.style.display = 'none';
-                    }
-                    // Hide GSM spec, Print Tech spec, and size chart for Frock category
-                    if (product.category === 'Frock') {
-                        const gsmSpec = document.getElementById('gsm-spec-item');
-                        if (gsmSpec) gsmSpec.style.display = 'none';
-                        const printSpec = document.getElementById('print-spec-item');
-                        if (printSpec) printSpec.style.display = 'none';
-                        const scSection = document.getElementById('size-chart-link');
-                        if (scSection) scSection.style.display = 'none';
-                    }
-                    // Hide GSM spec, Print Tech (DTF) spec, and size chart for Blouse category
-                    if (product.category === 'Blouse') {
-                        const gsmSpec = document.getElementById('gsm-spec-item');
-                        if (gsmSpec) gsmSpec.style.display = 'none';
-                        const printSpec = document.getElementById('print-spec-item');
-                        if (printSpec) printSpec.style.display = 'none';
-                        const scSection = document.getElementById('size-chart-link');
-                        if (scSection) scSection.style.display = 'none';
-                    }
+            // Check for 220 GSM Regular Tee print size selector
+            const is220GsmRegular = (product.category === 'Regular Tee (Printed)' && (product.gsm === '220 GSM' || !product.gsm));
+            const printWrapper = document.getElementById('print-size-wrapper');
+            if (printWrapper) {
+                printWrapper.style.display = is220GsmRegular ? 'block' : 'none';
+            }
 
-                    document.getElementById('detail-name').innerText = product.name;
-                    const bName = document.getElementById('breadcrumb-product-name');
-                    if (bName) bName.innerText = product.name;
-                    document.getElementById('detail-gsm').innerText = product.gsm || '';
-                    document.getElementById('detail-brand').innerText = product.brand || 'Roohira';
+            if (product.category === 'Oversized Tee (Printed)' && !product.sizeChartImg) {
+                const scSection = document.getElementById('size-chart-link');
+                if (scSection) scSection.style.display = 'none';
+            }
+            // Hide GSM spec, Print Tech spec, and size chart for Frock category
+            if (product.category === 'Frock') {
+                const gsmSpec = document.getElementById('gsm-spec-item');
+                if (gsmSpec) gsmSpec.style.display = 'none';
+                const printSpec = document.getElementById('print-spec-item');
+                if (printSpec) printSpec.style.display = 'none';
+                const scSection = document.getElementById('size-chart-link');
+                if (scSection) scSection.style.display = 'none';
+            }
+            // Hide GSM spec, Print Tech (DTF) spec, and size chart for Blouse category
+            if (product.category === 'Blouse') {
+                const gsmSpec = document.getElementById('gsm-spec-item');
+                if (gsmSpec) gsmSpec.style.display = 'none';
+                const printSpec = document.getElementById('print-spec-item');
+                if (printSpec) printSpec.style.display = 'none';
+                const scSection = document.getElementById('size-chart-link');
+                if (scSection) scSection.style.display = 'none';
+            }
 
-                    const catLabel = document.getElementById('detail-category-label');
-                    if (catLabel) {
-                        catLabel.innerText = product.category || 'T-Shirt';
-                    }
+            document.getElementById('detail-name').innerText = product.name;
+            const bName = document.getElementById('breadcrumb-product-name');
+            if (bName) bName.innerText = product.name;
+            document.getElementById('detail-gsm').innerText = product.gsm || '220 GSM';
+            document.getElementById('detail-brand').innerText = product.brand || 'Roohira';
 
-                    // Image Slider & Thumbnails
-                    const slider = document.getElementById('image-slider');
-                    const dotsContainer = document.getElementById('slider-dots');
-                    const thumbContainer = document.getElementById('image-thumbnails');
-                    const images = product.images || [product.img];
+            const catLabel = document.getElementById('detail-category-label');
+            if (catLabel) {
+                catLabel.innerText = product.category || 'T-Shirt';
+            }
 
-                    images.forEach((img, idx) => {
-                        // Slider Image
-                        const imgTag = document.createElement('img');
-                        imgTag.src = img;
-                        imgTag.style.width = '100%';
-                        imgTag.style.flexShrink = '0';
-                        imgTag.style.objectFit = 'contain';
-                        imgTag.style.maxHeight = '500px';
-                        imgTag.style.background = 'var(--surface)';
-                        slider.appendChild(imgTag);
+            // Image Slider & Thumbnails
+            const slider = document.getElementById('image-slider');
+            const dotsContainer = document.getElementById('slider-dots');
+            const thumbContainer = document.getElementById('image-thumbnails');
+            slider.innerHTML = '';
+            if (dotsContainer) dotsContainer.innerHTML = '';
+            if (thumbContainer) thumbContainer.innerHTML = '';
+            const images = (product.images && product.images.length) ? product.images : [product.img || 'logo.png'];
 
-                        // Dot
-                        if (images.length > 1) {
-                            const dot = document.createElement('div');
-                            dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-                            dot.onclick = () => goToSlide(idx);
-                            dotsContainer.appendChild(dot);
+            images.forEach((img, idx) => {
+                // Slider Image
+                const imgTag = document.createElement('img');
+                imgTag.src = img;
+                imgTag.style.width = '100%';
+                imgTag.style.flexShrink = '0';
+                imgTag.style.objectFit = 'contain';
+                imgTag.style.maxHeight = '500px';
+                imgTag.style.background = 'var(--surface)';
+                slider.appendChild(imgTag);
 
-                            // Thumbnail
-                            const thumb = document.createElement('img');
-                            thumb.src = img;
-                            thumb.className = `thumb ${idx === 0 ? 'active' : ''}`;
-                            thumb.onclick = () => goToSlide(idx);
-                            thumbContainer.appendChild(thumb);
-                        }
-                    });
+                // Dot
+                if (images.length > 1) {
+                    const dot = document.createElement('div');
+                    dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+                    dot.onclick = () => goToSlide(idx);
+                    if (dotsContainer) dotsContainer.appendChild(dot);
 
-                    if (images.length > 1) {
-                        document.getElementById('prev-btn').style.display = 'flex';
-                        document.getElementById('next-btn').style.display = 'flex';
-                        startAutoScroll();
+                    // Thumbnail
+                    const thumb = document.createElement('img');
+                    thumb.src = img;
+                    thumb.className = `thumb ${idx === 0 ? 'active' : ''}`;
+                    thumb.onclick = () => goToSlide(idx);
+                    if (thumbContainer) thumbContainer.appendChild(thumb);
+                }
+            });
+
+            if (images.length > 1) {
+                document.getElementById('prev-btn').style.display = 'flex';
+                document.getElementById('next-btn').style.display = 'flex';
+                startAutoScroll();
+            } else {
+                if (dotsContainer) dotsContainer.style.display = 'none';
+                if (thumbContainer) thumbContainer.style.display = 'none';
+                document.getElementById('prev-btn').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'none';
+            }
+
+            if (product.desc) document.getElementById('detail-desc').innerText = product.desc;
+
+            // Sizes & Pricing calculation
+            const sizeContainer = document.getElementById('detail-sizes');
+            sizeContainer.innerHTML = '';
+            const sizes = (product.sizes && typeof product.sizes === 'object') ? Object.keys(product.sizes) : ['Free'];
+
+            // Build a reverse map: size → color (if colorSizes exists)
+            const sizeToColor = {};
+            if (product.colorSizes) {
+                Object.entries(product.colorSizes).forEach(([col, sz]) => { sizeToColor[sz] = col; });
+            }
+
+            const availableSizes = product.colorSizes
+                ? sizes.filter(s => sizeToColor[s])
+                : sizes;
+
+            if (!selectedSize || !sizes.includes(selectedSize)) {
+                selectedSize = availableSizes[0] || sizes[0];
+            }
+
+            const sizeData = (product.sizes && product.sizes[selectedSize]) 
+                ? product.sizes[selectedSize] 
+                : { price: product.price || 1800, oldPrice: product.oldPrice };
+
+            currentPrice = (typeof sizeData === 'object' && sizeData.price !== undefined) 
+                ? Number(sizeData.price) 
+                : (Number(product.price) || 1800);
+            
+            currentOldPrice = (typeof sizeData === 'object' && sizeData.oldPrice !== undefined) 
+                ? Number(sizeData.oldPrice) 
+                : (product.oldPrice || (currentPrice + 200));
+
+            sizes.forEach(s => {
+                const btn = document.createElement('div');
+                const isUnavailable = product.colorSizes && !sizeToColor[s];
+
+                btn.className = `size-chip ${s === selectedSize ? 'active' : ''} ${isUnavailable ? 'out-of-stock-size' : ''}`;
+                btn.innerHTML = isUnavailable
+                    ? `${s} <span style="font-size:0.6rem;display:block;color:#e53935;">Out of Stock</span>`
+                    : s;
+
+                if (product.colorSizes) {
+                    btn.style.cssText += isUnavailable
+                        ? 'opacity:0.4;cursor:not-allowed;text-decoration:line-through;pointer-events:none;'
+                        : 'cursor:default;pointer-events:none;';
+                    btn.title = isUnavailable
+                        ? 'Out of Stock'
+                        : 'Select the matching color to choose this size';
+                } else {
+                    if (isUnavailable) {
+                        btn.style.cssText = 'opacity:0.4;cursor:not-allowed;text-decoration:line-through;pointer-events:none;';
                     } else {
-                        if (dotsContainer) dotsContainer.style.display = 'none';
-                        if (thumbContainer) thumbContainer.style.display = 'none';
-                        document.getElementById('prev-btn').style.display = 'none';
-                        document.getElementById('next-btn').style.display = 'none';
-                    }
-
-                    if (product.desc) document.getElementById('detail-desc').innerText = product.desc;
-
-                    // Sizes
-                    const sizeContainer = document.getElementById('detail-sizes');
-                    const sizes = product.sizes ? Object.keys(product.sizes) : ['Free'];
-
-                    // Build a reverse map: size → color (if colorSizes exists)
-                    const sizeToColor = {};
-                    if (product.colorSizes) {
-                        Object.entries(product.colorSizes).forEach(([col, sz]) => { sizeToColor[sz] = col; });
-                    }
-
-                    // Determine which sizes are actually available
-                    const availableSizes = product.colorSizes
-                        ? sizes.filter(s => sizeToColor[s])
-                        : sizes;
-
-                    selectedSize = availableSizes[0] || sizes[0];
-                    const sizeData = product.sizes ? product.sizes[selectedSize] : { price: product.price, oldPrice: product.oldPrice };
-                    currentPrice = typeof sizeData === 'object' ? sizeData.price : sizeData;
-                    currentOldPrice = typeof sizeData === 'object' ? sizeData.oldPrice : product.oldPrice;
-
-                    sizes.forEach(s => {
-                        const btn = document.createElement('div');
-                        const isUnavailable = product.colorSizes && !sizeToColor[s];
-
-                        btn.className = `size-chip ${s === selectedSize ? 'active' : ''} ${isUnavailable ? 'out-of-stock-size' : ''}`;
-                        btn.innerHTML = isUnavailable
-                            ? `${s} <span style="font-size:0.6rem;display:block;color:#e53935;">Out of Stock</span>`
-                            : s;
-
-                        if (product.colorSizes) {
-                            // Size is ONLY controlled by color — make all size chips non-clickable
-                            btn.style.cssText += isUnavailable
-                                ? 'opacity:0.4;cursor:not-allowed;text-decoration:line-through;pointer-events:none;'
-                                : 'cursor:default;pointer-events:none;';
-                            btn.title = isUnavailable
-                                ? 'Out of Stock'
-                                : 'Select the matching color to choose this size';
-                        } else {
-                            // Normal products — size chips are clickable
-                            if (isUnavailable) {
-                                btn.style.cssText = 'opacity:0.4;cursor:not-allowed;text-decoration:line-through;pointer-events:none;';
-                            } else {
-                                btn.onclick = () => selectSize(s, btn);
-                            }
-                        }
-                        sizeContainer.appendChild(btn);
-                    });
-
-                    // Colors
-                    const colorContainer = document.getElementById('detail-colors');
-                    selectedColor = product.colors ? product.colors[0] : 'Default';
-                    if (product.colors) {
-                        product.colors.forEach(c => {
-                            const btn = document.createElement('div');
-                            btn.className = `color-dot ${c === selectedColor ? 'active' : ''}`;
-                            if (product.colorImages && product.colorImages[c]) {
-                                btn.style.backgroundImage = `url('${product.colorImages[c]}')`;
-                                btn.style.backgroundSize = 'cover';
-                                btn.style.backgroundPosition = 'center';
-                            } else {
-                                btn.style.background = c;
-                            }
-                            btn.title = (typeof colorNames !== 'undefined' && colorNames[c]) ? colorNames[c] : c;
-                            btn.onclick = () => selectColor(c, btn);
-                            colorContainer.appendChild(btn);
-                        });
-                    }
-
-                    // If color→size linking exists, auto-trigger size from first color on load
-                    if (product.colorSizes && product.colors && product.colors[0]) {
-                        const initSize = product.colorSizes[product.colors[0]];
-                        if (initSize) {
-                            const initSizeBtn = [...sizeContainer.querySelectorAll('.size-chip')].find(b => b.innerText.trim().startsWith(initSize));
-                            if (initSizeBtn) selectSize(initSize, initSizeBtn);
-                        }
-                    }
-
-                    updatePriceDisplay();
-                    setEstimatedDelivery();
-                    initStockUrgency();
-
-                    const addToCartBtn = document.getElementById('add-to-cart-btn');
-                    if (product.stock === 0) {
-                        addToCartBtn.innerHTML = '<i data-lucide="slash"></i> OUT OF STOCK';
-                        addToCartBtn.disabled = true;
-                        addToCartBtn.style.background = '#555';
-                        addToCartBtn.style.opacity = '0.6';
-                        addToCartBtn.style.cursor = 'not-allowed';
-
-                        // Hide stock urgency section if out of stock
-                        const stockSection = document.getElementById('stock-urgency-section');
-                        if (stockSection) stockSection.style.display = 'none';
+                        btn.onclick = () => selectSize(s, btn);
                     }
                 }
-                initWishlistState();
-                updateDeliveryPromo();
+                sizeContainer.appendChild(btn);
             });
+
+            // Dynamic Colors Rendering as interactive Color Dots
+            const colorContainer = document.getElementById('detail-colors');
+            colorContainer.innerHTML = '';
+            const productColors = (Array.isArray(product.colors) && product.colors.length) 
+                ? product.colors 
+                : ['#000000'];
+
+            if (!selectedColor || !productColors.includes(selectedColor)) {
+                selectedColor = productColors[0];
+            }
+
+            productColors.forEach(c => {
+                const btn = document.createElement('div');
+                btn.className = `color-dot ${c === selectedColor ? 'active' : ''}`;
+                if (product.colorImages && product.colorImages[c]) {
+                    btn.style.backgroundImage = `url('${product.colorImages[c]}')`;
+                    btn.style.backgroundSize = 'cover';
+                    btn.style.backgroundPosition = 'center';
+                } else {
+                    btn.style.background = c;
+                }
+                const colorTitle = (typeof colorNames !== 'undefined' && colorNames[c]) ? colorNames[c] : c;
+                btn.title = colorTitle;
+                btn.onclick = () => selectColor(c, btn);
+                colorContainer.appendChild(btn);
+            });
+
+            // If color→size linking exists, auto-trigger size from first color on load
+            if (product.colorSizes && product.colors && product.colors[0]) {
+                const initSize = product.colorSizes[product.colors[0]];
+                if (initSize) {
+                    const initSizeBtn = [...sizeContainer.querySelectorAll('.size-chip')].find(b => b.innerText.trim().startsWith(initSize));
+                    if (initSizeBtn) selectSize(initSize, initSizeBtn);
+                }
+            }
+
+            updatePriceDisplay();
+            setEstimatedDelivery();
+            initStockUrgency();
+
+            const addToCartBtn = document.getElementById('add-to-cart-btn');
+            const isOutOfStock = product.stock === 0 || product.status === 'out_of_stock';
+            if (isOutOfStock) {
+                addToCartBtn.innerHTML = '<i data-lucide="slash"></i> OUT OF STOCK';
+                addToCartBtn.disabled = true;
+                addToCartBtn.style.background = '#555';
+                addToCartBtn.style.opacity = '0.6';
+                addToCartBtn.style.cursor = 'not-allowed';
+
+                // Hide stock urgency section if out of stock
+                const stockSection = document.getElementById('stock-urgency-section');
+                if (stockSection) stockSection.style.display = 'none';
+            } else {
+                addToCartBtn.innerHTML = '<i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i> Add to Cart';
+                addToCartBtn.disabled = false;
+                addToCartBtn.style.background = '';
+                addToCartBtn.style.opacity = '';
+                addToCartBtn.style.cursor = 'pointer';
+
+                const stockSection = document.getElementById('stock-urgency-section');
+                if (stockSection) stockSection.style.display = 'block';
+            }
+
+            initWishlistState();
+            updateDeliveryPromo();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function selectSize(s, btn) {
+            selectedSize = s;
+            document.querySelectorAll('.size-chip').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const sizeData = (product && product.sizes && product.sizes[s]) 
+                ? product.sizes[s] 
+                : { price: product ? product.price : currentPrice, oldPrice: product ? product.oldPrice : currentOldPrice };
+            
+            currentPrice = (typeof sizeData === 'object' && sizeData.price !== undefined) ? Number(sizeData.price) : Number(product.price || 1800);
+            currentOldPrice = (typeof sizeData === 'object' && sizeData.oldPrice !== undefined) ? Number(sizeData.oldPrice) : (product.oldPrice || (currentPrice + 200));
+
+            updatePriceDisplay();
+        }
+
+        function selectColor(c, btn) {
+            selectedColor = c;
+            document.querySelectorAll('.color-dot').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            syncProducts(() => {
+                loadAndRenderProductDetail();
+            });
+        });
+
+        // Listen for real-time products updates from Firestore
+        document.addEventListener('productsSynced', () => {
+            loadAndRenderProductDetail();
         });
 
         // --- Print Size Selector ---
@@ -677,20 +824,8 @@
 
         function updatePriceDisplay() {
             const priceEl = document.getElementById('detail-price');
-            const is220GsmRegular = (product && product.category === 'Regular Tee (Printed)' && (product.gsm === '220 GSM' || !product.gsm));
-            
             let effectivePrice = currentPrice;
             let effectiveOldPrice = currentOldPrice;
-
-            if (is220GsmRegular) {
-                if (selectedPrintScale === 'A2') {
-                    effectivePrice = 2100;
-                    effectiveOldPrice = null;
-                } else {
-                    effectivePrice = 1800;
-                    effectiveOldPrice = 1850;
-                }
-            }
 
             let html = `Rs. ${effectivePrice.toLocaleString()}.00`;
             if (effectiveOldPrice) {
@@ -701,15 +836,8 @@
 
         function addCurrentToCart() {
             const images = product.images || [product.img];
-            const is220GsmRegular = (product && product.category === 'Regular Tee (Printed)' && (product.gsm === '220 GSM' || !product.gsm));
-            
             let finalSize = selectedSize;
             let finalPrice = currentPrice;
-
-            if (is220GsmRegular) {
-                finalSize = `${selectedSize} (${selectedPrintScale} Print)`;
-                finalPrice = selectedPrintScale === 'A2' ? 2100 : 1800;
-            }
 
             addToCart(product.name, finalPrice, images[0], finalSize, selectedColor, currentQty);
         }
@@ -801,6 +929,259 @@
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             }
         }
+
+        // ==========================================
+        // PRODUCT SPECIFIC REVIEWS & RATINGS SYSTEM
+        // ==========================================
+        let currentPdpRating = 5;
+
+        function scrollToReviews() {
+            const sec = document.getElementById('pdp-reviews-section');
+            if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleRateForm() {
+            const formPanel = document.getElementById('pdp-review-form-panel');
+            if (formPanel) {
+                formPanel.classList.toggle('active');
+                if (formPanel.classList.contains('active')) {
+                    formPanel.scrollIntoView({ behavior: 'smooth' });
+                    // Pre-fill name and email if user is logged in
+                    try {
+                        const localUser = JSON.parse(localStorage.getItem('roohira_user'));
+                        if (localUser) {
+                            if (localUser.name) document.getElementById('pdp-reviewer-name').value = localUser.name;
+                            if (localUser.email) document.getElementById('pdp-reviewer-email').value = localUser.email;
+                        }
+                    } catch(e) {}
+                    if (typeof auth !== 'undefined' && auth && auth.currentUser) {
+                        const u = auth.currentUser;
+                        if (u.displayName) document.getElementById('pdp-reviewer-name').value = u.displayName;
+                        if (u.email) document.getElementById('pdp-reviewer-email').value = u.email;
+                    }
+                }
+            }
+        }
+
+        function setPdpRating(rating) {
+            currentPdpRating = rating;
+            document.getElementById('pdp-rating-input').value = rating;
+            updatePdpStarUI();
+        }
+
+        function hoverPdpRating(rating) {
+            const stars = document.querySelectorAll('#pdp-star-picker i, #pdp-star-picker svg');
+            stars.forEach((star, idx) => {
+                if (idx < rating) {
+                    star.classList.add('hovered');
+                } else {
+                    star.classList.remove('hovered');
+                }
+            });
+        }
+
+        function clearHoverPdpRating() {
+            const stars = document.querySelectorAll('#pdp-star-picker i, #pdp-star-picker svg');
+            stars.forEach(star => star.classList.remove('hovered'));
+            updatePdpStarUI();
+        }
+
+        function updatePdpStarUI() {
+            const stars = document.querySelectorAll('#pdp-star-picker i, #pdp-star-picker svg');
+            stars.forEach((star, idx) => {
+                if (idx < currentPdpRating) {
+                    star.classList.add('selected');
+                    star.setAttribute('fill', 'currentColor');
+                } else {
+                    star.classList.remove('selected');
+                    star.removeAttribute('fill');
+                }
+            });
+        }
+
+        function submitProductReview(e) {
+            e.preventDefault();
+            if (!product || !product.id) return;
+
+            const ratingVal = parseInt(document.getElementById('pdp-rating-input').value) || 5;
+            const nameVal = document.getElementById('pdp-reviewer-name').value.trim();
+            const emailVal = document.getElementById('pdp-reviewer-email').value.trim();
+            const commentVal = document.getElementById('pdp-reviewer-comment').value.trim();
+            const submitBtn = document.getElementById('pdp-submit-review-btn');
+
+            if (!nameVal || !commentVal) {
+                alert('Please enter your name and review details / කරුණාකර නම සහ විස්තරය ඇතුළත් කරන්න.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="spinner" style="display:inline-block; width:14px; height:14px; border:2px solid #fff; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></i> Saving...';
+
+            const reviewObj = {
+                productId: String(product.id),
+                productName: product.name,
+                rating: ratingVal,
+                name: nameVal,
+                email: emailVal,
+                comment: commentVal,
+                timestamp: (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()),
+                device: window.innerWidth < 768 ? 'Mobile Phone' : 'Desktop / Laptop'
+            };
+
+            const onSaveComplete = () => {
+                showNotification('Thank you! Your rating has been recorded.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i data-lucide="send" style="width: 15px; height: 15px;"></i> Submit Rating';
+                document.getElementById('pdp-reviewer-comment').value = '';
+                toggleRateForm();
+                loadProductReviews();
+            };
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('reviews').add(reviewObj)
+                    .then(() => onSaveComplete())
+                    .catch(err => {
+                        console.warn("Firestore reviews collection error, saving locally:", err);
+                        saveProductReviewLocally(reviewObj);
+                        onSaveComplete();
+                    });
+            } else {
+                saveProductReviewLocally(reviewObj);
+                onSaveComplete();
+            }
+        }
+
+        function saveProductReviewLocally(review) {
+            try {
+                let local = JSON.parse(localStorage.getItem('roohira_product_reviews')) || [];
+                review.timestampLocal = new Date().toISOString();
+                local.unshift(review);
+                localStorage.setItem('roohira_product_reviews', JSON.stringify(local));
+            } catch(e) {}
+        }
+
+        function loadProductReviews() {
+            if (!product || !product.id) return;
+            const container = document.getElementById('pdp-reviews-grid');
+            if (!container) return;
+
+            let reviewsList = [];
+
+            const renderReviews = (list) => {
+                const filtered = list.filter(r => String(r.productId) === String(product.id));
+                
+                // Calculate average rating
+                const totalCount = filtered.length;
+                let avg = 5.0;
+                if (totalCount > 0) {
+                    const sum = filtered.reduce((acc, curr) => acc + (Number(curr.rating) || 5), 0);
+                    avg = (sum / totalCount).toFixed(1);
+                } else {
+                    avg = (product.rating || 5.0).toFixed(1);
+                }
+
+                // Update UI badges
+                const avgScoreEl = document.getElementById('pdp-avg-score');
+                const totalCountLabel = document.getElementById('pdp-total-count-label');
+                const headerRatingNum = document.getElementById('pdp-header-rating-num');
+                const headerReviewCount = document.getElementById('pdp-header-review-count');
+
+                if (avgScoreEl) avgScoreEl.innerText = avg;
+                if (headerRatingNum) headerRatingNum.innerText = avg;
+                if (totalCountLabel) totalCountLabel.innerText = `Based on ${totalCount} verified rating${totalCount === 1 ? '' : 's'}`;
+                if (headerReviewCount) headerReviewCount.innerText = `(${totalCount} Reviews • Rate Now)`;
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FFFFFF; border: 1.5px dashed var(--border);">
+                            <i data-lucide="sparkles" style="width: 32px; height: 32px; color: var(--gold); margin-bottom: 8px;"></i>
+                            <h4 style="font-size: 1.1rem; color: var(--espresso); margin-bottom: 6px;">Be the first to rate this garment!</h4>
+                            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">Share your experience with fit, comfort and craftsmanship.</p>
+                            <button class="pdp-rate-btn" onclick="toggleRateForm()" style="margin: 0 auto;">Write a Review</button>
+                        </div>
+                    `;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                    return;
+                }
+
+                container.innerHTML = filtered.map(r => {
+                    const starsCount = Number(r.rating) || 5;
+                    const starsHtml = Array.from({length: 5}).map((_, i) => 
+                        `<i data-lucide="star" style="width: 14px; height: 14px; ${i < starsCount ? 'color:#C6A26B; fill:#C6A26B;' : 'color:#D3C7BD;'}"></i>`
+                    ).join('');
+
+                    const initial = (r.name || 'P')[0].toUpperCase();
+                    let dateStr = 'Recently';
+                    if (r.timestamp && r.timestamp.seconds) {
+                        dateStr = new Date(r.timestamp.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    } else if (r.timestampLocal) {
+                        dateStr = new Date(r.timestampLocal).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    }
+
+                    return `
+                        <div class="pdp-review-bubble">
+                            <div class="pdp-review-user">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="pdp-review-avatar">${initial}</div>
+                                    <div>
+                                        <h5 style="margin: 0; font-size: 0.88rem; font-weight: 700; color: var(--espresso);">${r.name || 'Verified Patron'}</h5>
+                                        <span style="font-size: 0.72rem; color: #2e7d32; font-weight: 700; display: inline-flex; align-items: center; gap: 3px;">
+                                            <i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Verified Buyer
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">${dateStr}</span>
+                            </div>
+                            <div style="display: flex; gap: 3px;">
+                                ${starsHtml}
+                            </div>
+                            <p style="margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--espresso); white-space: pre-line;">${r.comment}</p>
+                        </div>
+                    `;
+                }).join('');
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            };
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('reviews').get().then(snap => {
+                    const list = [];
+                    snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+                    
+                    // Merge local reviews
+                    try {
+                        const local = JSON.parse(localStorage.getItem('roohira_product_reviews')) || [];
+                        local.forEach(l => {
+                            if (!list.find(r => r.id === l.id && l.id)) list.push(l);
+                        });
+                    } catch(e) {}
+
+                    // Sort newest first
+                    list.sort((a,b) => {
+                        const ta = a.timestamp?.seconds || (a.timestampLocal ? new Date(a.timestampLocal).getTime() : 0);
+                        const tb = b.timestamp?.seconds || (b.timestampLocal ? new Date(b.timestampLocal).getTime() : 0);
+                        return tb - ta;
+                    });
+
+                    renderReviews(list);
+                }).catch(err => {
+                    console.warn("Error fetching reviews from Firestore:", err);
+                    let local = [];
+                    try { local = JSON.parse(localStorage.getItem('roohira_product_reviews')) || []; } catch(e) {}
+                    renderReviews(local);
+                });
+            } else {
+                let local = [];
+                try { local = JSON.parse(localStorage.getItem('roohira_product_reviews')) || []; } catch(e) {}
+                renderReviews(local);
+            }
+        }
+
+        // Initialize product reviews on load
+        window.addEventListener('load', () => {
+            setTimeout(loadProductReviews, 300);
+            updatePdpStarUI();
+        });
     </script>
 </body>
 </html>
