@@ -87,7 +87,7 @@
                     </a>
                 </div>
 
-                <div style="margin-top: 15px;">
+                <div id="admin-panel-link-container" style="margin-top: 15px; display: none;">
                     <a href="admin.html" class="btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; background: rgba(139, 90, 43, 0.1); border: 1.5px solid #8B5A2B; color: #8B5A2B; font-weight: 800; padding: 12px;">
                         <i data-lucide="shield" style="width:18px;"></i> Open Executive Admin Control Suite
                     </a>
@@ -168,6 +168,11 @@
                             const wl = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
                             const wlEl = document.getElementById('profile-wishlist-count');
                             if (wlEl) wlEl.innerText = wl.length;
+
+                            // Show/hide Admin Panel button (strictly hidden for regular patrons)
+                            const isAdmin = (email === 'adminroohira@gmail.com') && (localStorage.getItem('roohira_admin') === 'true');
+                            const adminLinkContainer = document.getElementById('admin-panel-link-container');
+                            if (adminLinkContainer) adminLinkContainer.style.display = isAdmin ? 'block' : 'none';
 
                             if (typeof loadProfile === 'function') loadProfile();
                         }).catch(function(err) {

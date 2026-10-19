@@ -96,19 +96,26 @@
                             <option value="name-asc">Name: A to Z</option>
                         </select>
                     </div>
-
-                    <button onclick="openSizeChart()" style="padding: 9px 14px; border-radius: 0px; border: 1.5px solid #8B5A2B; background: rgba(179, 135, 56, 0.08); color: #8B5A2B; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;">
-                        <i data-lucide="ruler" style="width: 14px; height: 14px;"></i> Size Guide
-                    </button>
                 </div>
             </div>
 
-            <!-- Categories Tabs -->
-            <div style="margin-top: 16px; border-top: 1px solid rgba(60, 42, 33, 0.1); display: flex; gap: 8px; overflow-x: auto; padding-top: 14px; padding-bottom: 4px;">
+            <!-- Department / Section Tabs (Hidden — section set via URL param from home page cards) -->
+            <div id="section-btn-row" style="display: none;">
+                <button class="shop-filter-btn section-btn active" onclick="selectSection('All', this)"><i data-lucide="layers" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> All Collections</button>
+                <button class="shop-filter-btn section-btn" onclick="selectSection('Mens', this)"><i data-lucide="user" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Men</button>
+                <button class="shop-filter-btn section-btn" onclick="selectSection('Womens', this)"><i data-lucide="heart" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Women</button>
+                <button class="shop-filter-btn section-btn" onclick="selectSection('Kids', this)"><i data-lucide="smile" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Kids</button>
+            </div>
+
+            <!-- Active Department Badge (shows when landing from home page department card) -->
+            <div id="active-dept-badge-row" style="display: none; margin-top: 12px; border-top: 1px solid rgba(60, 42, 33, 0.1); padding-top: 10px; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span id="active-dept-label" style="font-size: 0.8rem; font-weight: 800; color: #8B5A2B; text-transform: uppercase; letter-spacing: 1px;"></span>
+                <button onclick="selectSection('All', null); document.getElementById('active-dept-badge-row').style.display = 'none';" style="font-size: 0.72rem; font-weight: 700; color: #6D5D53; background: none; border: 1px solid rgba(60,42,33,0.25); padding: 3px 10px; cursor: pointer; border-radius: 20px;">&#10005; Browse All</button>
+            </div>
+
+            <!-- Categories Tabs (Dynamic from Firestore) -->
+            <div id="category-tab-row" style="margin-top: 10px; display: flex; gap: 8px; overflow-x: auto; padding-top: 4px; padding-bottom: 4px;">
                 <button class="shop-filter-btn category-btn active" onclick="selectCategory('All', this)">All Categories</button>
-                <button class="shop-filter-btn category-btn" onclick="selectCategory('T-Shirts', this)">T-Shirts (220 GSM)</button>
-                <button class="shop-filter-btn category-btn" onclick="selectCategory('Frock', this)">Frocks & Dresses</button>
-                <button class="shop-filter-btn category-btn" onclick="selectCategory('Blouse', this)">Embroidered Blouses</button>
             </div>
 
             <!-- Subcategories Tabs for T-Shirts -->
@@ -123,19 +130,6 @@
             <!-- Products will be here -->
         </div>
     </main>
-
-    <!-- Size Chart Modal -->
-    <div id="sizeChartModal" class="modal-overlay" onclick="closeSizeChart()"
-        style="display:none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); align-items: center; justify-content: center;">
-        <div class="glass"
-            style="max-width: 90%; max-height: 90%; position: relative; padding: 10px; background: white; border-radius: 0px; border: 1.5px solid #1A120B;"
-            onclick="event.stopPropagation()">
-            <span onclick="closeSizeChart()"
-                style="position: absolute; right: -15px; top: -15px; background: #8B5A2B; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">&times;</span>
-            <img src="https://i.ibb.co/pvGrdQMD/Size-Chart-01.jpg" alt="Size Chart"
-                style="width: 100%; height: auto; max-height: 80vh; border-radius: 0px; display: block;">
-        </div>
-    </div>
 
     <footer class="footer" style="padding: 60px 10% 30px; border-top: 1.5px solid rgba(60, 42, 33, 0.12); background: #ffffff !important; color: #000000 !important;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left;">

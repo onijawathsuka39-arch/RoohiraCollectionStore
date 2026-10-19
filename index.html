@@ -460,6 +460,107 @@
       </div>
     </section>
 
+    <!-- Shop by Department Section: 3 Cards for Men, Women & Kids -->
+    <section class="section" id="department-section" style="padding: 65px 6% 55px; background: #FAF7F2; border-bottom: 1px solid rgba(60, 42, 33, 0.08);">
+      <div style="max-width: 1200px; margin: 0 auto;">
+        
+        <div style="text-align: center; margin-bottom: 35px;">
+          <span style="background: rgba(179, 135, 56, 0.12); color: #8B5A2B; padding: 5px 16px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; border: 1.5px solid rgba(179, 135, 56, 0.35); text-transform: uppercase;">COLLECTIONS FOR ALL</span>
+          <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700; font-family: 'Playfair Display', Georgia, serif; margin-top: 10px; color: #1A120B;">
+            Shop By Department: <span style="color: #8B5A2B;">Men, Women &amp; Kids</span>
+          </h2>
+          <p style="color: #6D5D53; font-size: 0.95rem; margin-top: 6px; max-width: 620px; margin-left: auto; margin-right: auto;">
+            Choose a department card below to preview garments crafted exclusively for them.
+          </p>
+        </div>
+
+        <!-- 3 Cards Grid -->
+        <div class="department-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 24px; margin-bottom: 35px;">
+          
+          <!-- Card 1: Men -->
+          <div class="dept-card" id="dept-card-mens" onclick="switchHomeDepartment('Mens')" style="background: #FFFFFF; border: 2px solid #1A120B; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; box-shadow: 0 8px 30px rgba(139, 90, 43, 0.2); transform: translateY(-4px); display: flex; flex-direction: column;">
+            <div style="position: relative; aspect-ratio: 4/3; overflow: hidden; background: #f4efe6; display: flex; align-items: center; justify-content: center;">
+              <span style="position: absolute; top: 12px; left: 12px; background: #1A120B; color: #FFFFFF; font-size: 0.68rem; font-weight: 800; padding: 3px 9px; z-index: 2; letter-spacing: 1px;">MEN'S APPAREL</span>
+              <img src="https://i.ibb.co/4w34h3hZ/Python-Infinity-w.png" alt="Men's Collection" style="width: 100%; height: 100%; object-fit: contain; padding: 12px; transition: transform 0.3s ease;">
+            </div>
+            <div style="padding: 18px; display: flex; flex-direction: column; flex-grow: 1; border-top: 1.5px solid #1A120B;">
+              <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: #1A120B; margin: 0 0 6px; font-weight: 700;">Men's Collection</h3>
+              <p style="color: #6D5D53; font-size: 0.86rem; line-height: 1.5; margin: 0 0 15px;">Heavyweight 220 GSM Cotton Tees, Oversized Cuts &amp; Streetwear Drops.</p>
+              <div style="margin-top: auto; display: flex; gap: 8px;">
+                <button class="dept-preview-btn active" style="flex: 1; padding: 9px 12px; background: #1A120B; color: #FFFFFF; border: 1.5px solid #1A120B; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: 0.2s;">
+                  <i data-lucide="eye" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Preview Items
+                </button>
+                <a href="shop.html?section=mens" onclick="event.stopPropagation();" style="padding: 9px 14px; background: #8B5A2B; color: #FFFFFF; border: 1.5px solid #8B5A2B; font-weight: 700; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                  Shop All &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Women -->
+          <div class="dept-card" id="dept-card-womens" onclick="switchHomeDepartment('Womens')" style="background: #FFFFFF; border: 2px solid rgba(26,18,11,0.2); cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+            <div style="position: relative; aspect-ratio: 4/3; overflow: hidden; background: #f4efe6; display: flex; align-items: center; justify-content: center;">
+              <span style="position: absolute; top: 12px; left: 12px; background: #8B5A2B; color: #FFFFFF; font-size: 0.68rem; font-weight: 800; padding: 3px 9px; z-index: 2; letter-spacing: 1px;">WOMEN'S APPAREL</span>
+              <img src="https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png" alt="Women's Collection" style="width: 100%; height: 100%; object-fit: contain; padding: 12px; transition: transform 0.3s ease;">
+            </div>
+            <div style="padding: 18px; display: flex; flex-direction: column; flex-grow: 1; border-top: 1.5px solid rgba(26,18,11,0.2);">
+              <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: #1A120B; margin: 0 0 6px; font-weight: 700;">Women's Collection</h3>
+              <p style="color: #6D5D53; font-size: 0.86rem; line-height: 1.5; margin: 0 0 15px;">Handcrafted Batik Frocks, Traditional Fusion &amp; Embroidered Blouses.</p>
+              <div style="margin-top: auto; display: flex; gap: 8px;">
+                <button class="dept-preview-btn" style="flex: 1; padding: 9px 12px; background: transparent; color: #1A120B; border: 1.5px solid #1A120B; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: 0.2s;">
+                  <i data-lucide="eye" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Preview Items
+                </button>
+                <a href="shop.html?section=womens" onclick="event.stopPropagation();" style="padding: 9px 14px; background: #8B5A2B; color: #FFFFFF; border: 1.5px solid #8B5A2B; font-weight: 700; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                  Shop All &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Kids -->
+          <div class="dept-card" id="dept-card-kids" onclick="switchHomeDepartment('Kids')" style="background: #FFFFFF; border: 2px solid rgba(26,18,11,0.2); cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+            <div style="position: relative; aspect-ratio: 4/3; overflow: hidden; background: #f4efe6; display: flex; align-items: center; justify-content: center;">
+              <span style="position: absolute; top: 12px; left: 12px; background: #DC143C; color: #FFFFFF; font-size: 0.68rem; font-weight: 800; padding: 3px 9px; z-index: 2; letter-spacing: 1px;">KIDS' APPAREL</span>
+              <img src="https://i.ibb.co/4ZZkgf5d/garfilde-tee.png" alt="Kids' Collection" style="width: 100%; height: 100%; object-fit: contain; padding: 12px; transition: transform 0.3s ease;">
+            </div>
+            <div style="padding: 18px; display: flex; flex-direction: column; flex-grow: 1; border-top: 1.5px solid rgba(26,18,11,0.2);">
+              <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: #1A120B; margin: 0 0 6px; font-weight: 700;">Kids' Collection</h3>
+              <p style="color: #6D5D53; font-size: 0.86rem; line-height: 1.5; margin: 0 0 15px;">Playful Cartoon Graphics, Garfield, Snoopy, Stitch &amp; Anime Tees.</p>
+              <div style="margin-top: auto; display: flex; gap: 8px;">
+                <button class="dept-preview-btn" style="flex: 1; padding: 9px 12px; background: transparent; color: #1A120B; border: 1.5px solid #1A120B; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: 0.2s;">
+                  <i data-lucide="eye" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Preview Items
+                </button>
+                <a href="shop.html?section=kids" onclick="event.stopPropagation();" style="padding: 9px 14px; background: #8B5A2B; color: #FFFFFF; border: 1.5px solid #8B5A2B; font-weight: 700; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                  Shop All &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dynamic Department Showcase Header & Grid -->
+        <div style="background: #FFFFFF; border: 1.5px solid #1A120B; padding: 25px 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; border-bottom: 1px solid rgba(60, 42, 33, 0.1); padding-bottom: 14px;">
+            <div>
+              <span id="dept-badge-label" style="font-size: 0.72rem; color: #8B5A2B; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;">Men's Selection</span>
+              <h3 id="dept-title-label" style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: #1A120B; margin: 4px 0 0; font-weight: 700;">Men's Apparel &amp; Streetwear</h3>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button onclick="switchHomeDepartment('Mens')" id="dept-filter-tab-mens" style="padding: 6px 14px; border: 1.5px solid #1A120B; background: #1A120B; color: #FFFFFF; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: 0.2s;">Men</button>
+              <button onclick="switchHomeDepartment('Womens')" id="dept-filter-tab-womens" style="padding: 6px 14px; border: 1.5px solid #1A120B; background: transparent; color: #1A120B; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: 0.2s;">Women</button>
+              <button onclick="switchHomeDepartment('Kids')" id="dept-filter-tab-kids" style="padding: 6px 14px; border: 1.5px solid #1A120B; background: transparent; color: #1A120B; font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: 0.2s;">Kids</button>
+            </div>
+          </div>
+
+          <div class="product-grid" id="home-department-grid">
+            <!-- Dynamic products filtered for the selected department -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Featured Products Section (Luxury Styling Matching Roohira Collection Web) -->
     <section class="section-padding bg-cream" style="padding: 5rem 0;">
       <div style="max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem;">

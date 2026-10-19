@@ -502,6 +502,21 @@
       box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.1);
     }
 
+    .dropzone-box {
+      border: 2px dashed rgba(198, 162, 107, 0.6);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+      background: rgba(198, 162, 107, 0.04);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dropzone-box:hover, .dropzone-box.drag-over {
+      border-color: var(--gold);
+      background: rgba(198, 162, 107, 0.12);
+      transform: scale(1.01);
+    }
+
     /* Toast */
     .toast-box {
       position: fixed;
@@ -653,6 +668,11 @@
         <i class="fa-solid fa-bell"></i>
         <span>Waitlist</span>
         <span class="tab-count" id="countWaitlist">0</span>
+      </button>
+      <button class="tab-btn" onclick="switchDbTab('categories', this)">
+        <i class="fa-solid fa-tags"></i>
+        <span>Categories</span>
+        <span class="tab-count" id="countCategories">0</span>
       </button>
       <button class="tab-btn" onclick="switchDbTab('tools', this)">
         <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -938,6 +958,52 @@
       </div>
     </section>
 
+    <!-- ======================================================== -->
+    <!-- TAB 7: CATEGORIES MANAGEMENT -->
+    <!-- ======================================================== -->
+    <section id="tab-categories" class="tab-pane">
+      <div class="pane-toolbar">
+        <div class="pane-title">
+          <i class="fa-solid fa-tags" style="color: var(--gold);"></i>
+          <span>Dynamic Product Categories Management</span>
+        </div>
+        <div class="search-filter-box" style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <input type="text" id="newCategoryInput" class="form-input" placeholder="New Category Name (e.g. Hoodies, Polos, Shorts)..." style="width: 260px; padding: 8px 12px; font-size: 0.85rem;">
+          <button class="btn btn-gold btn-sm" onclick="handleAddNewCategoryFromTab()">
+            <i class="fa-solid fa-plus"></i> Add Category
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="syncExistingCategoriesToFirestore(true)" title="Extract and sync all existing categories from products into Firestore">
+            <i class="fa-solid fa-arrows-rotate"></i> Sync Legacy Categories
+          </button>
+        </div>
+      </div>
+
+      <div style="background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px;">
+        <h4 style="font-size: 0.95rem; color: var(--gold); margin-bottom: 6px;">
+          <i class="fa-solid fa-cloud"></i> Real-Time Multi-Device Category Sync
+        </h4>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+          Categories added here are stored instantly in Firebase Firestore. When you add a new category, all customer devices, the shop filter, and product modals immediately update across all browsers in real-time.
+        </p>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Category Name</th>
+              <th>Product Count</th>
+              <th>Status</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="categoriesTbody">
+            <!-- Populated via renderCategoriesTable() -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
 
   <!-- ======================================================== -->
@@ -958,18 +1024,46 @@
             <input type="text" id="pName" class="form-input" required placeholder="e.g. Infinity Edition">
           </div>
 
+          <!-- Target Departments / Sections -->
+          <div class="form-group" style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 4px;">
+            <label style="font-weight: 700; font-size: 0.78rem; margin-bottom: 8px; display: block; color: var(--gold);">
+              <i class="fa-solid fa-layer-group"></i> Target Department(s) / Section(s)
+            </label>
+            <div style="display: flex; gap: 18px; flex-wrap: wrap;">
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="secMens" value="Mens" checked style="accent-color: var(--gold);"> Men
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="secWomens" value="Womens" checked style="accent-color: var(--gold);"> Women
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="secKids" value="Kids" style="accent-color: var(--gold);"> Kids
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="secUnisex" value="Unisexs" checked style="accent-color: var(--gold);"> Unisex
+              </label>
+            </div>
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group">
-              <label>Category</label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label style="margin: 0;">Category</label>
+                <button type="button" onclick="quickAddCategoryPrompt()" style="background: none; border: none; color: var(--gold); font-size: 0.74rem; font-weight: 700; cursor: pointer; padding: 0;">
+                  <i class="fa-solid fa-plus-circle"></i> + New Category
+                </button>
+              </div>
               <select id="pCategory" class="form-select">
                 <option value="Regular Tee (Printed)">Regular Tee (Printed)</option>
                 <option value="Oversized Tee (Printed)">Oversized Tee (Printed)</option>
+                <option value="Frock">Frock</option>
+                <option value="Blouse">Blouse</option>
                 <option value="DTF Custom">DTF Custom</option>
               </select>
             </div>
             <div class="form-group">
-              <label>GSM / Fabric Weight</label>
-              <input type="text" id="pGsm" class="form-input" placeholder="220 GSM" value="220 GSM">
+              <label>GSM / Fabric Material <small style="color:var(--text-muted); font-size:0.72rem;">(Leave blank to hide from product)</small></label>
+              <input type="text" id="pGsm" class="form-input" placeholder="e.g. 220 GSM or Pure Cotton" value="">
             </div>
           </div>
 
@@ -998,35 +1092,108 @@
             </div>
           </div>
 
+          <!-- Main Product Image with ImgBB Drag and Drop Uploader -->
           <div class="form-group">
-            <label>Main Image URL</label>
-            <input type="url" id="pImage" class="form-input" required placeholder="https://i.ibb.co/...">
+            <label style="font-weight: 700; margin-bottom: 4px; display: block;">Main Product Image</label>
+            <div id="dropzoneMain" class="dropzone-box" onclick="document.getElementById('fileMain').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'pImage', 'previewMain', 'statusMain')">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size: 22px; color: var(--gold); margin-bottom: 4px;"></i>
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text);">Drag &amp; Drop Image here, or <span style="color: var(--gold); text-decoration: underline;">Browse File</span></div>
+              <small style="color: var(--text-muted); font-size: 0.7rem;">Auto-uploads directly to ImgBB (API: 05f9ffbbbadb71e449b28e2d1adf8975)</small>
+              <input type="file" id="fileMain" accept="image/*" style="display: none;" onchange="handleFileSelect(event, 'pImage', 'previewMain', 'statusMain')">
+            </div>
+            <div id="statusMain" style="display: none; font-size: 0.78rem; font-weight: 700; margin: 4px 0;"></div>
+
+            <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
+              <input type="url" id="pImage" class="form-input" required placeholder="https://i.ibb.co/..." style="flex: 1;" oninput="updateImagePreview('pImage', 'previewMain')">
+              <img id="previewMain" src="" alt="Preview" style="display: none; width: 40px; height: 40px; object-fit: contain; border: 1px solid var(--border); border-radius: 6px; background: #fff;">
+            </div>
+          </div>
+
+          <!-- Secondary / Gallery Images (Unlimited Upload via ImgBB) -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label style="font-weight: 600; margin: 0;">Secondary / Gallery Images (Add as many as you want)</label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="addExtraImageUrlInput()" style="padding: 2px 8px; font-size: 0.72rem;">
+                <i class="fa-solid fa-plus"></i> + Add Another Image URL
+              </button>
+            </div>
+            <div id="dropzoneSec" class="dropzone-box" onclick="document.getElementById('fileSec').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleMultiDrop(event)">
+              <i class="fa-solid fa-images" style="font-size: 20px; color: var(--gold); margin-bottom: 4px;"></i>
+              <div style="font-size: 0.8rem; font-weight: 600;">Drop Multiple Images here or <span style="color: var(--gold); text-decoration: underline;">Browse Multiple Files</span></div>
+              <small style="color: var(--text-muted); font-size: 0.7rem;">Select multiple files at once — auto-uploads to ImgBB and adds to product gallery</small>
+              <input type="file" id="fileSec" accept="image/*" multiple style="display: none;" onchange="handleMultiFileSelect(event)">
+            </div>
+            <div id="statusSec" style="display: none; font-size: 0.78rem; font-weight: 700; margin: 4px 0;"></div>
+
+            <!-- List of secondary image URLs with thumbnails and delete buttons -->
+            <div id="secondaryImagesContainer" style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;"></div>
+          </div>
+
+          <!-- Product-Specific Size Chart Image (Optional) -->
+          <div class="form-group" style="background: rgba(198,162,107,0.06); border: 1px dashed var(--gold); border-radius: 8px; padding: 12px;">
+            <label style="font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+              <span><i class="fa-solid fa-ruler"></i> Product-Specific Size Chart Image (Optional)</span>
+              <small style="color: var(--text-muted); font-size: 0.72rem; text-transform: none;">Only shown if you upload/provide an image here</small>
+            </label>
+            <div id="dropzoneSizeChart" class="dropzone-box" onclick="document.getElementById('fileSizeChart').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'pSizeChartImg', 'previewSizeChart', 'statusSizeChart')" style="margin-top: 6px;">
+              <i class="fa-solid fa-file-image" style="font-size: 18px; color: var(--gold); margin-bottom: 4px;"></i>
+              <div style="font-size: 0.78rem; font-weight: 600;">Drop Size Chart Image or <span style="color: var(--gold); text-decoration: underline;">Browse</span></div>
+              <input type="file" id="fileSizeChart" accept="image/*" style="display: none;" onchange="handleFileSelect(event, 'pSizeChartImg', 'previewSizeChart', 'statusSizeChart')">
+            </div>
+            <div id="statusSizeChart" style="display: none; font-size: 0.78rem; font-weight: 700; margin: 4px 0;"></div>
+            <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">
+              <input type="url" id="pSizeChartImg" class="form-input" placeholder="https://i.ibb.co/..." style="flex: 1;" oninput="updateImagePreview('pSizeChartImg', 'previewSizeChart')">
+              <img id="previewSizeChart" src="" alt="Size Chart Preview" style="display: none; width: 40px; height: 40px; object-fit: contain; border: 1px solid var(--border); border-radius: 6px; background: #fff;">
+            </div>
           </div>
 
           <div class="form-group">
-            <label>Secondary / Hover Image URL (Optional)</label>
-            <input type="url" id="pImageSecondary" class="form-input" placeholder="https://i.ibb.co/...">
-          </div>
-
-          <div class="form-group">
-            <label>Sizes (Comma separated)</label>
-            <input type="text" id="pSizes" class="form-input" value="S, M, L, XL" placeholder="S, M, L, XL">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label style="margin: 0;">Available Sizes (Exact sizes shown on product page)</label>
+              <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('Free Size')" style="padding: 2px 7px; font-size: 0.72rem;">+ Free Size</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('XS')" style="padding: 2px 7px; font-size: 0.72rem;">+ XS</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('S')" style="padding: 2px 7px; font-size: 0.72rem;">+ S</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('M')" style="padding: 2px 7px; font-size: 0.72rem;">+ M</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('L')" style="padding: 2px 7px; font-size: 0.72rem;">+ L</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('XL')" style="padding: 2px 7px; font-size: 0.72rem;">+ XL</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickAppendSize('2XL')" style="padding: 2px 7px; font-size: 0.72rem;">+ 2XL</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('pSizes').value=''; showToast('Sizes cleared');" style="padding: 2px 7px; font-size: 0.72rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">Clear</button>
+              </div>
+            </div>
+            <input type="text" id="pSizes" class="form-input" value="Free Size" placeholder="e.g. Free Size OR S, M, L, XL">
+            <small style="color: var(--text-muted); font-size: 0.72rem;">Only the exact sizes you enter here will appear on the product page chips for customers to select.</small>
           </div>
 
           <div class="form-group">
             <label style="display:flex; justify-content:space-between; align-items:center;">
               <span>Garment Colors (Site Color Dots)</span>
-              <small style="color:var(--text-muted); font-size:0.75rem;">Click chips or enter custom hex</small>
+              <small style="color:var(--text-muted); font-size:0.75rem;">Click chips or enter custom hex &amp; custom name</small>
             </label>
             <div id="modalPresetChips" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;"></div>
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
               <input type="color" id="modalCustomColorPicker" value="#000000" style="width: 40px; height: 34px; padding: 0; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; background: transparent;">
-              <input type="text" id="modalCustomColorHex" placeholder="#000000" style="width: 100px; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: var(--font-mono); font-size: 0.8rem;">
+              <input type="text" id="modalCustomColorHex" placeholder="#000000" style="width: 90px; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: var(--font-mono); font-size: 0.8rem;">
+              <input type="text" id="modalCustomColorName" placeholder="Color Name (e.g. Navy Blue, Emerald)" style="flex: 1; min-width: 150px; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.8rem;">
               <button type="button" class="btn btn-outline btn-sm" onclick="addSelectedColorFromInput()">
                 <i class="fa-solid fa-plus"></i> Add Color
               </button>
             </div>
             <div style="background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 8px 10px; min-height: 42px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px;" id="modalSelectedColorsList"></div>
+          </div>
+
+          <!-- Other Custom Specifications (Admin types custom specs; only appear if entered) -->
+          <div class="form-group" style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label style="margin: 0; font-weight: 700; color: var(--gold);"><i class="fa-solid fa-list-check"></i> Other Specifications (Optional - Typed by You)</label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="addCustomSpecRow('', '')" style="padding: 2px 8px; font-size: 0.72rem;">
+                <i class="fa-solid fa-plus"></i> + Add Spec
+              </button>
+            </div>
+            <small style="color: var(--text-muted); font-size: 0.72rem; display: block; margin-bottom: 8px;">
+              Add any custom specifications you want (e.g., Fabric Density: 220 GSM, Material: 100% Combed Cotton, Care: Machine Wash). If you leave this empty, NO specifications section will appear on the product page.
+            </small>
+            <div id="customSpecsContainer" style="display: flex; flex-direction: column; gap: 6px;"></div>
           </div>
 
           <div class="form-group">
@@ -1275,6 +1442,10 @@
       }).join('');
     }
 
+    let modalColorNames = {};
+    let modalSecondaryImages = [];
+    let customSpecsCount = 0;
+
     function renderSelectedColors() {
       const list = document.getElementById('modalSelectedColorsList');
       if (!list) return;
@@ -1282,13 +1453,19 @@
         list.innerHTML = '<span style="color:var(--text-muted); font-size:0.75rem;">No colors selected yet. Click a chip above or add custom color.</span>';
         return;
       }
-      list.innerHTML = modalSelectedColors.map(hex => `
-        <span style="display:inline-flex; align-items:center; gap:5px; background:var(--surface-card); border:1px solid var(--border-accent); border-radius:18px; padding:2px 8px; font-size:0.75rem; color:var(--text);">
-          <span style="width:13px; height:13px; border-radius:50%; background:${hex}; border:1px solid rgba(0,0,0,0.18); display:inline-block;"></span>
-          <span style="font-family:var(--font-mono); font-size:0.72rem;">${hex.toUpperCase()}</span>
-          <button type="button" onclick="removeColorSelection('${hex}')" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:0 2px; line-height:1;" title="Remove">&times;</button>
-        </span>
-      `).join('');
+      list.innerHTML = modalSelectedColors.map(hex => {
+        const lower = hex.toLowerCase();
+        const customName = modalColorNames[lower] || '';
+        const preset = presetPalette.find(p => p.hex.toLowerCase() === lower);
+        const displayName = customName || (preset ? preset.name : hex.toUpperCase());
+        return `
+          <span style="display:inline-flex; align-items:center; gap:5px; background:var(--surface-card); border:1px solid var(--border-accent); border-radius:18px; padding:2px 8px; font-size:0.75rem; color:var(--text);">
+            <span style="width:13px; height:13px; border-radius:50%; background:${hex}; border:1px solid rgba(0,0,0,0.18); display:inline-block;"></span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem;">${displayName}</span>
+            <button type="button" onclick="removeColorSelection('${hex}')" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:0 2px; line-height:1;" title="Remove">&times;</button>
+          </span>
+        `;
+      }).join('');
     }
 
     function toggleColorSelection(hex) {
@@ -1306,6 +1483,7 @@
     function removeColorSelection(hex) {
       const lower = hex.toLowerCase();
       modalSelectedColors = modalSelectedColors.filter(h => h.toLowerCase() !== lower);
+      delete modalColorNames[lower];
       renderPresetChips();
       renderSelectedColors();
     }
@@ -1313,18 +1491,164 @@
     function addSelectedColorFromInput() {
       const hexInput = document.getElementById('modalCustomColorHex');
       const picker = document.getElementById('modalCustomColorPicker');
-      let val = (hexInput.value || picker.value || '').trim();
+      const nameInput = document.getElementById('modalCustomColorName');
+      let val = (hexInput.value || (picker ? picker.value : '') || '').trim();
+      let name = (nameInput ? nameInput.value : '').trim();
       if (!val.startsWith('#')) val = '#' + val;
       if (/^#[0-9A-Fa-f]{6}$/.test(val) || /^#[0-9A-Fa-f]{3}$/.test(val)) {
-        if (!modalSelectedColors.some(h => h.toLowerCase() === val.toLowerCase())) {
+        val = val.toUpperCase();
+        if (!modalSelectedColors.some(h => h.toUpperCase() === val)) {
           modalSelectedColors.push(val);
-          renderPresetChips();
-          renderSelectedColors();
         }
+        if (name) {
+          modalColorNames[val.toLowerCase()] = name;
+        }
+        renderPresetChips();
+        renderSelectedColors();
         hexInput.value = '';
+        if (nameInput) nameInput.value = '';
+        showToast(`Color ${name || val} added!`);
       } else {
         showToast('Please enter a valid Hex color code (e.g. #FF5733)', true);
       }
+    }
+
+    // Secondary Gallery Images (Multi / Unlimited)
+    function renderSecondaryImages() {
+      const container = document.getElementById('secondaryImagesContainer');
+      if (!container) return;
+      if (!modalSecondaryImages.length) {
+        container.innerHTML = '<span style="color:var(--text-muted); font-size:0.72rem;">No secondary images added yet. You can upload or paste as many as you need.</span>';
+        return;
+      }
+      container.innerHTML = modalSecondaryImages.map((url, idx) => `
+        <div style="display:flex; gap:8px; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
+          <span style="font-size:0.72rem; color:var(--gold); font-weight:700; width:18px;">#${idx + 1}</span>
+          <input type="url" class="form-input" value="${url}" placeholder="https://..." style="flex:1; padding:4px 8px; font-size:0.78rem;" oninput="updateSecondaryImageUrl(${idx}, this.value)">
+          <img src="${url}" alt="Thumb" style="width:32px; height:32px; object-fit:contain; border-radius:4px; border:1px solid var(--border); background:#fff;" onerror="this.style.display='none'" onload="this.style.display='block'">
+          <button type="button" onclick="removeSecondaryImage(${idx})" class="btn btn-sm btn-danger" style="padding:2px 7px; font-size:0.7rem;" title="Remove image">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function addExtraImageUrlInput(url = '') {
+      modalSecondaryImages.push(url);
+      renderSecondaryImages();
+    }
+
+    function removeSecondaryImage(idx) {
+      modalSecondaryImages.splice(idx, 1);
+      renderSecondaryImages();
+    }
+
+    function updateSecondaryImageUrl(idx, val) {
+      modalSecondaryImages[idx] = val.trim();
+    }
+
+    function handleMultiDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.currentTarget.classList.remove('drag-over');
+      const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
+      if (files.length) {
+        uploadMultipleFilesToImgBB(files);
+      } else {
+        showToast('Please drop valid image files.', true);
+      }
+    }
+
+    function handleMultiFileSelect(e) {
+      const files = Array.from(e.target.files || []).filter(f => f.type.startsWith('image/'));
+      if (files.length) {
+        uploadMultipleFilesToImgBB(files);
+      }
+      e.target.value = '';
+    }
+
+    async function uploadMultipleFilesToImgBB(files) {
+      const statusEl = document.getElementById('statusSec');
+      if (statusEl) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--amber)';
+        statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading ${files.length} images to ImgBB...`;
+      }
+      let successCount = 0;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (statusEl) statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading image ${i + 1}/${files.length} to ImgBB...`;
+        try {
+          const formData = new FormData();
+          formData.append('image', file);
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          if (data.success) {
+            const url = data.data.url || data.data.display_url;
+            modalSecondaryImages.push(url);
+            successCount++;
+            renderSecondaryImages();
+          }
+        } catch (err) {
+          console.warn('ImgBB multi-upload error:', err);
+        }
+      }
+      if (statusEl) {
+        statusEl.style.color = 'var(--green)';
+        statusEl.innerHTML = `<i class="fa-solid fa-check-circle"></i> Successfully uploaded ${successCount}/${files.length} images!`;
+        setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+      }
+      showToast(`Added ${successCount} secondary gallery images!`);
+    }
+
+    // Quick Size Helper
+    function quickAppendSize(sizeName) {
+      const input = document.getElementById('pSizes');
+      if (!input) return;
+      const current = input.value.split(',').map(s => s.trim()).filter(Boolean);
+      if (!current.includes(sizeName)) {
+        current.push(sizeName);
+        input.value = current.join(', ');
+        showToast(`Added ${sizeName} to sizes`);
+      }
+    }
+
+    // Custom Specifications Builder
+    function addCustomSpecRow(key = '', val = '') {
+      const container = document.getElementById('customSpecsContainer');
+      if (!container) return;
+      const rowId = 'spec_row_' + (++customSpecsCount);
+      const row = document.createElement('div');
+      row.id = rowId;
+      row.style.cssText = 'display:flex; gap:8px; align-items:center;';
+      row.innerHTML = `
+        <input type="text" class="form-input spec-key" placeholder="Feature / Spec (e.g. Fabric Density)" value="${key.replace(/"/g, '&quot;')}" style="flex:1; font-size:0.8rem; padding:5px 8px;">
+        <input type="text" class="form-input spec-val" placeholder="Value (e.g. 220 GSM Cotton)" value="${val.replace(/"/g, '&quot;')}" style="flex:1; font-size:0.8rem; padding:5px 8px;">
+        <button type="button" onclick="document.getElementById('${rowId}').remove()" class="btn btn-sm btn-danger" style="padding:4px 8px; font-size:0.75rem;" title="Remove this spec">&times;</button>
+      `;
+      container.appendChild(row);
+    }
+
+    function collectCustomSpecs() {
+      const container = document.getElementById('customSpecsContainer');
+      if (!container) return null;
+      const rows = container.children;
+      const specs = {};
+      let count = 0;
+      for (let r of rows) {
+        const kEl = r.querySelector('.spec-key');
+        const vEl = r.querySelector('.spec-val');
+        const k = (kEl ? kEl.value : '').trim();
+        const v = (vEl ? vEl.value : '').trim();
+        if (k && v) {
+          specs[k] = v;
+          count++;
+        }
+      }
+      return count > 0 ? specs : null;
     }
 
     // Modal helpers
@@ -1338,21 +1662,74 @@
         document.getElementById('pId').value = prod.id || '';
         document.getElementById('pName').value = prod.name || '';
         document.getElementById('pCategory').value = prod.category || 'Regular Tee (Printed)';
-        document.getElementById('pGsm').value = prod.gsm || '220 GSM';
+        document.getElementById('pGsm').value = (prod.gsm || prod.material || '');
         document.getElementById('pPrice').value = prod.price || (prod.sizes && prod.sizes['M'] ? prod.sizes['M'].price : 1800);
         document.getElementById('pOldPrice').value = prod.oldPrice || (prod.sizes && prod.sizes['M'] ? prod.sizes['M'].oldPrice : 1850);
         document.getElementById('pStockStatus').value = prod.status || 'in_stock';
         document.getElementById('pStock').value = prod.stock !== undefined ? prod.stock : 10;
         document.getElementById('pImage').value = (prod.images && prod.images[0]) ? prod.images[0] : '';
-        document.getElementById('pImageSecondary').value = (prod.images && prod.images[1]) ? prod.images[1] : '';
-        document.getElementById('pSizes').value = prod.sizes ? Object.keys(prod.sizes).join(', ') : 'S, M, L, XL';
-        document.getElementById('pDesc').value = prod.desc || '';
+        
+        // Multi secondary images
+        modalSecondaryImages = (prod.images && prod.images.length > 1) ? prod.images.slice(1) : [];
+        renderSecondaryImages();
+
+        // Product-specific size chart
+        document.getElementById('pSizeChartImg').value = prod.sizeChartImg || '';
+        updateImagePreview('pSizeChartImg', 'previewSizeChart');
+
+        // Color names & selected colors
         modalSelectedColors = (prod.colors && Array.isArray(prod.colors) && prod.colors.length) ? [...prod.colors] : ['#000000'];
+        modalColorNames = prod.colorNames ? { ...prod.colorNames } : {};
+
+        // Custom specs
+        const specsContainer = document.getElementById('customSpecsContainer');
+        if (specsContainer) specsContainer.innerHTML = '';
+        if (prod.customSpecs && typeof prod.customSpecs === 'object') {
+          Object.entries(prod.customSpecs).forEach(([k, v]) => addCustomSpecRow(k, v));
+        }
+
+        let existingSizes = 'Free Size';
+        if (prod.sizes) {
+          if (Array.isArray(prod.sizes)) {
+            existingSizes = prod.sizes.join(', ');
+          } else if (typeof prod.sizes === 'object') {
+            existingSizes = Object.keys(prod.sizes).join(', ');
+          } else if (typeof prod.sizes === 'string') {
+            existingSizes = prod.sizes;
+          }
+        }
+        document.getElementById('pSizes').value = existingSizes;
+        document.getElementById('pDesc').value = prod.desc || '';
+
+        // Sections checkboxes
+        const secs = (prod && prod.sections && Array.isArray(prod.sections)) ? prod.sections.map(s => s.toLowerCase()) : ['mens', 'womens', 'unisexs'];
+        document.getElementById('secMens').checked = secs.includes('mens') || secs.includes('men');
+        document.getElementById('secWomens').checked = secs.includes('womens') || secs.includes('women');
+        document.getElementById('secKids').checked = secs.includes('kids') || secs.includes('kid');
+        document.getElementById('secUnisex').checked = secs.includes('unisexs') || secs.includes('unisex');
       } else {
         title.innerText = 'Add New Garment to Catalog';
         document.getElementById('pId').value = '';
+        document.getElementById('pGsm').value = '';
+        document.getElementById('pSizes').value = 'Free Size';
         modalSelectedColors = ['#000000'];
+        modalColorNames = {};
+        modalSecondaryImages = [];
+        renderSecondaryImages();
+        document.getElementById('pSizeChartImg').value = '';
+        updateImagePreview('pSizeChartImg', 'previewSizeChart');
+        const specsContainer = document.getElementById('customSpecsContainer');
+        if (specsContainer) specsContainer.innerHTML = '';
+
+        document.getElementById('secMens').checked = true;
+        document.getElementById('secWomens').checked = true;
+        document.getElementById('secKids').checked = false;
+        document.getElementById('secUnisex').checked = true;
       }
+      updateImagePreview('pImage', 'previewMain');
+      if (document.getElementById('statusMain')) document.getElementById('statusMain').style.display = 'none';
+      if (document.getElementById('statusSec')) document.getElementById('statusSec').style.display = 'none';
+      if (document.getElementById('statusSizeChart')) document.getElementById('statusSizeChart').style.display = 'none';
       renderPresetChips();
       renderSelectedColors();
       modal.classList.add('open');
@@ -1387,18 +1764,21 @@
           list.push({ id: doc.id, ...doc.data() });
         });
 
-        // Merge with local static products if Firestore doesn't have all
-        if (typeof baseStaticProducts !== 'undefined' && Array.isArray(baseStaticProducts)) {
-          const idMap = new Set(list.map(p => p.id));
-          baseStaticProducts.forEach(bp => {
-            if (!idMap.has(bp.id)) {
-              list.push(bp);
-            }
+        // When Firestore has products, use Firestore as true catalog
+        const baseStatic = (typeof baseStaticProducts !== 'undefined' && Array.isArray(baseStaticProducts)) ? baseStaticProducts : [];
+        const mergedList = [];
+        if (!snapshot.empty) {
+          list.forEach(p => {
+            if (p.isDeleted === true || p.deleted === true) return;
+            const staticMatch = baseStatic.find(bp => String(bp.id) === String(p.id)) || {};
+            mergedList.push({ ...staticMatch, ...p, id: p.id });
           });
+        } else {
+          baseStatic.forEach(bp => mergedList.push(bp));
         }
 
         // Filter out deleted
-        liveDbProducts = list.filter(p => !p.isDeleted && !p.deleted);
+        liveDbProducts = mergedList.filter(p => !p.isDeleted && !p.deleted);
         document.getElementById('kpiProducts').innerText = liveDbProducts.length;
         document.getElementById('countProducts').innerText = liveDbProducts.length;
         const outCount = liveDbProducts.filter(p => p.status === 'out_of_stock').length;
@@ -1782,39 +2162,61 @@
       const id = document.getElementById('pId').value.trim() || ('roohira_' + Date.now());
       const name = document.getElementById('pName').value.trim();
       const category = document.getElementById('pCategory').value;
-      const gsm = document.getElementById('pGsm').value.trim() || '220 GSM';
+      const gsmVal = (document.getElementById('pGsm') ? document.getElementById('pGsm').value : '').trim();
+      const gsm = gsmVal || null;
       const price = parseFloat(document.getElementById('pPrice').value) || 1800;
       const oldPrice = parseFloat(document.getElementById('pOldPrice').value) || (price + 200);
       const stockStatus = document.getElementById('pStockStatus').value;
       const stock = parseInt(document.getElementById('pStock').value) || (stockStatus === 'out_of_stock' ? 0 : 10);
-      const image1 = document.getElementById('pImage').value.trim();
-      const image2 = document.getElementById('pImageSecondary').value.trim();
+      const image1 = (document.getElementById('pImage') ? document.getElementById('pImage').value : '').trim();
+      const secondaryImgs = (modalSecondaryImages || []).map(s => (s || '').trim()).filter(Boolean);
+      const images = [];
+      if (image1) images.push(image1);
+      secondaryImgs.forEach(img => {
+        if (!images.includes(img)) images.push(img);
+      });
+      if (!images.length) images.push('https://i.ibb.co/vzR0jYd/placeholder.jpg');
+
+      const sizeChartImg = (document.getElementById('pSizeChartImg') ? document.getElementById('pSizeChartImg').value : '').trim();
+      const customSpecs = collectCustomSpecs();
+      const colorNames = (modalColorNames && Object.keys(modalColorNames).length) ? modalColorNames : null;
+
       const sizesStr = document.getElementById('pSizes').value.trim();
       const desc = document.getElementById('pDesc').value.trim();
-
-      const images = [image1];
-      if (image2) images.push(image2);
 
       const sizesObj = {};
       sizesStr.split(',').map(s => s.trim()).filter(Boolean).forEach(sz => {
         sizesObj[sz] = { price, oldPrice };
       });
 
+      // Read sections from checkboxes
+      const sections = [];
+      if (document.getElementById('secMens').checked) sections.push('Mens');
+      if (document.getElementById('secWomens').checked) sections.push('Womens');
+      if (document.getElementById('secKids').checked) sections.push('Kids');
+      if (document.getElementById('secUnisex').checked) sections.push('Unisexs');
+      if (sections.length === 0) sections.push('Mens', 'Womens', 'Unisexs');
+
       const payload = {
         id,
         name,
         category,
-        sections: ['Mens', 'Womens', 'Unisexs'],
+        sections,
         images,
+        sizeChartImg: sizeChartImg || '',
+        customSpecs: customSpecs || null,
+        colorNames: colorNames || null,
         gsm,
+        material: gsm,
         brand: 'Roohira',
-        sizes: Object.keys(sizesObj).length ? sizesObj : { 'M': { price, oldPrice } },
+        sizes: Object.keys(sizesObj).length ? sizesObj : { 'Free Size': { price, oldPrice } },
         price,
         oldPrice,
         stock: stockStatus === 'out_of_stock' ? 0 : stock,
         status: stockStatus,
         colors: modalSelectedColors.length ? modalSelectedColors : ['#000000'],
         desc,
+        isDeleted: false,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -1845,14 +2247,10 @@
     }
 
     function deleteProduct(productId, name) {
-      if (!confirm(`Delete garment "${name}" from store database? It will be removed immediately from all devices.`)) return;
+      if (!confirm(`Delete garment "${name}" from store database? It will be permanently deleted from Firebase and all devices.`)) return;
       if (!db) return;
-      db.collection('products').doc(productId).set({
-        id: productId,
-        isDeleted: true,
-        deletedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true })
-        .then(() => showToast(`Garment removed from catalog.`))
+      db.collection('products').doc(productId).delete()
+        .then(() => showToast(`Garment permanently deleted from Firebase!`))
         .catch(err => showToast(err.message, true));
     }
 
@@ -2262,9 +2660,268 @@
         });
     }
 
+    // ========================================================
+    // IMGBB DRAG & DROP + FILE SELECT UPLOAD (API: 05f9ffbbbadb71e449b28e2d1adf8975)
+    // ========================================================
+    const IMGBB_API_KEY = '05f9ffbbbadb71e449b28e2d1adf8975';
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.currentTarget.classList.add('drag-over');
+    }
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.currentTarget.classList.remove('drag-over');
+    }
+    function handleDrop(e, inputId, previewId, statusId) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.currentTarget.classList.remove('drag-over');
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        uploadToImgBB(file, inputId, previewId, statusId);
+      } else {
+        showToast('Please drop a valid image file.', true);
+      }
+    }
+    function handleFileSelect(e, inputId, previewId, statusId) {
+      const file = e.target.files && e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        uploadToImgBB(file, inputId, previewId, statusId);
+      }
+    }
+    function uploadToImgBB(file, inputId, previewId, statusId) {
+      const statusEl = document.getElementById(statusId);
+      if (statusEl) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--amber)';
+        statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading to ImgBB...';
+      }
+      const formData = new FormData();
+      formData.append('image', file);
+      fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: 'POST',
+        body: formData
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          const url = data.data.url || data.data.display_url;
+          const inputEl = document.getElementById(inputId);
+          if (inputEl) { inputEl.value = url; updateImagePreview(inputId, previewId); }
+          if (statusEl) {
+            statusEl.style.color = 'var(--green)';
+            statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> Uploaded successfully! URL filled below.';
+            setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+          }
+          showToast('Image uploaded to ImgBB successfully!');
+        } else {
+          throw new Error(data.error ? data.error.message : 'Upload failed');
+        }
+      })
+      .catch(err => {
+        if (statusEl) {
+          statusEl.style.color = 'var(--red)';
+          statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Upload failed: ' + err.message;
+        }
+        showToast('ImgBB upload failed: ' + err.message, true);
+      });
+    }
+    function updateImagePreview(inputId, previewId) {
+      const val = (document.getElementById(inputId) || {}).value || '';
+      const img = document.getElementById(previewId);
+      if (!img) return;
+      if (val && val.startsWith('http')) {
+        img.style.display = 'block';
+        img.src = val;
+      } else {
+        img.style.display = 'none';
+        img.src = '';
+      }
+    }
+
+    // ========================================================
+    // DYNAMIC CATEGORY MANAGEMENT (Firestore Realtime)
+    // ========================================================
+    window.liveCategories = (window.liveCategories && window.liveCategories.length) ? window.liveCategories : [
+      { id: 'Regular Tee (Printed)', name: 'Regular Tee (Printed)' },
+      { id: 'Oversized Tee (Printed)', name: 'Oversized Tee (Printed)' },
+      { id: 'Frock', name: 'Frock' },
+      { id: 'Blouse', name: 'Blouse' },
+      { id: 'DTF Custom', name: 'DTF Custom' }
+    ];
+    var liveCategories = window.liveCategories;
+
+    function populateCategoryDropdowns(cats) {
+      const selectors = ['#pCategory', '#prodCategoryFilter'];
+      selectors.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        const currentVal = el.value;
+        if (sel === '#prodCategoryFilter') {
+          el.innerHTML = '<option value="all">All Categories</option>';
+        } else {
+          el.innerHTML = '';
+        }
+        cats.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.name;
+          opt.textContent = c.name;
+          el.appendChild(opt);
+        });
+        el.value = currentVal;
+      });
+      const countEl = document.getElementById('countCategories');
+      if (countEl) countEl.textContent = cats.length;
+    }
+
+    function initCategoryListener() {
+      if (!db) return;
+      db.collection('categories').onSnapshot(snap => {
+        if (!snap.empty) {
+          liveCategories = [];
+          snap.forEach(doc => liveCategories.push({ id: doc.id, ...doc.data() }));
+        } else {
+          // If Firestore categories collection is empty, auto-seed defaults & existing categories
+          syncExistingCategoriesToFirestore(false);
+        }
+        populateCategoryDropdowns(liveCategories);
+        renderCategoriesTable();
+      }, err => {
+        console.warn('Categories listener error:', err);
+        populateCategoryDropdowns(liveCategories);
+        renderCategoriesTable();
+      });
+    }
+
+    async function syncExistingCategoriesToFirestore(showFeedback = false) {
+      if (!db) {
+        if (showFeedback) showToast('Firestore not connected', true);
+        return;
+      }
+      const existingCategories = new Set([
+        'Regular Tee (Printed)',
+        'Oversized Tee (Printed)',
+        'Frock',
+        'Blouse',
+        'DTF Custom'
+      ]);
+
+      // Collect categories from live products
+      if (typeof liveDbProducts !== 'undefined' && Array.isArray(liveDbProducts)) {
+        liveDbProducts.forEach(p => {
+          if (p.category && typeof p.category === 'string' && p.category.trim()) {
+            existingCategories.add(p.category.trim());
+          }
+        });
+      }
+      // Collect categories from baseStaticProducts
+      if (typeof baseStaticProducts !== 'undefined' && Array.isArray(baseStaticProducts)) {
+        baseStaticProducts.forEach(p => {
+          if (p.category && typeof p.category === 'string' && p.category.trim()) {
+            existingCategories.add(p.category.trim());
+          }
+        });
+      }
+
+      let addedCount = 0;
+      for (const catName of existingCategories) {
+        const slug = catName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const exists = liveCategories.some(c => c.name.toLowerCase() === catName.toLowerCase());
+        if (!exists) {
+          try {
+            await db.collection('categories').doc(slug).set({
+              name: catName,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              isLegacySynced: true
+            }, { merge: true });
+            addedCount++;
+          } catch(e) {
+            console.warn('Sync category error:', catName, e);
+          }
+        }
+      }
+      if (showFeedback) {
+        showToast(`Synced ${addedCount} categories from existing products to Firestore!`);
+      }
+    }
+
+    function renderCategoriesTable() {
+      const tbody = document.getElementById('categoriesTbody');
+      if (!tbody) return;
+      const cats = liveCategories;
+      if (!cats.length) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:30px; color:var(--text-muted);">No categories found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = cats.map(c => {
+        const productCount = (typeof liveDbProducts !== 'undefined' ? liveDbProducts : []).filter(p => p.category === c.name).length;
+        const isDefault = ['Regular Tee (Printed)', 'Oversized Tee (Printed)', 'Frock', 'Blouse', 'DTF Custom'].includes(c.name);
+        return `
+          <tr>
+            <td><strong>${c.name}</strong></td>
+            <td><span style="font-family:var(--font-mono); color:var(--gold);">${productCount}</span> products</td>
+            <td>${isDefault ? '<span class="status-pill in-stock">Default</span>' : '<span class="status-pill confirmed">Custom</span>'}</td>
+            <td style="text-align: right;">
+              ${isDefault ? '<span style="font-size:0.75rem; color:var(--text-muted);">Built-in</span>' : `<button class="btn btn-sm btn-danger" onclick="deleteCategory('${c.id}', '${c.name}')"><i class="fa-solid fa-trash"></i> Delete</button>`}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function handleAddNewCategoryFromTab() {
+      const input = document.getElementById('newCategoryInput');
+      const name = (input ? input.value : '').trim();
+      if (!name) { showToast('Category name cannot be empty.', true); return; }
+      addNewCategoryToFirestore(name, () => { if (input) input.value = ''; });
+    }
+
+    function quickAddCategoryPrompt() {
+      const name = prompt('Enter new category name:');
+      if (name && name.trim()) addNewCategoryToFirestore(name.trim());
+    }
+
+    function addNewCategoryToFirestore(name, callback) {
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      if (liveCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+        showToast(`Category "${name}" already exists.`, true);
+        return;
+      }
+      const saveFn = () => {
+        const catData = { name, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+        db.collection('categories').doc(slug).set(catData)
+          .then(() => {
+            showToast(`Category "${name}" added to Firestore!`);
+            if (typeof callback === 'function') callback();
+          })
+          .catch(err => showToast('Failed to add category: ' + err.message, true));
+      };
+      if (db) {
+        saveFn();
+      } else {
+        liveCategories.push({ id: slug, name });
+        populateCategoryDropdowns(liveCategories);
+        renderCategoriesTable();
+        showToast(`Category "${name}" added locally (offline mode).`);
+        if (typeof callback === 'function') callback();
+      }
+    }
+
+    function deleteCategory(id, name) {
+      if (!confirm(`Delete category "${name}"? Products using this category will keep their current value.`)) return;
+      if (!db) { showToast('Offline mode: cannot delete from Firestore.', true); return; }
+      db.collection('categories').doc(id).delete()
+        .then(() => showToast(`Category "${name}" deleted.`))
+        .catch(err => showToast('Delete failed: ' + err.message, true));
+    }
+
     // INITIALIZATION
     window.addEventListener('DOMContentLoaded', () => {
       initDatabaseListeners();
+      initCategoryListener();
       if (typeof lucide !== 'undefined') lucide.createIcons();
     });
   </script>

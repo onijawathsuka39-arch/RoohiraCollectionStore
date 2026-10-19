@@ -106,9 +106,13 @@
         <!-- Product Details -->
         <div class="info-col">
             <div>
-                <div class="category-tag">
-                    <i data-lucide="tag" style="width: 13px; height: 13px;"></i>
-                    <span id="detail-category-label">Category</span>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <div class="category-tag">
+                        <i data-lucide="tag" style="width: 13px; height: 13px;"></i>
+                        <span id="detail-category-label">Category</span>
+                    </div>
+                    <span id="detail-gsm" style="display: none; font-size: 0.72rem; font-weight: 800; color: #8B5A2B; background: rgba(139, 90, 43, 0.1); border: 1px solid rgba(139, 90, 43, 0.3); padding: 3px 8px; letter-spacing: 0.5px;"></span>
+                    <span id="detail-brand" style="display: none; font-size: 0.72rem; font-weight: 800; color: #1A120B; background: #FAF7F2; border: 1px solid rgba(26, 18, 11, 0.2); padding: 3px 8px;">Roohira</span>
                 </div>
                 <h1 id="detail-name" class="detail-title">Product Name</h1>
                 <div class="detail-price-wrapper">
@@ -150,7 +154,7 @@
             <!-- Print size selector removed as requested -->
 
             <div>
-                <h4 class="option-label">Select Color</h4>
+                <h4 class="option-label">Select Color: <span id="selected-color-name" style="font-weight: 700; text-transform: none; color: #8B5A2B; font-size: 0.85rem; margin-left: 6px;"></span></h4>
                 <div class="color-dots" id="detail-colors">
                     <!-- Dynamic colors -->
                 </div>
@@ -189,46 +193,11 @@
                 </div>
             </div>
 
-            <!-- Premium Specifications Grid -->
-            <div>
+            <!-- Specifications (Only shown if custom specs are added for this product) -->
+            <div id="product-specs-wrapper" style="display: none;">
                 <h4 class="option-label" style="margin-bottom: 10px;">Specifications</h4>
-                <div class="specs-panel">
-                    <div class="spec-item" id="gsm-spec-item">
-                        <div class="spec-icon">
-                            <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
-                        </div>
-                        <div class="spec-details">
-                            <h5>Fabric Density</h5>
-                            <p id="detail-gsm">180 GSM</p>
-                        </div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-icon">
-                            <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
-                        </div>
-                        <div class="spec-details">
-                            <h5>Original Brand</h5>
-                            <p id="detail-brand">Roohira</p>
-                        </div>
-                    </div>
-                    <div class="spec-item" id="print-spec-item">
-                        <div class="spec-icon">
-                            <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
-                        </div>
-                        <div class="spec-details">
-                            <h5>Print Tech</h5>
-                            <p>A3 DTF print</p>
-                        </div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-icon">
-                            <i data-lucide="repeat" style="width: 18px; height: 18px;"></i>
-                        </div>
-                        <div class="spec-details">
-                            <h5>Easy Returns</h5>
-                            <p>7 Days Guarantee</p>
-                        </div>
-                    </div>
+                <div class="specs-panel" id="product-specs-container">
+                    <!-- Injected dynamically via renderProductCustomSpecs() -->
                 </div>
             </div>
 
@@ -332,11 +301,11 @@
     </section>
 </main>
 
-    <!-- Size Chart Modal -->
+    <!-- Size Chart Modal (Product Specific Only) -->
     <div id="sizeChartModal" class="modal-overlay" onclick="closeSizeChart()" style="display:none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); align-items: center; justify-content: center;">
         <div style="max-width: 90%; max-height: 90%; position: relative; padding: 12px; background: #FFFFFF; border: 1.5px solid #1A120B; border-radius: 0px;" onclick="event.stopPropagation()">
             <span onclick="closeSizeChart()" style="position: absolute; right: -15px; top: -15px; background: #8B5A2B; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">&times;</span>
-            <img src="https://i.ibb.co/rftkd3K0/Chat-GPT-Image-Aug-20-2026-10-17-15-PM.png" alt="Size Chart" style="width: 100%; height: auto; max-height: 80vh; border-radius: 0px; display: block;">
+            <img id="product-size-chart-img" src="" alt="Product Size Chart" style="width: 100%; height: auto; max-height: 80vh; border-radius: 0px; display: block;">
         </div>
     </div>
 
@@ -440,34 +409,45 @@
                 printWrapper.style.display = is220GsmRegular ? 'block' : 'none';
             }
 
-            if (product.category === 'Oversized Tee (Printed)' && !product.sizeChartImg) {
-                const scSection = document.getElementById('size-chart-link');
-                if (scSection) scSection.style.display = 'none';
-            }
-            // Hide GSM spec, Print Tech spec, and size chart for Frock category
-            if (product.category === 'Frock') {
-                const gsmSpec = document.getElementById('gsm-spec-item');
-                if (gsmSpec) gsmSpec.style.display = 'none';
-                const printSpec = document.getElementById('print-spec-item');
-                if (printSpec) printSpec.style.display = 'none';
-                const scSection = document.getElementById('size-chart-link');
-                if (scSection) scSection.style.display = 'none';
-            }
-            // Hide GSM spec, Print Tech (DTF) spec, and size chart for Blouse category
-            if (product.category === 'Blouse') {
-                const gsmSpec = document.getElementById('gsm-spec-item');
-                if (gsmSpec) gsmSpec.style.display = 'none';
-                const printSpec = document.getElementById('print-spec-item');
-                if (printSpec) printSpec.style.display = 'none';
-                const scSection = document.getElementById('size-chart-link');
-                if (scSection) scSection.style.display = 'none';
+            // Size Chart visibility: ONLY show if this product has its own custom sizeChartImg
+            const scSection = document.getElementById('size-chart-link');
+            if (scSection) {
+                if (product.sizeChartImg && typeof product.sizeChartImg === 'string' && product.sizeChartImg.trim() !== '') {
+                    scSection.style.display = 'inline-flex';
+                } else {
+                    scSection.style.display = 'none';
+                }
             }
 
-            document.getElementById('detail-name').innerText = product.name;
+            // Custom Specifications: ONLY show if product has customSpecs configured
+            renderProductCustomSpecs(product);
+
+            const nameEl = document.getElementById('detail-name');
+            if (nameEl) nameEl.innerText = product.name || 'Roohira Garment';
+
             const bName = document.getElementById('breadcrumb-product-name');
-            if (bName) bName.innerText = product.name;
-            document.getElementById('detail-gsm').innerText = product.gsm || '220 GSM';
-            document.getElementById('detail-brand').innerText = product.brand || 'Roohira';
+            if (bName) bName.innerText = product.name || 'Product Details';
+
+            const gsmEl = document.getElementById('detail-gsm');
+            if (gsmEl) {
+                const materialVal = (product.gsm || product.material || '').trim();
+                if (materialVal) {
+                    gsmEl.innerText = materialVal;
+                    gsmEl.style.display = 'inline-block';
+                } else {
+                    gsmEl.style.display = 'none';
+                }
+            }
+
+            const brandEl = document.getElementById('detail-brand');
+            if (brandEl) {
+                if (product.brand) {
+                    brandEl.innerText = product.brand;
+                    brandEl.style.display = 'inline-block';
+                } else {
+                    brandEl.style.display = 'none';
+                }
+            }
 
             const catLabel = document.getElementById('detail-category-label');
             if (catLabel) {
@@ -523,10 +503,20 @@
 
             if (product.desc) document.getElementById('detail-desc').innerText = product.desc;
 
-            // Sizes & Pricing calculation
+            // Sizes & Pricing calculation: Only show exact sizes defined on this product
             const sizeContainer = document.getElementById('detail-sizes');
             sizeContainer.innerHTML = '';
-            const sizes = (product.sizes && typeof product.sizes === 'object') ? Object.keys(product.sizes) : ['Free'];
+            let sizes = [];
+            if (product.sizes) {
+                if (Array.isArray(product.sizes)) {
+                    sizes = product.sizes.map(s => typeof s === 'string' ? s.trim() : (s.name || s.size || s)).filter(Boolean);
+                } else if (typeof product.sizes === 'object') {
+                    sizes = Object.keys(product.sizes).map(s => s.trim()).filter(Boolean);
+                } else if (typeof product.sizes === 'string' && product.sizes.trim()) {
+                    sizes = product.sizes.split(',').map(s => s.trim()).filter(Boolean);
+                }
+            }
+            if (!sizes.length) sizes = ['Free Size'];
 
             // Build a reverse map: size → color (if colorSizes exists)
             const sizeToColor = {};
@@ -542,7 +532,7 @@
                 selectedSize = availableSizes[0] || sizes[0];
             }
 
-            const sizeData = (product.sizes && product.sizes[selectedSize]) 
+            const sizeData = (product.sizes && typeof product.sizes === 'object' && !Array.isArray(product.sizes) && product.sizes[selectedSize]) 
                 ? product.sizes[selectedSize] 
                 : { price: product.price || 1800, oldPrice: product.oldPrice };
 
@@ -643,33 +633,37 @@
                 if (stockSection) stockSection.style.display = 'block';
             }
 
+            // Size Chart Link: Only show if product has sizeChartImg
+            const sizeChartLink = document.getElementById('size-chart-link');
+            if (sizeChartLink) {
+                if (product && product.sizeChartImg) {
+                    sizeChartLink.style.display = 'inline-flex';
+                } else {
+                    sizeChartLink.style.display = 'none';
+                }
+            }
+
+            // Custom Specifications: Only show if entered
+            renderProductCustomSpecs(product);
+
+            // Display current selected color name
+            const colorNameSpan = document.getElementById('selected-color-name');
+            if (colorNameSpan && selectedColor) {
+                const cLower = selectedColor.toLowerCase();
+                const cName = (product && product.colorNames && product.colorNames[cLower]) 
+                    ? product.colorNames[cLower] 
+                    : ((typeof colorNames !== 'undefined' && colorNames[selectedColor]) ? colorNames[selectedColor] : selectedColor);
+                colorNameSpan.textContent = cName;
+            }
+
             initWishlistState();
             updateDeliveryPromo();
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        function selectSize(s, btn) {
-            selectedSize = s;
-            document.querySelectorAll('.size-chip').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-
-            const sizeData = (product && product.sizes && product.sizes[s]) 
-                ? product.sizes[s] 
-                : { price: product ? product.price : currentPrice, oldPrice: product ? product.oldPrice : currentOldPrice };
-            
-            currentPrice = (typeof sizeData === 'object' && sizeData.price !== undefined) ? Number(sizeData.price) : Number(product.price || 1800);
-            currentOldPrice = (typeof sizeData === 'object' && sizeData.oldPrice !== undefined) ? Number(sizeData.oldPrice) : (product.oldPrice || (currentPrice + 200));
-
-            updatePriceDisplay();
-        }
-
-        function selectColor(c, btn) {
-            selectedColor = c;
-            document.querySelectorAll('.color-dot').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
+            loadAndRenderProductDetail();
             syncProducts(() => {
                 loadAndRenderProductDetail();
             });
@@ -768,15 +762,18 @@
 
         function selectSize(size, btn) {
             selectedSize = size;
-            const sizeData = product.sizes ? product.sizes[size] : { price: product.price, oldPrice: product.oldPrice };
-            currentPrice = typeof sizeData === 'object' ? sizeData.price : sizeData;
-            currentOldPrice = typeof sizeData === 'object' ? sizeData.oldPrice : product.oldPrice;
+            const sizeData = (product && product.sizes && typeof product.sizes === 'object' && !Array.isArray(product.sizes) && product.sizes[size]) 
+                ? product.sizes[size] 
+                : { price: product ? product.price : currentPrice, oldPrice: product ? product.oldPrice : currentOldPrice };
+            
+            currentPrice = (typeof sizeData === 'object' && sizeData.price !== undefined) ? Number(sizeData.price) : Number((product && product.price) || 1800);
+            currentOldPrice = (typeof sizeData === 'object' && sizeData.oldPrice !== undefined) ? Number(sizeData.oldPrice) : ((product && product.oldPrice) || (currentPrice + 200));
 
             document.querySelectorAll('.size-chip').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
             updatePriceDisplay();
 
-            if (product.sizeImages && product.sizeImages[size]) {
+            if (product && product.sizeImages && product.sizeImages[size]) {
                 const images = product.images || [];
                 const targetUrl = product.sizeImages[size];
                 const idx = images.indexOf(targetUrl);
@@ -791,10 +788,20 @@
         function selectColor(color, btn) {
             selectedColor = color;
             document.querySelectorAll('.color-dot').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
+
+            // Update color name text next to label in real-time
+            const colorNameSpan = document.getElementById('selected-color-name');
+            if (colorNameSpan) {
+                const cLower = (color || '').toLowerCase();
+                const cName = (product && product.colorNames && (product.colorNames[color] || product.colorNames[cLower])) 
+                    ? (product.colorNames[color] || product.colorNames[cLower]) 
+                    : ((typeof colorNames !== 'undefined' && colorNames[color]) ? colorNames[color] : color);
+                colorNameSpan.textContent = cName;
+            }
 
             // If product has colorImages, slide to the matching image when color is selected
-            if (product.colorImages && product.colorImages[color]) {
+            if (product && product.colorImages && product.colorImages[color]) {
                 const images = product.images || [];
                 const targetUrl = product.colorImages[color];
                 const idx = images.indexOf(targetUrl);
@@ -806,12 +813,14 @@
             }
 
             // If this product links colors to sizes, auto-select the matching size
-            if (product.colorSizes && product.colorSizes[color]) {
+            if (product && product.colorSizes && product.colorSizes[color]) {
                 const linkedSize = product.colorSizes[color];
                 const sizeContainer = document.getElementById('detail-sizes');
-                const sizeBtn = [...sizeContainer.querySelectorAll('.size-chip:not(.out-of-stock-size)')]
-                    .find(b => b.innerText.trim().startsWith(linkedSize));
-                if (sizeBtn) selectSize(linkedSize, sizeBtn);
+                if (sizeContainer) {
+                    const sizeBtn = [...sizeContainer.querySelectorAll('.size-chip:not(.out-of-stock-size)')]
+                        .find(b => b.innerText.trim().startsWith(linkedSize));
+                    if (sizeBtn) selectSize(linkedSize, sizeBtn);
+                }
             }
         }
 
@@ -842,10 +851,46 @@
             addToCart(product.name, finalPrice, images[0], finalSize, selectedColor, currentQty);
         }
 
+        function renderProductCustomSpecs(prod) {
+            const wrapper = document.getElementById('product-specs-wrapper');
+            const container = document.getElementById('product-specs-container');
+            if (!wrapper || !container) return;
+
+            // Only display specifications if the product has customSpecs configured
+            if (!prod || !prod.customSpecs || typeof prod.customSpecs !== 'object' || !Object.keys(prod.customSpecs).length) {
+                wrapper.style.display = 'none';
+                container.innerHTML = '';
+                return;
+            }
+
+            const entries = Object.entries(prod.customSpecs);
+            if (!entries.length) {
+                wrapper.style.display = 'none';
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = entries.map(([title, val]) => `
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i data-lucide="check-circle-2" style="width: 18px; height: 18px; color: var(--gold-primary);"></i>
+                    </div>
+                    <div class="spec-details">
+                        <h5>${title}</h5>
+                        <p>${val}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            wrapper.style.display = 'block';
+            if (window.lucide) lucide.createIcons();
+        }
+
         function openSizeChart() {
+            if (!product || !product.sizeChartImg) return;
             const chartImg = document.querySelector('#sizeChartModal img');
             if (chartImg) {
-                chartImg.src = (product && product.sizeChartImg) ? product.sizeChartImg : 'https://i.ibb.co/rftkd3K0/Chat-GPT-Image-Aug-20-2026-10-17-15-PM.png';
+                chartImg.src = product.sizeChartImg;
             }
             document.getElementById('sizeChartModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -870,10 +915,16 @@
         function initStockUrgency() {
             const stockBar = document.getElementById('stock-bar-fill-elem');
             const stockCountDisplay = document.getElementById('stock-count-display');
-            if (stockBar && stockCountDisplay) {
-                const pseudoStock = (parseInt(product.id) % 5) + 3;
+            if (stockBar && stockCountDisplay && product) {
+                let pseudoStock = 5;
+                if (typeof product.stock === 'number' && product.stock > 0) {
+                    pseudoStock = Math.min(product.stock, 10);
+                } else {
+                    const parsed = parseInt(String(product.id).replace(/\D/g, ''));
+                    pseudoStock = (!isNaN(parsed) && parsed > 0) ? (parsed % 5) + 3 : 5;
+                }
                 stockCountDisplay.innerText = `${pseudoStock} items left!`;
-                const percentage = (pseudoStock / 10) * 100;
+                const percentage = Math.min(Math.max((pseudoStock / 10) * 100, 10), 100);
                 stockBar.style.width = `${percentage}%`;
             }
         }

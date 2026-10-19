@@ -479,7 +479,7 @@ const products = [
         desc: 'White Blouse with Embroidery by Roohira. A beautiful, lightweight premium blouse styled with intricate embroidery detail. Available in Yellow, Purple, Blue, and Green in XL, XXL, and XXXL sizes.'
     },
     {
-        id: '26', name: 'Garfield Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
+        id: '26', name: 'Garfield Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
         images: ['https://i.ibb.co/4ZZkgf5d/garfilde-tee.png'],
         gsm: '220 GSM', brand: 'Python',
         sizes: {
@@ -531,7 +531,7 @@ const products = [
         desc: 'Dodge Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
     },
     {
-        id: '30', name: 'Stitch Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
+        id: '30', name: 'Stitch Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
         images: ['https://i.ibb.co/0RLVSK7c/stich-tee.png'],
         gsm: '220 GSM', brand: 'Python',
         sizes: {
@@ -557,7 +557,7 @@ const products = [
         desc: 'BMW Car Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
     },
     {
-        id: '32', name: 'Snoopy Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
+        id: '32', name: 'Snoopy Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
         images: ['https://i.ibb.co/SCypGfW/snoopy-tee.png'],
         gsm: '220 GSM', brand: 'Python',
         sizes: {
@@ -594,7 +594,7 @@ const products = [
         desc: 'Yakuza design Regular Tee (Printed) by Python. Featuring a premium quality A3 DTF print on 220 GSM fabric for ultimate style and comfort.'
     },
     {
-        id: '36', name: 'Cat Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
+        id: '36', name: 'Cat Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
         images: ['https://i.ibb.co/DgfQfYXn/cat-design-blck.png', 'https://i.ibb.co/HfqPgHkd/cat-design-white.png'],
         gsm: '220 GSM', brand: 'Python',
         sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
@@ -602,7 +602,7 @@ const products = [
         desc: 'Cat Design Regular Tee (Printed) by Python. Available in both Black and White, featuring premium quality A3 DTF print on 220 GSM fabric.'
     },
     {
-        id: '37', name: 'Monkey D Luffy Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
+        id: '37', name: 'Monkey D Luffy Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
         images: ['https://i.ibb.co/4R4ZJXNF/Monkey-d-luffy-design.png'],
         gsm: '220 GSM', brand: 'Python',
         sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
@@ -713,7 +713,7 @@ function displayProducts(filteredProducts) {
 
         // Available sizes array
         const availableSizes = hasSizes ? Object.keys(p.sizes) : ['Free Size'];
-        const gsmText = p.gsm || (p.category && p.category.includes('Tee') ? '220 GSM' : 'Premium');
+        const gsmText = (p.gsm || p.material || '').trim();
         const sectionBadge = (p.sections && p.sections.length > 0) ? p.sections[0] : '';
 
         grid.innerHTML += `
@@ -733,7 +733,7 @@ function displayProducts(filteredProducts) {
 
                 <!-- Fabric & Section Tag -->
                 <div class="product-card-tags">
-                    <span class="card-gsm-tag">${gsmText}</span>
+                    ${gsmText ? `<span class="card-gsm-tag">${gsmText}</span>` : ''}
                     ${sectionBadge ? `<span class="card-section-tag">${sectionBadge}</span>` : ''}
                 </div>
 
@@ -970,6 +970,39 @@ function selectCategory(cat, btn) {
     }, 100);
 }
 
+// Dynamically generate Category boxes on the Shop page from Firestore and product catalog
+function renderDynamicShopCategories() {
+    const row = document.getElementById('category-tab-row');
+    if (!row) return;
+
+    // Collect all unique categories from products currently in memory
+    const catSet = new Set();
+    products.forEach(p => {
+        if (p.category && typeof p.category === 'string' && p.category.trim()) {
+            catSet.add(p.category.trim());
+        }
+    });
+
+    // Also include categories from Firestore if available globally
+    if (typeof liveCategories !== 'undefined' && Array.isArray(liveCategories)) {
+        liveCategories.forEach(c => {
+            if (c.name) catSet.add(c.name.trim());
+        });
+    }
+
+    const categoriesList = Array.from(catSet);
+    if (!categoriesList.length) return;
+
+    // Build the buttons HTML
+    let html = `<button class="shop-filter-btn category-btn ${currentCategory === 'All' ? 'active' : ''}" onclick="selectCategory('All', this)">All Categories</button>`;
+    categoriesList.forEach(cat => {
+        const isActive = (currentCategory.toLowerCase() === cat.toLowerCase());
+        html += `<button class="shop-filter-btn category-btn ${isActive ? 'active' : ''}" onclick="selectCategory('${cat.replace(/'/g, "\\'")}', this)">${cat}</button>`;
+    });
+
+    row.innerHTML = html;
+}
+
 function selectSubcategory(subcat, btn) {
     currentSubcategory = subcat;
     // subcategorySelected = true only for a real subcategory, not 'All'
@@ -1015,17 +1048,61 @@ function selectGSM(gsm, btn) {
     }, 100);
 }
 
+let currentSection = 'All'; // 'All', 'Mens', 'Womens', 'Kids'
+
+function selectSection(sec, btn) {
+    currentSection = sec;
+    document.querySelectorAll('.section-btn').forEach(b => {
+        const onclickAttr = b.getAttribute('onclick') || '';
+        const text = (b.textContent || '').trim().toLowerCase();
+        if (onclickAttr.includes(`'${sec}'`) || (sec === 'All' && text.includes('all')) || (sec !== 'All' && text.includes(sec.toLowerCase()))) {
+            b.classList.add('active');
+        } else {
+            b.classList.remove('active');
+        }
+    });
+
+    // Update dept badge on shop page
+    const badgeRow = document.getElementById('active-dept-badge-row');
+    const badgeLabel = document.getElementById('active-dept-label');
+    if (badgeRow && badgeLabel) {
+        if (sec && sec !== 'All') {
+            const deptNames = { 'Mens': "Men's Collection", 'Womens': "Women's Collection", 'Kids': "Kids' Collection" };
+            badgeLabel.textContent = '🏷 ' + (deptNames[sec] || sec);
+            badgeRow.style.display = 'flex';
+        } else {
+            badgeRow.style.display = 'none';
+        }
+    }
+
+    filterShop();
+}
+
 function filterShop() {
     let filtered = products;
+
+    // 0. Filter by Department / Section (Mens, Womens, Kids)
+    if (currentSection && currentSection !== 'All') {
+        const targetSec = currentSection.toLowerCase();
+        filtered = filtered.filter(p => {
+            const secs = (p.sections || []).map(s => s.toLowerCase());
+            if (targetSec === 'mens' || targetSec === 'men') {
+                return secs.includes('mens') || secs.includes('unisexs');
+            } else if (targetSec === 'womens' || targetSec === 'women') {
+                return secs.includes('womens') || secs.includes('unisexs') || p.category === 'Frock' || p.category === 'Blouse';
+            } else if (targetSec === 'kids' || targetSec === 'kid') {
+                return secs.includes('kids');
+            }
+            return true;
+        });
+    }
 
     // 1. Filter by Category
     if (currentCategory !== 'All') {
         if (currentCategory === 'T-Shirts') {
-            filtered = filtered.filter(p => p.category.toLowerCase().includes('tee') || p.category.toLowerCase().includes('t-shirt') || p.category.toLowerCase().includes('waffle'));
-        } else if (currentCategory === 'Frock') {
-            filtered = filtered.filter(p => p.category === 'Frock');
-        } else if (currentCategory === 'Blouse') {
-            filtered = filtered.filter(p => p.category === 'Blouse');
+            filtered = filtered.filter(p => (p.category || '').toLowerCase().includes('tee') || (p.category || '').toLowerCase().includes('t-shirt') || (p.category || '').toLowerCase().includes('waffle'));
+        } else {
+            filtered = filtered.filter(p => (p.category || '').toLowerCase() === currentCategory.toLowerCase());
         }
     }
 
@@ -2435,57 +2512,67 @@ function syncProducts(callback) {
             products.push(JSON.parse(JSON.stringify(item)));
         });
 
-        // 1. Apply stock, price, colors, sizes & deletion updates to base products
+        const hasDbProducts = Object.keys(dbProductsMap).length > 0;
+
+        // 1. Apply stock, price, colors, sizes, sections & deletion updates to base products
         for (let i = products.length - 1; i >= 0; i--) {
             const p = products[i];
             const dbP = dbProductsMap[p.id];
+            if (hasDbProducts && (!dbP || dbP.isDeleted === true || dbP.deleted === true)) {
+                products.splice(i, 1);
+                continue;
+            }
             if (dbP) {
-                if (dbP.isDeleted === true || dbP.deleted === true) {
-                    products.splice(i, 1);
-                } else {
-                    if (dbP.status === 'out_of_stock') {
-                        p.stock = 0;
-                        p.stockStatus = 'out_of_stock';
-                    } else if (dbP.status === 'in_stock') {
-                        p.stock = dbP.stock !== undefined ? Number(dbP.stock) : 10;
-                        p.stockStatus = 'in_stock';
-                    }
-                    if (dbP.name) p.name = dbP.name;
-                    if (dbP.category) p.category = dbP.category;
-                    if (dbP.desc) p.desc = dbP.desc;
-                    if (dbP.description) p.desc = dbP.description;
-                    if (dbP.images && Array.isArray(dbP.images) && dbP.images.length) p.images = dbP.images;
-                    else if (dbP.image) p.images = [dbP.image];
+                if (dbP.status === 'out_of_stock') {
+                    p.stock = 0;
+                    p.stockStatus = 'out_of_stock';
+                } else if (dbP.status === 'in_stock') {
+                    p.stock = dbP.stock !== undefined ? Number(dbP.stock) : 10;
+                    p.stockStatus = 'in_stock';
+                }
+                if (dbP.name) p.name = dbP.name;
+                if (dbP.category) p.category = dbP.category;
+                if (dbP.sections && Array.isArray(dbP.sections)) p.sections = dbP.sections;
+                if (dbP.desc) p.desc = dbP.desc;
+                if (dbP.description) p.desc = dbP.description;
+                if (dbP.images && Array.isArray(dbP.images) && dbP.images.length) p.images = dbP.images;
+                else if (dbP.image) p.images = [dbP.image];
 
-                    // Price & Old Price Sync
-                    if (dbP.price !== undefined) {
-                        p.price = Number(dbP.price);
-                    }
-                    if (dbP.oldPrice !== undefined) {
-                        p.oldPrice = Number(dbP.oldPrice);
-                    }
+                // Price & Old Price Sync
+                if (dbP.price !== undefined) {
+                    p.price = Number(dbP.price);
+                }
+                if (dbP.oldPrice !== undefined) {
+                    p.oldPrice = Number(dbP.oldPrice);
+                }
 
-                    // Sizes & Pricing Sync
-                    if (dbP.sizes && typeof dbP.sizes === 'object' && Object.keys(dbP.sizes).length) {
-                        p.sizes = dbP.sizes;
-                    } else if (dbP.price !== undefined && p.sizes && typeof p.sizes === 'object') {
-                        Object.keys(p.sizes).forEach(sz => {
-                            if (typeof p.sizes[sz] === 'object') {
-                                p.sizes[sz].price = Number(dbP.price);
-                                if (dbP.oldPrice !== undefined) p.sizes[sz].oldPrice = Number(dbP.oldPrice);
-                            } else {
-                                p.sizes[sz] = Number(dbP.price);
-                            }
-                        });
-                    }
+                // Sizes & Pricing Sync
+                if (dbP.sizes && typeof dbP.sizes === 'object' && Object.keys(dbP.sizes).length) {
+                    p.sizes = dbP.sizes;
+                } else if (dbP.price !== undefined && p.sizes && typeof p.sizes === 'object') {
+                    Object.keys(p.sizes).forEach(sz => {
+                        if (typeof p.sizes[sz] === 'object') {
+                            p.sizes[sz].price = Number(dbP.price);
+                            if (dbP.oldPrice !== undefined) p.sizes[sz].oldPrice = Number(dbP.oldPrice);
+                        } else {
+                            p.sizes[sz] = Number(dbP.price);
+                        }
+                    });
+                }
 
-                    // Colors Sync
-                    if (dbP.colors && Array.isArray(dbP.colors) && dbP.colors.length) {
-                        p.colors = dbP.colors;
-                    }
+                // Colors Sync
+                if (dbP.colors && Array.isArray(dbP.colors) && dbP.colors.length) {
+                    p.colors = dbP.colors;
+                }
 
-                    if (dbP.gsm) p.gsm = dbP.gsm;
-                    if (dbP.brand) p.brand = dbP.brand;
+                if (dbP.gsm !== undefined) p.gsm = dbP.gsm;
+                if (dbP.material !== undefined) p.material = dbP.material;
+                if (dbP.brand) p.brand = dbP.brand;
+                if (dbP.sizeChartImg) p.sizeChartImg = dbP.sizeChartImg;
+                if (dbP.customSpecs && typeof dbP.customSpecs === 'object') p.customSpecs = dbP.customSpecs;
+                if (dbP.colorNames && typeof dbP.colorNames === 'object') {
+                    p.colorNames = dbP.colorNames;
+                    Object.assign(colorNames, dbP.colorNames);
                 }
             }
         }
@@ -2505,21 +2592,25 @@ function syncProducts(callback) {
                     category: dbP.category || 'Regular Tee (Printed)',
                     sections: dbP.sections || ['Mens', 'Womens', 'Unisexs'],
                     images: Array.isArray(dbP.images) && dbP.images.length ? dbP.images : [dbP.image || 'logo.png'],
-                    gsm: dbP.gsm || '220 GSM',
+                    gsm: dbP.gsm || dbP.material || null,
+                    material: dbP.material || dbP.gsm || null,
                     brand: dbP.brand || 'Roohira',
                     price: price,
                     oldPrice: oldPrice,
                     sizes: dbP.sizes || {
-                        'S': { price: price, oldPrice: oldPrice },
-                        'M': { price: price, oldPrice: oldPrice },
-                        'L': { price: price, oldPrice: oldPrice },
-                        'XL': { price: price, oldPrice: oldPrice }
+                        'Free Size': { price: price, oldPrice: oldPrice }
                     },
                     colors: Array.isArray(dbP.colors) && dbP.colors.length ? dbP.colors : ['#000000'],
                     stock: stockQty,
                     stockStatus: dbP.status || (stockQty === 0 ? 'out_of_stock' : 'in_stock'),
-                    desc: dbP.desc || dbP.description || 'Exclusive luxury collection piece handcrafted by Roohira.'
+                    desc: dbP.desc || dbP.description || 'Exclusive luxury collection piece handcrafted by Roohira.',
+                    sizeChartImg: dbP.sizeChartImg || '',
+                    customSpecs: dbP.customSpecs || null,
+                    colorNames: dbP.colorNames || null
                 };
+                if (dbP.colorNames && typeof dbP.colorNames === 'object') {
+                    Object.assign(colorNames, dbP.colorNames);
+                }
                 products.unshift(dynamicProduct); // Show newly added products at top
             }
         });
@@ -2528,6 +2619,7 @@ function syncProducts(callback) {
 
         // Immediate dynamic UI refresh without full page reload
         if (window.location.pathname.includes('shop.html')) {
+            if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
             if (typeof filterShop === 'function') filterShop();
             else if (typeof filterProducts === 'function') {
                 const urlParams = new URLSearchParams(window.location.search);
@@ -2537,6 +2629,7 @@ function syncProducts(callback) {
         }
         if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
             if (typeof displayProducts === 'function') displayProducts(products.slice(0, 4));
+            if (typeof renderHomeDepartmentProducts === 'function') renderHomeDepartmentProducts();
         }
         if (window.location.pathname.includes('wishlist.html')) {
             if (typeof renderWishlist === 'function') renderWishlist();
@@ -2584,8 +2677,27 @@ function syncProducts(callback) {
     });
 }
 
+window.liveCategories = window.liveCategories || [];
+var liveCategories = window.liveCategories;
+
+function syncCategoriesListener() {
+    if (typeof db === 'undefined' || !db) return;
+    db.collection('categories').onSnapshot(snap => {
+        window.liveCategories = [];
+        snap.forEach(doc => {
+            const data = doc.data();
+            if (data && data.name) window.liveCategories.push({ id: doc.id, ...data });
+        });
+        liveCategories = window.liveCategories;
+        if (window.location.pathname.includes('shop.html')) {
+            if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
+        }
+    }, err => console.warn('Categories live sync note:', err));
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    syncCategoriesListener();
     syncProducts(() => {
         initThemeToggle();
         updateCartCount();
@@ -2742,4 +2854,159 @@ function handleNewDropWaitlist() {
         }
     }
 }
+
+// ========================================================
+// HOME PAGE: 3 DEPARTMENT CARDS (MEN, WOMEN, KIDS) SHOWCASE
+// ========================================================
+let currentHomeDepartment = 'Mens'; // 'Mens', 'Womens', 'Kids'
+
+function switchHomeDepartment(dept) {
+    currentHomeDepartment = dept;
+    const norm = dept.toLowerCase();
+
+    ['mens', 'womens', 'kids'].forEach(d => {
+        const card = document.getElementById(`dept-card-${d}`);
+        const tab = document.getElementById(`dept-filter-tab-${d}`);
+        const isMatch = (norm === d);
+
+        if (card) {
+            if (isMatch) {
+                card.style.borderColor = '#1A120B';
+                card.style.boxShadow = '0 8px 30px rgba(139, 90, 43, 0.2)';
+                card.style.transform = 'translateY(-4px)';
+                const btn = card.querySelector('.dept-preview-btn');
+                if (btn) {
+                    btn.classList.add('active');
+                    btn.style.background = '#1A120B';
+                    btn.style.color = '#FFFFFF';
+                }
+            } else {
+                card.style.borderColor = 'rgba(26,18,11,0.2)';
+                card.style.boxShadow = '0 4px 15px rgba(0,0,0,0.06)';
+                card.style.transform = 'none';
+                const btn = card.querySelector('.dept-preview-btn');
+                if (btn) {
+                    btn.classList.remove('active');
+                    btn.style.background = 'transparent';
+                    btn.style.color = '#1A120B';
+                }
+            }
+        }
+        if (tab) {
+            if (isMatch) {
+                tab.style.background = '#1A120B';
+                tab.style.color = '#FFFFFF';
+            } else {
+                tab.style.background = 'transparent';
+                tab.style.color = '#1A120B';
+            }
+        }
+    });
+
+    const titleEl = document.getElementById('dept-title-label');
+    const badgeEl = document.getElementById('dept-badge-label');
+    if (titleEl && badgeEl) {
+        if (dept === 'Mens') {
+            titleEl.textContent = "Men's Apparel & Streetwear";
+            badgeEl.textContent = "Men's Selection";
+        } else if (dept === 'Womens') {
+            titleEl.textContent = "Women's Frocks, Blouses & Dresses";
+            badgeEl.textContent = "Women's Selection";
+        } else if (dept === 'Kids') {
+            titleEl.textContent = "Kids' & Teens Graphic Prints";
+            badgeEl.textContent = "Kids' Selection";
+        }
+    }
+
+    renderHomeDepartmentProducts();
+}
+
+function renderHomeDepartmentProducts() {
+    const grid = document.getElementById('home-department-grid');
+    if (!grid) return;
+
+    const target = (currentHomeDepartment || 'Mens').toLowerCase();
+    const deptProducts = products.filter(p => {
+        const secs = (p.sections || []).map(s => s.toLowerCase());
+        if (target === 'mens' || target === 'men') {
+            return secs.includes('mens') || secs.includes('unisexs');
+        } else if (target === 'womens' || target === 'women') {
+            return secs.includes('womens') || secs.includes('unisexs') || p.category === 'Frock' || p.category === 'Blouse';
+        } else if (target === 'kids' || target === 'kid') {
+            return secs.includes('kids');
+        }
+        return false;
+    });
+
+    if (deptProducts.length === 0) {
+        const dept = currentHomeDepartment || 'Mens';
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: #FAF7F2; border: 1.5px dashed rgba(139, 90, 43, 0.35); border-radius: 4px;">
+                <div style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5;">👕</div>
+                <h4 style="font-family: 'Playfair Display', serif; color: #1A120B; font-size: 1.1rem; margin: 0 0 8px;">No Products Yet</h4>
+                <p style="color: #6D5D53; font-size: 0.88rem; margin: 0 0 14px;">No garments have been added to the <strong>${dept}'s</strong> collection yet.</p>
+                <span style="display: inline-block; background: rgba(139, 90, 43, 0.1); color: #8B5A2B; border: 1px solid rgba(139, 90, 43, 0.3); font-size: 0.72rem; font-weight: 800; padding: 4px 12px; letter-spacing: 1px; text-transform: uppercase;">Check Back Soon</span>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = '';
+    deptProducts.slice(0, 4).forEach(p => {
+        const hasSizes = p.sizes && typeof p.sizes === 'object';
+        const displayPrice = hasSizes ? Object.values(p.sizes)[0].price : p.price;
+        const displayOldPrice = hasSizes ? Object.values(p.sizes)[0].oldPrice : p.oldPrice;
+
+        let discountBadge = '';
+        if (displayOldPrice && displayOldPrice > displayPrice) {
+            const discountPercent = Math.round(((displayOldPrice - displayPrice) / displayOldPrice) * 100);
+            discountBadge = `<span class="badge badge-sale" style="position: absolute; top: 12px; left: 12px; z-index: 10; background: #DC143C; color: white; padding: 3px 8px; font-size: 0.65rem; font-weight: 800;">${discountPercent}% OFF</span>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.background = '#FFFFFF';
+        card.style.border = '1px solid rgba(26,18,11,0.15)';
+        card.innerHTML = `
+            <div class="product-image-container" onclick="viewProduct('${p.id}')" style="cursor: pointer; position: relative;">
+                ${discountBadge}
+                <img src="${p.images[0]}" alt="${p.name}" class="product-image" loading="lazy">
+                <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist('${p.id}')" title="Add to Wishlist" style="position: absolute; top: 12px; right: 12px; z-index: 10;">
+                    <i data-lucide="heart" class="wishlist-icon-${p.id}"></i>
+                </button>
+            </div>
+            <div class="product-info" style="padding: 16px 14px;">
+                <div class="product-category" style="color: #8B5A2B; font-weight: 700; font-size: 0.72rem; text-transform: uppercase;">${p.category}</div>
+                <h3 class="product-title" onclick="viewProduct('${p.id}')" style="cursor: pointer; font-size: 1.05rem; margin: 4px 0 8px;">${p.name}</h3>
+                <div class="product-price" style="display: flex; align-items: baseline; gap: 8px;">
+                    <span class="current-price" style="font-weight: 800; color: #1A120B;">Rs. ${Number(displayPrice).toLocaleString()}.00</span>
+                    ${displayOldPrice ? `<span class="original-price" style="text-decoration: line-through; color: #8C7D73; font-size: 0.85rem;">Rs. ${Number(displayOldPrice).toLocaleString()}.00</span>` : ''}
+                </div>
+                <div class="product-actions" style="margin-top: 12px; display: flex; gap: 8px;">
+                    <button class="btn btn-primary" onclick="viewProduct('${p.id}')" style="flex: 1; padding: 9px; font-size: 0.8rem; font-weight: 700; background: #1A120B; color: #fff; border: 1px solid #1A120B; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i data-lucide="eye" style="width: 14px; height: 14px;"></i> View Details
+                    </button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+// Auto-parse URL department section parameter on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const secParam = urlParams.get('section');
+    if (secParam && typeof selectSection === 'function') {
+        const s = secParam.toLowerCase();
+        if (s === 'mens' || s === 'men') selectSection('Mens');
+        else if (s === 'womens' || s === 'women') selectSection('Womens');
+        else if (s === 'kids' || s === 'kid') selectSection('Kids');
+    }
+    if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+        renderHomeDepartmentProducts();
+    }
+});
 
