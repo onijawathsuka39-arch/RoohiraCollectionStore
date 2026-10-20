@@ -967,14 +967,31 @@
           <i class="fa-solid fa-tags" style="color: var(--gold);"></i>
           <span>Dynamic Product Categories Management</span>
         </div>
-        <div class="search-filter-box" style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <input type="text" id="newCategoryInput" class="form-input" placeholder="New Category Name (e.g. Hoodies, Polos, Shorts)..." style="width: 260px; padding: 8px 12px; font-size: 0.85rem;">
-          <button class="btn btn-gold btn-sm" onclick="handleAddNewCategoryFromTab()">
-            <i class="fa-solid fa-plus"></i> Add Category
-          </button>
-          <button class="btn btn-outline btn-sm" onclick="syncExistingCategoriesToFirestore(true)" title="Extract and sync all existing categories from products into Firestore">
-            <i class="fa-solid fa-arrows-rotate"></i> Sync Legacy Categories
-          </button>
+        <div class="search-filter-box" style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 650px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="newCategoryInput" class="form-input" placeholder="New Category Name (e.g. Frocks, Blouses, Oversized Tees)..." style="flex: 1; min-width: 200px; padding: 8px 12px; font-size: 0.85rem;">
+            <button class="btn btn-gold btn-sm" onclick="handleAddNewCategoryFromTab()">
+              <i class="fa-solid fa-plus"></i> Add Category
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="syncExistingCategoriesToFirestore(true)" title="Extract and sync all existing categories from products into Firestore">
+              <i class="fa-solid fa-arrows-rotate"></i> Sync Legacy
+            </button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.03); padding: 8px 12px; border-radius: 6px; border: 1px dashed var(--border); flex-wrap: wrap;">
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--gold); text-transform: uppercase;">Assign Sections:</span>
+            <label style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+              <input type="checkbox" id="catSecMens" value="Mens" checked> Men
+            </label>
+            <label style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+              <input type="checkbox" id="catSecWomens" value="Womens" checked> Women
+            </label>
+            <label style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+              <input type="checkbox" id="catSecKids" value="Kids"> Kids
+            </label>
+            <label style="font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+              <input type="checkbox" id="catSecOthers" value="Others"> Others
+            </label>
+          </div>
         </div>
       </div>
 
@@ -992,6 +1009,7 @@
           <thead>
             <tr>
               <th>Category Name</th>
+              <th>Assigned Sections (Tick to Show)</th>
               <th>Product Count</th>
               <th>Status</th>
               <th style="text-align: right;">Action</th>
@@ -2882,6 +2900,25 @@
       }
     }
 
+    
+    function toggleCategorySection(catId, sectionName, isChecked) {
+      const cat = liveCategories.find(c => c.id === catId);
+      if (!cat) return;
+      let secs = Array.isArray(cat.sections) ? [...cat.sections] : ['Mens', 'Womens', 'Kids', 'Others'];
+      if (isChecked) {
+        if (!secs.some(s => s.toLowerCase() === sectionName.toLowerCase())) secs.push(sectionName);
+      } else {
+        secs = secs.filter(s => s.toLowerCase() !== sectionName.toLowerCase());
+      }
+      cat.sections = secs;
+      if (db) {
+        db.collection('categories').doc(catId).set({ sections: secs }, { merge: true })
+          .then(() => showToast(`Section "${sectionName}" updated for "${cat.name}"!`))
+          .catch(e => showToast('Update error: ' + e.message, true));
+      }
+      renderCategoriesTable();
+    }
+
     function renderCategoriesTable() {
       const tbody = document.getElementById('categoriesTbody');
       if (!tbody) return;
@@ -2893,9 +2930,27 @@
       tbody.innerHTML = cats.map(c => {
         const productCount = (typeof liveDbProducts !== 'undefined' ? liveDbProducts : []).filter(p => p.category === c.name).length;
         const isDefault = ['Regular Tee (Printed)', 'Oversized Tee (Printed)', 'Frock', 'Blouse', 'DTF Custom'].includes(c.name);
+        const sections = (c.sections || ['Mens', 'Womens', 'Kids', 'Others']);
+        const hasSec = (s) => sections.some(sec => sec.toLowerCase() === s.toLowerCase());
         return `
           <tr>
-            <td><strong>${c.name}</strong></td>
+            <td><strong style="font-size: 0.95rem;">${c.name}</strong></td>
+            <td>
+              <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <label style="font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                  <input type="checkbox" ${hasSec('Mens') ? 'checked' : ''} onchange="toggleCategorySection('${c.id}', 'Mens', this.checked)"> Men
+                </label>
+                <label style="font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                  <input type="checkbox" ${hasSec('Womens') ? 'checked' : ''} onchange="toggleCategorySection('${c.id}', 'Womens', this.checked)"> Women
+                </label>
+                <label style="font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                  <input type="checkbox" ${hasSec('Kids') ? 'checked' : ''} onchange="toggleCategorySection('${c.id}', 'Kids', this.checked)"> Kids
+                </label>
+                <label style="font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                  <input type="checkbox" ${hasSec('Others') ? 'checked' : ''} onchange="toggleCategorySection('${c.id}', 'Others', this.checked)"> Others
+                </label>
+              </div>
+            </td>
             <td><span style="font-family:var(--font-mono); color:var(--gold);">${productCount}</span> products</td>
             <td>${isDefault ? '<span class="status-pill in-stock">Default</span>' : '<span class="status-pill confirmed">Custom</span>'}</td>
             <td style="text-align: right;">
@@ -2910,7 +2965,15 @@
       const input = document.getElementById('newCategoryInput');
       const name = (input ? input.value : '').trim();
       if (!name) { showToast('Category name cannot be empty.', true); return; }
-      addNewCategoryToFirestore(name, () => { if (input) input.value = ''; });
+      
+      const secs = [];
+      if (document.getElementById('catSecMens')?.checked) secs.push('Mens');
+      if (document.getElementById('catSecWomens')?.checked) secs.push('Womens');
+      if (document.getElementById('catSecKids')?.checked) secs.push('Kids');
+      if (document.getElementById('catSecOthers')?.checked) secs.push('Others');
+      if (!secs.length) secs.push('Mens', 'Womens', 'Kids', 'Others');
+
+      addNewCategoryToFirestore(name, () => { if (input) input.value = ''; }, secs);
     }
 
     function quickAddCategoryPrompt() {
@@ -2918,14 +2981,15 @@
       if (name && name.trim()) addNewCategoryToFirestore(name.trim());
     }
 
-    function addNewCategoryToFirestore(name, callback) {
+    function addNewCategoryToFirestore(name, callback, sections) {
       const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       if (liveCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
         showToast(`Category "${name}" already exists.`, true);
         return;
       }
+      const secs = Array.isArray(sections) && sections.length ? sections : ['Mens', 'Womens', 'Kids', 'Others'];
       const saveFn = () => {
-        const catData = { name, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+        const catData = { name, sections: secs, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
         db.collection('categories').doc(slug).set(catData)
           .then(() => {
             showToast(`Category "${name}" added to Firestore!`);

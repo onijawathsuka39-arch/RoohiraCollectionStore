@@ -21,6 +21,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="color-resolver.js"></script>
 
     <style>
         /* ========================================================
@@ -970,7 +971,8 @@
                 invoiceState.items = order.items.map((it, idx) => {
                     const price = Number(it.price) || 0;
                     const qty = Number(it.quantity) || 1;
-                    const variant = [it.size, it.color].filter(Boolean).join(' / ') || 'Standard';
+                    const cleanColor = typeof resolveFriendlyColorName === 'function' ? resolveFriendlyColorName(it.color) : it.color;
+                    const variant = [it.size, cleanColor].filter(Boolean).join(' / ') || 'Standard';
                     return {
                         no: idx + 1,
                         name: it.name || 'Garment Piece',

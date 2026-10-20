@@ -18,6 +18,123 @@
 })();
 
 // Centralized Color Configuration (Hex to Name Mapping)
+// Comprehensive Color Name Resolver with Nearest-Color Distance
+const standardColorMap = {
+    '#000000': 'Black', '#ffffff': 'White', '#ff0000': 'Red', '#dc143c': 'Crimson Red',
+    '#0000ff': 'Blue', '#008000': 'Green', '#ffff00': 'Yellow', '#808080': 'Gray',
+    '#a9a9a9': 'Dark Gray', '#d3d3d3': 'Light Gray', '#00f2ff': 'Light Blue',
+    '#e100ff': 'Magenta Pink', '#1a2a4a': 'Midnight Blue', '#4a90e2': 'Sky Blue',
+    '#f0f0f0': 'Off-White', '#0a0f1e': 'Dark Navy', '#333333': 'Charcoal Grey',
+    '#ff91a4': 'Salmon Pink', '#800000': 'Maroon', '#900056': 'Dark Pink',
+    '#c4956a': 'Light Brown', '#f5e6c8': 'Light Yellow', '#e6a100': 'Dark Yellow',
+    '#8b4513': 'Brown', '#36454f': 'Charcoal', '#889c8a': 'Sage Green',
+    '#7f94a8': 'Dusty Blue', '#d9cdbe': 'Beige', '#a020f0': 'Purple',
+    '#ffa500': 'Orange', '#ffc0cb': 'Pink', '#808000': 'Olive',
+    '#00ffff': 'Cyan', '#008080': 'Teal', '#4b0082': 'Indigo',
+    '#ee82ee': 'Violet', '#f5f5dc': 'Beige', '#ffe4c4': 'Bisque',
+    '#faebd7': 'Antique White', '#7fffd4': 'Aquamarine', '#5f9ea0': 'Cadet Blue',
+    '#d2691e': 'Chocolate', '#ff7f50': 'Coral', '#6495ed': 'Cornflower Blue',
+    '#b8860b': 'Dark Goldenrod', '#006400': 'Dark Green', '#bdb76b': 'Dark Khaki',
+    '#8b008b': 'Dark Magenta', '#556b2f': 'Dark Olive Green', '#ff8c00': 'Dark Orange',
+    '#9932cc': 'Dark Orchid', '#8b0000': 'Dark Red', '#e9967a': 'Dark Salmon',
+    '#8fbc8f': 'Dark Sea Green', '#483d8b': 'Dark Slate Blue', '#2f4f4f': 'Dark Slate Gray',
+    '#00ced1': 'Dark Turquoise', '#9400d3': 'Dark Violet', '#ff1493': 'Deep Pink',
+    '#00bfff': 'Deep Sky Blue', '#696969': 'Dim Gray', '#1e90ff': 'Dodger Blue',
+    '#b22222': 'Firebrick', '#228b22': 'Forest Green', '#ffd700': 'Gold',
+    '#daa520': 'Goldenrod', '#adff2f': 'Green Yellow', '#f0fff0': 'Honeydew',
+    '#ff69b4': 'Hot Pink', '#cd5c5c': 'Indian Red', '#f0e68c': 'Khaki',
+    '#e6e6fa': 'Lavender', '#fff0f5': 'Lavender Blush', '#7cfc00': 'Lawn Green',
+    '#fffacd': 'Lemon Chiffon', '#add8e6': 'Light Blue', '#f08080': 'Light Coral',
+    '#e0ffff': 'Light Cyan', '#eedd82': 'Light Goldenrod', '#90ee90': 'Light Green',
+    '#ffb6c1': 'Light Pink', '#ffa07a': 'Light Salmon', '#20b2aa': 'Light Sea Green',
+    '#87cefa': 'Light Sky Blue', '#778899': 'Light Slate Gray', '#b0c4de': 'Light Steel Blue',
+    '#ffffe0': 'Light Yellow', '#00ff00': 'Lime', '#32cd32': 'Lime Green',
+    '#faf0e6': 'Linen', '#66cdaa': 'Medium Aquamarine', '#0000cd': 'Medium Blue',
+    '#ba55d3': 'Medium Orchid', '#9370db': 'Medium Purple', '#3cb371': 'Medium Sea Green',
+    '#7b68ee': 'Medium Slate Blue', '#00fa9a': 'Medium Spring Green', '#48d1cc': 'Medium Turquoise',
+    '#c71585': 'Medium Violet Red', '#191970': 'Midnight Blue', '#ffe4e1': 'Misty Rose',
+    '#ffe4b5': 'Moccasin', '#ffdead': 'Navajo White', '#000080': 'Navy',
+    '#fdf5e6': 'Old Lace', '#6b8e23': 'Olive Drab', '#ff4500': 'Orange Red',
+    '#da70d6': 'Orchid', '#eee8aa': 'Pale Goldenrod', '#98fb98': 'Pale Green',
+    '#afeeee': 'Pale Turquoise', '#db7093': 'Pale Violet Red', '#ffefd5': 'Papaya Whip',
+    '#ffdab9': 'Peach Puff', '#cd853f': 'Peru', '#dda0dd': 'Plum',
+    '#b0e0e6': 'Powder Blue', '#bc8f8f': 'Rosy Brown', '#4169e1': 'Royal Blue',
+    '#f4a460': 'Sandy Brown', '#2e8b57': 'Sea Green', '#fff5ee': 'Seashell',
+    '#a0522d': 'Sienna', '#c0c0c0': 'Silver', '#87ceeb': 'Sky Blue',
+    '#6a5acd': 'Slate Blue', '#708090': 'Slate Gray', '#fffafa': 'Snow',
+    '#00ff7f': 'Spring Green', '#4682b4': 'Steel Blue', '#d2b48c': 'Tan',
+    '#d8bfd8': 'Thistle', '#ff6347': 'Tomato', '#40e0d0': 'Turquoise',
+    '#f5deb3': 'Wheat', '#f5f5f5': 'White Smoke', '#9acd32': 'Yellow Green'
+};
+
+function hexToRgb(hex) {
+    let clean = hex.replace('#', '').trim();
+    if (clean.length === 3) {
+        clean = clean.split('').map(c => c + c).join('');
+    }
+    const num = parseInt(clean, 16);
+    return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+    };
+}
+
+function resolveFriendlyColorName(hexOrName, productContext) {
+    if (!hexOrName) return 'Standard';
+    const raw = String(hexOrName).trim();
+    
+    // Check product specific colorNames first
+    if (productContext && productContext.colorNames && typeof productContext.colorNames === 'object') {
+        const found = productContext.colorNames[raw] || productContext.colorNames[raw.toLowerCase()] || productContext.colorNames[raw.toUpperCase()];
+        if (found) return found;
+    }
+
+    // Check global colorNames dictionary
+    if (typeof colorNames !== 'undefined' && colorNames && typeof colorNames === 'object') {
+        const found = colorNames[raw] || colorNames[raw.toLowerCase()] || colorNames[raw.toUpperCase()];
+        if (found) return found;
+    }
+
+    // If it's already an English word without #, capitalize and return
+    if (!raw.startsWith('#')) {
+        return raw.charAt(0).toUpperCase() + raw.slice(1);
+    }
+
+    // Direct lookup in standardColorMap
+    const lowerHex = raw.toLowerCase();
+    if (standardColorMap[lowerHex]) {
+        return standardColorMap[lowerHex];
+    }
+
+    // Nearest Color Calculation using Euclidean distance in RGB space
+    try {
+        const targetRgb = hexToRgb(lowerHex);
+        let minDistance = Infinity;
+        let bestMatchName = 'Custom Shade';
+
+        for (const [mapHex, mapName] of Object.entries(standardColorMap)) {
+            const mapRgb = hexToRgb(mapHex);
+            const dist = Math.sqrt(
+                Math.pow(targetRgb.r - mapRgb.r, 2) +
+                Math.pow(targetRgb.g - mapRgb.g, 2) +
+                Math.pow(targetRgb.b - mapRgb.b, 2)
+            );
+            if (dist < minDistance) {
+                minDistance = dist;
+                bestMatchName = mapName;
+            }
+        }
+        return bestMatchName;
+    } catch (e) {
+        return 'Custom Shade';
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.resolveFriendlyColorName = resolveFriendlyColorName;
+}
+
 const colorNames = {
     '#ffffff': 'White',
     '#000000': 'Black',
@@ -324,6 +441,7 @@ function renderHomePageSections() {
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
+    if (typeof initFastScrollAnimations === 'function') setTimeout(initFastScrollAnimations, 40);
 }
 
 function displayProducts(filteredProducts) {
@@ -388,6 +506,9 @@ let subcategorySelected = false;
 
 function handleSortChange(val) {
     currentSort = val;
+    if (typeof renderDynamicShopCategories === 'function') {
+        renderDynamicShopCategories();
+    }
     filterShop();
 }
 
@@ -496,27 +617,61 @@ function selectCategory(cat, btn) {
 }
 
 // Dynamically generate Category boxes on the Shop page from Firestore and product catalog
+// Filtered strictly by selected Section (Mens, Womens, Kids, Others) per user requirements
 function renderDynamicShopCategories() {
     const row = document.getElementById('category-tab-row');
     if (!row) return;
 
-    // Collect all unique categories from products currently in memory
+    const targetSec = (currentSection || 'All').toLowerCase();
+
+    // 1. Gather all categories eligible for the active section
     const catSet = new Set();
+
+    // From products in memory that match the current section
     products.forEach(p => {
-        if (p.category && typeof p.category === 'string' && p.category.trim()) {
+        if (!p.category || typeof p.category !== 'string' || !p.category.trim()) return;
+        const pSecs = (p.sections || []).map(s => s.toLowerCase());
+        let matchesSec = (targetSec === 'all');
+        if (!matchesSec) {
+            if (targetSec === 'mens' || targetSec === 'men') {
+                matchesSec = pSecs.includes('mens') || pSecs.includes('unisexs');
+            } else if (targetSec === 'womens' || targetSec === 'women') {
+                matchesSec = pSecs.includes('womens') || pSecs.includes('unisexs') || p.category === 'Frock' || p.category === 'Blouse';
+            } else if (targetSec === 'kids' || targetSec === 'kid') {
+                matchesSec = pSecs.includes('kids');
+            } else if (targetSec === 'others' || targetSec === 'other') {
+                matchesSec = pSecs.includes('others') || pSecs.includes('other') || pSecs.includes('unisexs');
+            }
+        }
+        if (matchesSec) {
             catSet.add(p.category.trim());
         }
     });
 
-    // Also include categories from Firestore if available globally
+    // Also inspect Firestore liveCategories section settings
     if (typeof liveCategories !== 'undefined' && Array.isArray(liveCategories)) {
         liveCategories.forEach(c => {
-            if (c.name) catSet.add(c.name.trim());
+            if (!c.name) return;
+            const cSecs = (c.sections || ['Mens', 'Womens', 'Kids', 'Others']).map(s => s.toLowerCase());
+            let matches = (targetSec === 'all');
+            if (!matches) {
+                if (targetSec === 'mens' || targetSec === 'men') matches = cSecs.includes('mens');
+                else if (targetSec === 'womens' || targetSec === 'women') matches = cSecs.includes('womens');
+                else if (targetSec === 'kids' || targetSec === 'kid') matches = cSecs.includes('kids');
+                else if (targetSec === 'others' || targetSec === 'other') matches = cSecs.includes('others');
+            }
+            if (matches) {
+                catSet.add(c.name.trim());
+            }
         });
     }
 
     const categoriesList = Array.from(catSet);
-    if (!categoriesList.length) return;
+
+    // If current selected category is not in the filtered section categories list, reset to 'All'
+    if (currentCategory !== 'All' && !categoriesList.some(cat => cat.toLowerCase() === currentCategory.toLowerCase())) {
+        currentCategory = 'All';
+    }
 
     // Build the buttons HTML
     let html = `<button class="shop-filter-btn category-btn ${currentCategory === 'All' ? 'active' : ''}" onclick="selectCategory('All', this)">All Categories</button>`;
@@ -842,37 +997,60 @@ function renderCart() {
     const totalElement = document.getElementById('cart-total');
     if (!cartContainer) return;
     if (cart.length === 0) {
-        cartContainer.innerHTML = '<div style="text-align: center; padding: 50px; color: var(--text-muted);">Your cart is empty.</div>';
+        cartContainer.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; background: #FFFFFF; border: 1.5px dashed var(--border); border-radius: 16px; margin: 20px 0;">
+                <div style="width: 64px; height: 64px; margin: 0 auto 16px; background: rgba(139, 90, 43, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold);">
+                    <i data-lucide="shopping-bag" style="width: 32px; height: 32px;"></i>
+                </div>
+                <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #1A120B; margin: 0 0 8px;">Your Shopping Bag is Empty</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0 0 20px;">Explore handcrafted luxury pieces from our latest collection.</p>
+                <a href="shop.html" class="btn btn-primary" style="padding: 10px 24px; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <span>Explore Shop</span>
+                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                </a>
+            </div>
+        `;
         if (totalElement) totalElement.innerText = 'Rs. 0.00';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         return;
     }
     let html = '', total = 0;
     cart.forEach((item, index) => {
-        const itemTotal = item.price * item.quantity;
+        const itemTotal = (item.price || 0) * (item.quantity || 1);
         total += itemTotal;
+        const colorName = typeof resolveFriendlyColorName === 'function' ? resolveFriendlyColorName(item.color) : (item.color || 'Default');
+        const imgSrc = item.image || 'logo.png';
+
         html += `
-            <div class="cart-item glass" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <img src="${item.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 10px;">
-                    <div>
-                        <h4 style="margin: 0;">${item.name}</h4>
-                        <p style="color: var(--text-muted); font-size: 0.8rem; margin: 2px 0;">Size: ${item.size} | Color: ${colorNames[item.color] || item.color}</p>
-                        <p style="color: #000; font-weight: 800; margin: 5px 0 0;">Rs. ${itemTotal.toLocaleString()}</p>
+            <div class="cart-card-modern" style="background: #FFFFFF; border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 15px rgba(26, 18, 11, 0.04); display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                <img src="${imgSrc}" alt="${item.name}" style="width: 80px; height: 95px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--surface);">
+                <div style="flex: 1; min-width: 180px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                        <h4 style="margin: 0 0 4px; font-size: 1.02rem; font-weight: 700; color: #1A120B; line-height: 1.3;">${item.name}</h4>
+                        <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #DC143C; cursor: pointer; padding: 4px;" title="Remove Item">
+                            <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                        </button>
                     </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.05); padding: 5px 10px; border-radius: 8px;">
-                        <button onclick="updateQuantity(${index}, -1)" class="btn-qty">-</button>
-                        <span style="min-width: 20px; text-align: center; font-weight: 800;">${item.quantity}</span>
-                        <button onclick="updateQuantity(${index}, 1)" class="btn-qty">+</button>
+                    <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.78rem; font-weight: 700; background: rgba(139, 90, 43, 0.1); color: #8B5A2B; padding: 2px 8px; border-radius: 4px;">Size: ${item.size || 'Free'}</span>
+                        <span style="font-size: 0.78rem; font-weight: 700; background: #FAF7F2; color: #4A3025; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);">Color: ${colorName}</span>
                     </div>
-                    <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ff4444; cursor: pointer;"><i data-lucide="trash-2" style="width: 18px;"></i></button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: inline-flex; align-items: center; background: #FAF7F2; border: 1.5px solid var(--border); border-radius: 20px; padding: 3px 6px;">
+                            <button onclick="updateQuantity(${index}, -1)" class="btn-qty" style="width: 26px; height: 26px; border-radius: 50%; border: none; background: #FFFFFF; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">-</button>
+                            <span style="min-width: 32px; text-align: center; font-weight: 800; font-size: 0.9rem; color: #1A120B;">${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)" class="btn-qty" style="width: 26px; height: 26px; border-radius: 50%; border: none; background: #FFFFFF; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">+</button>
+                        </div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: #1A120B; font-family: var(--font-sans);">
+                            Rs. ${itemTotal.toLocaleString()}.00
+                        </div>
+                    </div>
                 </div>
             </div>`;
     });
     cartContainer.innerHTML = html;
     if (totalElement) totalElement.innerText = `Rs. ${total.toLocaleString()}.00`;
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 // --- Auth System ---
@@ -1490,7 +1668,7 @@ function placeOrder() {
                     price: item.price,
                     quantity: item.quantity,
                     size: item.size,
-                    color: colorNames[item.color] || item.color,
+                    color: resolveFriendlyColorName(item.color),
                     image: item.image || (p.images ? p.images[0] : ''),
                     isCustom: item.isCustom || (item.id && String(item.id).startsWith('custom-')) || false,
                     customStickers: item.customStickers || []
@@ -1543,7 +1721,7 @@ function placeOrder() {
         message += `📦 *Items Ordered:*\n`;
 
         cart.forEach((item) => {
-            const colorName = colorNames[item.color] || item.color;
+            const colorName = resolveFriendlyColorName(item.color);
             message += `• *${item.name}* (${item.size} | ${colorName})\n`;
             message += `  Qty: ${item.quantity} x Rs. ${item.price.toLocaleString()}\n`;
         });
@@ -1568,7 +1746,7 @@ function placeOrder() {
                     price: Number(item.price) || 0,
                     quantity: Number(item.quantity) || 1,
                     size: item.size || 'Free',
-                    color: item.color ? (colorNames[item.color] || item.color) : 'Default',
+                    color: item.color ? (resolveFriendlyColorName(item.color)) : 'Default',
                     image: item.image || (p.images && p.images[0] ? p.images[0] : ''),
                     isCustom: Boolean(item.isCustom || (item.id && String(item.id).startsWith('custom-'))),
                     customStickers: Array.isArray(item.customStickers) ? item.customStickers : []
@@ -2546,3 +2724,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+
+
+// ==========================================================================
+// FAST SCROLL REVEAL OBSERVER (Smooth, hardware-accelerated animations)
+// ==========================================================================
+function initFastScrollAnimations() {
+    if (typeof window === 'undefined') return;
+
+    // Target elements: category cards, department cards, product cards, sections
+    const selectors = [
+        '.category-square-card',
+        '.dept-card',
+        '.product-card',
+        '.featured-product-card',
+        '#department-section .section-header',
+        '.hero-content',
+        '.exclusive-banner'
+    ];
+
+    const elements = document.querySelectorAll(selectors.join(', '));
+    if (!elements || elements.length === 0) return;
+
+    // Use fast IntersectionObserver
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    obs.unobserve(entry.target); // Reveal once fast, no lagging
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.08
+        });
+
+        elements.forEach((el, index) => {
+            if (!el.classList.contains('scroll-reveal') && !el.classList.contains('revealed')) {
+                el.classList.add('scroll-reveal');
+                // Calculate stagger delay based on sibling index
+                const parent = el.parentElement;
+                let childIndex = 1;
+                if (parent) {
+                    const siblings = Array.from(parent.children);
+                    childIndex = (siblings.indexOf(el) % 8) + 1;
+                }
+                el.setAttribute('data-reveal-delay', childIndex);
+                observer.observe(el);
+            }
+        });
+    } else {
+        // Fallback for older browsers
+        elements.forEach(el => el.classList.add('revealed'));
+    }
+}
+
+// Automatically trigger on DOM load and after dynamic product renders
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initFastScrollAnimations, 50);
+    });
+}

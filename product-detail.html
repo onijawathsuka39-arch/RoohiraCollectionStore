@@ -98,7 +98,7 @@
             <div id="slider-dots" class="slider-pagination"></div>
 
             <!-- Image Thumbnails (Previews) -->
-            <div id="image-thumbnails" class="gallery-thumbnails">
+            <div id="image-thumbnails" class="gallery-thumbnails" style="display: none !important;">
                 <!-- Thumbnails will be injected here -->
             </div>
         </div>
@@ -381,6 +381,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="color-resolver.js"></script>
     <script src="script.js"></script>
     <script>
         lucide.createIcons();
@@ -508,7 +509,7 @@
                     thumb.src = img;
                     thumb.className = `thumb ${idx === 0 ? 'active' : ''}`;
                     thumb.onclick = () => goToSlide(idx);
-                    if (thumbContainer) thumbContainer.appendChild(thumb);
+                    // Thumbnails disabled per user request
                 }
             });
 
@@ -613,7 +614,7 @@
                 } else {
                     btn.style.background = c;
                 }
-                const colorTitle = (typeof colorNames !== 'undefined' && colorNames[c]) ? colorNames[c] : c;
+                const colorTitle = resolveFriendlyColorName(c, product);
                 btn.title = colorTitle;
                 btn.onclick = () => selectColor(c, btn);
                 colorContainer.appendChild(btn);
@@ -672,9 +673,7 @@
             const colorNameSpan = document.getElementById('selected-color-name');
             if (colorNameSpan && selectedColor) {
                 const cLower = selectedColor.toLowerCase();
-                const cName = (product && product.colorNames && product.colorNames[cLower]) 
-                    ? product.colorNames[cLower] 
-                    : ((typeof colorNames !== 'undefined' && colorNames[selectedColor]) ? colorNames[selectedColor] : selectedColor);
+                const cName = resolveFriendlyColorName(selectedColor, product);
                 colorNameSpan.textContent = cName;
             }
 
@@ -816,9 +815,7 @@
             const colorNameSpan = document.getElementById('selected-color-name');
             if (colorNameSpan) {
                 const cLower = (color || '').toLowerCase();
-                const cName = (product && product.colorNames && (product.colorNames[color] || product.colorNames[cLower])) 
-                    ? (product.colorNames[color] || product.colorNames[cLower]) 
-                    : ((typeof colorNames !== 'undefined' && colorNames[color]) ? colorNames[color] : color);
+                const cName = resolveFriendlyColorName(color, product);
                 colorNameSpan.textContent = cName;
             }
 
