@@ -358,9 +358,19 @@
                 time: o.time || '',
                 name: o.userName || 'Guest',
                 phone: o.userPhone || '',
+                phone2: o.userPhone2 || '',
+                email: o.userEmail || email || '',
                 address: o.userAddress || '',
+                streetAddress: o.streetAddress || o.userAddress || '',
+                city: o.city || '',
+                district: o.district || '',
+                postal: o.postal || '',
+                paymentMethod: o.paymentMethod || 'Cash on Delivery (COD)',
                 items: o.items || [],
-                delivery: delivery
+                subtotal: subtotal,
+                delivery: delivery,
+                deliveryFee: delivery,
+                grandTotal: o.total || (subtotal + delivery)
             };
             
             const jsonStr = JSON.stringify(orderData);

@@ -1040,7 +1040,27 @@
                 <input type="checkbox" id="secKids" value="Kids" style="accent-color: var(--gold);"> Kids
               </label>
               <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="secOthers" value="Others" style="accent-color: var(--gold);"> Others
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
                 <input type="checkbox" id="secUnisex" value="Unisexs" checked style="accent-color: var(--gold);"> Unisex
+              </label>
+            </div>
+          </div>
+
+          <!-- Homepage Placements: Exclusive New Arrivals & Signature Selection -->
+          <div class="form-group" style="background: rgba(198, 162, 107, 0.08); border: 1px solid rgba(198, 162, 107, 0.3); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--gold); margin-bottom: 8px;">
+              <i class="fa-solid fa-star"></i> Homepage Placements (මුල් පිටුවේ පෙන්වීම)
+            </label>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+              <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="pNewArrival" style="accent-color: var(--gold); width: 16px; height: 16px;">
+                <span>Show in <strong>EXCLUSIVE NEW ARRIVALS</strong></span>
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                <input type="checkbox" id="pFeatured" style="accent-color: var(--gold); width: 16px; height: 16px;">
+                <span>Show in <strong>Signature Selection (Featured Masterpieces)</strong></span>
               </label>
             </div>
           </div>
@@ -1248,7 +1268,7 @@
               <i class="fa-solid fa-phone"></i> Call Patron
             </a>
             <a id="odInvoiceBtn" href="#" target="_blank" class="btn btn-sm btn-gold" style="text-decoration: none;">
-              <i class="fa-solid fa-file-invoice"></i> View E-Invoice
+              <i class="fa-solid fa-file-invoice"></i> View Official Invoice (HTML)
             </a>
           </div>
         </div>
@@ -1706,7 +1726,10 @@
         document.getElementById('secMens').checked = secs.includes('mens') || secs.includes('men');
         document.getElementById('secWomens').checked = secs.includes('womens') || secs.includes('women');
         document.getElementById('secKids').checked = secs.includes('kids') || secs.includes('kid');
+        document.getElementById('secOthers').checked = secs.includes('others') || secs.includes('other');
         document.getElementById('secUnisex').checked = secs.includes('unisexs') || secs.includes('unisex');
+        document.getElementById('pNewArrival').checked = (prod && (prod.isNewArrival === true || prod.isNewArrival === 'true' || prod.newArrival === true));
+        document.getElementById('pFeatured').checked = (prod && (prod.isFeatured === true || prod.isFeatured === 'true' || prod.featured === true || prod.isSignature === true));
       } else {
         title.innerText = 'Add New Garment to Catalog';
         document.getElementById('pId').value = '';
@@ -1724,7 +1747,10 @@
         document.getElementById('secMens').checked = true;
         document.getElementById('secWomens').checked = true;
         document.getElementById('secKids').checked = false;
+        document.getElementById('secOthers').checked = false;
         document.getElementById('secUnisex').checked = true;
+        if (document.getElementById('pNewArrival')) document.getElementById('pNewArrival').checked = false;
+        if (document.getElementById('pFeatured')) document.getElementById('pFeatured').checked = false;
       }
       updateImagePreview('pImage', 'previewMain');
       if (document.getElementById('statusMain')) document.getElementById('statusMain').style.display = 'none';
@@ -2194,6 +2220,7 @@
       if (document.getElementById('secMens').checked) sections.push('Mens');
       if (document.getElementById('secWomens').checked) sections.push('Womens');
       if (document.getElementById('secKids').checked) sections.push('Kids');
+      if (document.getElementById('secOthers').checked) sections.push('Others');
       if (document.getElementById('secUnisex').checked) sections.push('Unisexs');
       if (sections.length === 0) sections.push('Mens', 'Womens', 'Unisexs');
 
@@ -2217,6 +2244,8 @@
         colors: modalSelectedColors.length ? modalSelectedColors : ['#000000'],
         desc,
         isDeleted: false,
+        isNewArrival: document.getElementById('pNewArrival') ? document.getElementById('pNewArrival').checked : false,
+        isFeatured: document.getElementById('pFeatured') ? document.getElementById('pFeatured').checked : false,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -2269,19 +2298,24 @@
         phone: o.userPhone || o.phone || '',
         phone2: o.userPhone2 || '',
         address: o.userAddress || o.address || '',
+        streetAddress: o.streetAddress || o.userAddress || o.address || '',
+        city: o.city || '',
+        district: o.district || '',
+        postal: o.postal || '',
         notes: o.notes || '',
         paymentMethod: o.paymentMethod || 'Cash on Delivery',
         date: o.date || new Date().toLocaleDateString(),
         time: o.time || '',
         items: o.items || [],
         subtotal: subtotal,
+        deliveryFee: delivery,
         delivery: delivery,
         grandTotal: grandTotal
       };
 
       const jsonStr = JSON.stringify(orderData);
       const encodedData = btoa(unescape(encodeURIComponent(jsonStr)));
-      return `invoice.html?data=${encodeURIComponent(encodedData)}`;
+      return `invoice.html?data=${encodeURIComponent(encodedData)}&source=database`;
     }
 
     function viewOrderDetails(docId) {

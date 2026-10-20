@@ -50,377 +50,7 @@ const colorNames = {
 
 const products = [
     {
-        id: '1', name: 'Infinity Edition', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/4w34h3hZ/Python-Infinity-w.png',
-            'https://i.ibb.co/NnswC8R5/Chat-GPT-Image-Apr-30-2026-12-01-14-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'The Infinity Edition Regular Tee (Printed) by Roohira. Crafted with premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '2', name: 'Peace Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/ZzqQ1P97/Python-Peace.png',
-            'https://i.ibb.co/QvcG1bRY/Chat-GPT-Image-May-4-2026-03-30-55-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#000000'], stock: 10,
-        desc: 'Peace Design Regular Tee (Printed) by Roohira. Featuring a premium 220 GSM build for a sleek and meaningful streetwear look.'
-    },
-    {
-        id: '3', name: 'Nike Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/XkDb3jmB/Nike.png',
-            'https://i.ibb.co/BV3wRfLt/Chat-GPT-Image-Apr-30-2026-04-50-57-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Nike Design Regular Tee (Printed) by Roohira. A classic aesthetic combined with high-quality 220 GSM fabric for everyday premium style.'
-    },
-    {
-        id: '4', name: 'Stitch Design for Girls', category: 'Regular Tee (Printed)', sections: ['Womens'],
-        images: [
-            'https://i.ibb.co/20MCs0nk/Python-Scrich.png',
-            'https://i.ibb.co/C3SgXz87/Python-Srtich-balck.png',
-            'https://i.ibb.co/Qj1hcz4D/Gemini-Generated-Image-9ngc6s9ngc6s9ngc.png',
-            'https://i.ibb.co/sdC39Jz8/Gemini-Generated-Image-rgqfm7rgqfm7rgqf.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#000000', '#ffffff'],
-        desc: 'Stitch Design for Girls Regular Tee (Printed) by Roohira. Cute and stylish aesthetic combined with high-quality 220 GSM fabric for everyday premium style.'
-    },
-    {
-        id: '5', name: 'BMW Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/gLS0w69Y/Python-BMW.png',
-            'https://i.ibb.co/m5mSZSSB/Chat-GPT-Image-Apr-30-2026-02-48-53-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'],
-        desc: 'BMW Design Regular Tee (Printed) by Roohira. Iconic automotive styling paired with premium 220 GSM comfort.'
-    },
-    {
-        id: '6', name: 'Space Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/jZ8BbSM2/Python-Space.png',
-            'https://i.ibb.co/j9SNvjhp/Chat-GPT-Image-Apr-30-2026-12-19-43-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'],
-        desc: 'Space Design Regular Tee (Printed) by Roohira. Explore the cosmos in style with this premium 220 GSM graphic tee.'
-    },
-    {
-        id: '7', name: 'Air Jordan Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/yFQVXd3p/Chat-GPT-Image-Apr-29-2026-10-04-36-PM.png',
-            'https://i.ibb.co/fdyjtDZY/Chat-GPT-Image-Apr-30-2026-05-36-29-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#000000'], stock: 10,
-        desc: 'Air Jordan Design Regular Tee (Printed) by Roohira. Iconic basketball-inspired aesthetic meets premium 220 GSM comfort.'
-    },
-    {
-        id: '8', name: 'Urban Design Oversized Tee (Printed)', category: 'Oversized Tee (Printed)', sections: ['Womens',],
-        images: [
-            'https://i.ibb.co/G4Nb8tRV/OVERSIZE-190-python.png',
-            'https://i.ibb.co/cSvDHTyx/Chat-GPT-Image-Apr-30-2026-05-10-31-PM.png'
-        ],
-        gsm: '190 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1700, oldPrice: 1900 },
-            'M': { price: 1700, oldPrice: 1900 },
-            'L': { price: 1700, oldPrice: 1900 },
-            'XL': { price: 1700, oldPrice: 1900 }
-        },
-        colors: ['#c803a4ff'],
-        desc: 'Urban Oversized Tee (Printed) by Roohira. A bold, relaxed fit in a refreshing light blue hue, crafted from premium 190 GSM fabric for the ultimate streetwear vibe.'
-    },
-    {
-        id: '9', name: 'Nike Design Oversized Tee (Printed) ', category: 'Oversized Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/7d7g8Hmd/190gsm-python-nike-yellow.png',
-            'https://i.ibb.co/Y7hJ3Mjy/Chat-GPT-Image-Apr-30-2026-04-53-45-PM.png'
-        ],
-        gsm: '190 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1700, oldPrice: 1900 },
-            'M': { price: 1700, oldPrice: 1900 },
-            'L': { price: 1700, oldPrice: 1900 },
-            'XL': { price: 1700, oldPrice: 1900 }
-        },
-        colors: ['#ffff00'],
-        desc: 'Nike Design Oversized Tee (Printed) by Roohira. A high-energy, vibrant yellow design featuring iconic streetwear aesthetics and premium 190 GSM comfort.'
-    },
-    {
-        id: '10', name: 'Infinity Edition Oversized Tee (Printed)', category: 'Oversized Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/yFmFFkG0/Python-Infinity-B.png',
-            'https://i.ibb.co/Y7dvR0vH/Chat-GPT-Image-Apr-30-2026-12-07-41-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1790, oldPrice: 1900 },
-            'M': { price: 1790, oldPrice: 1900 },
-            'L': { price: 1790, oldPrice: 1900 },
-            'XL': { price: 1790, oldPrice: 1900 }
-        },
-        colors: ['#00f2ff'],
-        desc: 'Infinity Edition Oversized Tee (Printed) by Roohira. A refreshing light blue design featuring the iconic infinity motif and premium 220 GSM comfort.'
-    },
-    {
-        id: '11', name: 'GTR Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/jmXL8K9/GTR-Design.png',
-            'https://i.ibb.co/N24VB8L1/Chat-GPT-Image-May-20-2026-08-42-05-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'GTR Design Regular Tee (Printed) by Roohira. Featuring an iconic Nissan GT-R Liberty Walk graphic on the back, crafted from premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '12', name: 'F30 M3 Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/qLqb4RNj/F30-M3-Design.png',
-            'https://i.ibb.co/fzDHqJw6/Chat-GPT-Image-May-20-2026-08-51-35-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'F30 M3 Design Regular Tee (Printed) by Roohira. Featuring an iconic BMW F30 M3 graphic on the back, crafted from premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '13', name: 'Samurai Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/35YkhXRs/honor-black-design.png',
-            'https://i.ibb.co/p7ftW61/honor-white-design.png',
-            'https://i.ibb.co/7NVzPVhv/Chat-GPT-Image-May-20-2026-08-47-42-PM.png',
-            'https://i.ibb.co/rK2NP38J/Chat-GPT-Image-May-20-2026-09-03-02-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#000000', '#ffffff'], stock: 10,
-        desc: 'Samurai Design Regular Tee (Printed) by Roohira. A premium 220 GSM streetwear t-shirt featuring a striking Japanese Samurai "Honor" design, available in both black and white.'
-    },
-    {
-        id: '14', name: 'Mustang Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/23M5QKKX/Mustang-desing.png',
-            'https://i.ibb.co/JRBp67cp/Chat-GPT-Image-May-20-2026-08-44-29-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Mustang Design Regular Tee (Printed) by Roohira. Featuring an iconic Ford Mustang graphic, crafted from premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '15', name: 'Angel Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/hFsMZR7s/angels-design.png',
-            'https://i.ibb.co/rR6WpLZC/Chat-GPT-Image-May-20-2026-08-54-03-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Angel Design Regular Tee (Printed) by Roohira. Featuring a unique angelic graphic, crafted from premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '16', name: 'Rock Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/gMQPpMfR/rock-desing.png',
-            'https://i.ibb.co/zV2z6pj0/Chat-GPT-Image-May-20-2026-08-57-42-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Rock Design Regular Tee (Printed) by Roohira. Featuring a striking rock-inspired graphic, crafted from premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '17', name: 'Never Give Up Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/zh9kdHYY/never-give-up-design.png',
-            'https://i.ibb.co/fcL3x12/Chat-GPT-Image-May-20-2026-08-49-40-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Never Give Up Design Regular Tee (Printed) by Roohira. Featuring a motivational graphic, crafted from premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '18', name: 'Waffle T-shirts', category: 'Oversized Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/RTGD6DPx/12.png',
-            'https://i.ibb.co/cKzdSStx/23.png'
-        ],
-        sizeImages: {
-            'M': 'https://i.ibb.co/RTGD6DPx/12.png',
-            'XL': 'https://i.ibb.co/cKzdSStx/23.png'
-        },
-        colorSizes: {
-            '#c4956a': 'M',
-            '#f5e6c8': 'XL'
-        },
-        sizeChartImg: 'https://i.ibb.co/0RVd9brV/Size-Chart-Waffle-240-GSM-OZ-T-Shirts-01.jpg',
-        gsm: '240 GSM', brand: 'Roohira',
-        sizes: {
-            'M':  { price: 1450, oldPrice: 1500 },
-            'XL': { price: 1450, oldPrice: 1500 }
-        },
-        colors: ['#c4956a', '#f5e6c8'], stock: 10,
-        desc: 'Waffle T-shirts by Roohira. Premium 240 GSM waffle-knit fabric for a unique texture and superior comfort. Available in Light Brown and Light Yellow. A must-have wardrobe essential.'
-    },
-    {
-        id: '19', name: 'Waffle Printed', category: 'Oversized Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/7JPf15Fw/Chat-GPT-Image-Jun-5-2026-03-26-18-PM78.png',
-            'https://i.ibb.co/j9XPBYs8/Chat-GPT-Image-Jun-5-2026-03-26-18-PM24.png',
-            'https://i.ibb.co/CK4ZcVpH/Chat-GPT-Image-Jun-5-2026-04-31-07-PM.png',
-            'https://i.ibb.co/nNbt6sjK/Chat-GPT-Image-Jun-5-2026-04-29-40-PM.png'
-        ],
-        sizeImages: {
-            'M': 'https://i.ibb.co/7JPf15Fw/Chat-GPT-Image-Jun-5-2026-03-26-18-PM78.png',
-            'XL': 'https://i.ibb.co/j9XPBYs8/Chat-GPT-Image-Jun-5-2026-03-26-18-PM24.png'
-        },
-        colorSizes: {
-            '#c4956a': 'M',
-            '#f5e6c8': 'XL'
-        },
-        sizeChartImg: 'https://i.ibb.co/0RVd9brV/Size-Chart-Waffle-240-GSM-OZ-T-Shirts-01.jpg',
-        gsm: '240 GSM', brand: 'Roohira',
-        sizes: {
-            'M':  { price: 1850, oldPrice: null },
-            'XL': { price: 1850, oldPrice: null }
-        },
-        colors: ['#c4956a', '#f5e6c8'], stock: 10,
-        desc: 'Waffle Printed T-shirts by Roohira. Premium 240 GSM waffle-knit fabric for a unique texture, superior comfort, and clean prints. Features non-clickable sizes selected directly by color dots. Available in Light Brown and Light Yellow.'
-    },
-    {
-        id: '20', name: 'Colour Elephant Design', category: 'Oversized Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/67CjtFx0/Python-Infinity.png',
-            'https://i.ibb.co/WWwpQsLR/Chat-GPT-Image-Jun-6-2026-10-02-04-PM.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1790, oldPrice: 1900 },
-            'M': { price: 1790, oldPrice: 1900 },
-            'L': { price: 1790, oldPrice: 1900 },
-            'XL': { price: 1790, oldPrice: 1900 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Colour Elephant Design Oversized Tee (Printed) by Roohira. Featuring a stunning elephant artwork graphic, crafted from premium 220 GSM fabric for ultimate comfort and design definition.'
-    },
-    {
-        id: '21', name: 'Formular Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/sJJ3LhPL/F1-Design.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Formular Design Regular Tee (Printed) by Roohira. Crafted with premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '22', name: 'Monkey Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: [
-            'https://i.ibb.co/2GCH9zF/monke-Design.png'
-        ],
-        gsm: '220 GSM', brand: 'Roohira',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#000000'], stock: 10,
-        desc: 'Monkey Design Regular Tee (Printed) by Roohira. Crafted with premium 220 GSM fabric for ultimate comfort and durability.'
-    },
-    {
-        id: '23', name: 'Long Design Frock', category: 'Frock', sections: ['Womens'],
+        id: '23', name: 'Long Design Frock', category: 'Frock', sections: ['Womens'], isNewArrival: true, isFeatured: true,
         images: [
             'https://i.ibb.co/CKNLnKPW/Chat-GPT-Image-Aug-3-2026-12-13-02-PM.png',
             'https://i.ibb.co/5WMrGVJn/Chat-GPT-Image-Aug-3-2026-12-07-29-PM.png',
@@ -434,7 +64,7 @@ const products = [
         desc: 'Long Design Frock by Roohira. An elegant and stylish long frock crafted from soft, lightweight premium fabric. Designed with a flattering silhouette and available in Dark Yellow, Light Yellow, and Maroon in versatile Free Size.'
     },
     {
-        id: '24', name: 'Long Batik Frock', category: 'Frock', sections: ['Womens'],
+        id: '24', name: 'Long Batik Frock', category: 'Frock', sections: ['Womens'], isNewArrival: true, isFeatured: true,
         images: [
             'https://i.ibb.co/cdSLGG9/Chat-GPT-Image-Aug-3-2026-04-59-27-PM.png',
             'https://i.ibb.co/yFMBjFbf/Chat-GPT-Image-Aug-3-2026-04-56-51-PM.png',
@@ -456,7 +86,7 @@ const products = [
         desc: 'Long Batik Frock by Roohira. Beautiful traditional and modern fusion long batik frock available in Blue, Dark Yellow, Brown, and Maroon in XL and 2XL sizes.'
     },
     {
-        id: '25', name: 'White Blouse with Embroidery', category: 'Blouse', sections: ['Womens'],
+        id: '25', name: 'White Blouse with Embroidery', category: 'Blouse', sections: ['Womens'], isNewArrival: true, isFeatured: true,
         images: [
             'https://i.ibb.co/dzYtF9G/Chat-GPT-Image-Aug-4-2026-12-25-15-PM.png',
             'https://i.ibb.co/TBM1752f/Chat-GPT-Image-Aug-4-2026-12-28-42-PM.png',
@@ -477,171 +107,22 @@ const products = [
         },
         colors: ['#ffff00', '#a020f0', '#0000ff', '#008000'], stock: 15,
         desc: 'White Blouse with Embroidery by Roohira. A beautiful, lightweight premium blouse styled with intricate embroidery detail. Available in Yellow, Purple, Blue, and Green in XL, XXL, and XXXL sizes.'
-    },
-    {
-        id: '26', name: 'Garfield Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
-        images: ['https://i.ibb.co/4ZZkgf5d/garfilde-tee.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Garfield Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '27', name: 'Focus Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/0VvY5PhY/Focus-tee.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Focus Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '28', name: 'Ducati Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/KpJygRTT/ducarti-tee.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Ducati Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '29', name: 'Dodge Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/v4wJ8PMC/doger-tee.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Dodge Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '30', name: 'Stitch Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
-        images: ['https://i.ibb.co/0RLVSK7c/stich-tee.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'Stitch Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '31', name: 'BMW Car Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/TqgwRzLD/BMW-tee-white.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1800, oldPrice: 1850 },
-            'M': { price: 1800, oldPrice: 1850 },
-            'L': { price: 1800, oldPrice: 1850 },
-            'XL': { price: 1800, oldPrice: 1850 }
-        },
-        colors: ['#ffffff'], stock: 10,
-        desc: 'BMW Car Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '32', name: 'Snoopy Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
-        images: ['https://i.ibb.co/SCypGfW/snoopy-tee.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: {
-            'S': { price: 1650, oldPrice: 1850 },
-            'M': { price: 1650, oldPrice: 1850 },
-            'L': { price: 1650, oldPrice: 1850 },
-            'XL': { price: 1650, oldPrice: 1850 }
-        },
-        colors: ['#000000'], stock: 10,
-        desc: 'Snoopy Design Regular Tee (Printed) by Python. Crafted with premium 220 GSM fabric and featuring a high-quality A3 DTF print for ultimate durability and comfort.'
-    },
-    {
-        id: '33', name: 'Japan Girl design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/KnYwkn7/japan-girl-desing.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#000000'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Japan Girl design Regular Tee (Printed) by Python. Featuring a premium quality A3 DTF print on 220 GSM fabric for ultimate style and comfort.'
-    },
-    {
-        id: '34', name: 'Reject design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/3YPzTCXJ/Reject-desing.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#000000'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Reject design Regular Tee (Printed) by Python. Featuring a premium quality A3 DTF print on 220 GSM fabric for ultimate style and comfort.'
-    },
-    {
-        id: '35', name: 'Yakuza design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/RpbMdjH4/yakusa-design.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#000000'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Yakuza design Regular Tee (Printed) by Python. Featuring a premium quality A3 DTF print on 220 GSM fabric for ultimate style and comfort.'
-    },
-    {
-        id: '36', name: 'Cat Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
-        images: ['https://i.ibb.co/DgfQfYXn/cat-design-blck.png', 'https://i.ibb.co/HfqPgHkd/cat-design-white.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#000000', '#ffffff'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Cat Design Regular Tee (Printed) by Python. Available in both Black and White, featuring premium quality A3 DTF print on 220 GSM fabric.'
-    },
-    {
-        id: '37', name: 'Monkey D Luffy Design', category: 'Regular Tee (Printed)', sections: ['Kids'],
-        images: ['https://i.ibb.co/4R4ZJXNF/Monkey-d-luffy-design.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#ffffff'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Monkey D Luffy Design Regular Tee (Printed) by Python. White colour tee featuring premium quality A3 DTF print on 220 GSM fabric.'
-    },
-    {
-        id: '38', name: 'Luffy Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/4RQ4tGKM/Gear-5-design.png', 'https://i.ibb.co/jPvVmqLT/luffy-design-white.png', 'https://i.ibb.co/YTy0dxSr/luffy-design-black.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#ffffff', '#000000'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Luffy Design Regular Tee (Printed) by Python. Available in White and Black, featuring Gear 5 artwork printed on 220 GSM fabric with A3 DTF print.'
-    },
-    {
-        id: '39', name: 'Goku Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/bjsz2V1n/Goku-Design.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#ffffff'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Goku Design Regular Tee (Printed) by Python. White colour tee featuring premium quality A3 DTF print on 220 GSM fabric.'
-    },
-    {
-        id: '40', name: 'Headphone Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/4ZMh98sg/hedset-design.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#ffffff'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Headphone Design Regular Tee (Printed) by Python. White colour tee featuring premium quality A3 DTF print on 220 GSM fabric.'
-    },
-    {
-        id: '41', name: 'Kawasaki Design', category: 'Regular Tee (Printed)', sections: ['Mens', 'Womens', 'Unisexs'],
-        images: ['https://i.ibb.co/NgZjzZgn/kawasaki-design.png'],
-        gsm: '220 GSM', brand: 'Python',
-        sizes: { 'S': { price: 1800, oldPrice: 1850 }, 'M': { price: 1800, oldPrice: 1850 }, 'L': { price: 1800, oldPrice: 1850 }, 'XL': { price: 1800, oldPrice: 1850 } },
-        colors: ['#ffffff'], stock: 10, printTech: 'A3 DTF Print',
-        desc: 'Kawasaki Design Regular Tee (Printed) by Python. White colour tee featuring premium quality A3 DTF print on 220 GSM fabric.'
     }
 ];
+
+// Helper to open product details without ever flashing an old or wrong product image
+function openProductPage(productId) {
+    if (typeof products !== 'undefined' && Array.isArray(products)) {
+        const found = products.find(item => String(item.id) === String(productId));
+        if (found) {
+            try {
+                sessionStorage.setItem('roohira_selected_product_' + productId, JSON.stringify(found));
+            } catch (e) {}
+        }
+    }
+    window.location.href = 'product-detail.html?id=' + encodeURIComponent(productId);
+}
+window.openProductPage = openProductPage;
 
 // --- Cart System ---
 let cart = [];
@@ -689,122 +170,166 @@ function saveCart() {
     if(typeof updateFreeDeliveryBar === 'function') updateFreeDeliveryBar();
 }
 
+function generateProductCardHTML(p) {
+    const hasSizes = p.sizes && typeof p.sizes === 'object';
+    const displayPrice = hasSizes ? Object.values(p.sizes)[0].price : p.price;
+    const displayOldPrice = hasSizes ? Object.values(p.sizes)[0].oldPrice : p.oldPrice;
+
+    // Calculate discount percentage
+    let discountBadge = '';
+    if (displayOldPrice && displayOldPrice > displayPrice) {
+        const discountPercent = Math.round(((displayOldPrice - displayPrice) / displayOldPrice) * 100);
+        discountBadge = `<span class="card-discount-badge">${discountPercent}% OFF</span>`;
+    }
+
+    const isOutOfStock = p.stock === 0;
+
+    // Determine wishlist state
+    const wished = (typeof isInWishlist === 'function') ? isInWishlist(p.id) : false;
+    const heartColor = wished ? 'color: #DC143C;' : 'color: #6D5D53;';
+
+    // Available sizes array
+    const availableSizes = hasSizes ? Object.keys(p.sizes) : ['Free Size'];
+    const gsmText = (p.gsm || p.material || '').trim();
+    const sectionBadge = (p.sections && p.sections.length > 0) ? p.sections[0] : '';
+    const imagesArr = (p.images && Array.isArray(p.images) && p.images.length) ? p.images : ['logo.png'];
+
+    return `
+    <div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}" 
+         onclick="openProductPage('${p.id}')" 
+         onmouseenter="startHoverSlide('${p.id}', this.querySelector('.card-slider'))"
+         onmouseleave="stopHoverSlide('${p.id}', this.querySelector('.card-slider'))">
+        
+        <!-- Image Area with Badges & Hover Slider -->
+        <div class="product-image-box">
+            ${discountBadge}
+            
+            <!-- Wishlist Toggle overlay -->
+            <button class="card-wishlist-btn" onclick="event.stopPropagation(); handleCardWishlistToggle('${p.id}', this)" title="Add to Wishlist">
+                <i data-lucide="heart" style="width: 15px; height: 15px; ${heartColor}" ${wished ? 'fill="#DC143C"' : ''}></i>
+            </button>
+
+            <!-- Fabric & Section Tag -->
+            <div class="product-card-tags">
+                ${gsmText ? `<span class="card-gsm-tag">${gsmText}</span>` : ''}
+                ${sectionBadge ? `<span class="card-section-tag">${sectionBadge}</span>` : ''}
+            </div>
+
+            <div class="card-slider">
+                ${imagesArr.map(img => `<img src="${img}" alt="${p.name}" loading="lazy">`).join('')}
+            </div>
+            ${imagesArr.length > 1 ? `
+            <div class="card-slider-indicators">
+                ${imagesArr.map((_, idx) => `<div class="card-slider-indicator-dot ${idx === 0 ? 'active' : ''}"></div>`).join('')}
+            </div>
+            ` : ''}
+        </div>
+
+        <!-- Detailed Product Info Section -->
+        <div class="product-card-body">
+            
+            <!-- Category & Reviews Rating Row -->
+            <div class="product-card-meta">
+                <span class="product-card-category">${p.category || 'Roohira Apparel'}</span>
+                <div class="product-card-rating">
+                    <i data-lucide="star" style="width: 11px; height: 11px; fill: #B38738;"></i>
+                    <span>${(p.rating || 5.0).toFixed(1)}</span>
+                </div>
+            </div>
+
+            <!-- Product Name -->
+            <h3 class="product-card-title" title="${p.name}">${p.name}</h3>
+            
+            <!-- Price Row -->
+            <div class="product-card-pricing">
+                <span class="card-price-current">Rs. ${Number(displayPrice).toLocaleString()}.00</span>
+                ${displayOldPrice ? `<span class="card-price-old">Rs. ${Number(displayOldPrice).toLocaleString()}</span>` : ''}
+            </div>
+
+            <!-- Available Sizes Chips -->
+            <div class="product-card-sizes">
+                <span class="size-label">Sizes:</span>
+                <div class="size-chips">
+                    ${availableSizes.slice(0, 4).map(sz => `<span class="size-chip">${sz}</span>`).join('')}
+                    ${availableSizes.length > 4 ? `<span class="size-chip-more">+${availableSizes.length - 4}</span>` : ''}
+                </div>
+            </div>
+
+            <!-- Color Swatches & Action Bar -->
+            <div class="product-card-footer">
+                <!-- Colors Preview -->
+                <div class="card-color-swatches">
+                    ${(p.colors || []).slice(0, 5).map(c => {
+                        const imgUrl = (p.colorImages && p.colorImages[c]) ? p.colorImages[c] : null;
+                        const cName = (typeof colorNames !== 'undefined' && colorNames[c]) ? colorNames[c] : c;
+                        if (imgUrl) {
+                            return `<span class="swatch-circle" style="background-image: url('${imgUrl}');" title="${cName}"></span>`;
+                        } else {
+                            return `<span class="swatch-circle" style="background: ${c};" title="${cName}"></span>`;
+                        }
+                    }).join('')}
+                </div>
+
+                <!-- Quick Add Button with Feedback -->
+                ${isOutOfStock ? `
+                    <span class="card-sold-out-badge">Sold Out</span>
+                ` : `
+                    <button class="card-action-btn" onclick="event.stopPropagation(); addToCart('${p.name}', ${displayPrice}, '${imagesArr[0]}')">
+                        <i data-lucide="shopping-bag" style="width: 13px; height: 13px;"></i> Add
+                    </button>
+                `}
+            </div>
+
+        </div>
+    </div>`;
+}
+
+function renderHomePageSections() {
+    // 1. Render EXCLUSIVE NEW ARRIVALS section (#new-arrivals-grid)
+    const newArrivalsGrid = document.getElementById('new-arrivals-grid');
+    if (newArrivalsGrid) {
+        let newArrivalItems = products.filter(p => p.isNewArrival === true);
+        if (!newArrivalItems.length) {
+            newArrivalItems = products.slice(0, 4);
+        }
+        if (newArrivalItems.length > 0) {
+            newArrivalsGrid.innerHTML = newArrivalItems.map(p => generateProductCardHTML(p)).join('');
+        } else {
+            newArrivalsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FAF7F2; border-radius: 4px; border: 1.5px dashed rgba(139, 90, 43, 0.3);">
+                    <h4 style="font-family: 'Playfair Display', serif; color: #1A120B; font-size: 1.1rem; margin-bottom: 6px;">New Collection Dropping Soon</h4>
+                    <p style="color: #6D5D53; font-size: 0.88rem; margin: 0;">Check back shortly for our exclusive new seasonal arrivals.</p>
+                </div>
+            `;
+        }
+    }
+
+    // 2. Render Signature Selection / Featured section (#product-grid)
+    const featuredGrid = document.getElementById('product-grid');
+    if (featuredGrid) {
+        let featuredItems = products.filter(p => p.isFeatured === true);
+        if (!featuredItems.length) {
+            featuredItems = products.slice(0, 4);
+        }
+        if (featuredItems.length > 0) {
+            featuredGrid.innerHTML = featuredItems.map(p => generateProductCardHTML(p)).join('');
+        } else {
+            featuredGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: #FAF7F2; border-radius: 4px; border: 1.5px dashed rgba(139, 90, 43, 0.3);">
+                    <h4 style="font-family: 'Playfair Display', serif; color: #1A120B; font-size: 1.1rem; margin-bottom: 6px;">Featured Masterpieces</h4>
+                    <p style="color: #6D5D53; font-size: 0.88rem; margin: 0;">Our handpicked signature collection will be available soon.</p>
+                </div>
+            `;
+        }
+    }
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
 function displayProducts(filteredProducts) {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
-    grid.innerHTML = '';
-    filteredProducts.forEach((p) => {
-        const hasSizes = p.sizes && typeof p.sizes === 'object';
-        const displayPrice = hasSizes ? Object.values(p.sizes)[0].price : p.price;
-        const displayOldPrice = hasSizes ? Object.values(p.sizes)[0].oldPrice : p.oldPrice;
-
-        // Calculate discount percentage
-        let discountBadge = '';
-        if (displayOldPrice && displayOldPrice > displayPrice) {
-            const discountPercent = Math.round(((displayOldPrice - displayPrice) / displayOldPrice) * 100);
-            discountBadge = `<span class="card-discount-badge">${discountPercent}% OFF</span>`;
-        }
-
-        const isOutOfStock = p.stock === 0;
-
-        // Determine wishlist state
-        const wished = isInWishlist(p.id);
-        const heartColor = wished ? 'color: #DC143C;' : 'color: #6D5D53;';
-
-        // Available sizes array
-        const availableSizes = hasSizes ? Object.keys(p.sizes) : ['Free Size'];
-        const gsmText = (p.gsm || p.material || '').trim();
-        const sectionBadge = (p.sections && p.sections.length > 0) ? p.sections[0] : '';
-
-        grid.innerHTML += `
-        <div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}" 
-             onclick="window.location.href='product-detail.html?id=${p.id}'" 
-             onmouseenter="startHoverSlide('${p.id}', this.querySelector('.card-slider'))"
-             onmouseleave="stopHoverSlide('${p.id}', this.querySelector('.card-slider'))">
-            
-            <!-- Image Area with Badges & Hover Slider -->
-            <div class="product-image-box">
-                ${discountBadge}
-                
-                <!-- Wishlist Toggle overlay -->
-                <button class="card-wishlist-btn" onclick="event.stopPropagation(); handleCardWishlistToggle('${p.id}', this)" title="Add to Wishlist">
-                    <i data-lucide="heart" style="width: 15px; height: 15px; ${heartColor}" ${wished ? 'fill="#DC143C"' : ''}></i>
-                </button>
-
-                <!-- Fabric & Section Tag -->
-                <div class="product-card-tags">
-                    ${gsmText ? `<span class="card-gsm-tag">${gsmText}</span>` : ''}
-                    ${sectionBadge ? `<span class="card-section-tag">${sectionBadge}</span>` : ''}
-                </div>
-
-                <div class="card-slider">
-                    ${p.images.map(img => `<img src="${img}" alt="${p.name}" loading="lazy">`).join('')}
-                </div>
-                ${p.images.length > 1 ? `
-                <div class="card-slider-indicators">
-                    ${p.images.map((_, idx) => `<div class="card-slider-indicator-dot ${idx === 0 ? 'active' : ''}"></div>`).join('')}
-                </div>
-                ` : ''}
-            </div>
-
-            <!-- Detailed Product Info Section -->
-            <div class="product-card-body">
-                
-                <!-- Category & Reviews Rating Row -->
-                <div class="product-card-meta">
-                    <span class="product-card-category">${p.category || 'Roohira Apparel'}</span>
-                    <div class="product-card-rating">
-                        <i data-lucide="star" style="width: 11px; height: 11px; fill: #B38738;"></i>
-                        <span>${(p.rating || 5.0).toFixed(1)}</span>
-                    </div>
-                </div>
-
-                <!-- Product Name -->
-                <h3 class="product-card-title" title="${p.name}">${p.name}</h3>
-                
-                <!-- Price Row -->
-                <div class="product-card-pricing">
-                    <span class="card-price-current">Rs. ${displayPrice.toLocaleString()}.00</span>
-                    ${displayOldPrice ? `<span class="card-price-old">Rs. ${displayOldPrice.toLocaleString()}</span>` : ''}
-                </div>
-
-                <!-- Available Sizes Chips -->
-                <div class="product-card-sizes">
-                    <span class="size-label">Sizes:</span>
-                    <div class="size-chips">
-                        ${availableSizes.slice(0, 4).map(sz => `<span class="size-chip">${sz}</span>`).join('')}
-                        ${availableSizes.length > 4 ? `<span class="size-chip-more">+${availableSizes.length - 4}</span>` : ''}
-                    </div>
-                </div>
-
-                <!-- Color Swatches & Action Bar -->
-                <div class="product-card-footer">
-                    <!-- Colors Preview -->
-                    <div class="card-color-swatches">
-                        ${(p.colors || []).slice(0, 5).map(c => {
-                            const imgUrl = (p.colorImages && p.colorImages[c]) ? p.colorImages[c] : null;
-                            const cName = (typeof colorNames !== 'undefined' && colorNames[c]) ? colorNames[c] : c;
-                            if (imgUrl) {
-                                return `<span class="swatch-circle" style="background-image: url('${imgUrl}');" title="${cName}"></span>`;
-                            } else {
-                                return `<span class="swatch-circle" style="background: ${c};" title="${cName}"></span>`;
-                            }
-                        }).join('')}
-                    </div>
-
-                    <!-- Quick Add Button with Feedback -->
-                    ${isOutOfStock ? `
-                        <span class="card-sold-out-badge">Sold Out</span>
-                    ` : `
-                        <button class="card-action-btn" onclick="event.stopPropagation(); addToCart('${p.name}', ${displayPrice}, '${p.images[0]}')">
-                            <i data-lucide="shopping-bag" style="width: 13px; height: 13px;"></i> Add
-                        </button>
-                    `}
-                </div>
-
-            </div>
-        </div>`;
-    });
+    grid.innerHTML = (filteredProducts || []).map(p => generateProductCardHTML(p)).join('');
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
@@ -1067,7 +592,7 @@ function selectSection(sec, btn) {
     const badgeLabel = document.getElementById('active-dept-label');
     if (badgeRow && badgeLabel) {
         if (sec && sec !== 'All') {
-            const deptNames = { 'Mens': "Men's Collection", 'Womens': "Women's Collection", 'Kids': "Kids' Collection" };
+            const deptNames = { 'Mens': "Men's Collection", 'Womens': "Women's Collection", 'Kids': "Kids' Collection", 'Others': "Other Collections" };
             badgeLabel.textContent = '🏷 ' + (deptNames[sec] || sec);
             badgeRow.style.display = 'flex';
         } else {
@@ -1092,6 +617,8 @@ function filterShop() {
                 return secs.includes('womens') || secs.includes('unisexs') || p.category === 'Frock' || p.category === 'Blouse';
             } else if (targetSec === 'kids' || targetSec === 'kid') {
                 return secs.includes('kids');
+            } else if (targetSec === 'others' || targetSec === 'other') {
+                return secs.includes('others') || secs.includes('other') || secs.includes('unisexs');
             }
             return true;
         });
@@ -2140,8 +1667,8 @@ function placeOrder() {
                         <button id="modal-wa-btn" style="width: 100%; background: #25D366; color: white; border: none; padding: 12px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; transition: 0.2s;">
                             <i data-lucide="message-circle" style="width: 18px;"></i> Share to WhatsApp
                         </button>
-                        <button id="modal-inv-btn" style="width: 100%; background: transparent; color: #8B5A2B; border: 1.5px solid #8B5A2B; padding: 11px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; transition: 0.2s;">
-                            <i data-lucide="file-text" style="width: 18px;"></i> View Invoice Only
+                        <button id="modal-inv-btn" style="width: 100%; background: #8B5A2B; color: #FFFFFF; border: none; padding: 12px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; transition: 0.2s; box-shadow: 0 4px 12px rgba(139,90,43,0.3);">
+                            <i data-lucide="file-text" style="width: 18px;"></i> View Invoice
                         </button>
                         <a href="index.html" style="width: 100%; background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 11px; font-weight: 700; border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; transition: 0.2s;">
                             <i data-lucide="home" style="width: 18px;"></i> Go back to Home
@@ -2570,6 +2097,8 @@ function syncProducts(callback) {
                 if (dbP.brand) p.brand = dbP.brand;
                 if (dbP.sizeChartImg) p.sizeChartImg = dbP.sizeChartImg;
                 if (dbP.customSpecs && typeof dbP.customSpecs === 'object') p.customSpecs = dbP.customSpecs;
+                if (dbP.isNewArrival !== undefined) p.isNewArrival = (dbP.isNewArrival === true || dbP.isNewArrival === 'true');
+                if (dbP.isFeatured !== undefined) p.isFeatured = (dbP.isFeatured === true || dbP.isFeatured === 'true');
                 if (dbP.colorNames && typeof dbP.colorNames === 'object') {
                     p.colorNames = dbP.colorNames;
                     Object.assign(colorNames, dbP.colorNames);
@@ -2606,7 +2135,9 @@ function syncProducts(callback) {
                     desc: dbP.desc || dbP.description || 'Exclusive luxury collection piece handcrafted by Roohira.',
                     sizeChartImg: dbP.sizeChartImg || '',
                     customSpecs: dbP.customSpecs || null,
-                    colorNames: dbP.colorNames || null
+                    colorNames: dbP.colorNames || null,
+                    isNewArrival: (dbP.isNewArrival === true || dbP.isNewArrival === 'true'),
+                    isFeatured: (dbP.isFeatured === true || dbP.isFeatured === 'true')
                 };
                 if (dbP.colorNames && typeof dbP.colorNames === 'object') {
                     Object.assign(colorNames, dbP.colorNames);
@@ -2628,7 +2159,8 @@ function syncProducts(callback) {
             }
         }
         if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
-            if (typeof displayProducts === 'function') displayProducts(products.slice(0, 4));
+            if (typeof renderHomePageSections === 'function') renderHomePageSections();
+            else if (typeof displayProducts === 'function') displayProducts(products.slice(0, 4));
             if (typeof renderHomeDepartmentProducts === 'function') renderHomeDepartmentProducts();
         }
         if (window.location.pathname.includes('wishlist.html')) {
@@ -2711,7 +2243,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const catParam = urlParams.get('category');
             catParam ? filterProducts(catParam) : filterProducts('All');
         }
-        if (window.location.pathname.includes('index.html') || window.location.pathname === '/') { displayProducts(products.slice(0, 4)); }
+        if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+            if (typeof renderHomePageSections === 'function') renderHomePageSections();
+            else if (typeof displayProducts === 'function') displayProducts(products.slice(0, 4));
+        }
         if ((window.location.pathname.includes('login.html') || window.location.pathname.includes('signup.html')) && currentUser) {
             window.location.href = 'profile.html';
         }
@@ -3004,6 +2539,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (s === 'mens' || s === 'men') selectSection('Mens');
         else if (s === 'womens' || s === 'women') selectSection('Womens');
         else if (s === 'kids' || s === 'kid') selectSection('Kids');
+        else if (s === 'others' || s === 'other') selectSection('Others');
     }
     if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
         renderHomeDepartmentProducts();

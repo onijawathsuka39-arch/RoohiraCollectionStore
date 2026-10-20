@@ -145,7 +145,7 @@
                 }
 
                 grid.innerHTML += `
-                <div class="product-card glass" style="cursor: pointer; position: relative;" onclick="window.location.href='product-detail.html?id=${p.id}'">
+                <div class="product-card glass" style="cursor: pointer; position: relative;" onclick="openProductPage('${p.id}')">
                     <div class="product-image" style="overflow: hidden; position: relative; width: 100%; aspect-ratio: 1/1; border-radius: 15px;">
                         ${discountBadge}
                         <div class="wishlist-overlay-btn" onclick="event.stopPropagation(); removeWishlistItem('${p.id}')" 

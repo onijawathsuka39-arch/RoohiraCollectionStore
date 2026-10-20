@@ -3,587 +3,1170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Invoice - Roohira Collection</title>
+    <title>Official Invoice - ROOHIRA COLLECTION</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+    
+    <!-- Google Fonts: Elegant Serif for Brand & Clean Sans for Data/Numbers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- JsBarcode for CODE128 Scannable Barcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    
+    <!-- QRCode.js for Scannable Invoice QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- Firebase SDKs for Direct Database Integration (by ID fallback) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <style>
+        /* ========================================================
+           MASTER SPECIFICATION COLOR & TYPOGRAPHY SYSTEM
+           ======================================================== */
         :root {
-            --primary: #8B5A2B;
-            --black: #000;
+            --color-text-main: #111111;
+            --color-border-main: #4A3025;
+            --color-border-secondary: #786052;
+            --color-text-secondary: #555555;
+            --color-divider: #D8D3CE;
+            --color-bg-white: #FFFFFF;
+            --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
         body {
-            background: #fff;
-            font-family: 'Playfair Display', Georgia, serif;
-            color: #000;
-            padding: 40px;
+            background-color: #FAF8F5;
+            font-family: var(--font-sans);
+            color: var(--color-text-main);
+            font-size: 11pt;
+            line-height: 1.4;
+            padding: 24px 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: text;
         }
-        .bill-container {
-            max-width: 800px;
+
+        /* ── A4 Page Container ── */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            height: auto;
+            background-color: var(--color-bg-white);
             margin: 0 auto;
-            border: 2px solid #eee;
-            padding: 40px;
-            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(74, 48, 37, 0.08);
+            padding: 10mm;
         }
-        .bill-header {
-            text-align: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 30px;
-            margin-bottom: 30px;
+
+        /* ── Master Double Border: Outer 1.2mm #4A3025, Inner Thinner #786052 ── */
+        .outer-border-frame {
+            border: 1.2mm solid var(--color-border-main);
+            padding: 3.5mm;
+            min-height: calc(297mm - 20mm);
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-bg-white);
         }
-        .bill-header img {
-            height: 80px;
-            margin-bottom: 15px;
+
+        .inner-border-frame {
+            border: 0.5mm solid var(--color-border-secondary);
+            padding: 8mm 9mm;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: var(--color-bg-white);
         }
-        .bill-header h1 {
-            font-size: 2.5rem;
-            letter-spacing: 5px;
-            font-weight: 900;
-        }
-        .bill-info {
+
+        /* ── Header Section ── */
+        .invoice-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 40px;
-            font-size: 1rem;
+            align-items: flex-start;
+            padding-bottom: 5mm;
+            border-bottom: 0.8mm solid var(--color-border-main);
         }
-        .cust-details h3 {
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+
+        .header-left {
+            max-width: 58%;
+        }
+
+        .header-brand-title {
+            font-family: var(--font-serif);
+            font-size: 18pt;
+            font-weight: 800;
+            color: var(--color-text-main);
+            letter-spacing: 2px;
             text-transform: uppercase;
+            line-height: 1.15;
+            margin-bottom: 4px;
         }
-        .order-details {
+
+        .header-brand-tagline {
+            font-size: 7.5pt;
+            text-transform: uppercase;
+            letter-spacing: 2.2px;
+            color: var(--color-border-secondary);
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .header-meta-line {
+            font-size: 8.5pt;
+            color: var(--color-text-main);
+            line-height: 1.35;
+        }
+
+        .header-meta-line span.label {
+            font-weight: 700;
+            color: var(--color-text-main);
+        }
+
+        .header-meta-line span.val {
+            color: var(--color-text-secondary);
+        }
+
+        .header-right {
             text-align: right;
+            min-width: 38%;
         }
-        .item-table {
+
+        .invoice-title-badge {
+            font-family: var(--font-serif);
+            font-size: 20pt;
+            font-weight: 900;
+            color: var(--color-text-main);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 7px;
+        }
+
+        .order-meta-table {
+            width: 100%;
+            margin-top: 4px;
+            border-collapse: collapse;
+        }
+
+        .order-meta-table td {
+            font-size: 8.5pt;
+            padding: 1.5px 0;
+            line-height: 1.3;
+        }
+
+        .order-meta-table td.label-col {
+            text-align: right;
+            font-weight: 700;
+            color: var(--color-text-main);
+            padding-right: 8px;
+            white-space: nowrap;
+        }
+
+        .order-meta-table td.val-col {
+            text-align: right;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .order-meta-table td.val-col.highlight-id {
+            color: var(--color-text-main);
+            font-weight: 800;
+            font-family: var(--font-sans);
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Thin Decorative Sub-Header Accent ── */
+        .header-sub-divider {
+            height: 1px;
+            background-color: var(--color-border-secondary);
+            margin-top: 1.5mm;
+            margin-bottom: 4mm;
+        }
+
+        /* ── Customer & Shipping Grid ── */
+        .parties-container {
+            display: flex;
+            gap: 6mm;
+            margin-bottom: 4.5mm;
+        }
+
+        .party-block {
+            flex: 1;
+            padding: 2.5mm 0;
+        }
+
+        .party-block.shipping-block {
+            border-left: 0.6mm solid var(--color-border-main);
+            padding-left: 4.5mm;
+        }
+
+        .section-heading-sm {
+            font-family: var(--font-serif);
+            font-size: 9.5pt;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--color-border-main);
+            margin-bottom: 2mm;
+            padding-bottom: 1mm;
+            border-bottom: 0.4mm solid var(--color-border-secondary);
+        }
+
+        .party-details-grid {
+            display: table;
+            width: 100%;
+            font-size: 8.5pt;
+        }
+
+        .party-row {
+            display: table-row;
+        }
+
+        .party-cell-label {
+            display: table-cell;
+            font-weight: 700;
+            color: var(--color-text-main);
+            padding: 1.5px 6px 1.5px 0;
+            width: 32%;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        .party-cell-val {
+            display: table-cell;
+            color: var(--color-text-secondary);
+            padding: 1.5px 0;
+            vertical-align: top;
+            font-weight: 500;
+        }
+
+        .party-cell-val.strong {
+            color: var(--color-text-main);
+            font-weight: 700;
+        }
+
+        /* ── Product Details Table (Read-Only) ── */
+        .product-section {
+            margin-top: 1mm;
+            margin-bottom: 3.5mm;
+        }
+
+        .table-title {
+            font-family: var(--font-serif);
+            font-size: 9.5pt;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--color-border-main);
+            margin-bottom: 1.5mm;
+        }
+
+        .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            background-color: var(--color-bg-white);
         }
-        .item-table th {
+
+        .items-table thead th {
+            font-size: 8pt;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--color-text-main);
+            padding: 6px 6px;
+            border-top: 0.6mm solid var(--color-border-main);
+            border-bottom: 0.6mm solid var(--color-border-main);
+            background-color: transparent;
             text-align: left;
-            background: #f9f9f9;
-            padding: 12px;
-            border-bottom: 2px solid #eee;
         }
-        .item-table td {
-            padding: 15px 12px;
-            border-bottom: 1px solid #eee;
+
+        .items-table thead th.th-no { width: 6%; text-align: center; }
+        .items-table thead th.th-desc { width: 44%; text-align: left; }
+        .items-table thead th.th-variant { width: 18%; text-align: left; }
+        .items-table thead th.th-unit { width: 14%; text-align: right; }
+        .items-table thead th.th-qty { width: 6%; text-align: center; }
+        .items-table thead th.th-total { width: 12%; text-align: right; }
+
+        .items-table tbody td {
+            font-size: 8.5pt;
+            padding: 6px 6px;
+            border-bottom: 0.3mm solid var(--color-divider);
+            color: var(--color-text-main);
+            vertical-align: middle;
+            background-color: transparent;
         }
-        .item-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-        }
-        /* Invoice T-shirt Preview */
-        .inv-preview {
-            position: relative;
-            width: 120px;
-            height: 140px;
-            background: transparent; /* No background box */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: visible;
-            flex-shrink: 0;
-        }
-        /* Invoice T-shirt Preview - PNG Style Masked */
-        .inv-t-base {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Apply mask to shape the background color */
-            -webkit-mask-image: url('https://i.ibb.co/NnQrQr7y/T-Shirt.png');
-            mask-image: url('https://i.ibb.co/NnQrQr7y/T-Shirt.png');
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-            -webkit-mask-position: center;
-            mask-position: center;
-        }
-        .inv-t-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-            pointer-events: none;
-            mix-blend-mode: multiply;
-            position: relative;
-            z-index: 1;
-        }
-        .inv-sticker {
-            position: absolute;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
-        .totals-box {
-            margin-left: auto;
-            width: 300px;
-        }
-        .total-row {
+
+        .items-table tbody td.td-no { text-align: center; color: var(--color-text-secondary); font-weight: 600; }
+        .items-table tbody td.td-desc { font-weight: 600; }
+        .items-table tbody td.td-desc .product-name { color: var(--color-text-main); font-weight: 700; }
+        .items-table tbody td.td-variant { color: var(--color-text-secondary); font-size: 8pt; }
+        .items-table tbody td.td-unit { text-align: right; font-weight: 600; }
+        .items-table tbody td.td-qty { text-align: center; font-weight: 700; }
+        .items-table tbody td.td-total { text-align: right; font-weight: 700; color: var(--color-text-main); }
+
+        /* ── Middle / Bottom Section: Codes on Left & Totals on Right ── */
+        .middle-bottom-grid {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            align-items: flex-start;
+            margin-top: 2.5mm;
+            gap: 6mm;
         }
-        .total-row.final {
-            border-top: 2px solid #000;
-            margin-top: 10px;
-            padding-top: 15px;
-            font-weight: 900;
-            font-size: 1.4rem;
-            color: var(--primary);
+
+        /* Left Side: Scannable Barcode & QR Code */
+        .codes-panel {
+            flex: 1.1;
+            display: flex;
+            gap: 4.5mm;
+            align-items: flex-start;
+            padding: 2.5mm 0;
         }
-        .payment-method {
-            margin-top: 40px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
+
+        .code-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .code-box-caption {
+            font-size: 6.8pt;
             font-weight: 800;
-            text-align: center;
-        }
-        .btn-print {
-            display: block;
-            width: 200px;
-            margin: 40px auto 0;
-            padding: 15px;
-            background: #000;
-            color: #fff;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-        .design-sheet {
-            margin-top: 50px;
-            padding: 30px;
-            background: #fff;
-            border: 2px solid #000;
-            border-radius: 20px;
-            page-break-before: always;
-        }
-        .design-sheet h3 {
-            text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            font-size: 1.4rem;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
+            color: var(--color-border-main);
+            margin-top: 2.5px;
+        }
+
+        .barcode-svg-wrapper {
+            background: #FFFFFF;
+            padding: 2px 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #orderBarcode {
+            max-width: 175px;
+            height: 38px;
+        }
+
+        .qr-canvas-wrapper {
+            background: #FFFFFF;
+            padding: 3px;
+            border: 1px solid var(--color-divider);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #invoiceQrCode img, #invoiceQrCode canvas {
+            display: block;
+            width: 72px;
+            height: 72px;
+        }
+
+        /* Right Side: Order Totals Section */
+        .totals-panel {
+            flex: 0.95;
+            min-width: 68mm;
+        }
+
+        .totals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .totals-table td {
+            font-size: 8.5pt;
+            padding: 2.5px 0;
+            line-height: 1.35;
+        }
+
+        .totals-table td.tot-label {
+            text-align: left;
+            font-weight: 600;
+            color: var(--color-text-main);
+            padding-right: 10px;
+        }
+
+        .totals-table td.tot-val {
+            text-align: right;
+            font-weight: 700;
+            color: var(--color-text-main);
+            white-space: nowrap;
+        }
+
+        .totals-table td.tot-val.discount-val {
+            color: var(--color-text-secondary);
+        }
+
+        /* Grand Total Row with Two Thin Dark-Brown Lines (No background color) */
+        .totals-table tr.grand-total-row td {
+            font-size: 10.5pt;
+            font-weight: 800;
+            color: var(--color-text-main);
+            padding: 6px 0;
+            border-top: 0.6mm solid var(--color-border-main);
+            border-bottom: 0.6mm solid var(--color-border-main);
+        }
+
+        .totals-table tr.grand-total-row td.tot-val {
+            font-size: 11pt;
             font-weight: 900;
+            color: var(--color-text-main);
         }
-        .design-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+
+        /* ── Professional Footer Section ── */
+        .invoice-footer {
+            margin-top: auto;
+            padding-top: 3.5mm;
+            border-top: 0.8mm solid var(--color-border-main);
         }
-        .design-card {
-            border: 1px solid #ddd;
-            padding: 25px;
-            border-radius: 15px;
+
+        .footer-thin-accent {
+            height: 0.3mm;
+            background-color: var(--color-border-secondary);
+            margin-bottom: 2.5mm;
+        }
+
+        .footer-inner-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 7.5pt;
+            color: var(--color-text-secondary);
+            line-height: 1.4;
+        }
+
+        .footer-left {
+            max-width: 65%;
+        }
+
+        .footer-appreciation {
+            font-family: var(--font-serif);
+            font-size: 8.5pt;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--color-border-main);
+            margin-bottom: 2px;
+        }
+
+        .footer-contacts {
+            color: var(--color-text-main);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .footer-notice {
+            font-style: italic;
+            color: var(--color-text-secondary);
+        }
+
+        .footer-right-signature {
             text-align: center;
-            background: #fafafa;
+            min-width: 48mm;
         }
-        .large-preview-box {
-            position: relative;
-            width: 250px;
-            height: 300px;
-            margin: 0 auto 20px auto;
-            background: #fff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+        .signature-line {
+            width: 100%;
+            border-bottom: 0.4mm solid var(--color-border-main);
+            margin-bottom: 4px;
+            height: 10mm;
         }
+
+        .signature-caption {
+            font-size: 7.2pt;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--color-text-main);
+        }
+
+        /* ── Admin / Database Print Action Bar (Only visible when source=database) ── */
+        .admin-invoice-bar {
+            width: 210mm;
+            max-width: 95vw;
+            background: #FFFFFF;
+            border: 1px solid var(--color-divider);
+            padding: 10px 18px;
+            margin-bottom: 16px;
+            display: none; /* Displayed via JS ONLY when source=database / admin */
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(74, 48, 37, 0.08);
+            border-radius: 4px;
+        }
+
+        .admin-bar-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--color-border-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-print-admin {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background-color: var(--color-border-main);
+            color: #FFFFFF;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: 1.2px solid var(--color-border-main);
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-print-admin:hover {
+            background-color: #332018;
+            border-color: #332018;
+        }
+
+        /* ========================================================
+           PRINT STYLESHEET: STRICT A4 PORTRAIT SPECIFICATION
+           ======================================================== */
+        @page {
+            size: A4 portrait;
+            margin: 0mm;
+        }
+
         @media print {
-            .btn-print { display: none; }
-            body { padding: 0; }
-            .bill-container { border: none; max-width: 100%; }
-            .design-sheet { border-width: 1px; }
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #FFFFFF !important;
+            }
+
+            .admin-invoice-bar {
+                display: none !important;
+            }
+
+            .a4-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 7mm !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            .outer-border-frame {
+                min-height: calc(297mm - 14mm) !important;
+                height: calc(297mm - 14mm) !important;
+                border: 1.2mm solid var(--color-border-main) !important;
+            }
+
+            .inner-border-frame {
+                border: 0.5mm solid var(--color-border-secondary) !important;
+                padding: 6mm 7mm !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="bill-container">
-        <!-- Previous bill content -->
-        <div id="order-id-top" style="text-align: right; font-size: 0.8rem; font-weight: 800; margin-bottom: 5px; color: #777;">
-            ORDER #<span id="o-id-top"></span>
+    <!-- ── Database & Admin Print Bar (Displayed strictly for Database/Admin View, Never for Customer) ── -->
+    <div class="admin-invoice-bar" id="adminInvoiceBar">
+        <div class="admin-bar-title">
+            <span>ROOHIRA DATABASE HUB &bull; ORDER INVOICE</span>
         </div>
-        <div class="bill-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 25px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <img src="logo.png" alt="Roohira Logo" style="height: 50px;">
-                <h1 style="font-size: 1.6rem; letter-spacing: 2px; font-weight: 900; margin: 0; font-family: 'Playfair Display', Georgia, serif; color: #8B5A2B;">ROOHIRA COLLECTION</h1>
-            </div>
-            <h2 style="font-size: 1.8rem; font-weight: 900; color: var(--primary); margin: 0;">INVOICE</h2>
-        </div>
-
-        <div class="bill-info">
-            <div class="cust-details" style="max-width: 460px;">
-                <h3>Billed & Shipped To</h3>
-                <p><strong>Customer Name:</strong> <span id="c-name">Loading...</span></p>
-                <p id="c-email-container" style="display: none;"><strong>Email:</strong> <span id="c-email"></span></p>
-                <p><strong>Primary Phone:</strong> <span id="c-phone"></span></p>
-                <p id="c-phone2-container" style="display: none;"><strong>Alt Phone:</strong> <span id="c-phone2"></span></p>
-                <p><strong>Delivery Address:</strong> <span id="c-address"></span></p>
-                <div id="c-notes-container" style="display: none; margin-top: 10px; padding: 10px 12px; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; font-size: 0.85rem; color: #333;">
-                    <strong>Delivery Notes:</strong> <span id="c-notes"></span>
-                </div>
-            </div>
-            <div class="order-details">
-                <p><strong>Date:</strong> <span id="o-date"></span></p>
-                <p><strong>Time:</strong> <span id="o-time"></span></p>
-                <p style="margin-top: 10px;"><strong>Status:</strong> <span style="color:#22c55e; font-weight:800;">CONFIRMED</span></p>
-            </div>
-        </div>
-
-        <table class="item-table">
-            <thead>
-                <tr>
-                    <th>Item Description</th>
-                    <th style="text-align: center;">Qty</th>
-                    <th style="text-align: right;">Price</th>
-                </tr>
-            </thead>
-            <tbody id="items-list">
-                <!-- Items injected here -->
-            </tbody>
-        </table>
-
-        <div class="totals-box">
-            <div class="total-row">
-                <span>Items Total</span>
-                <span id="s-total">Rs. 0.00</span>
-            </div>
-            <div class="total-row">
-                <span>Delivery Fee</span>
-                <span id="d-fee">Rs. 350.00</span>
-            </div>
-            <div class="total-row final">
-                <span>Grand Total</span>
-                <span id="g-total">Rs. 0.00</span>
-            </div>
-        </div>
-
-        <div class="payment-method">
-            PAYMENT METHOD: <span id="p-method">CASH ON DELIVERY</span>
-        </div>
-
-        <!-- Bank Transfer Deposit Details Box on Invoice -->
-        <div id="bank-invoice-box" style="display: none; margin-top: 20px; padding: 20px; background: #fafafa; border: 1.5px solid #000; border-radius: 12px; font-size: 0.88rem;">
-            <h4 style="margin-top: 0; color: var(--primary); text-transform: uppercase; font-weight: 900; margin-bottom: 12px; font-size: 1rem;">Bank Deposit Account Details</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div id="inv-bank-peoples" style="background: #fff; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                    <p style="font-weight: 900; color: #000; margin-bottom: 4px;">1. People's Bank</p>
-                    <p style="margin: 2px 0;">Acc Name: <b>Onija Wathsuka Kodithuwakku</b></p>
-                    <p style="margin: 2px 0;">Acc No: <b>217 200 4500 29209</b></p>
-                    <p style="margin: 2px 0;">Branch: <b>Mahara</b></p>
-                </div>
-                <div id="inv-bank-hnb" style="background: #fff; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                    <p style="font-weight: 900; color: #000; margin-bottom: 4px;">2. HNB (Hatton National Bank)</p>
-                    <p style="margin: 2px 0;">Acc Name: <b>Roohira Collection</b></p>
-                    <p style="margin: 2px 0;">Acc No: <b>0840 2041 4386</b></p>
-                </div>
-            </div>
-            <p style="margin-top: 12px; margin-bottom: 0; font-size: 0.78rem; color: #555;">
-                📌 <i>Please send transfer screenshot / deposit slip to <b>075 721 8786</b> on WhatsApp along with your Order ID.</i>
-            </p>
+        <div>
+            <button class="btn-print-admin" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Print Invoice (A4)
+            </button>
         </div>
     </div>
 
-    <!-- Production Design Sheet -->
-    <div id="production-sheet" class="design-sheet" style="display: none;">
-        <h3>Production Design Specifications</h3>
-        <div id="design-grid" class="design-grid"></div>
-    </div>
-
-    <button class="btn-print" onclick="window.print()">PRINT BILL</button>
-
-    <script>
-        function loadBill() {
-            const params = new URLSearchParams(window.location.search);
-            const raw = params.get('data');
-            if (!raw) return;
-
-            try {
-                const order = JSON.parse(decodeURIComponent(escape(atob(raw))));
+    <!-- ── A4 Printable Invoice Document (Clean Official Document - No Buttons, Non-Editable) ── -->
+    <div class="a4-page" id="printableInvoice">
+        <div class="outer-border-frame">
+            <div class="inner-border-frame">
                 
-                document.getElementById('o-id-top').innerText = order.id || 'N/A';
-                document.getElementById('o-date').innerText = order.date || '';
-                document.getElementById('o-time').innerText = order.time || '';
-                document.getElementById('c-name').innerText = order.name || 'Guest Customer';
-                document.getElementById('c-address').innerText = order.address || 'N/A';
-                document.getElementById('c-phone').innerText = order.phone || 'N/A';
+                <!-- 1. HEADER SECTION -->
+                <header class="invoice-header">
+                    <div class="header-left">
+                        <div class="header-brand-title">ROOHIRA COLLECTION</div>
+                        <div class="header-brand-tagline">Sri Lankan Handcrafted &amp; Luxury Apparel</div>
+                        <div class="header-meta-line">
+                            <span class="label">Contact: </span>
+                            <span class="val">075 721 8786 / 072 905 7972</span>
+                        </div>
+                        <div class="header-meta-line">
+                            <span class="label">Address: </span>
+                            <span class="val">65/11, Sooriyapaluwa, Eldeniya, Kadawatha, Sri Lanka.</span>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="invoice-title-badge">INVOICE</div>
+                        <table class="order-meta-table">
+                            <tr>
+                                <td class="label-col">Order ID:</td>
+                                <td class="val-col highlight-id" id="dispOrderId">RC-000000</td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Invoice Date:</td>
+                                <td class="val-col" id="dispInvoiceDate">2026-10-20</td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Order Date:</td>
+                                <td class="val-col" id="dispOrderDate">2026-10-20</td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Payment Method:</td>
+                                <td class="val-col" id="dispPaymentMethod">Cash on Delivery (COD)</td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Order Status:</td>
+                                <td class="val-col" id="dispOrderStatus">CONFIRMED</td>
+                            </tr>
+                        </table>
+                    </div>
+                </header>
 
-                if (order.email) {
-                    document.getElementById('c-email').innerText = order.email;
-                    document.getElementById('c-email-container').style.display = 'block';
+                <div class="header-sub-divider"></div>
+
+                <!-- 2. CUSTOMER & SHIPPING ADDRESS SECTIONS -->
+                <section class="parties-container">
+                    <!-- Customer Details -->
+                    <div class="party-block">
+                        <div class="section-heading-sm">CUSTOMER DETAILS</div>
+                        <div class="party-details-grid">
+                            <div class="party-row">
+                                <span class="party-cell-label">Customer Name:</span>
+                                <span class="party-cell-val strong" id="dispCustName">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">Phone Number:</span>
+                                <span class="party-cell-val" id="dispCustPhone">–</span>
+                            </div>
+                            <div class="party-row" id="rowCustPhone2" style="display: none;">
+                                <span class="party-cell-label">Alt Phone:</span>
+                                <span class="party-cell-val" id="dispCustPhone2">–</span>
+                            </div>
+                            <div class="party-row" id="rowCustEmail" style="display: none;">
+                                <span class="party-cell-label">Email Address:</span>
+                                <span class="party-cell-val" id="dispCustEmail">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">City:</span>
+                                <span class="party-cell-val" id="dispCustCity">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">District:</span>
+                                <span class="party-cell-val" id="dispCustDistrict">–</span>
+                            </div>
+                            <div class="party-row" id="rowCustPostal" style="display: none;">
+                                <span class="party-cell-label">Postal Code:</span>
+                                <span class="party-cell-val" id="dispCustPostal">–</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="party-block shipping-block">
+                        <div class="section-heading-sm">SHIPPING ADDRESS</div>
+                        <div class="party-details-grid">
+                            <div class="party-row">
+                                <span class="party-cell-label">Recipient:</span>
+                                <span class="party-cell-val strong" id="dispShipRecipient">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">Delivery Address:</span>
+                                <span class="party-cell-val" id="dispShipAddress">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">Destination City:</span>
+                                <span class="party-cell-val" id="dispShipCity">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">District / Province:</span>
+                                <span class="party-cell-val" id="dispShipDistrict">–</span>
+                            </div>
+                            <div class="party-row">
+                                <span class="party-cell-label">Delivery Phone:</span>
+                                <span class="party-cell-val" id="dispShipPhone">–</span>
+                            </div>
+                            <div class="party-row" id="rowShipNotes" style="display: none;">
+                                <span class="party-cell-label">Delivery Notes:</span>
+                                <span class="party-cell-val" id="dispShipNotes">–</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. PRODUCT DETAILS TABLE (Strictly Non-Editable, Pure Typography) -->
+                <section class="product-section">
+                    <div class="table-title">
+                        <span>PRODUCT DETAILS</span>
+                    </div>
+                    <table class="items-table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th class="th-no">No.</th>
+                                <th class="th-desc">Product Name / Description</th>
+                                <th class="th-variant">Variant / Size</th>
+                                <th class="th-unit">Unit Price (LKR)</th>
+                                <th class="th-qty">Qty</th>
+                                <th class="th-total">Total (LKR)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTbody">
+                            <!-- Injected dynamically via JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- 4. ORDER TOTALS & SCANNABLE CODES (Barcode & QR) -->
+                <section class="middle-bottom-grid">
+                    
+                    <!-- Left: Scannable Barcode & QR Code Section -->
+                    <div class="codes-panel">
+                        <!-- Genuine CODE128 Order ID Barcode -->
+                        <div class="code-box">
+                            <div class="barcode-svg-wrapper">
+                                <svg id="orderBarcode"></svg>
+                            </div>
+                            <div class="code-box-caption">ORDER ID BARCODE</div>
+                        </div>
+
+                        <!-- Genuine Invoice Summary QR Code -->
+                        <div class="code-box">
+                            <div class="qr-canvas-wrapper" id="invoiceQrCode"></div>
+                            <div class="code-box-caption">INVOICE DETAILS QR</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Order Financial Totals -->
+                    <div class="totals-panel">
+                        <table class="totals-table">
+                            <tr>
+                                <td class="tot-label">Subtotal:</td>
+                                <td class="tot-val" id="dispSubtotal">LKR 0.00</td>
+                            </tr>
+                            <tr>
+                                <td class="tot-label">Delivery Charge:</td>
+                                <td class="tot-val" id="dispDelivery">LKR 0.00</td>
+                            </tr>
+                            <tr id="rowDiscount">
+                                <td class="tot-label">Discount:</td>
+                                <td class="tot-val discount-val" id="dispDiscount">LKR 0.00</td>
+                            </tr>
+                            <tr class="grand-total-row">
+                                <td class="tot-label">Grand Total:</td>
+                                <td class="tot-val" id="dispGrandTotal">LKR 0.00</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 5. PROFESSIONAL FOOTER SECTION -->
+                <footer class="invoice-footer">
+                    <div class="footer-thin-accent"></div>
+                    <div class="footer-inner-content">
+                        <div class="footer-left">
+                            <div class="footer-appreciation">THANK YOU FOR CHOOSING ROOHIRA COLLECTION!</div>
+                            <div class="footer-contacts">Contact: 075 721 8786 / 072 905 7972 &bull; 65/11, Sooriyapaluwa, Eldeniya, Kadawatha.</div>
+                            <div class="footer-notice">Please check your order upon delivery. Thank you for shopping with Roohira Collection.</div>
+                        </div>
+                        <div class="footer-right-signature">
+                            <div class="signature-line"></div>
+                            <div class="signature-caption">Authorized Signature</div>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         INVOICE LOGIC: READ-ONLY DATABASE SYNC, QR & BARCODE
+         ======================================================== -->
+    <script>
+        // State Model
+        const invoiceState = {
+            id: 'RC-000000',
+            invoiceDate: new Date().toISOString().split('T')[0],
+            orderDate: new Date().toISOString().split('T')[0],
+            paymentMethod: 'Cash on Delivery (COD)',
+            status: 'CONFIRMED',
+            customer: {
+                name: 'Valued Patron',
+                phone: '075 721 8786',
+                phone2: '',
+                email: '',
+                address: '65/11, Sooriyapaluwa, Eldeniya',
+                city: 'Kadawatha',
+                district: 'Gampaha',
+                postal: '11850'
+            },
+            shipping: {
+                recipient: 'Valued Patron',
+                address: '65/11, Sooriyapaluwa, Eldeniya',
+                city: 'Kadawatha',
+                district: 'Gampaha',
+                postal: '11850',
+                phone: '075 721 8786',
+                notes: ''
+            },
+            items: [],
+            subtotal: 0,
+            deliveryFee: 0,
+            discount: 0,
+            grandTotal: 0
+        };
+
+        // Format Currency: Sri Lankan Rupees LKR with 2 decimals
+        function formatLKR(amount) {
+            const num = Number(amount) || 0;
+            return 'LKR ' + num.toLocaleString('en-LK', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Initialize from URL parameters (order data or Firestore id)
+        async function initializeInvoice() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedData = urlParams.get('data');
+            const orderIdParam = urlParams.get('id');
+            const sourceParam = (urlParams.get('source') || '').toLowerCase();
+
+            // Display Print Button ONLY when viewing from Database / Admin Panel
+            const adminBar = document.getElementById('adminInvoiceBar');
+            if (adminBar) {
+                if (sourceParam === 'database' || sourceParam === 'admin') {
+                    adminBar.style.display = 'flex';
+                } else {
+                    adminBar.style.display = 'none';
                 }
+            }
 
-                if (order.phone2) {
-                    document.getElementById('c-phone2').innerText = order.phone2;
-                    document.getElementById('c-phone2-container').style.display = 'block';
+            if (encodedData) {
+                try {
+                    const parsed = JSON.parse(decodeURIComponent(escape(atob(encodedData))));
+                    populateFromOrderData(parsed);
+                    return;
+                } catch (e) {
+                    console.error("Failed to parse base64 URL order data:", e);
                 }
+            }
 
-                if (order.notes) {
-                    document.getElementById('c-notes').innerText = order.notes;
-                    document.getElementById('c-notes-container').style.display = 'block';
-                }
-
-                if (order.paymentMethod) {
-                    document.getElementById('p-method').innerText = order.paymentMethod.toUpperCase();
-                    if (order.paymentMethod.toLowerCase().includes('bank')) {
-                        document.getElementById('bank-invoice-box').style.display = 'block';
+            if (orderIdParam) {
+                let loaded = false;
+                try {
+                    const localOrders = JSON.parse(localStorage.getItem('roohira_orders')) || [];
+                    const found = localOrders.find(o => String(o.id) === String(orderIdParam) || String(o._docId) === String(orderIdParam));
+                    if (found) {
+                        populateFromOrderData(found);
+                        loaded = true;
                     }
+                } catch (e) {
+                    console.warn("LocalStorage check note:", e);
                 }
 
-                const list = document.getElementById('items-list');
-                const designGrid = document.getElementById('design-grid');
-                const productionSheet = document.getElementById('production-sheet');
-                let sub = 0;
-                let hasCustom = false;
-
-                const stickerMap = {
-                    'S1': 'https://i.ibb.co/gMrCJPnN/A3-1.png', 'S2': 'https://i.ibb.co/QFRLTykz/A3-2.png',
-                    'S3': 'https://i.ibb.co/S7f8ZfJs/A3-3.png', 'S4': 'https://i.ibb.co/tMccn0qh/A3-4.png',
-                    'S5': 'https://i.ibb.co/B5s9qhyX/A3-5.png', 'S6': 'https://i.ibb.co/bj43Hcks/A3-6.png',
-                    'S7': 'https://i.ibb.co/7B5DZmx/A3-7.png', 'S8': 'https://i.ibb.co/SXdG9PTc/A3-8.png',
-                    'S9': 'https://i.ibb.co/tp3krXPp/A3-9.png', 'S10': 'https://i.ibb.co/VY90dG3G/A3-10.png',
-                    'S11': 'https://i.ibb.co/1JQ00QMd/A3-11.png', 'S12': 'https://i.ibb.co/XkDb3jmB/Nike.png',
-                    'S13': 'https://i.ibb.co/gLS0w69Y/Python-BMW.png', 'S14': 'https://i.ibb.co/4w34h3hZ/Python-Infinity-w.png',
-                    'S15': 'https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png',
-                    'S16': 'https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png',
-                    'S17': 'https://i.ibb.co/0VKQ1GX2/download-23.png',
-                    'S18': 'https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png',
-                    'S19': 'https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png',
-                    'S20': 'https://i.ibb.co/8g3YLLRP/download-25.png',
-                    'S21': 'https://i.ibb.co/rf382jbv/download-26.png',
-                    'S22': 'https://i.ibb.co/gFXHwFCX/download-27.png',
-                    'S23': 'https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png',
-                    'S24': 'https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png',
-                    'S25': 'https://i.ibb.co/MyV1gShG/download-28.png',
-                    'S26': 'https://i.ibb.co/k2V8LGH8/download-29.png',
-                    'S27': 'https://i.ibb.co/XfMfT2Pc/download-30.png',
-                    'S28': 'https://i.ibb.co/v9nFCm5/download-31.png',
-                    'S29': 'https://i.ibb.co/0jNxLvYv/Believe.png',
-                    'S30': 'https://i.ibb.co/jnJPTYN/download-34.png',
-                    'S31': 'https://i.ibb.co/prLnyfzg/download-35.png',
-                    'S32': 'https://i.ibb.co/WW2ZJCcC/download-36.png',
-                    'S33': 'https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png',
-                    'S34': 'https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png',
-                    'S35': 'https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png',
-                    'S36': 'https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png',
-                    'S37': 'https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png',
-                    'S38': 'https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png',
-                    'S39': 'https://i.ibb.co/zHGbqMn0/honor-design.png'
-                };
-
-                const colorNames = {
-                    '#ffffff': 'White',
-                    '#1a1a1a': 'Black',
-                    '#ff0000': 'Red',
-                    '#DC143C': 'Red',
-                    '#0000ff': 'Blue',
-                    '#008000': 'Green',
-                    '#ffff00': 'Yellow',
-                    '#808080': 'Gray',
-                    '#00f2ff': 'Light Blue',
-                    '#e100ff': 'Pink',
-                    '#1a2a4a': 'Midnight Blue',
-                    '#4a90e2': 'Sky Blue',
-                    '#f0f0f0': 'Off-White',
-                    '#0A0F1E': 'Dark Navy',
-                    '#333333': 'Grey',
-                    '#ff91a4': 'Salmon Pink',
-                    '#800000': 'Maroon',
-                    '#900056': 'Dark Pink'
-                };
-
-                const resolveStickerUrl = (u) => {
-                    const originalUrl = stickerMap[u] || u;
-                    const localHd = localStorage.getItem('hd_mapping_' + originalUrl);
-                    return localHd || originalUrl;
-                };
-
-                order.items.forEach(item => {
-                    const row = document.createElement('tr');
-                    const line = (item.price || 0) * (item.quantity || 1);
-                    sub += line;
-
-                    let previewHtml = `<img src="${item.image}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">`;
-
-                    // ── Smart width resolver ──────────────────────────────────────
-                    // New orders store width as '29.09%' (% of canvas).
-                    // Old orders store it as '160px'. We handle both.
-                    const resolveWidth = (w, containerPx) => {
-                        if (!w) return containerPx * 0.29 + 'px';
-                        const ws = String(w);
-                        if (ws.endsWith('%')) return ws;           // native %, scales perfectly
-                        const px = parseFloat(ws) || 0;           // old px value
-                        return (px / 4) + 'px';                   // legacy fallback ÷4
-                    };
-                    // Large-preview container is 300px wide
-                    const resolveLargeWidth = (w) => {
-                        if (!w) return '87px';
-                        const ws = String(w);
-                        if (ws.endsWith('%')) return ws;
-                        const px = parseFloat(ws) || 0;
-                        return (px / 1.5) + 'px';
-                    };
-                    // ─────────────────────────────────────────────────────────────
-
-                    if (item.isCustom && item.customStickers) {
-                        hasCustom = true;
-                        const colorNameClean = (item.color || "").trim().toLowerCase();
-                        const bgColor = (item.color && item.color.startsWith('#')) ? item.color :
-                                       Object.keys(colorNames).find(key => colorNames[key].trim().toLowerCase() === colorNameClean) || '#ffffff';
-
-                        const isWaffle = item.name.includes('Waffle');
-                        let baseImgSrc = 'https://i.ibb.co/NnQrQr7y/T-Shirt.png';
-                        let baseStyles = `background-color: ${bgColor};`;
-                        let imgStyles = `mix-blend-mode: multiply;`;
-
-                        if (isWaffle) {
-                            const isBrown = bgColor === '#c4956a' || colorNameClean.includes('brown');
-                            baseImgSrc = isBrown ? 'https://i.ibb.co/RTGD6DPx/12.png' : 'https://i.ibb.co/cKzdSStx/23.png';
-                            baseStyles = 'background-color: transparent; -webkit-mask-image: none; mask-image: none;';
-                            imgStyles = 'mix-blend-mode: normal;';
+                if (!loaded && typeof db !== 'undefined' && db) {
+                    try {
+                        const snap = await db.collection('orders').doc(orderIdParam).get();
+                        if (snap.exists) {
+                            populateFromOrderData({ id: snap.id, ...snap.data() });
+                            loaded = true;
+                        } else {
+                            const qSnap = await db.collection('orders').where('id', '==', orderIdParam).limit(1).get();
+                            if (!qSnap.empty) {
+                                const doc = qSnap.docs[0];
+                                populateFromOrderData({ id: doc.id, ...doc.data() });
+                                loaded = true;
+                            }
                         }
-
-                        previewHtml = `
-                            <div class="inv-preview">
-                                <div class="inv-t-base" style="${baseStyles}">
-                                    <img src="${baseImgSrc}" class="inv-t-img" style="${imgStyles}">
-                                    ${item.customStickers.map(s => {
-                                        const url = resolveStickerUrl(s.u);
-                                        const rot = s.r || 0;
-                                        const w = resolveWidth(s.w, 120);
-                                        return `<img src="${url}" class="inv-sticker" style="top: ${s.t}; left: ${s.l}; width: ${w}; transform: translate(-50%, -50%) rotate(${rot}deg);">`;
-                                    }).join('')}
-                                </div>
-                            </div>
-                        `;
-
-                        // Add to Production Grid
-                        const card = document.createElement('div');
-                        card.className = 'design-card';
-                        card.style.border = '2px solid #000';
-                        card.innerHTML = `
-                            <div class="large-preview-box" style="width: 300px; height: 350px;">
-                                <div class="inv-t-base" style="${baseStyles}">
-                                    <img src="${baseImgSrc}" class="inv-t-img" style="${imgStyles}">
-                                    ${item.customStickers.map(s => {
-                                        const url = resolveStickerUrl(s.u);
-                                        const rot = s.r || 0;
-                                        const w = resolveLargeWidth(s.w);
-                                        return `<img src="${url}" class="inv-sticker" style="top: ${s.t}; left: ${s.l}; width: ${w}; transform: translate(-50%, -50%) rotate(${rot}deg);">`;
-                                    }).join('')}
-                                </div>
-                            </div>
-                            <h2 style="margin: 0; font-weight: 900; color: var(--primary);">PRODUCTION SPEC</h2>
-                            <p style="font-size: 1.2rem; margin: 15px 0;">Fabric Size: <b style="background: #000; color: #fff; padding: 2px 10px; border-radius: 5px;">${item.size}</b> | Color: <b>${item.color}</b></p>
-                            
-                                <div style="text-align: left; background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #ddd;">
-                                    <h4 style="margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Production Specifications:</h4>
-                                    
-                                    <!-- Price Breakdown Section -->
-                                    <div style="background: #fafafa; padding: 12px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 20px;">
-                                        <p style="margin: 0 0 8px 0; font-weight: 800; font-size: 0.8rem; color: #666;">COST BREAKDOWN:</p>
-                                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.85rem;">
-                                            <span>Base (${item.name.replace(' (Custom)', '')}):</span> <b>Rs. ${item.basePrice || 1300}.00 (220GSM)</b>
-                                        </div>
-                                        ${item.customStickers.map((s, idx) => {
-                                            const prices = { 'A2': 800, 'A3': 580, 'A4': 320, 'A5': 150, 'A6': 100 };
-                                            const p = s.p || prices[s.sz] || 0;
-                                            return `
-                                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.85rem;">
-                                                    <span>Sticker #${idx+1} (${s.sz}):</span> <b>Rs. ${p}.00</b>
-                                                </div>
-                                            `;
-                                        }).join('')}
-                                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 5px; margin-top: 5px;">
-                                            <span>Total Designs Price:</span> <b>Rs. ${item.customStickers.reduce((sum, s) => {
-                                                const prices = { 'A2': 800, 'A3': 580, 'A4': 320, 'A5': 150, 'A6': 100 };
-                                                return sum + (s.p || prices[s.sz] || 0);
-                                            }, 0).toLocaleString()}.00</b>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between; border-top: 1px dashed #ccc; padding-top: 5px; margin-top: 5px; font-weight: 900; color: var(--primary);">
-                                            <span>Total Item Price:</span> <span>Rs. ${(item.price || 0).toLocaleString()}.00</span>
-                                        </div>
-                                    </div>
-
-                                    <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                                        <span>Fabric Size:</span> <b style="font-size: 1.1rem; color: var(--primary);">${item.size}</b>
-                                    </div>
-                                    <div style="margin-bottom: 15px; display: flex; justify-content: space-between;">
-                                        <span>Fabric Color:</span> <b>${item.color}</b>
-                                    </div>
-                                    <div style="border-top: 1px solid #eee; padding-top: 15px;">
-                                        <p style="font-weight: 800; margin-bottom: 12px; font-size: 0.85rem;">DESIGN FILES & SIZES:</p>
-                                        ${item.customStickers.map((s, idx) => {
-                                            const prices = { 'A2': 800, 'A3': 580, 'A4': 320, 'A5': 150, 'A6': 100 };
-                                            const p = s.p || prices[s.sz] || 0;
-                                            const resolvedUrl = resolveStickerUrl(s.u);
-                                            const fileExtension = resolvedUrl.startsWith('data:image/png') ? 'png' : 'jpeg';
-                                            return `
-                                                <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 12px; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #f0f0f0;">
-                                                    <img src="${resolvedUrl}" style="width: 45px; height: 45px; object-fit: contain; background: #fff; border-radius: 4px; border: 1px solid #ddd;">
-                                                    <div style="flex: 1;">
-                                                        <p style="margin: 0; font-weight: 800; font-size: 0.85rem;">#${idx+1} - ${s.sz} Size Print</p>
-                                                        <p style="margin: 0; font-size: 0.75rem; color: #666;">Unit Price: Rs. ${p}.00</p>
-                                                        <p style="margin: 2px 0 0; font-size: 0.65rem; color: #DC143C; font-weight: 700;">⬇ Original HD quality file</p>
-                                                    </div>
-                                                    <a href="${resolvedUrl}" download="custom_sticker_${idx+1}.${fileExtension}" target="_blank" class="btn" style="padding: 5px 10px; font-size: 0.6rem; border-radius: 4px; background: #000; color: #fff; text-decoration: none;">SAVE HD</a>
-                                                </div>
-                                            `;
-                                        }).join('')}
-                                        
-                                        <!-- Pricing Reference Note -->
-                                        <div style="margin-top: 15px; padding: 10px; background: #fff; border: 1px dashed #ddd; border-radius: 8px; font-size: 0.7rem; color: #888;">
-                                            <span style="font-weight: 800; display: block; margin-bottom: 3px; color: #444;">PRINT PRICING REFERENCE:</span>
-                                            A2: Rs. 800 | A3: Rs. 580 | A4: Rs. 320 | A5: Rs. 150 | A6: Rs. 100
-                                        </div>
-                                    </div>
-                                </div>
-                        `;
-                        designGrid.appendChild(card);
+                    } catch (err) {
+                        console.error("Firestore lookup failed:", err);
                     }
+                }
 
-                    row.innerHTML = `
-                        <td>
-                            <div class="item-box">
-                                ${previewHtml}
-                                <div>
-                                    <p style="font-weight: 800;">${item.name}</p>
-                                    <p style="font-size: 0.8rem; opacity: 0.6;">Size: ${item.size || 'N/A'} | Color: ${item.color}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td style="text-align: center; font-weight: 800;">${item.quantity}</td>
-                        <td style="text-align: right; font-weight: 800;">Rs. ${line.toLocaleString()}.00</td>
-                    `;
-                    list.appendChild(row);
+                if (loaded) return;
+            }
+
+            // Fallback default sample if opened directly
+            populateFromOrderData({
+                id: 'RC-' + Math.floor(100000 + Math.random() * 900000),
+                name: 'Valued Patron',
+                phone: '075 721 8786',
+                address: '65/11, Sooriyapaluwa, Eldeniya, Kadawatha',
+                city: 'Kadawatha',
+                district: 'Gampaha',
+                items: [
+                    { name: 'Long Batik Frock', size: 'XL', color: 'Blue', price: 1500, quantity: 2 }
+                ],
+                deliveryFee: 450,
+                subtotal: 3000,
+                grandTotal: 3450
+            });
+        }
+
+        // Map live database / cart order payload into Invoice State
+        function populateFromOrderData(order) {
+            invoiceState.id = order.id || order._docId || ('RC-' + Date.now().toString().slice(-6));
+            invoiceState.invoiceDate = order.date || new Date().toISOString().split('T')[0];
+            invoiceState.orderDate = order.date || new Date().toISOString().split('T')[0];
+            invoiceState.paymentMethod = order.paymentMethod || 'Cash on Delivery (COD)';
+            invoiceState.status = (order.status || 'CONFIRMED').toUpperCase();
+
+            // Customer Details mapping
+            const custName = order.userName || order.name || 'Valued Patron';
+            const custPhone = order.userPhone || order.phone || '–';
+            const custPhone2 = order.userPhone2 || order.phone2 || '';
+            const custEmail = order.userEmail || order.email || '';
+            const fullAddr = order.userAddress || order.address || '';
+            const city = order.city || extractCity(fullAddr) || '';
+            const district = order.district || '';
+            const postal = order.postal || '';
+            const notes = order.notes || '';
+
+            invoiceState.customer = {
+                name: custName,
+                phone: custPhone,
+                phone2: custPhone2,
+                email: custEmail,
+                address: order.streetAddress || fullAddr,
+                city: city,
+                district: district,
+                postal: postal
+            };
+
+            invoiceState.shipping = {
+                recipient: custName,
+                address: fullAddr || order.streetAddress || 'Standard Islandwide Delivery',
+                city: city || 'Destination City',
+                district: district || 'Western Province',
+                postal: postal,
+                phone: custPhone,
+                notes: notes
+            };
+
+            // Items Mapping
+            if (Array.isArray(order.items) && order.items.length) {
+                invoiceState.items = order.items.map((it, idx) => {
+                    const price = Number(it.price) || 0;
+                    const qty = Number(it.quantity) || 1;
+                    const variant = [it.size, it.color].filter(Boolean).join(' / ') || 'Standard';
+                    return {
+                        no: idx + 1,
+                        name: it.name || 'Garment Piece',
+                        variant: variant,
+                        unitPrice: price,
+                        quantity: qty,
+                        total: price * qty
+                    };
                 });
+            } else {
+                invoiceState.items = [];
+            }
 
-                if (hasCustom) productionSheet.style.display = 'block';
+            // Financial Totals mapping
+            const rawSubtotal = order.subtotal !== undefined ? Number(order.subtotal) :
+                invoiceState.items.reduce((sum, it) => sum + (it.unitPrice * it.quantity), 0);
+            
+            let rawDelivery = 450;
+            if (order.deliveryFee !== undefined) rawDelivery = Number(order.deliveryFee);
+            else if (order.delivery !== undefined) rawDelivery = Number(order.delivery);
+            else if (order.deliveryCharge !== undefined) rawDelivery = Number(order.deliveryCharge);
 
-                const delivery = (order.delivery !== undefined) ? order.delivery : 450;
-                document.getElementById('s-total').innerText = `Rs. ${sub.toLocaleString()}.00`;
-                document.getElementById('d-fee').innerText = delivery === 0 ? 'FREE' : `Rs. ${delivery.toLocaleString()}.00`;
-                document.getElementById('g-total').innerText = `Rs. ${(sub + delivery).toLocaleString()}.00`;
+            let rawDiscount = Number(order.discount) || 0;
+            let rawGrandTotal = order.grandTotal !== undefined ? Number(order.grandTotal) :
+                               (order.total !== undefined ? Number(order.total) : (rawSubtotal + rawDelivery - rawDiscount));
 
+            invoiceState.subtotal = rawSubtotal;
+            invoiceState.deliveryFee = rawDelivery;
+            invoiceState.discount = rawDiscount;
+            invoiceState.grandTotal = rawGrandTotal;
+
+            renderInvoice();
+        }
+
+        // Helper to extract city from multi-line address if city field was empty
+        function extractCity(addressStr) {
+            if (!addressStr) return '';
+            const parts = addressStr.split(',').map(s => s.trim()).filter(Boolean);
+            if (parts.length >= 2) return parts[parts.length - 1];
+            return parts[0] || '';
+        }
+
+        // Main Render Function (Pure Display, Strictly Non-Editable)
+        function renderInvoice() {
+            // Header & Meta
+            document.getElementById('dispOrderId').textContent = invoiceState.id;
+            document.getElementById('dispInvoiceDate').textContent = invoiceState.invoiceDate;
+            document.getElementById('dispOrderDate').textContent = invoiceState.orderDate;
+            document.getElementById('dispPaymentMethod').textContent = invoiceState.paymentMethod;
+            document.getElementById('dispOrderStatus').textContent = invoiceState.status;
+
+            // Customer
+            document.getElementById('dispCustName').textContent = invoiceState.customer.name || '–';
+            document.getElementById('dispCustPhone').textContent = invoiceState.customer.phone || '–';
+            
+            const rowP2 = document.getElementById('rowCustPhone2');
+            if (invoiceState.customer.phone2) {
+                rowP2.style.display = 'table-row';
+                document.getElementById('dispCustPhone2').textContent = invoiceState.customer.phone2;
+            } else {
+                rowP2.style.display = 'none';
+            }
+
+            const rowMail = document.getElementById('rowCustEmail');
+            if (invoiceState.customer.email) {
+                rowMail.style.display = 'table-row';
+                document.getElementById('dispCustEmail').textContent = invoiceState.customer.email;
+            } else {
+                rowMail.style.display = 'none';
+            }
+
+            document.getElementById('dispCustCity').textContent = invoiceState.customer.city || '–';
+            document.getElementById('dispCustDistrict').textContent = invoiceState.customer.district || '–';
+
+            const rowPostal = document.getElementById('rowCustPostal');
+            if (invoiceState.customer.postal) {
+                rowPostal.style.display = 'table-row';
+                document.getElementById('dispCustPostal').textContent = invoiceState.customer.postal;
+            } else {
+                rowPostal.style.display = 'none';
+            }
+
+            // Shipping
+            document.getElementById('dispShipRecipient').textContent = invoiceState.shipping.recipient || '–';
+            document.getElementById('dispShipAddress').textContent = invoiceState.shipping.address || '–';
+            document.getElementById('dispShipCity').textContent = invoiceState.shipping.city || '–';
+            document.getElementById('dispShipDistrict').textContent = invoiceState.shipping.district || '–';
+            document.getElementById('dispShipPhone').textContent = invoiceState.shipping.phone || '–';
+
+            const rowNotes = document.getElementById('rowShipNotes');
+            if (invoiceState.shipping.notes) {
+                rowNotes.style.display = 'table-row';
+                document.getElementById('dispShipNotes').textContent = invoiceState.shipping.notes;
+            } else {
+                rowNotes.style.display = 'none';
+            }
+
+            // Products Table Rows (Pure text - No inputs, No delete buttons, No editability)
+            const tbody = document.getElementById('productsTbody');
+            tbody.innerHTML = '';
+            invoiceState.items.forEach((it, idx) => {
+                it.no = idx + 1;
+                it.total = (Number(it.unitPrice) || 0) * (Number(it.quantity) || 1);
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="td-no">${it.no}</td>
+                    <td class="td-desc">
+                        <span class="product-name">${escapeHtml(it.name)}</span>
+                    </td>
+                    <td class="td-variant">${escapeHtml(it.variant || 'Standard')}</td>
+                    <td class="td-unit">${formatLKR(it.unitPrice).replace('LKR ', '')}</td>
+                    <td class="td-qty">${it.quantity}</td>
+                    <td class="td-total">${formatLKR(it.total).replace('LKR ', '')}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Financial Totals
+            document.getElementById('dispSubtotal').textContent = formatLKR(invoiceState.subtotal);
+            const delivery = Number(invoiceState.deliveryFee) || 0;
+            document.getElementById('dispDelivery').textContent = delivery === 0 ? 'FREE' : formatLKR(delivery);
+            
+            const discRow = document.getElementById('rowDiscount');
+            const discount = Number(invoiceState.discount) || 0;
+            if (discount > 0) {
+                discRow.style.display = 'table-row';
+                document.getElementById('dispDiscount').textContent = '- ' + formatLKR(discount);
+            } else {
+                discRow.style.display = 'none';
+            }
+
+            document.getElementById('dispGrandTotal').textContent = formatLKR(invoiceState.grandTotal);
+
+            // Scannable Barcode & QR Code Generation
+            generateBarcode();
+            generateQrCode();
+        }
+
+        // Generate CODE128 Scannable Barcode
+        function generateBarcode() {
+            const rawId = String(invoiceState.id || 'RC-000000').trim();
+            try {
+                JsBarcode("#orderBarcode", rawId, {
+                    format: "CODE128",
+                    lineColor: "#111111",
+                    width: 1.5,
+                    height: 38,
+                    displayValue: false,
+                    margin: 0,
+                    background: "#FFFFFF"
+                });
             } catch (e) {
-                console.error(e);
+                console.warn("JsBarcode generation fallback note:", e);
             }
         }
-        window.onload = loadBill;
+
+        // Generate Genuine Scannable QR Code containing invoice summary
+        function generateQrCode() {
+            const container = document.getElementById('invoiceQrCode');
+            container.innerHTML = '';
+
+            const qrSummary = [
+                `SHOP: ROOHIRA COLLECTION`,
+                `ORDER ID: ${invoiceState.id}`,
+                `DATE: ${invoiceState.invoiceDate}`,
+                `GRAND TOTAL: ${formatLKR(invoiceState.grandTotal)}`,
+                `CONTACT: 0757218786`
+            ].join('\n');
+
+            try {
+                new QRCode(container, {
+                    text: qrSummary,
+                    width: 72,
+                    height: 72,
+                    colorDark: "#111111",
+                    colorLight: "#FFFFFF",
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            } catch (e) {
+                console.warn("QRCode generation fallback note:", e);
+            }
+        }
+
+        // Utility: HTML escape
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Auto initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', initializeInvoice);
     </script>
 </body>
 </html>
