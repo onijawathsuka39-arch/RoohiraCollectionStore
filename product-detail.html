@@ -101,13 +101,6 @@
             <div id="image-thumbnails" class="gallery-thumbnails" style="display: none !important;">
                 <!-- Thumbnails will be injected here -->
             </div>
-
-            <!-- Gallery Share -->
-            <div class="pdp-gallery-share">
-                <button type="button" onclick="shareProduct('whatsapp')" title="Share on WhatsApp"><i data-lucide="message-circle"></i></button>
-                <button type="button" onclick="shareProduct('facebook')" title="Share on Facebook"><i data-lucide="facebook"></i></button>
-                <button type="button" onclick="shareProduct('copy')" title="Copy product link"><i data-lucide="link"></i></button>
-            </div>
         </div>
 
         <!-- Product Details -->
@@ -1112,23 +1105,8 @@
         }
 
         // ==========================================
-        // PDP UI HELPERS: share, accordions, sticky bar, related products
+        // PDP UI HELPERS: accordions, sticky bar, related products
         // ==========================================
-        function shareProduct(platform) {
-            const url = window.location.href;
-            const title = (product && product.name) ? product.name + ' | Roohira Collection' : 'Roohira Collection';
-
-            if (platform === 'whatsapp') {
-                window.open('https://wa.me/?text=' + encodeURIComponent(title + ' — ' + url), '_blank');
-            } else if (platform === 'facebook') {
-                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank');
-            } else if (navigator.clipboard) {
-                navigator.clipboard.writeText(url)
-                    .then(() => showNotification('Product link copied!'))
-                    .catch(() => showNotification('Unable to copy link'));
-            }
-        }
-
         function togglePdpAccordion(headBtn) {
             const item = headBtn ? headBtn.parentElement : null;
             if (!item) return;

@@ -3681,7 +3681,7 @@ footer *, .footer * { color: inherit; }
   margin-bottom: 7px;
 }
 .shop-page .shop-chip-row {
-  display: flex !important;
+  display: flex;
   flex-wrap: nowrap !important;
   align-items: center;
   gap: 6px !important;
@@ -4036,11 +4036,34 @@ footer *, .footer * { color: inherit; }
 .pdp-page .slider-arrow:hover { background: #3B2417; color: #FFFFFF; border-color: #3B2417; }
 .pdp-page .slider-arrow#prev-btn { left: 10px; }
 .pdp-page .slider-arrow#next-btn { right: 10px; }
+/* Dots sit BELOW the product image (never on top of it) */
 .pdp-page .slider-pagination {
-  bottom: 12px;
-  background: rgba(26, 15, 10, 0.55);
+  position: static !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  margin: 12px auto 0;
+  background: none !important;
+  padding: 0 !important;
   border-radius: 0;
-  padding: 5px 10px;
+  backdrop-filter: none;
+  z-index: 1;
+}
+.pdp-page .slider-pagination .dot {
+  width: 7px;
+  height: 7px;
+  background: #CDBBA9;
+  border-radius: 50%;
+}
+.pdp-page .slider-pagination .dot.active {
+  background: #8B5A2B;
+  width: 20px;
+  border-radius: 10px;
 }
 .pdp-page .gallery-thumbnails {
   display: flex;
@@ -4064,35 +4087,6 @@ footer *, .footer * { color: inherit; }
   opacity: 1;
   border: 1.5px solid #8B5A2B;
   box-shadow: none;
-}
-
-/* Gallery share buttons */
-.pdp-page .pdp-gallery-share {
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 12;
-}
-.pdp-page .pdp-gallery-share button {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid #E8DFD5;
-  color: #3B2417;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-.pdp-page .pdp-gallery-share button svg { width: 15px; height: 15px; }
-.pdp-page .pdp-gallery-share button:hover {
-  background: #3B2417;
-  border-color: #3B2417;
-  color: #FFFFFF;
 }
 
 /* Info column */
@@ -4461,8 +4455,6 @@ footer *, .footer * { color: inherit; }
   .pdp-page .slider-container { min-height: 300px; }
   .pdp-page #image-slider img { max-height: 330px; padding: 4px; }
   .pdp-page .gallery-thumbnails .thumb { width: 50px; height: 50px; }
-  .pdp-page .pdp-gallery-share { top: 14px; right: 14px; gap: 5px; }
-  .pdp-page .pdp-gallery-share button { width: 30px; height: 30px; }
   .pdp-page .detail-title { font-size: 1.32rem; }
   .pdp-page .current-price { font-size: 1.4rem; }
   .pdp-page .detail-add-btn {
