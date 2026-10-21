@@ -755,6 +755,11 @@ function selectSection(sec, btn) {
         }
     }
 
+    // Rebuild categories for the selected section
+    if (typeof renderDynamicShopCategories === 'function') {
+        renderDynamicShopCategories();
+    }
+
     filterShop();
 }
 

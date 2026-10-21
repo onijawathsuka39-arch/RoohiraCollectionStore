@@ -99,14 +99,14 @@
                 </div>
             </div>
 
-            <!-- Department / Section Tabs (Hidden — section set via URL param from home page cards) -->
-            <div id="section-btn-row" style="display: none;">
-                <button class="shop-filter-btn section-btn active" onclick="selectSection('All', this)"><i data-lucide="layers" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> All Collections</button>
-                <button class="shop-filter-btn section-btn" onclick="selectSection('Mens', this)"><i data-lucide="user" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Men</button>
-                <button class="shop-filter-btn section-btn" onclick="selectSection('Womens', this)"><i data-lucide="heart" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Women</button>
-                <button class="shop-filter-btn section-btn" onclick="selectSection('Kids', this)"><i data-lucide="smile" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Kids</button>
-                <button class="shop-filter-btn section-btn" onclick="selectSection('Others', this)"><i data-lucide="sparkles" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Others</button>
-            </div>
+        <!-- Department / Section Tabs -->
+        <div id="section-btn-row" style="display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 12px; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: thin;">
+            <button class="shop-filter-btn section-btn active" onclick="selectSection('All', this)">All Collections</button>
+            <button class="shop-filter-btn section-btn" onclick="selectSection('Mens', this)">Men</button>
+            <button class="shop-filter-btn section-btn" onclick="selectSection('Womens', this)">Women</button>
+            <button class="shop-filter-btn section-btn" onclick="selectSection('Kids', this)">Kids</button>
+            <button class="shop-filter-btn section-btn" onclick="selectSection('Others', this)">Others</button>
+        </div>
 
             <!-- Active Department Badge (shows when landing from home page department card) -->
             <div id="active-dept-badge-row" style="display: none; margin-top: 12px; border-top: 1px solid rgba(60, 42, 33, 0.1); padding-top: 10px; align-items: center; gap: 10px; flex-wrap: wrap;">
