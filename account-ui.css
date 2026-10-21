@@ -9,8 +9,8 @@
    Shared page shell + design tokens (warm espresso / cream — matches the site)
    -------------------------------------------------------------------------- */
 .acct-page {
-  --acct-radius: 14px;
-  --acct-radius-sm: 10px;
+  --acct-radius: 0;
+  --acct-radius-sm: 0;
 
   /* Warm espresso / cream palette (matches the main site) */
   --acct-ink: #1A0F0A;         /* espresso — headings, primary text */
@@ -636,11 +636,11 @@ body { background-color: #FAF7F2; }
   .profile-actions { padding: 18px 14px; }
 
   /* Cart */
-  .cart-card { grid-template-columns: 76px 1fr; gap: 12px; padding: 14px; }
-  .cart-thumb { width: 76px; height: 92px; }
+  .cart-card { grid-template-columns: 76px 1fr; gap: 12px; padding: 14px; border-radius: 0; }
+  .cart-thumb { width: 76px; height: 92px; border-radius: 0; }
   .cart-name { font-size: 1rem; }
   .cart-foot { gap: 10px; }
-  .cart-summary { padding: 18px 16px; }
+  .cart-summary { padding: 18px 16px; border-radius: 0; }
   .sum-row .sum-label, .sum-row .sum-val { font-size: 0.9rem; }
 
   /* Order history */
@@ -648,28 +648,11 @@ body { background-color: #FAF7F2; }
   .order-meta { gap: 8px; }
   .order-right { flex-direction: column; align-items: flex-end; gap: 6px; }
   .order-body { padding: 4px 16px 20px; }
-
-  /* Convert the items table into stacked mini-cards */
-  .items-wrap { border: none; border-radius: 0; }
-  .items-table, .items-table tbody, .items-table tr, .items-table td { display: block; width: 100%; }
-  .items-table thead { display: none; }                 /* drop column headers */
-  .items-table tbody tr {
-    background: #fff;
-    border: 1px solid var(--acct-line);
-    border-radius: var(--acct-radius-sm);
-    margin-bottom: 10px;
-    padding: 6px 2px;
-    position: relative;
-  }
-  .items-table tbody td {
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 8px 14px;
-    text-align: right;
-  }
+  .order-card { border-radius: 0; }
+  .order-totals .line { min-width: 0; width: 100%; }
+  .order-foot { flex-direction: column; align-items: stretch; }
+  .order-foot-actions { width: 100%; }
+  .order-foot-actions .acct-btn { flex: 1 1 auto; justify-content: center; }
   .items-table tbody td::before {
     content: attr(data-label);                        /* inline field name */
     font-size: 0.72rem;
