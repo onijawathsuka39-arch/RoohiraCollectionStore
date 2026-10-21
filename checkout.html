@@ -12,10 +12,297 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="account-ui.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* =====================================================================
+           Checkout — warm espresso theme + mobile-first polish
+           Matches the account pages (cream / dark brown), with compact buttons.
+           ===================================================================== */
+        body.checkout-page {
+            background-color: #FAF7F2;
+            /* keep checkout accents in the site's warm brown family */
+            --gold: #885B33;
+            --gold-dark: #6A4430;
+            --gold-light: #C9AE8A;
+            --accent-pink: #885B33;
+            --accent-pink-bright: #A67C52;
+            --accent-pink-deep: #6A4430;
+        }
+
+        /* ---------- Page shell ---------- */
+        .checkout-main {
+            padding-top: 110px;
+            padding-bottom: 56px;
+        }
+
+        /* ---------- Header ---------- */
+        .checkout-hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .checkout-hero h2 {
+            font-size: clamp(1.7rem, 4vw, 2.2rem);
+            font-weight: 900;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        .checkout-hero h2 span { color: var(--accent-pink); }
+        .checkout-hero p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin: 0;
+        }
+
+        /* ---------- Stepper ---------- */
+        .checkout-stepper { gap: 12px; margin-bottom: 28px; }
+        .stepper-step { font-size: 0.82rem; }
+        .stepper-step.active { color: var(--gold-dark); }
+        .stepper-num { background: #FAF7F2; border-color: #E8DFD5; }
+        .stepper-step.active .stepper-num {
+            background: #1A0F0A;
+            border-color: #1A0F0A;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(26, 15, 10, 0.18);
+        }
+        .stepper-line.active { background: #1A0F0A; }
+
+        /* ---------- Cards ---------- */
+        .checkout-section-card {
+            border-color: #E8DFD5;
+            box-shadow: 0 8px 24px rgba(26, 15, 10, 0.05);
+        }
+        .checkout-section-card:hover { border-color: #D9C6AE; }
+        .checkout-card-header { border-bottom-color: #F0EAE2; }
+        .checkout-card-header i,
+        .checkout-card-header svg {
+            background: rgba(26, 15, 10, 0.06);
+            color: var(--gold-dark);
+        }
+
+        /* ---------- Form controls ---------- */
+        .input-with-icon input,
+        .input-with-icon select,
+        .input-with-icon textarea {
+            background: #FAF7F2;
+            border-color: #E8DFD5;
+        }
+        .input-with-icon textarea { min-height: 84px; resize: vertical; }
+        .input-with-icon input:focus,
+        .input-with-icon select:focus,
+        .input-with-icon textarea:focus {
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 0 3px rgba(136, 91, 51, 0.15);
+            background: #FFFFFF;
+        }
+        .input-with-icon input:focus + i,
+        .input-with-icon select:focus + i,
+        .input-with-icon textarea:focus + i { color: var(--gold-dark); }
+
+        /* Small "Optional" label */
+        .optional-tag {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            text-transform: none;
+            color: #9B8D83;
+        }
+
+        /* ---------- Payment ---------- */
+        .payment-option-card { background: #FAF7F2; border-color: #E8DFD5; }
+        .payment-option-card:hover { border-color: #D9C6AE; transform: none; }
+        .payment-option-card.selected {
+            border-color: var(--gold-dark);
+            background: rgba(136, 91, 51, 0.07);
+            box-shadow: 0 4px 14px rgba(136, 91, 51, 0.1);
+        }
+        .payment-option-card input[type="radio"] { accent-color: var(--gold-dark); }
+        .payment-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(136, 91, 51, 0.12);
+            color: #6A4430;
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        /* ---------- Summary ---------- */
+        .checkout-item-price { color: var(--gold-dark); }
+        .summary-row.total-row span.amount { color: #1A0F0A; }
+        .trust-badge-item i,
+        .trust-badge-item svg { color: var(--gold-dark); }
+        .promo-notice-box {
+            background: #E8F5E9;
+            border-color: #A5D6A7;
+            color: #2E7D32;
+        }
+        .promo-notice-box.warning {
+            background: #FFF3E0;
+            border-color: #FFCC80;
+            color: #E65100;
+        }
+
+        /* ---------- Compact primary button ---------- */
+        .checkout-complete-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px 18px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        /* ---------- Tablet ---------- */
+        @media (max-width: 992px) {
+            .checkout-main { padding-top: 98px; padding-bottom: 44px; }
+            .order-summary-card { position: static; top: auto; }
+        }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 640px) {
+            .checkout-main {
+                padding-top: 88px;
+                padding-bottom: 32px;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .checkout-hero { margin-bottom: 20px; }
+            .checkout-hero h2 { font-size: 1.55rem; margin-bottom: 6px; }
+            .checkout-hero p { font-size: 0.78rem; line-height: 1.45; }
+
+            /* Compact stepper: number on top, short label below */
+            .checkout-stepper {
+                gap: 6px;
+                margin-bottom: 20px;
+                padding: 0;
+                max-width: 100%;
+            }
+            .stepper-step {
+                flex-direction: column;
+                gap: 4px;
+                font-size: 0.64rem;
+                line-height: 1.15;
+                text-align: center;
+                flex: 0 0 auto;
+                max-width: 30%;
+            }
+            .stepper-step span {
+                display: block;
+                white-space: normal;
+                font-weight: 600;
+            }
+            .stepper-num { width: 28px; height: 28px; font-size: 0.72rem; }
+            .stepper-line { height: 2px; min-width: 10px; }
+
+            /* Cards */
+            .checkout-grid { gap: 16px; }
+            .checkout-section-card {
+                padding: 16px 14px;
+                margin-bottom: 14px;
+                border-radius: 14px;
+            }
+            .checkout-card-header {
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                gap: 10px;
+            }
+            .checkout-card-header i,
+            .checkout-card-header svg {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+            }
+            .checkout-card-header h3 { font-size: 1.02rem; letter-spacing: 0; }
+            .checkout-card-header p { font-size: 0.72rem !important; line-height: 1.4; }
+
+            /* Form */
+            .form-grid-2, .form-grid-3 { gap: 0; }
+            .checkout-form-group { margin-bottom: 12px; gap: 5px; }
+            .checkout-form-group label {
+                font-size: 0.7rem;
+                letter-spacing: 0.03em;
+                gap: 6px;
+            }
+            .input-with-icon input,
+            .input-with-icon select,
+            .input-with-icon textarea {
+                padding: 11px 12px 11px 38px;
+                font-size: 0.88rem;
+                border-radius: 8px;
+            }
+            .input-with-icon i,
+            .input-with-icon svg {
+                left: 12px;
+                width: 16px;
+                height: 16px;
+            }
+            .input-with-icon textarea { min-height: 74px; }
+
+            /* Payment */
+            .payment-grid { gap: 9px; }
+            .payment-option-card {
+                padding: 12px 14px;
+                gap: 10px;
+                border-radius: 10px;
+            }
+            .payment-option-title {
+                font-size: 0.86rem;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            .payment-option-desc { font-size: 0.73rem; line-height: 1.4; }
+            .payment-badge { font-size: 0.56rem; padding: 2px 6px; }
+            #bank-details-box { padding: 14px !important; border-radius: 12px !important; }
+            #bank-details-box h4 { font-size: 0.85rem !important; }
+
+            /* Summary */
+            .order-summary-card { position: static; top: auto; }
+            .checkout-item-row { gap: 10px; padding: 10px 0; }
+            .checkout-item-img { width: 46px; height: 46px; border-radius: 6px; }
+            .checkout-item-name { font-size: 0.84rem; }
+            .checkout-item-meta { font-size: 0.7rem; line-height: 1.4; }
+            .checkout-item-price { font-size: 0.86rem; white-space: nowrap; }
+            .summary-row { font-size: 0.84rem; padding: 7px 0; }
+            .summary-row.total-row {
+                font-size: 1.05rem;
+                padding-top: 14px;
+                margin-top: 10px;
+            }
+            .summary-row.total-row span.amount { font-size: 1.02rem; }
+
+            .checkout-complete-btn {
+                margin-top: 16px;
+                padding: 11px 14px;
+                font-size: 0.82rem;
+                gap: 6px;
+                min-height: 44px;
+            }
+
+            .checkout-trust-badges {
+                gap: 6px;
+                margin-top: 18px;
+                padding-top: 16px;
+            }
+            .trust-badge-item { font-size: 0.64rem; gap: 4px; }
+            .trust-badge-item i,
+            .trust-badge-item svg { width: 17px; height: 17px; }
+        }
+    </style>
 </head>
 
-<body>
+<body class="checkout-page">
     <nav id="navbar" class="scrolled">
         <a href="index.html" class="logo">
             <img src="logo.png" alt="Roohira Collection Logo">
@@ -27,49 +314,67 @@
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="shop.html">Shop</a></li>
-            <li><a href="customize.html">Customize</a></li>
-            <li><a href="offers.html">Offers</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="customize.html">Design Studio</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="login.html"><i data-lucide="user"></i></a>
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="profile.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
             <a href="cart.html" style="position: relative;">
                 <i data-lucide="shopping-cart"></i>
                 <span id="cart-count"
-                    style="position: absolute; top: -10px; right: -10px; background: #8B5A2B; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 50%; font-weight: 800;">0</span>
+                    style="position: absolute; top: -10px; right: -10px; background: #1A0F0A; color: #ffffff; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
             </a>
             <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
         </div>
     </nav>
 
-    <main class="section" style="padding-top: 130px; padding-bottom: 80px;">
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="track-order.html">Track Order</a>
+        <a href="customize.html">Design Studio</a>
+        <a href="offers.html">Offers</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="profile.html">My Account</a>
+        <a href="cart.html">Cart</a>
+    </div>
+
+    <main class="section checkout-main">
         <!-- Checkout Stepper -->
         <div class="checkout-stepper">
             <a href="cart.html" class="stepper-step" style="text-decoration: none;">
                 <div class="stepper-num"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
-                <span>1. Shopping Cart</span>
+                <span>Cart</span>
             </a>
             <div class="stepper-line active"></div>
             <div class="stepper-step active">
                 <div class="stepper-num">2</div>
-                <span>2. Shipping & Billing</span>
+                <span>Shipping</span>
             </div>
             <div class="stepper-line"></div>
             <div class="stepper-step">
                 <div class="stepper-num">3</div>
-                <span>3. Invoice & Order Confirmation</span>
+                <span>Confirm</span>
             </div>
         </div>
 
-        <div style="text-align: center; margin-bottom: 35px;">
-            <h2 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 8px;">
-                Secure <span style="color: var(--accent-pink);">Checkout</span>
-            </h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">
+        <header class="checkout-hero">
+            <h2>Secure <span>Checkout</span></h2>
+            <p>
                 <i data-lucide="shield-check"
-                    style="width: 16px; height: 16px; color: #22c55e; vertical-align: middle; margin-right: 4px;"></i>
-                256-Bit SSL Encrypted & Direct WhatsApp Order Confirmation
+                    style="width: 15px; height: 15px; color: #2E7D32; vertical-align: middle; margin-right: 4px;"></i>
+                256-Bit SSL Encrypted &amp; Direct WhatsApp Order Confirmation
             </p>
-        </div>
+        </header>
 
         <div class="checkout-grid">
             <!-- Left Side: Billing & Shipping Forms -->
@@ -264,7 +569,7 @@
                             <div class="form-grid-2" style="gap: 15px;">
                                 <!-- People's Bank Card Option -->
                                 <label class="bank-sub-card selected" id="bank-card-peoples"
-                                    style="display: block; cursor: pointer; background: rgba(255, 20, 147, 0.08); border: 1.5px solid var(--accent-pink); padding: 14px; border-radius: 12px; transition: var(--transition-smooth);">
+                                    style="display: block; cursor: pointer; background: rgba(136, 91, 51, 0.08); border: 1.5px solid var(--accent-pink); padding: 14px; border-radius: 12px; transition: var(--transition-smooth);">
                                     <div
                                         style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                                         <div
@@ -364,11 +669,10 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" id="btn-complete-order"
-                        style="width: 100%; margin-top: 25px; padding: 16px; font-size: 1.05rem; font-weight: 800; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;"
+                    <button class="btn btn-primary checkout-complete-btn" id="btn-complete-order"
                         onclick="placeOrder()">
-                        <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
-                        <span>Complete Order & Invoice</span>
+                        <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
+                        <span>Complete Order &amp; Invoice</span>
                     </button>
 
                     <div class="checkout-trust-badges">
@@ -473,7 +777,7 @@
             if (radioElem && radioElem.closest('.bank-sub-card')) {
                 const activeCard = radioElem.closest('.bank-sub-card');
                 activeCard.style.borderColor = 'var(--accent-pink)';
-                activeCard.style.background = 'rgba(255, 20, 147, 0.08)';
+                activeCard.style.background = 'rgba(136, 91, 51, 0.08)';
                 const badge = activeCard.querySelector('.payment-badge');
                 if (badge) badge.style.display = 'inline-block';
             }
