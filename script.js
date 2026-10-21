@@ -444,11 +444,70 @@ function renderHomePageSections() {
     if (typeof initFastScrollAnimations === 'function') setTimeout(initFastScrollAnimations, 40);
 }
 
+let shopCardObserver = null;
+let shopRevealFallbackBound = false;
+
+// Safety net: reveal any card that has entered the viewport.
+// Guarantees cards can never stay invisible even if IntersectionObserver is throttled.
+function shopRevealFallbackCheck() {
+    const grid = document.getElementById('product-grid');
+    if (!grid) return;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    grid.querySelectorAll('.product-card:not(.is-visible)').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top < vh - 20 && rect.bottom > -20) {
+            card.classList.add('is-visible');
+        }
+    });
+}
+
+function initShopCardReveal() {
+    const grid = document.getElementById('product-grid');
+    if (!grid || !document.querySelector('.shop-page')) return;
+    const cards = Array.from(grid.querySelectorAll('.product-card'));
+    if (!cards.length) return;
+
+    // Fallback: show everything immediately if IntersectionObserver is unavailable
+    if (!('IntersectionObserver' in window)) {
+        cards.forEach(c => c.classList.add('is-visible'));
+        return;
+    }
+
+    if (shopCardObserver) shopCardObserver.disconnect();
+
+    shopCardObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px 0px -30px 0px', threshold: 0.06 });
+
+    cards.forEach((card, index) => {
+        // Only animate cards that are not yet in view
+        card.classList.remove('is-visible');
+        card.style.transitionDelay = (index % 4) * 55 + 'ms';
+        shopCardObserver.observe(card);
+    });
+
+    // Scroll-based safety net (runs alongside the observer)
+    if (!shopRevealFallbackBound) {
+        shopRevealFallbackBound = true;
+        window.addEventListener('scroll', shopRevealFallbackCheck, { passive: true });
+        window.addEventListener('resize', shopRevealFallbackCheck);
+    }
+    requestAnimationFrame(shopRevealFallbackCheck);
+    setTimeout(shopRevealFallbackCheck, 350);
+    setTimeout(shopRevealFallbackCheck, 1200);
+}
+
 function displayProducts(filteredProducts) {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
     grid.innerHTML = (filteredProducts || []).map(p => generateProductCardHTML(p)).join('');
     if (typeof lucide !== 'undefined') lucide.createIcons();
+    initShopCardReveal();
 }
 
 let hoverIntervals = {};
@@ -572,15 +631,19 @@ function selectCategory(cat, btn) {
     // Show/hide subcategory buttons depending on selected category
     const tshirtSubs = document.querySelectorAll('.t-shirt-sub');
     const frockSubs = document.querySelectorAll('.frock-sub');
+    const subRow = document.getElementById('subcategory-row');
     if (cat === 'T-Shirts') {
         tshirtSubs.forEach(b => b.style.display = '');
         frockSubs.forEach(b => b.style.display = 'none');
+        if (subRow) subRow.style.display = 'flex';
     } else if (cat === 'Frock') {
         tshirtSubs.forEach(b => b.style.display = 'none');
         frockSubs.forEach(b => b.style.display = '');
+        if (subRow) subRow.style.display = 'none';
     } else {
         tshirtSubs.forEach(b => b.style.display = 'none');
         frockSubs.forEach(b => b.style.display = 'none');
+        if (subRow) subRow.style.display = 'none';
     }
 
     // Reset subcategory buttons to 'All'
@@ -885,6 +948,13 @@ function filterShop() {
 
     displayProducts(filtered);
 
+    // Results counter
+    const countEl = document.getElementById('shop-results-count');
+    if (countEl) {
+        const secLabel = (currentSection && currentSection !== 'All') ? currentSection : '';
+        countEl.textContent = filtered.length + (filtered.length === 1 ? ' product' : ' products') + (secLabel ? ' in ' + secLabel : '');
+    }
+
     // Empty State if 0 matching products
     const grid = document.getElementById('product-grid');
     if (grid && filtered.length === 0) {
@@ -993,6 +1063,8 @@ function filterProducts(category) {
         });
     }
     updateFilterVisibility();
+    const subRowEl = document.getElementById('subcategory-row');
+    if (subRowEl) subRowEl.style.display = (currentCategory === 'T-Shirts') ? 'flex' : 'none';
     filterShop();
 }
 
@@ -2430,6 +2502,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const catParam = urlParams.get('category');
             catParam ? filterProducts(catParam) : filterProducts('All');
+            if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
         }
         if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
             if (typeof renderHomePageSections === 'function') renderHomePageSections();

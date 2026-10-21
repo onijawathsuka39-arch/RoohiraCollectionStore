@@ -67,7 +67,7 @@
         <a href="login.html"><i data-lucide="log-in" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Login / Register</a>
     </div>
 
-<main class="detail-section">
+<main class="detail-section pdp-page">
     <!-- Breadcrumbs -->
     <div class="detail-breadcrumbs">
         <a href="index.html">Home</a>
@@ -100,6 +100,13 @@
             <!-- Image Thumbnails (Previews) -->
             <div id="image-thumbnails" class="gallery-thumbnails" style="display: none !important;">
                 <!-- Thumbnails will be injected here -->
+            </div>
+
+            <!-- Gallery Share -->
+            <div class="pdp-gallery-share">
+                <button type="button" onclick="shareProduct('whatsapp')" title="Share on WhatsApp"><i data-lucide="message-circle"></i></button>
+                <button type="button" onclick="shareProduct('facebook')" title="Share on Facebook"><i data-lucide="facebook"></i></button>
+                <button type="button" onclick="shareProduct('copy')" title="Copy product link"><i data-lucide="link"></i></button>
             </div>
         </div>
 
@@ -209,8 +216,89 @@
                     <i data-lucide="heart" id="detail-wishlist-icon" style="width: 22px; height: 22px; transition: 0.3s;"></i>
                 </button>
             </div>
+
+            <!-- Trust Badges -->
+            <div class="pdp-trust-grid">
+                <div class="pdp-trust-item">
+                    <i data-lucide="banknote"></i>
+                    <div>
+                        <strong>Cash on Delivery</strong>
+                        <span>Pay when it arrives</span>
+                    </div>
+                </div>
+                <div class="pdp-trust-item">
+                    <i data-lucide="truck"></i>
+                    <div>
+                        <strong>Islandwide Delivery</strong>
+                        <span>2–4 working days</span>
+                    </div>
+                </div>
+                <div class="pdp-trust-item">
+                    <i data-lucide="refresh-ccw"></i>
+                    <div>
+                        <strong>Easy Exchange</strong>
+                        <span>7-day size swap</span>
+                    </div>
+                </div>
+                <div class="pdp-trust-item">
+                    <i data-lucide="shield-check"></i>
+                    <div>
+                        <strong>Secure Checkout</strong>
+                        <span>100% protected</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Information Accordions -->
+            <div class="pdp-accordion">
+                <div class="pdp-accordion-item open">
+                    <button type="button" class="pdp-accordion-head" onclick="togglePdpAccordion(this)">
+                        <span><i data-lucide="shirt"></i> Fabric &amp; Care</span>
+                        <i data-lucide="chevron-down" class="pdp-acc-chevron"></i>
+                    </button>
+                    <div class="pdp-accordion-body">
+                        <p><span id="pdp-fabric-text">Premium breathable fabric, handcrafted in Sri Lanka.</span></p>
+                        <ul class="pdp-care-list">
+                            <li>Gentle machine wash, cold water</li>
+                            <li>Do not bleach &bull; Iron on reverse</li>
+                            <li>Colours may vary slightly between batches</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pdp-accordion-item">
+                    <button type="button" class="pdp-accordion-head" onclick="togglePdpAccordion(this)">
+                        <span><i data-lucide="ruler"></i> Size &amp; Fit</span>
+                        <i data-lucide="chevron-down" class="pdp-acc-chevron"></i>
+                    </button>
+                    <div class="pdp-accordion-body">
+                        <p>True to size with a comfortable relaxed fit. If you are between two sizes, we recommend selecting the larger size for a looser drape.</p>
+                        <p>Need exact measurements? Open the <strong>Size Chart</strong> link above the size selector.</p>
+                    </div>
+                </div>
+
+                <div class="pdp-accordion-item">
+                    <button type="button" class="pdp-accordion-head" onclick="togglePdpAccordion(this)">
+                        <span><i data-lucide="package-check"></i> Delivery &amp; Returns</span>
+                        <i data-lucide="chevron-down" class="pdp-acc-chevron"></i>
+                    </button>
+                    <div class="pdp-accordion-body">
+                        <p>Islandwide delivery in 2–4 working days. Cash on delivery available for every district in Sri Lanka. Free delivery on orders of 4 or more items.</p>
+                        <p>Unworn items with original tags can be exchanged within 7 days of delivery.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- You May Also Like -->
+    <section class="pdp-related-section" id="pdp-related-section" style="display: none;">
+        <div class="pdp-related-head">
+            <span>Complete Your Look</span>
+            <h2>You May Also Like</h2>
+        </div>
+        <div class="pdp-related-grid" id="pdp-related-grid"></div>
+    </section>
 
     <!-- Product Customer Ratings & Reviews Section -->
     <section class="pdp-reviews-section" id="pdp-reviews-section">
@@ -300,6 +388,17 @@
         </div>
     </section>
 </main>
+
+    <!-- Sticky Mobile Add-to-Cart Bar -->
+    <div class="pdp-sticky-bar" id="pdp-sticky-bar">
+        <div class="pdp-sticky-info">
+            <span class="pdp-sticky-price" id="pdp-sticky-price">Rs. 0.00</span>
+            <span class="pdp-sticky-name" id="pdp-sticky-name">Roohira Garment</span>
+        </div>
+        <button type="button" class="pdp-sticky-btn" id="pdp-sticky-add" onclick="addCurrentToCart()">
+            <i data-lucide="shopping-bag"></i> Add to Cart
+        </button>
+    </div>
 
     <!-- Size Chart Modal (Product Specific Only) -->
     <div id="sizeChartModal" class="modal-overlay" onclick="closeSizeChart()" style="display:none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); align-items: center; justify-content: center;">
@@ -505,13 +604,6 @@
                     dot.className = `dot ${idx === 0 ? 'active' : ''}`;
                     dot.onclick = () => goToSlide(idx);
                     if (dotsContainer) dotsContainer.appendChild(dot);
-
-                    // Thumbnail
-                    const thumb = document.createElement('img');
-                    thumb.src = img;
-                    thumb.className = `thumb ${idx === 0 ? 'active' : ''}`;
-                    thumb.onclick = () => goToSlide(idx);
-                    // Thumbnails disabled per user request
                 }
             });
 
@@ -681,6 +773,17 @@
 
             initWishlistState();
             updateDeliveryPromo();
+            renderRelatedProducts();
+            updateStickyBar();
+
+            const fabricEl = document.getElementById('pdp-fabric-text');
+            if (fabricEl) {
+                const mat = (product.gsm || product.material || '').trim();
+                fabricEl.innerText = mat
+                    ? mat + ' — premium handcrafted fabric, made in Sri Lanka.'
+                    : 'Premium breathable fabric, handcrafted in Sri Lanka.';
+            }
+
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
@@ -861,7 +964,13 @@
             if (effectiveOldPrice) {
                 html += ` <span class="old-price">Rs. ${effectiveOldPrice.toLocaleString()}</span>`;
             }
+            if (effectiveOldPrice && effectiveOldPrice > effectivePrice) {
+                const pct = Math.round(((effectiveOldPrice - effectivePrice) / effectiveOldPrice) * 100);
+                html += ` <span class="pdp-save-badge">Save ${pct}%</span>`;
+            }
             priceEl.innerHTML = html;
+
+            if (typeof updateStickyBar === 'function') updateStickyBar();
         }
 
         function addCurrentToCart() {
@@ -1000,6 +1109,80 @@
                 }
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             }
+        }
+
+        // ==========================================
+        // PDP UI HELPERS: share, accordions, sticky bar, related products
+        // ==========================================
+        function shareProduct(platform) {
+            const url = window.location.href;
+            const title = (product && product.name) ? product.name + ' | Roohira Collection' : 'Roohira Collection';
+
+            if (platform === 'whatsapp') {
+                window.open('https://wa.me/?text=' + encodeURIComponent(title + ' — ' + url), '_blank');
+            } else if (platform === 'facebook') {
+                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank');
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(url)
+                    .then(() => showNotification('Product link copied!'))
+                    .catch(() => showNotification('Unable to copy link'));
+            }
+        }
+
+        function togglePdpAccordion(headBtn) {
+            const item = headBtn ? headBtn.parentElement : null;
+            if (!item) return;
+            item.classList.toggle('open');
+        }
+
+        function updateStickyBar() {
+            const priceEl = document.getElementById('pdp-sticky-price');
+            const nameEl = document.getElementById('pdp-sticky-name');
+            const btn = document.getElementById('pdp-sticky-add');
+
+            if (priceEl) priceEl.innerText = 'Rs. ' + Number(currentPrice || 0).toLocaleString() + '.00';
+            if (nameEl && product) nameEl.innerText = product.name || 'Roohira Garment';
+
+            if (btn && product) {
+                const isOut = product.stock === 0 || product.status === 'out_of_stock';
+                btn.disabled = isOut;
+                btn.classList.toggle('is-disabled', isOut);
+                btn.innerHTML = isOut
+                    ? '<i data-lucide="slash"></i> Out of Stock'
+                    : '<i data-lucide="shopping-bag"></i> Add to Cart';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        }
+
+        function renderRelatedProducts() {
+            const section = document.getElementById('pdp-related-section');
+            const grid = document.getElementById('pdp-related-grid');
+            if (!section || !grid || !product || typeof products === 'undefined' || !Array.isArray(products)) return;
+
+            const currentId = String(product.id);
+            const pool = products.filter(p => String(p.id) !== currentId);
+            const sameCategory = pool.filter(p => p.category === product.category);
+            const sameSection = pool.filter(p => (p.sections || []).some(s => (product.sections || []).includes(s)));
+
+            const ordered = [...sameCategory, ...sameSection, ...pool];
+            const seen = new Set();
+            const picked = [];
+            ordered.forEach(p => {
+                const key = String(p.id);
+                if (!seen.has(key) && picked.length < 4) {
+                    seen.add(key);
+                    picked.push(p);
+                }
+            });
+
+            if (!picked.length) {
+                section.style.display = 'none';
+                return;
+            }
+
+            grid.innerHTML = picked.map(p => generateProductCardHTML(p)).join('');
+            section.style.display = 'block';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         // ==========================================

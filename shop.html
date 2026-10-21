@@ -69,61 +69,68 @@
         <a href="admin.html" style="background: rgba(139, 90, 43, 0.08); color: #8B5A2B; font-weight: 700; border-top: 1px solid rgba(139, 90, 43, 0.2);"><i data-lucide="shield" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Admin Control Center</a>
     </div>
 
-    <main class="section" style="padding-top: 100px;">
-        <div class="section-title">
-            <h2>Our <span style="color: #8B5A2B;">Shop</span></h2>
-            <p>Browse through our exclusive T-shirt & Frock collection</p>
+    <main class="section shop-page">
+        <div class="shop-head">
+            <span class="shop-head-eyebrow">Roohira Collection</span>
+            <h2>Our <span>Shop</span></h2>
+            <p>Premium tees, frocks &amp; handmade pieces — filter by section to find your perfect fit.</p>
         </div>
 
-        <!-- Advanced Shop Controls Hub (Light Mode Design) -->
-        <div class="shop-control-bar">
-            <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;">
-                <!-- Search Box -->
-                <div style="position: relative; flex: 1; min-width: 220px; max-width: 400px;">
-                    <i data-lucide="search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #8B5A2B; width: 17px; height: 17px; pointer-events: none;"></i>
-                    <input type="text" id="shop-search" placeholder="Search collection, fabrics, style..." oninput="handleSearch(this.value)"
-                        style="width: 100%; padding: 11px 16px 11px 44px; border-radius: 0px; border: 1.5px solid #1A120B; background: #FAF7F2; color: #1A120B; font-size: 0.9rem; outline: none; transition: var(--transition-smooth);">
+        <!-- Shop Controls -->
+        <div class="shop-control-bar shop-toolbar">
+            <!-- Search + Sort -->
+            <div class="shop-search-row">
+                <div class="shop-search-wrap">
+                    <i data-lucide="search" class="shop-search-icon"></i>
+                    <input type="text" id="shop-search" placeholder="Search collection..." oninput="handleSearch(this.value)">
                 </div>
-
-                <!-- Sort & Size Guide Options -->
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 0.82rem; color: #6D5D53; font-weight: 700;">Sort By:</span>
-                        <select id="shop-sort" onchange="handleSortChange(this.value)" style="padding: 9px 12px; border-radius: 0px; border: 1.5px solid #1A120B; background: #FAF7F2; color: #1A120B; font-size: 0.85rem; outline: none; cursor: pointer; font-weight: 600;">
-                            <option value="default">Featured</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="name-asc">Name: A to Z</option>
-                        </select>
-                    </div>
+                <div class="shop-sort-wrap">
+                    <label for="shop-sort">Sort</label>
+                    <select id="shop-sort" onchange="handleSortChange(this.value)">
+                        <option value="default">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                    </select>
                 </div>
             </div>
 
-        <!-- Department / Section Tabs -->
-        <div id="section-btn-row" style="display: flex; gap: 6px; overflow-x: auto; padding: 6px 0; margin-bottom: 10px; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
-            <button class="shop-filter-btn section-btn active" onclick="selectSection('All', this)">All Collections</button>
-            <button class="shop-filter-btn section-btn" onclick="selectSection('Mens', this)">Men</button>
-            <button class="shop-filter-btn section-btn" onclick="selectSection('Womens', this)">Women</button>
-            <button class="shop-filter-btn section-btn" onclick="selectSection('Kids', this)">Kids</button>
-            <button class="shop-filter-btn section-btn" onclick="selectSection('Others', this)">Others</button>
-        </div>
-
-            <!-- Active Department Badge (shows when landing from home page department card) -->
-            <div id="active-dept-badge-row" style="display: none; margin-top: 12px; border-top: 1px solid rgba(60, 42, 33, 0.1); padding-top: 10px; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span id="active-dept-label" style="font-size: 0.8rem; font-weight: 800; color: #8B5A2B; text-transform: uppercase; letter-spacing: 1px;"></span>
-                <button onclick="selectSection('All', null); document.getElementById('active-dept-badge-row').style.display = 'none';" style="font-size: 0.72rem; font-weight: 700; color: #6D5D53; background: none; border: 1px solid rgba(60,42,33,0.25); padding: 3px 10px; cursor: pointer; border-radius: 20px;">&#10005; Browse All</button>
+            <!-- Section Filter -->
+            <div class="shop-filter-group">
+                <span class="shop-filter-label">Shop by Section</span>
+                <div id="section-btn-row" class="shop-chip-row">
+                    <button class="shop-filter-btn section-btn active" onclick="selectSection('All', this)">All</button>
+                    <button class="shop-filter-btn section-btn" onclick="selectSection('Mens', this)">Men</button>
+                    <button class="shop-filter-btn section-btn" onclick="selectSection('Womens', this)">Women</button>
+                    <button class="shop-filter-btn section-btn" onclick="selectSection('Kids', this)">Kids</button>
+                    <button class="shop-filter-btn section-btn" onclick="selectSection('Others', this)">Others</button>
+                </div>
             </div>
 
-            <div id="category-tab-row" style="margin-top: 8px; display: flex; gap: 6px; overflow-x: auto; padding: 6px 0; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
-                <button class="shop-filter-btn category-btn active" onclick="selectCategory('All', this)">All Categories</button>
+            <!-- Category Filter (Dynamic from Firestore) -->
+            <div class="shop-filter-group">
+                <span class="shop-filter-label">Category</span>
+                <div id="category-tab-row" class="shop-chip-row">
+                    <button class="shop-filter-btn category-btn active" onclick="selectCategory('All', this)">All Categories</button>
+                </div>
             </div>
 
-            <!-- Subcategories Tabs for T-Shirts -->
-            <div id="subcategory-row" style="margin-top: 10px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px;">
+            <!-- Subcategories (T-Shirts only) -->
+            <div id="subcategory-row" class="shop-chip-row shop-sub-row" style="display: none;">
                 <button class="shop-subfilter-btn subcategory-btn active" onclick="selectSubcategory('All', this)">All Styles</button>
                 <button class="shop-subfilter-btn subcategory-btn t-shirt-sub" onclick="selectSubcategory('Regular Tee (Printed)', this)">Regular Fit (220 GSM)</button>
                 <button class="shop-subfilter-btn subcategory-btn t-shirt-sub" onclick="selectSubcategory('Oversized Tee (Printed)', this)">Oversized Fit (220 GSM)</button>
             </div>
+
+            <!-- Active Section Badge -->
+            <div id="active-dept-badge-row" class="shop-active-dept">
+                <span id="active-dept-label"></span>
+                <button class="shop-active-dept-clear" onclick="selectSection('All', null); document.getElementById('active-dept-badge-row').style.display = 'none';">&#10005; Clear</button>
+            </div>
+        </div>
+
+        <div class="shop-results-bar">
+            <span id="shop-results-count">Showing all products</span>
         </div>
 
         <div class="product-grid" id="product-grid">
