@@ -100,7 +100,7 @@
             </div>
 
         <!-- Department / Section Tabs -->
-        <div id="section-btn-row" style="display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 12px; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: thin;">
+        <div id="section-btn-row" style="display: flex; gap: 6px; overflow-x: auto; padding: 6px 0; margin-bottom: 10px; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
             <button class="shop-filter-btn section-btn active" onclick="selectSection('All', this)">All Collections</button>
             <button class="shop-filter-btn section-btn" onclick="selectSection('Mens', this)">Men</button>
             <button class="shop-filter-btn section-btn" onclick="selectSection('Womens', this)">Women</button>
@@ -114,8 +114,7 @@
                 <button onclick="selectSection('All', null); document.getElementById('active-dept-badge-row').style.display = 'none';" style="font-size: 0.72rem; font-weight: 700; color: #6D5D53; background: none; border: 1px solid rgba(60,42,33,0.25); padding: 3px 10px; cursor: pointer; border-radius: 20px;">&#10005; Browse All</button>
             </div>
 
-            <!-- Categories Tabs (Dynamic from Firestore) -->
-            <div id="category-tab-row" style="margin-top: 10px; display: flex; gap: 8px; overflow-x: auto; padding-top: 4px; padding-bottom: 4px;">
+            <div id="category-tab-row" style="margin-top: 8px; display: flex; gap: 6px; overflow-x: auto; padding: 6px 0; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
                 <button class="shop-filter-btn category-btn active" onclick="selectCategory('All', this)">All Categories</button>
             </div>
 
