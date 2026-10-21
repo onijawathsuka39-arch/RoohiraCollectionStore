@@ -995,22 +995,22 @@ function filterProducts(category) {
 function renderCart() {
     const cartContainer = document.getElementById('cart-items');
     const totalElement = document.getElementById('cart-total');
+    const grandElement = document.getElementById('cart-total-grand');
     if (!cartContainer) return;
     if (cart.length === 0) {
         cartContainer.innerHTML = `
-            <div style="text-align: center; padding: 60px 20px; background: #FFFFFF; border: 1.5px dashed var(--border); border-radius: 16px; margin: 20px 0;">
-                <div style="width: 64px; height: 64px; margin: 0 auto 16px; background: rgba(139, 90, 43, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold);">
-                    <i data-lucide="shopping-bag" style="width: 32px; height: 32px;"></i>
-                </div>
-                <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: #1A120B; margin: 0 0 8px;">Your Shopping Bag is Empty</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0 0 20px;">Explore handcrafted luxury pieces from our latest collection.</p>
-                <a href="shop.html" class="btn btn-primary" style="padding: 10px 24px; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <div class="cart-empty">
+                <div class="empty-ic"><i data-lucide="shopping-bag"></i></div>
+                <h3>Your Shopping Bag is Empty</h3>
+                <p>Explore handcrafted luxury pieces from our latest collection.</p>
+                <a href="shop.html" class="acct-btn acct-btn--primary">
                     <span>Explore Shop</span>
-                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    <i data-lucide="arrow-right"></i>
                 </a>
             </div>
         `;
         if (totalElement) totalElement.innerText = 'Rs. 0.00';
+        if (grandElement) grandElement.innerText = 'Rs. 0.00';
         if (typeof lucide !== 'undefined') lucide.createIcons();
         return;
     }
@@ -1022,34 +1022,33 @@ function renderCart() {
         const imgSrc = item.image || 'logo.png';
 
         html += `
-            <div class="cart-card-modern" style="background: #FFFFFF; border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 15px rgba(26, 18, 11, 0.04); display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-                <img src="${imgSrc}" alt="${item.name}" style="width: 80px; height: 95px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--surface);">
-                <div style="flex: 1; min-width: 180px;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
-                        <h4 style="margin: 0 0 4px; font-size: 1.02rem; font-weight: 700; color: #1A120B; line-height: 1.3;">${item.name}</h4>
-                        <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #DC143C; cursor: pointer; padding: 4px;" title="Remove Item">
-                            <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+            <div class="cart-card">
+                <img src="${imgSrc}" alt="${item.name}" class="cart-thumb">
+                <div class="cart-body">
+                    <div class="cart-top">
+                        <h4 class="cart-name">${item.name}</h4>
+                        <button onclick="removeFromCart(${index})" class="cart-remove" title="Remove Item">
+                            <i data-lucide="trash-2"></i>
                         </button>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
-                        <span style="font-size: 0.78rem; font-weight: 700; background: rgba(139, 90, 43, 0.1); color: #8B5A2B; padding: 2px 8px; border-radius: 4px;">Size: ${item.size || 'Free'}</span>
-                        <span style="font-size: 0.78rem; font-weight: 700; background: #FAF7F2; color: #4A3025; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);">Color: ${colorName}</span>
+                    <div class="cart-tags">
+                        <span class="cart-tag">Size: ${item.size || 'Free'}</span>
+                        <span class="cart-tag cart-tag--muted">Color: ${colorName}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; flex-wrap: wrap; gap: 10px;">
-                        <div style="display: inline-flex; align-items: center; background: #FAF7F2; border: 1.5px solid var(--border); border-radius: 20px; padding: 3px 6px;">
-                            <button onclick="updateQuantity(${index}, -1)" class="btn-qty" style="width: 26px; height: 26px; border-radius: 50%; border: none; background: #FFFFFF; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">-</button>
-                            <span style="min-width: 32px; text-align: center; font-weight: 800; font-size: 0.9rem; color: #1A120B;">${item.quantity}</span>
-                            <button onclick="updateQuantity(${index}, 1)" class="btn-qty" style="width: 26px; height: 26px; border-radius: 50%; border: none; background: #FFFFFF; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">+</button>
+                    <div class="cart-foot">
+                        <div class="qty-step">
+                            <button onclick="updateQuantity(${index}, -1)" aria-label="Decrease quantity">-</button>
+                            <span class="qty-num">${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)" aria-label="Increase quantity">+</button>
                         </div>
-                        <div style="font-weight: 800; font-size: 1.1rem; color: #1A120B; font-family: var(--font-sans);">
-                            Rs. ${itemTotal.toLocaleString()}.00
-                        </div>
+                        <div class="cart-line-total">Rs. ${itemTotal.toLocaleString()}.00</div>
                     </div>
                 </div>
             </div>`;
     });
     cartContainer.innerHTML = html;
     if (totalElement) totalElement.innerText = `Rs. ${total.toLocaleString()}.00`;
+    if (grandElement) grandElement.innerText = `Rs. ${total.toLocaleString()}.00`;
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
@@ -2407,6 +2406,12 @@ function syncCategoriesListener() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    // Show the correct cart / wishlist counts immediately from localStorage,
+    // without waiting for the Firestore product sync to finish. This keeps the
+    // navbar numbers consistent on every page.
+    updateCartCount();
+    updateWishlistCount();
+
     syncCategoriesListener();
     syncProducts(() => {
         initThemeToggle();

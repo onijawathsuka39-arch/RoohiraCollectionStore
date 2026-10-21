@@ -381,7 +381,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="color-resolver.js"></script>
+    <!-- color-resolver.js removed: script.js already includes the full color resolver.
+         Loading both declared `const standardColorMap` twice, throwing a SyntaxError
+         that aborted script.js and broke Add to Cart / syncProducts. -->
     <script src="script.js"></script>
     <script>
         lucide.createIcons();

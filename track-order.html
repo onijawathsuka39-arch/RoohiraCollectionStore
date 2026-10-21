@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="account-ui.css">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Firebase SDKs -->
@@ -33,177 +34,155 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: var(--primary-light, #08070c);
-            color: var(--text-main, #fcfcfd);
+            background-color: #FAF7F2;
+            color: #1A0F0A;
         }
 
         main {
             flex: 1;
         }
 
+        /* Page container */
         .track-hero {
-            position: relative;
-            padding: 130px 20px 60px;
-            max-width: 1100px;
+            width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
+            padding: 118px 18px 64px;
+            box-sizing: border-box;
             text-align: center;
         }
 
         .track-title {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 2.6rem;
+            font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+            font-size: clamp(1.7rem, 4vw, 2.5rem);
             font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
-            color: var(--text-main);
+            letter-spacing: -0.02em;
+            line-height: 1.12;
+            margin: 0 0 10px;
+            color: #1A0F0A;
         }
 
         .track-subtitle {
-            color: var(--text-muted);
+            color: #6B5B52;
             font-size: 0.95rem;
             max-width: 580px;
-            margin: 0 auto 30px;
+            margin: 0 auto 20px;
             line-height: 1.6;
         }
 
-        /* Clean High-Precision Search Box (No Glow) */
+        /* Search box */
         .track-search-container {
-            max-width: 620px;
-            margin: 0 auto 25px;
+            max-width: 640px;
+            margin: 0 auto 18px;
             position: relative;
         }
 
         .track-search-glass {
             display: flex;
             align-items: center;
-            background: #140f1d;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 50px;
-            padding: 6px 8px 6px 20px;
-            transition: border-color 0.25s ease;
-        }
-
-        [data-theme="light"] .track-search-glass {
+            gap: 6px;
             background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.12);
+            border: 1.5px solid #E8DFD5;
+            border-radius: 14px;
+            padding: 6px 6px 6px 16px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .track-search-glass:focus-within {
-            border-color: #8B5A2B;
+            border-color: #24140E;
+            box-shadow: 0 0 0 3px rgba(26, 15, 10, 0.08);
         }
 
         .track-search-glass input {
             flex: 1;
+            min-width: 0;
             background: transparent;
             border: none;
             outline: none;
-            color: var(--text-main);
+            color: #1A0F0A;
             font-size: 1rem;
-            font-weight: 600;
-            padding: 12px 10px;
+            font-weight: 500;
+            padding: 12px 8px;
             font-family: inherit;
         }
 
         .track-search-glass input::placeholder {
-            color: var(--text-muted);
+            color: #9B8D83;
             font-weight: 400;
-            opacity: 0.6;
         }
 
         .track-btn {
-            background: #8B5A2B;
+            background: #24140E;
             color: #ffffff;
             border: none;
-            padding: 12px 26px;
-            border-radius: 40px;
+            padding: 12px 24px;
+            border-radius: 10px;
             font-weight: 700;
             font-size: 0.92rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            white-space: nowrap;
             transition: background 0.2s ease, transform 0.15s ease;
         }
 
-        .track-btn:hover {
-            background: #e0007d;
-        }
+        .track-btn:hover { background: #1A0F0A; }
+        .track-btn:active { transform: scale(0.98); }
+        .track-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .track-btn:active {
-            transform: scale(0.98);
-        }
-
-        .track-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* Features Strip */
+        /* Feature chips */
         .tracking-features-strip {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin: 20px auto 0;
-            padding: 12px 20px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            max-width: 750px;
-        }
-
-        [data-theme="light"] .tracking-features-strip {
-            background: #fdf6f9;
-            border-color: rgba(0, 0, 0, 0.06);
+            margin: 16px auto 0;
+            max-width: 780px;
         }
 
         .feature-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--text-muted);
+            color: #24140E;
+            background: #ffffff;
+            border: 1px solid #E8DFD5;
+            border-radius: 10px;
+            padding: 9px 13px;
+            white-space: nowrap;
         }
 
         .feature-item i {
-            color: #8B5A2B;
+            color: #24140E;
             width: 16px;
             height: 16px;
+            flex-shrink: 0;
         }
 
-        /* Results Card (Clean Flat Luxury, No Glow) */
+        /* Result wrapper */
         .track-result-wrapper {
-            max-width: 1000px;
-            margin: 30px auto 60px;
-            padding: 0 15px;
+            margin: 26px 0 0;
             display: none;
             animation: fadeIn 0.35s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .track-card {
-            background: #151020;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 35px 30px;
-            position: relative;
             text-align: left;
         }
 
-        [data-theme="light"] .track-card {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .track-card {
             background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid #E8DFD5;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 1px 2px rgba(26, 15, 10, 0.04), 0 10px 30px -18px rgba(26, 15, 10, 0.16);
+            text-align: left;
         }
 
         .track-header-row {
@@ -211,76 +190,75 @@
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
-            gap: 20px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        [data-theme="light"] .track-header-row {
-            border-bottom-color: rgba(0, 0, 0, 0.08);
+            gap: 18px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #E8DFD5;
         }
 
         .track-id-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 20, 147, 0.1);
-            border: 1px solid rgba(255, 20, 147, 0.25);
-            color: #8B5A2B;
+            background: #F3ECE1;
+            border: 1px solid #E8DFD5;
+            color: #24140E;
             padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
             font-weight: 700;
-            font-family: monospace;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
             margin-bottom: 8px;
         }
 
+        /* Status pills */
         .status-pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 18px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.03em;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
 
         .status-pill.status-pending {
-            background: rgba(245, 158, 11, 0.12);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.25);
+            background: #F3ECE1;
+            color: #6B5B52;
+            border-color: #E8DFD5;
         }
 
         .status-pill.status-transit {
-            background: rgba(59, 130, 246, 0.12);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.25);
+            background: #E1F5FE;
+            color: #0277BD;
+            border-color: #B3E5FC;
         }
 
         .status-pill.status-out {
-            background: rgba(168, 85, 247, 0.12);
-            color: #c084fc;
-            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: #F3ECE1;
+            color: #885B33;
+            border-color: #D9C6AE;
         }
 
         .status-pill.status-delivered {
-            background: rgba(16, 185, 129, 0.12);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.25);
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-color: #A5D6A7;
         }
 
         .status-pill.status-cancelled,
         .status-pill.status-returned {
-            background: rgba(239, 68, 68, 0.12);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.25);
+            background: #FFEBEE;
+            color: #C62828;
+            border-color: #FCA5A5;
         }
 
-        /* Stepper / Timeline (Clean Flat, No Glow) */
+        /* Stepper */
         .tracking-stepper-container {
-            margin: 35px 0 30px;
+            margin: 34px 0 28px;
             position: relative;
         }
 
@@ -288,22 +266,18 @@
             display: flex;
             justify-content: space-between;
             position: relative;
-            margin: 0 15px;
+            margin: 0 12px;
         }
 
         .stepper-progress-line {
             position: absolute;
-            top: 22px;
+            top: 20px;
             left: 20px;
             right: 20px;
             height: 3px;
-            background: rgba(255, 255, 255, 0.08);
+            background: #E8DFD5;
             z-index: 1;
             border-radius: 2px;
-        }
-
-        [data-theme="light"] .stepper-progress-line {
-            background: rgba(0, 0, 0, 0.08);
         }
 
         .stepper-progress-active {
@@ -311,7 +285,7 @@
             top: 0;
             left: 0;
             height: 100%;
-            background: #8B5A2B;
+            background: #24140E;
             border-radius: 2px;
             transition: width 0.6s ease;
         }
@@ -323,107 +297,102 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            width: 90px;
+            width: 92px;
+            min-width: 0;
         }
 
         .step-icon-wrap {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: #1a1426;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: #FAF7F2;
+            border: 1.5px solid #E8DFD5;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-muted);
+            color: #9B8D83;
             transition: all 0.3s ease;
         }
 
-        [data-theme="light"] .step-icon-wrap {
-            background: #f5f5f7;
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-
         .step-node.completed .step-icon-wrap {
-            background: #10b981;
-            border-color: #10b981;
+            background: #2E7D32;
+            border-color: #2E7D32;
             color: #ffffff;
         }
 
         .step-node.active .step-icon-wrap {
-            background: #8B5A2B;
-            border-color: #8B5A2B;
+            background: #24140E;
+            border-color: #24140E;
             color: #ffffff;
         }
 
         .step-label {
-            margin-top: 10px;
-            font-size: 0.8rem;
+            margin-top: 9px;
+            font-size: 0.78rem;
             font-weight: 700;
-            color: var(--text-muted);
+            color: #6B5B52;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         .step-node.completed .step-label,
         .step-node.active .step-label {
-            color: var(--text-main);
+            color: #1A0F0A;
         }
 
         .step-node.active .step-label {
-            color: #8B5A2B;
+            color: #24140E;
         }
 
         .step-time {
-            font-size: 0.72rem;
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            color: #9B8D83;
             margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
-        /* Detail Cards Grid */
+        /* Detail cards */
         .track-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 18px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+            gap: 16px;
+            margin-top: 28px;
         }
 
         .detail-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #FAF7F2;
+            border: 1px solid #E8DFD5;
             border-radius: 14px;
-            padding: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
-
-        [data-theme="light"] .detail-box {
-            background: #faf7f9;
-            border-color: rgba(0, 0, 0, 0.06);
         }
 
         .detail-box-header {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #8B5A2B;
+            letter-spacing: 0.05em;
+            color: #24140E;
         }
 
         .detail-item-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 14px;
             font-size: 0.86rem;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        [data-theme="light"] .detail-item-row {
-            border-bottom-color: rgba(0, 0, 0, 0.04);
+            padding-bottom: 9px;
+            border-bottom: 1px solid #F0EAE2;
         }
 
         .detail-item-row:last-child {
@@ -432,35 +401,33 @@
         }
 
         .detail-label {
-            color: var(--text-muted);
+            color: #6B5B52;
+            white-space: nowrap;
         }
 
         .detail-val {
             font-weight: 700;
-            font-family: 'Times New Roman', Times, serif;
-            color: var(--text-main);
+            color: #1A0F0A;
             text-align: right;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
+            overflow-wrap: anywhere;
         }
 
-        /* Activity / History Log */
+        /* Timeline */
         .history-timeline {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        [data-theme="light"] .history-timeline {
-            border-top-color: rgba(0, 0, 0, 0.08);
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #E8DFD5;
         }
 
         .history-title {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 800;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #1A0F0A;
         }
 
         .timeline-list {
@@ -475,12 +442,12 @@
             top: 6px;
             bottom: 6px;
             width: 2px;
-            background: rgba(255, 20, 147, 0.25);
+            background: #E8DFD5;
         }
 
         .timeline-event {
             position: relative;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .timeline-event:last-child {
@@ -494,47 +461,38 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: #151020;
-            border: 2px solid #8B5A2B;
-        }
-
-        [data-theme="light"] .timeline-dot {
             background: #ffffff;
+            border: 2px solid #9B8D83;
         }
 
         .timeline-event:first-child .timeline-dot {
-            background: #8B5A2B;
+            background: #24140E;
+            border-color: #24140E;
         }
 
         .timeline-event-content {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: #FAF7F2;
+            border: 1px solid #E8DFD5;
             border-radius: 10px;
             padding: 12px 16px;
         }
 
-        [data-theme="light"] .timeline-event-content {
-            background: #fbf5f8;
-            border-color: rgba(0, 0, 0, 0.04);
-        }
-
         .timeline-event-title {
             font-weight: 700;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 0.95rem;
-            color: var(--text-main);
+            font-size: 0.94rem;
+            color: #1A0F0A;
             margin-bottom: 4px;
         }
 
         .timeline-event-meta {
-            font-size: 0.76rem;
-            color: var(--text-muted);
+            font-size: 0.74rem;
+            color: #6B5B52;
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
         }
 
-        /* Loading Spinner */
+        /* Loader */
         .track-loader {
             display: none;
             text-align: center;
@@ -544,25 +502,23 @@
         .track-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 20, 147, 0.2);
-            border-top-color: #8B5A2B;
+            border: 3px solid #E8DFD5;
+            border-top-color: #24140E;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 15px;
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
-        /* Error Notification Box */
+        /* Error */
         .track-error-box {
             display: none;
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            color: #ef4444;
+            background: #FFEBEE;
+            border: 1px solid #FCA5A5;
+            color: #C62828;
             padding: 18px 22px;
             border-radius: 14px;
             max-width: 620px;
@@ -572,30 +528,33 @@
             animation: fadeIn 0.3s ease;
         }
 
+        /* Courier reference */
         .courier-official-badge {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 0.78rem;
-            color: var(--text-muted);
+            color: #6B5B52;
             margin-top: 20px;
             justify-content: center;
             padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid #E8DFD5;
+            flex-wrap: wrap;
         }
 
         .courier-official-badge a {
-            color: #8B5A2B;
+            color: #24140E;
             text-decoration: underline;
             font-weight: 600;
         }
 
+        /* Refresh button */
         .action-refresh-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            padding: 6px 14px;
-            border-radius: 6px;
+            background: #ffffff;
+            border: 1.5px solid #E8DFD5;
+            color: #24140E;
+            padding: 7px 14px;
+            border-radius: 8px;
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
@@ -603,76 +562,189 @@
             align-items: center;
             gap: 6px;
             transition: 0.2s;
+            white-space: nowrap;
         }
 
         .action-refresh-btn:hover {
-            background: rgba(255, 20, 147, 0.15);
-            border-color: #8B5A2B;
-            color: #8B5A2B;
+            background: #24140E;
+            border-color: #24140E;
+            color: #ffffff;
         }
 
-        /* Language Switcher Buttons */
+        /* Language switcher */
         .lang-switcher-wrap {
             display: inline-flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #F3ECE1;
+            border: 1px solid #E8DFD5;
             border-radius: 30px;
             padding: 4px;
-            margin: 10px auto 25px;
+            margin: 4px auto 20px;
             gap: 4px;
-        }
-
-        [data-theme="light"] .lang-switcher-wrap {
-            background: #f0ebf2;
-            border-color: rgba(0, 0, 0, 0.08);
         }
 
         .lang-btn {
             background: transparent;
             border: none;
-            color: var(--text-muted);
-            font-size: 0.82rem;
+            color: #6B5B52;
+            font-size: 0.8rem;
             font-weight: 700;
-            padding: 7px 16px;
+            padding: 7px 15px;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .lang-btn.active {
-            background: #8B5A2B;
+            background: #24140E;
             color: #ffffff;
-            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
         }
 
         .lang-btn:hover:not(.active) {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.06);
+            color: #1A0F0A;
+            background: #ffffff;
         }
 
+        /* Extra help options */
+        .track-help-wrap {
+            margin: 34px 0 0;
+            text-align: left;
+        }
+
+        .track-help-title {
+            text-align: center;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #6B5B52;
+            margin-bottom: 14px;
+        }
+
+        .track-help-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .track-help-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #ffffff;
+            border: 1px solid #E8DFD5;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #1A0F0A;
+            transition: 0.2s;
+            min-width: 0;
+        }
+
+        .track-help-card:hover {
+            border-color: #9B8D83;
+            box-shadow: 0 10px 24px -16px rgba(26, 15, 10, 0.22);
+            transform: translateY(-2px);
+        }
+
+        .track-help-ic {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F3ECE1;
+            color: #24140E;
+            border: 1px solid #E8DFD5;
+        }
+
+        .track-help-ic svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .track-help-card .hc-title {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .track-help-card .hc-sub {
+            display: block;
+            font-size: 0.74rem;
+            color: #6B5B52;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .track-hero {
-                padding-top: 110px;
-            }
-            .track-title {
-                font-size: 1.8rem;
+                padding: 100px 14px 52px;
             }
             .track-card {
                 padding: 20px 16px;
             }
+            .tracking-stepper {
+                margin: 0;
+            }
             .step-node {
-                width: 62px;
+                width: 20%;
             }
             .step-icon-wrap {
-                width: 36px;
-                height: 36px;
+                width: 34px;
+                height: 34px;
+            }
+            .step-icon-wrap svg {
+                width: 15px;
+                height: 15px;
             }
             .step-label {
-                font-size: 0.68rem;
+                font-size: 0.6rem;
+            }
+            .step-time {
+                display: none;
             }
             .stepper-progress-line {
-                top: 18px;
+                top: 16px;
+                left: 10%;
+                right: 10%;
+            }
+            .detail-item-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 3px;
+            }
+            .detail-val {
+                text-align: left;
+            }
+            .track-help-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .track-search-glass {
+                flex-wrap: wrap;
+                border-radius: 14px;
+                padding: 10px;
+            }
+            .track-search-glass input {
+                width: 100%;
+                padding: 10px 6px;
+            }
+            .track-btn {
+                width: 100%;
+                margin-top: 4px;
+            }
+            .track-title {
+                font-size: 1.5rem;
+            }
+            .feature-item {
+                font-size: 0.72rem;
+                padding: 7px 10px;
             }
         }
     </style>
@@ -706,7 +778,7 @@
             <a href="cart.html" style="position: relative;">
                 <i data-lucide="shopping-cart"></i>
                 <span id="cart-count"
-                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+                    style="position: absolute; top: -10px; right: -10px; background: #1A0F0A; color: #ffffff; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
             </a>
             <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="All Pages & Menu"><i data-lucide="menu"></i></a>
         </div>
@@ -749,7 +821,7 @@
             <div class="track-search-container" style="margin-top: 25px;">
                 <form id="tracking-form" onsubmit="handleTrackSearch(event)">
                     <div class="track-search-glass">
-                        <i data-lucide="search" style="color: #8B5A2B; width: 20px; height: 20px; min-width: 20px;"></i>
+                        <i data-lucide="search" style="color: #6B5B52; width: 20px; height: 20px; min-width: 20px;"></i>
                         <input type="text" id="track-input" placeholder="Enter Waybill ID or Order Number" required autocomplete="off">
                         <button type="submit" class="track-btn" id="track-btn-submit">
                             <span id="txt-btn-track">Track</span>
@@ -802,7 +874,7 @@
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0;">
                                 <h2 style="font-size: 1.4rem; font-weight: 800; margin: 0;" id="res-recipient-name">-</h2>
-                                <span id="res-customer-phone-badge" style="display: inline-flex; align-items: center; gap: 5px; background: rgba(255, 20, 147, 0.12); color: #8B5A2B; border: 1px solid rgba(255, 20, 147, 0.3); padding: 3px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: 'Times New Roman', Times, serif;">
+                                <span id="res-customer-phone-badge" style="display: inline-flex; align-items: center; gap: 5px; background: #F3ECE1; color: #24140E; border: 1px solid #E8DFD5; padding: 3px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: 'Times New Roman', Times, serif;">
                                     <i data-lucide="phone" style="width: 12px; height: 12px;"></i>
                                     <span id="res-customer-phone-top">-</span>
                                 </span>
@@ -886,7 +958,7 @@
                             </div>
                             <div class="detail-item-row">
                                 <span class="detail-label" id="lbl-courier">Courier Partner:</span>
-                                <span class="detail-val" style="color: #8B5A2B;">TransExpress Logistics</span>
+                                <span class="detail-val" style="color: #24140E;">TransExpress Logistics</span>
                             </div>
                             <div class="detail-item-row">
                                 <span class="detail-label" id="lbl-waybill">Waybill Number:</span>
@@ -922,7 +994,7 @@
                             </div>
                             <div class="detail-item-row">
                                 <span class="detail-label" id="lbl-est-delivery">Est. Delivery:</span>
-                                <span class="detail-val" id="res-est-delivery" style="color: #10b981;">1 - 3 Days</span>
+                                <span class="detail-val" id="res-est-delivery" style="color: #2E7D32;">1 - 3 Days</span>
                             </div>
                         </div>
 
@@ -938,7 +1010,7 @@
                             </div>
                             <div class="detail-item-row">
                                 <span class="detail-label" id="lbl-cod-amount">COD Amount to Pay:</span>
-                                <span class="detail-val" id="res-cod-amount" style="font-size: 1rem; color: #8B5A2B;">-</span>
+                                <span class="detail-val" id="res-cod-amount" style="font-size: 1rem; color: #1A0F0A;">-</span>
                             </div>
                             <div class="detail-item-row">
                                 <span class="detail-label" id="lbl-items-desc">Items Description:</span>
@@ -954,7 +1026,7 @@
                     <!-- Activity / Event History Timeline -->
                     <div class="history-timeline">
                         <div class="history-title">
-                            <i data-lucide="history" style="color: #8B5A2B; width: 18px; height: 18px;"></i>
+                            <i data-lucide="history" style="color: #6B5B52; width: 18px; height: 18px;"></i>
                             <span id="lbl-history-title">Tracking History & Activity Log</span>
                         </div>
 
@@ -965,14 +1037,59 @@
 
                     <!-- Official Courier Reference -->
                     <div class="courier-official-badge">
-                        <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #10b981;"></i>
+                        <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #2E7D32;"></i>
                         <span id="lbl-courier-sync">Live Sync Powered by TransExpress Courier Network.</span>
                         <a id="direct-courier-link" href="https://tracking.transexpress.lk/tracking" target="_blank" rel="noopener">Open TransExpress &rarr;</a>
                     </div>
                 </div>
             </div>
+
+            <!-- Extra options / help -->
+            <div class="track-help-wrap">
+                <div class="track-help-title">More Options</div>
+                <div class="track-help-grid">
+                    <a class="track-help-card" href="order-history.html">
+                        <span class="track-help-ic"><i data-lucide="package"></i></span>
+                        <span>
+                            <span class="hc-title">My Orders</span>
+                            <span class="hc-sub">View your order history</span>
+                        </span>
+                    </a>
+                    <a class="track-help-card" href="https://wa.me/94757218786" target="_blank" rel="noopener">
+                        <span class="track-help-ic"><i data-lucide="message-circle"></i></span>
+                        <span>
+                            <span class="hc-title">Need Help?</span>
+                            <span class="hc-sub">Chat on WhatsApp</span>
+                        </span>
+                    </a>
+                    <a class="track-help-card" href="shop.html">
+                        <span class="track-help-ic"><i data-lucide="shopping-bag"></i></span>
+                        <span>
+                            <span class="hc-title">Continue Shopping</span>
+                            <span class="hc-sub">Browse the collection</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
         </section>
     </main>
+
+    <!-- Navbar counts (read from the same storage keys as the rest of the site) -->
+    <script>
+        (function () {
+            try {
+                var c = JSON.parse(localStorage.getItem('roohira_cart')) || [];
+                var total = c.reduce(function (s, i) { return s + (i.quantity || 1); }, 0);
+                var cc = document.getElementById('cart-count');
+                if (cc) cc.textContent = total;
+            } catch (e) {}
+            try {
+                var w = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
+                var wc = document.getElementById('wishlist-count');
+                if (wc) wc.textContent = w.length;
+            } catch (e) {}
+        })();
+    </script>
 
     <!-- Logic Script -->
     <script>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="account-ui.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
@@ -27,11 +28,13 @@
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="shop.html">Shop</a></li>
-            <li><a href="customize.html">Customize</a></li>
-            <li><a href="offers.html">Offers</a></li>
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="customize.html">Design Studio</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="login.html"><i data-lucide="user"></i></a>
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="profile.html"><i data-lucide="user"></i></a>
             <a href="wishlist.html" style="position: relative; margin-right: 5px;">
                 <i data-lucide="heart"></i>
                 <span id="wishlist-count"
@@ -40,7 +43,7 @@
             <a href="cart.html" style="position: relative;">
                 <i data-lucide="shopping-cart"></i>
                 <span id="cart-count"
-                    style="position: absolute; top: -10px; right: -10px; background: #c8a96e; color: #0A0F1E; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+                    style="position: absolute; top: -10px; right: -10px; background: #1A0F0A; color: #ffffff; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
             </a>
             <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
         </div>
@@ -51,36 +54,66 @@
         <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
         <a href="index.html">Home</a>
         <a href="shop.html">Shop</a>
-        <a href="customize.html">Customize</a>
+        <a href="track-order.html">Track Order</a>
+        <a href="customize.html">Design Studio</a>
         <a href="offers.html">Offers</a>
         <a href="wishlist.html">Wishlist</a>
         <a href="profile.html">My Account</a>
         <a href="cart.html">Cart</a>
     </div>
 
-    <main class="section" style="padding-top: 150px; min-height: 80vh;">
-        <div class="section-title">
-            <h2>Your <span style="color: #ff0000;">Cart</span></h2>
-        </div>
-
-        <div id="cart-items-container" style="max-width: 800px; margin: 0 auto;">
-            <div id="cart-items">
-                <!-- Items rendered by script.js -->
+    <main class="section" style="padding-top: 130px; min-height: 80vh;">
+        <div class="acct-page">
+            <div class="acct-head">
+                <div>
+                    <h1 class="acct-title">Your <span class="accent">Cart</span></h1>
+                    <p class="acct-sub">Review your items before checkout.</p>
+                </div>
             </div>
 
-            <div class="cart-summary glass" style="padding: 30px; margin-top: 30px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <span>Subtotal</span>
-                    <span id="cart-total" style="font-weight: 800; color: #c8a96e;">Rs. 0.00</span>
+            <div class="cart-layout" id="cart-items-container">
+                <div class="cart-list" id="cart-items">
+                    <!-- Items rendered by script.js renderCart() -->
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
-                    <span>Shipping</span>
-                    <span>Free</span>
+
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="sum-row">
+                        <span class="sum-label">Subtotal</span>
+                        <span class="sum-val" id="cart-total">Rs. 0.00</span>
+                    </div>
+                    <div class="sum-row">
+                        <span class="sum-label">Shipping</span>
+                        <span class="sum-val sum-free">Free</span>
+                    </div>
+                    <div class="sum-row sum-row--total">
+                        <span class="sum-label">Total</span>
+                        <span class="sum-val" id="cart-total-grand">Rs. 0.00</span>
+                    </div>
+                    <button id="checkout-btn" onclick="proceedToCheckout()" class="acct-btn acct-btn--primary acct-btn--block">
+                        <i data-lucide="shopping-bag"></i> Proceed to Checkout
+                    </button>
+                    <a href="shop.html" class="acct-btn acct-btn--ghost acct-btn--block" style="margin-top: 10px;">
+                        <i data-lucide="arrow-left"></i> Continue Shopping
+                    </a>
                 </div>
-                <button id="checkout-btn" onclick="proceedToCheckout()" class="btn btn-primary" style="width: 100%; text-align: center;">
-                    <i data-lucide="shopping-bag" style="width:18px;height:18px;vertical-align:middle;margin-right:8px;"></i>
-                    Proceed to Checkout
-                </button>
+            </div>
+
+            <!-- Extra options: trust + help -->
+            <div class="acct-feature-strip">
+                <span class="feature-chip"><i data-lucide="shield-check"></i> Secure Payment</span>
+                <span class="feature-chip"><i data-lucide="truck"></i> Free Delivery</span>
+                <span class="feature-chip"><i data-lucide="refresh-cw"></i> 7-Day Exchange</span>
+                <span class="feature-chip"><i data-lucide="message-circle"></i> WhatsApp Support</span>
+            </div>
+
+            <div class="cart-help-row">
+                <a href="track-order.html" class="acct-btn acct-btn--ghost">
+                    <i data-lucide="truck"></i> Track Your Order
+                </a>
+                <a href="https://wa.me/94757218786" target="_blank" rel="noopener" class="acct-link">
+                    <i data-lucide="headphones"></i> Need help? Chat with us
+                </a>
             </div>
         </div>
     </main>
@@ -129,9 +162,6 @@
                 showAuthRequiredModal('proceed to checkout', 'checkout.html');
             }
         }
-    </script>) {
-            if (e.target === this) closeAuthModal();
-        });
     </script>
 
     <script>lucide.createIcons();</script>
