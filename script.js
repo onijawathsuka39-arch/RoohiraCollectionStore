@@ -2899,3 +2899,100 @@ if (typeof document !== 'undefined') {
         setTimeout(initFastScrollAnimations, 50);
     });
 }
+
+// ==========================================================================
+// DESIGN STUDIO - UNDER DEVELOPMENT / TEMPORARILY CLOSED NOTICE MODAL
+// ==========================================================================
+function openDesignStudioNotice(e) {
+    if (e && typeof e.preventDefault === 'function') {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    let modal = document.getElementById('design-studio-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'design-studio-modal';
+        modal.className = 'ds-modal-overlay';
+        modal.innerHTML = `
+            <div class="ds-modal-card" role="dialog" aria-modal="true" aria-labelledby="ds-title">
+                <button class="ds-modal-close" onclick="closeDesignStudioNotice()" aria-label="Close modal">&times;</button>
+                <div class="ds-badge-row">
+                    <span class="ds-status-pill">
+                        <span class="ds-pulse-dot"></span> Under Active Development
+                    </span>
+                </div>
+                <div class="ds-icon-bubble">
+                    <i data-lucide="wrench" class="ds-icon-tool"></i>
+                </div>
+                <h3 id="ds-title" class="ds-heading">Design Studio is Temporarily Closed</h3>
+                <p class="ds-subheading">ක්‍රියාකාරී නවීකරණයක් සිදු කෙරෙමින් පවතී</p>
+                <p class="ds-desc">
+                    අපගේ <strong>Design Studio</strong> සේවාව මේ වන විට නවීන විශේෂාංග හා උසස් තාක්ෂණය සමඟින් සංවර්ධනය (Development) වෙමින් පවතින බැවින් තාවකාලිකව වසා ඇත.
+                </p>
+                <div class="ds-highlight-box">
+                    <i data-lucide="sparkles" class="ds-sparkle-icon"></i>
+                    <div>
+                        <strong>ඉතා ඉක්මනින් ඔබ වෙත! (Launching Soon)</strong>
+                        <p>ඔබටම අනන්‍ය වූ T-Shirt ත්‍රිමාණව (3D) නිර්මාණය කර ගැනීමේ නව අත්දැකීමක් ඉතා කඩිනමින් ඔබ වෙත ලැබෙනු ඇත.</p>
+                    </div>
+                </div>
+                <div class="ds-actions">
+                    <a href="shop.html" class="ds-btn ds-btn-primary">
+                        <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i> Browse Available Shop
+                    </a>
+                    <a href="https://wa.me/94757218786?text=Hello%20Roohira%2C%20I%20would%20like%20to%20order%20a%20custom%20design" target="_blank" class="ds-btn ds-btn-whatsapp">
+                        <i data-lucide="message-circle" style="width: 16px; height: 16px;"></i> Custom Orders via WhatsApp
+                    </a>
+                    <button type="button" class="ds-btn ds-btn-close" onclick="closeDesignStudioNotice()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeDesignStudioNotice();
+            }
+        });
+    }
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+function closeDesignStudioNotice() {
+    const modal = document.getElementById('design-studio-modal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+    document.body.style.overflow = '';
+}
+
+window.openDesignStudioNotice = openDesignStudioNotice;
+window.closeDesignStudioNotice = closeDesignStudioNotice;
+
+// Intercept all clicks on customize.html links across all pages
+document.addEventListener('click', (e) => {
+    const targetLink = e.target.closest('a[href*="customize.html"]');
+    if (targetLink) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDesignStudioNotice(e);
+    }
+}, true);
+
+// If user navigates directly to customize.html, display overlay immediately
+if (typeof window !== 'undefined' && window.location.pathname.includes('customize.html')) {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            openDesignStudioNotice();
+        }, 150);
+    });
+}
+
