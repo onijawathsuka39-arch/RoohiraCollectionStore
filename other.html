@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Others &amp; Bespoke Accents | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --other-blue: #2E5A88;
+            --other-cyan: #4CC9F0;
+            --other-dark: #0A111A;
+            --other-cream: #F5F7FA;
+            --other-border: rgba(76, 201, 240, 0.3);
+        }
+
+        body.other-page-theme {
+            background-color: #F8F9FB;
+        }
+
+        /* Others & Accessories Futuristic Luxury Hero Banner */
+        .other-hero {
+            position: relative;
+            background: linear-gradient(135deg, #070D14 0%, #101B27 50%, #09131F 100%);
+            color: #FFFFFF;
+            padding: clamp(55px, 8vw, 95px) 6% clamp(40px, 6vw, 65px);
+            border-bottom: 2px solid var(--other-blue);
+            overflow: hidden;
+        }
+        .other-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 85% 25%, rgba(76, 201, 240, 0.16) 0%, transparent 60%),
+                radial-gradient(circle at 15% 80%, rgba(46, 90, 136, 0.22) 0%, transparent 55%);
+            pointer-events: none;
+        }
+        .other-hero-grid {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .other-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 90, 136, 0.22);
+            border: 1px solid rgba(76, 201, 240, 0.45);
+            color: var(--other-cyan);
+            padding: 6px 14px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.1rem;
+        }
+        .other-hero h1 {
+            font-family: 'Space Grotesk', 'Playfair Display', sans-serif;
+            font-size: clamp(2.3rem, 5.2vw, 4rem);
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 1.12;
+            margin: 0 0 1rem;
+            letter-spacing: -0.01em;
+        }
+        .other-hero h1 span {
+            background: linear-gradient(120deg, #FFFFFF 20%, #4CC9F0 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .other-hero p {
+            color: #D3E0EA;
+            font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+            line-height: 1.7;
+            max-width: 540px;
+            margin: 0 0 1.8rem;
+        }
+
+        /* 3-Image Avant-Garde Gallery */
+        .other-gallery {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-rows: 150px 150px;
+            gap: 12px;
+            position: relative;
+        }
+        .other-gallery-img {
+            position: relative;
+            overflow: hidden;
+            border: 1.5px solid var(--other-border);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+            background: #0B131C;
+        }
+        .other-gallery-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.08) brightness(0.95);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.6s ease;
+        }
+        .other-gallery-img:hover img {
+            transform: scale(1.06);
+            filter: contrast(1.15) brightness(1.05);
+        }
+        .other-gallery-img.lead {
+            grid-row: 1 / span 2;
+        }
+        .other-gallery-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(7, 13, 20, 0.9);
+            border: 1px solid var(--other-cyan);
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--other-cyan);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Department Switcher Bar */
+        .dept-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 1.4rem;
+        }
+        .dept-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #D3E0EA;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none !important;
+            transition: all 0.25s ease;
+        }
+        .dept-btn:hover, .dept-btn.active {
+            background: var(--other-blue);
+            color: #FFFFFF !important;
+            border-color: var(--other-blue);
+            box-shadow: 0 4px 15px rgba(46, 90, 136, 0.4);
+        }
+
+        /* Editorial Features Strip */
+        .other-editorial-strip {
+            background: #FFFFFF;
+            border-bottom: 1px solid rgba(46, 90, 136, 0.12);
+            padding: 30px 6%;
+        }
+        .other-editorial-grid {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .other-editorial-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #F4F7FA;
+            border: 1px solid rgba(46, 90, 136, 0.2);
+            border-left: 3.5px solid var(--other-blue);
+        }
+        .other-editorial-card i {
+            color: var(--other-blue);
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+        .other-editorial-card h4 {
+            margin: 0 0 2px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #1A120B;
+        }
+        .other-editorial-card p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #6D5D53;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .other-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .other-gallery {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 180px;
+            }
+            .other-gallery-img.lead {
+                grid-row: auto;
+            }
+            .other-gallery-img:last-child {
+                display: none;
+            }
+        }
+        @media (max-width: 550px) {
+            .other-gallery {
+                grid-template-columns: 1fr;
+                grid-template-rows: 200px;
+            }
+            .other-gallery-img:not(.lead) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="other-page-theme">
+    <!-- Navbar -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop All</a></li>
+            <li><a href="mens.html">Men</a></li>
+            <li><a href="womens.html">Women</a></li>
+            <li><a href="kids.html">Kids</a></li>
+            <li><a href="other.html" class="active">Others</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="profile.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #8B5A2B; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="All Pages & Menu"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <!-- Side Menu / Mobile Overlay Drawer -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <div style="padding: 0 0.5rem 1rem; border-bottom: 2px solid #1A120B; margin-bottom: 0.5rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: #000000; margin: 0; font-weight: 700;">Navigation &amp; Sections</h3>
+            <span style="font-size: 0.72rem; color: #6D5D53; text-transform: uppercase; letter-spacing: 1px;">Roohira Collection</span>
+        </div>
+        <a href="index.html"><i data-lucide="home" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Home</a>
+        <a href="shop.html"><i data-lucide="shopping-bag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Shop All</a>
+        <a href="mens.html"><i data-lucide="shield" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Men's Collection</a>
+        <a href="womens.html"><i data-lucide="sparkles" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Women's Collection</a>
+        <a href="kids.html"><i data-lucide="smile" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Kids' Collection</a>
+        <a href="other.html" style="font-weight: 800; color: #2E5A88; background: rgba(46, 90, 136, 0.08);"><i data-lucide="layers" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Others &amp; Specials</a>
+        <a href="customize.html"><i data-lucide="palette" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Design Studio</a>
+        <a href="dtf.html"><i data-lucide="printer" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> DTF Print Service</a>
+        <a href="track-order.html"><i data-lucide="truck" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Track Order</a>
+        <a href="wishlist.html"><i data-lucide="heart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Wishlist</a>
+        <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
+        <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
+    </div>
+
+    <!-- Others Themed Avant-Garde Hero Banner -->
+    <header class="other-hero">
+        <div class="other-hero-grid">
+            <div>
+                <div class="other-tag">
+                    <i data-lucide="layers" style="width: 14px; height: 14px;"></i> Curated Artifacts &amp; Accessories
+                </div>
+                <h1>Bespoke <span>Accents</span></h1>
+                <p>Beyond traditional apparel. Modern unisex streetwear drops, leather accents, tote carriers, wristwear, seasonal exclusives and customizable lifestyle pieces tailored to your individuality.</p>
+                
+                <div class="dept-switcher">
+                    <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--other-cyan); font-weight: 800;">Departments:</span>
+                    <a href="mens.html" class="dept-btn">Men</a>
+                    <a href="womens.html" class="dept-btn">Women</a>
+                    <a href="kids.html" class="dept-btn">Kids</a>
+                    <a href="other.html" class="dept-btn active"><i data-lucide="check" style="width: 13px; height: 13px;"></i> Others</a>
+                </div>
+            </div>
+
+            <!-- Distinct Curated High-Fashion Editorial Images for Others/Accessories -->
+            <div class="other-gallery">
+                <div class="other-gallery-img lead">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Minimal Luxury Watch & Lifestyle Accessory" loading="eager">
+                    <div class="other-gallery-badge">Lifestyle Accents</div>
+                </div>
+                <div class="other-gallery-img">
+                    <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80" alt="Leather Bag & Carrier" loading="eager">
+                    <div class="other-gallery-badge">Leather & Canvas</div>
+                </div>
+                <div class="other-gallery-img">
+                    <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=600&q=80" alt="Contemporary Sunglasses" loading="eager">
+                    <div class="other-gallery-badge">Unisex Special</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editorial Trust Strip for Others -->
+    <section class="other-editorial-strip">
+        <div class="other-editorial-grid">
+            <div class="other-editorial-card">
+                <i data-lucide="sparkles"></i>
+                <div>
+                    <h4>Limited Edition Drops</h4>
+                    <p>Exclusive seasonal artifacts produced in small quantities with custom touches.</p>
+                </div>
+            </div>
+            <div class="other-editorial-card">
+                <i data-lucide="infinity"></i>
+                <div>
+                    <h4>Unisex Universal Aesthetics</h4>
+                    <p>Gender-fluid design language crafted to complement every unique style.</p>
+                </div>
+            </div>
+            <div class="other-editorial-card">
+                <i data-lucide="gift"></i>
+                <div>
+                    <h4>Luxury Gift Packaging</h4>
+                    <p>Every piece arrives meticulously boxed and prepared for memorable gifting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Catalog Section -->
+    <main class="section shop-page" style="padding-top: 2rem;">
+        <!-- Controls & Filter Toolbar -->
+        <div class="shop-control-bar shop-toolbar">
+            <!-- Search + Sort -->
+            <div class="shop-search-row">
+                <div class="shop-search-wrap">
+                    <i data-lucide="search" class="shop-search-icon"></i>
+                    <input type="text" id="shop-search" placeholder="Search accessories & other drops..." oninput="handleSearch(this.value)">
+                </div>
+                <div class="shop-sort-wrap">
+                    <label for="shop-sort">Sort</label>
+                    <select id="shop-sort" onchange="handleSortChange(this.value)">
+                        <option value="default">Featured Pieces</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Categories Filter (Dynamic for Others Section) -->
+            <div class="shop-filter-group">
+                <span class="shop-filter-label">Categories in Others</span>
+                <div id="category-tab-row" class="shop-chip-row">
+                    <button class="shop-filter-btn category-btn active" onclick="selectCategory('All', this)">All Categories</button>
+                </div>
+            </div>
+
+            <!-- Active Department Badge -->
+            <div id="active-dept-badge-row" class="shop-active-dept" style="display: flex;">
+                <span id="active-dept-label">🏷 Other Collections Active</span>
+                <a href="shop.html" class="shop-active-dept-clear" style="text-decoration: none;">View All Departments &rarr;</a>
+            </div>
+        </div>
+
+        <div class="shop-results-bar">
+            <span id="shop-results-count">Showing products</span>
+        </div>
+
+        <!-- Dynamic Product Grid for Others -->
+        <div class="product-grid" id="product-grid">
+            <!-- Loaded dynamically by script.js -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding: 60px 10% 30px; border-top: 1.5px solid rgba(60, 42, 33, 0.12); background: #ffffff !important; color: #000000 !important;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left;">
+            <div>
+                <h3 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #000000 !important;">
+                    <span style="color: #8B5A2B !important;">Roohira</span> <span style="color: #000000 !important;">Collection</span>
+                </h3>
+                <p style="color: #000000 !important; font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px;">
+                    Exclusive bespoke drops, unisex streetwear and curated accessories tailored by Roohira Collection.
+                </p>
+                <div style="display: flex; gap: 12px;">
+                    <a href="https://web.facebook.com/roohiraonline" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none;" title="Facebook"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none;" title="Instagram"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+                    <a href="https://wa.me/94757218786" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #25D366 !important; display: flex; align-items: center; justify-content: center; text-decoration: none;" title="WhatsApp"><i data-lucide="message-circle" style="width: 18px; height: 18px;"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Collections</h4>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+                    <li><a href="mens.html" style="color: #000000 !important; text-decoration: none;">Men's Collection</a></li>
+                    <li><a href="womens.html" style="color: #000000 !important; text-decoration: none;">Women's Collection</a></li>
+                    <li><a href="kids.html" style="color: #000000 !important; text-decoration: none;">Kids' Collection</a></li>
+                    <li><a href="other.html" style="color: #2E5A88 !important; font-weight: 700; text-decoration: none;">Others &amp; Accessories</a></li>
+                    <li><a href="customize.html" style="color: #000000 !important; text-decoration: none;">Custom Design Studio</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Contact Us</h4>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
+                    <li>
+                        <a href="tel:0757218786" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="phone" style="width: 16px; height: 16px; color: #8B5A2B;"></i> Call: 0757218786
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wa.me/94757218786" target="_blank" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="message-square" style="width: 16px; height: 16px; color: #25D366;"></i> WhatsApp: 0757218786
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:roohiraonline@gmail.com" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="mail" style="width: 16px; height: 16px; color: #8B5A2B;"></i> roohiraonline@gmail.com
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #e0e0e0; padding-top: 25px; text-align: center; color: #000000 !important; font-size: 0.85rem;">
+            <p style="color: #000000 !important;">&copy; 2026 Roohira Collection. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <div class="mobile-bottom-bar">
+        <a href="index.html" class="mobile-bottom-item">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+        <a href="mens.html" class="mobile-bottom-item">
+            <i data-lucide="shirt"></i>
+            <span>Men</span>
+        </a>
+        <a href="womens.html" class="mobile-bottom-item">
+            <i data-lucide="sparkles"></i>
+            <span>Women</span>
+        </a>
+        <a href="other.html" class="mobile-bottom-item active">
+            <i data-lucide="layers"></i>
+            <span>Others</span>
+        </a>
+        <a href="cart.html" class="mobile-bottom-item">
+            <i data-lucide="shopping-cart"></i>
+            <span>Cart</span>
+            <span class="badge-dot" id="mobile-bar-cart">0</span>
+        </a>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof selectSection === 'function') {
+                selectSection('Others');
+            }
+        });
+    </script>
+</body>
+
+</html>

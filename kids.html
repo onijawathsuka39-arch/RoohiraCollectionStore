@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids' Adventure &amp; Playground | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --kids-coral: #E63946;
+            --kids-sky: #457B9D;
+            --kids-yellow: #FFB703;
+            --kids-cream: #FFFDF9;
+            --kids-border: rgba(230, 57, 70, 0.35);
+        }
+
+        body.kids-page-theme {
+            background-color: #FFFDF9;
+        }
+
+        /* Kids' Vibrant Adventure Hero Banner */
+        .kids-hero {
+            position: relative;
+            background: linear-gradient(135deg, #1A0A10 0%, #2D101C 50%, #15060E 100%);
+            color: #FFFFFF;
+            padding: clamp(55px, 8vw, 95px) 6% clamp(40px, 6vw, 65px);
+            border-bottom: 3px solid var(--kids-coral);
+            overflow: hidden;
+        }
+        .kids-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 80% 25%, rgba(255, 183, 3, 0.22) 0%, transparent 60%),
+                radial-gradient(circle at 20% 80%, rgba(230, 57, 70, 0.22) 0%, transparent 55%);
+            pointer-events: none;
+        }
+        .kids-hero-grid {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .kids-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(230, 57, 70, 0.2);
+            border: 1px solid rgba(255, 183, 3, 0.6);
+            color: #FFD166;
+            padding: 6px 14px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            border-radius: 20px;
+            margin-bottom: 1.1rem;
+        }
+        .kids-hero h1 {
+            font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(2.3rem, 5.2vw, 4rem);
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 1.15;
+            margin: 0 0 1rem;
+        }
+        .kids-hero h1 span {
+            color: #FFB703;
+            text-shadow: 0 4px 20px rgba(255, 183, 3, 0.35);
+        }
+        .kids-hero p {
+            color: #FCECEF;
+            font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+            line-height: 1.7;
+            max-width: 540px;
+            margin: 0 0 1.8rem;
+        }
+
+        /* 3-Image Kids Fun Gallery */
+        .kids-gallery {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-rows: 150px 150px;
+            gap: 12px;
+            position: relative;
+        }
+        .kids-gallery-img {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            background: #1F0D15;
+        }
+        .kids-gallery-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.08) brightness(1.02);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.6s ease;
+        }
+        .kids-gallery-img:hover img {
+            transform: scale(1.06);
+            filter: contrast(1.15) brightness(1.08);
+        }
+        .kids-gallery-img.lead {
+            grid-row: 1 / span 2;
+        }
+        .kids-gallery-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(26, 10, 16, 0.9);
+            border: 1px solid var(--kids-yellow);
+            border-radius: 12px;
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--kids-yellow);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Department Switcher Bar */
+        .dept-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 1.4rem;
+        }
+        .dept-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #FCECEF;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none !important;
+            transition: all 0.25s ease;
+        }
+        .dept-btn:hover, .dept-btn.active {
+            background: var(--kids-coral);
+            color: #FFFFFF !important;
+            border-color: var(--kids-coral);
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+        }
+
+        /* Editorial Features Strip */
+        .kids-editorial-strip {
+            background: #FFFFFF;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.12);
+            padding: 30px 6%;
+        }
+        .kids-editorial-grid {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .kids-editorial-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #FFF9FA;
+            border-radius: 12px;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-left: 4px solid var(--kids-coral);
+        }
+        .kids-editorial-card i {
+            color: var(--kids-coral);
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+        .kids-editorial-card h4 {
+            margin: 0 0 2px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #1A120B;
+            font-family: 'Fredoka', sans-serif;
+        }
+        .kids-editorial-card p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #6D5D53;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .kids-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .kids-gallery {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 180px;
+            }
+            .kids-gallery-img.lead {
+                grid-row: auto;
+            }
+            .kids-gallery-img:last-child {
+                display: none;
+            }
+        }
+        @media (max-width: 550px) {
+            .kids-gallery {
+                grid-template-columns: 1fr;
+                grid-template-rows: 200px;
+            }
+            .kids-gallery-img:not(.lead) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="kids-page-theme">
+    <!-- Navbar -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop All</a></li>
+            <li><a href="mens.html">Men</a></li>
+            <li><a href="womens.html">Women</a></li>
+            <li><a href="kids.html" class="active">Kids</a></li>
+            <li><a href="other.html">Others</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="profile.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #8B5A2B; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="All Pages & Menu"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <!-- Side Menu / Mobile Overlay Drawer -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <div style="padding: 0 0.5rem 1rem; border-bottom: 2px solid #1A120B; margin-bottom: 0.5rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: #000000; margin: 0; font-weight: 700;">Navigation &amp; Sections</h3>
+            <span style="font-size: 0.72rem; color: #6D5D53; text-transform: uppercase; letter-spacing: 1px;">Roohira Collection</span>
+        </div>
+        <a href="index.html"><i data-lucide="home" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Home</a>
+        <a href="shop.html"><i data-lucide="shopping-bag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Shop All</a>
+        <a href="mens.html"><i data-lucide="shield" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Men's Collection</a>
+        <a href="womens.html"><i data-lucide="sparkles" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Women's Collection</a>
+        <a href="kids.html" style="font-weight: 800; color: #DC143C; background: rgba(220, 20, 60, 0.08);"><i data-lucide="smile" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Kids' Collection</a>
+        <a href="other.html"><i data-lucide="layers" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Others &amp; Specials</a>
+        <a href="customize.html"><i data-lucide="palette" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Design Studio</a>
+        <a href="dtf.html"><i data-lucide="printer" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> DTF Print Service</a>
+        <a href="track-order.html"><i data-lucide="truck" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Track Order</a>
+        <a href="wishlist.html"><i data-lucide="heart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Wishlist</a>
+        <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
+        <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
+    </div>
+
+    <!-- Kids' Themed Fun & Adventure Hero Banner -->
+    <header class="kids-hero">
+        <div class="kids-hero-grid">
+            <div>
+                <div class="kids-tag">
+                    <i data-lucide="smile" style="width: 14px; height: 14px;"></i> Kids' Playful Wonderland
+                </div>
+                <h1>Little Heroes <span>Collection</span></h1>
+                <p>Designed for active play, laughter and endless adventures. Ultra-soft breathable combed cotton tees, non-toxic eco prints, Garfield, Snoopy, Stitch &amp; Anime favorites that kids adore.</p>
+                
+                <div class="dept-switcher">
+                    <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: #FFD166; font-weight: 800;">Departments:</span>
+                    <a href="mens.html" class="dept-btn">Men</a>
+                    <a href="womens.html" class="dept-btn">Women</a>
+                    <a href="kids.html" class="dept-btn active"><i data-lucide="check" style="width: 13px; height: 13px;"></i> Kids</a>
+                    <a href="other.html" class="dept-btn">Others</a>
+                </div>
+            </div>
+
+            <!-- Distinct Curated High-Fashion Editorial Images for Kids -->
+            <div class="kids-gallery">
+                <div class="kids-gallery-img lead">
+                    <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&w=800&q=80" alt="Happy Little Boy In Cotton Casual" loading="eager">
+                    <div class="kids-gallery-badge">100% Gentle Cotton</div>
+                </div>
+                <div class="kids-gallery-img">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=600&q=80" alt="Playful Girl Fashion" loading="eager">
+                    <div class="kids-gallery-badge">Playground Ready</div>
+                </div>
+                <div class="kids-gallery-img">
+                    <img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=600&q=80" alt="Kids Fun Adventure" loading="eager">
+                    <div class="kids-gallery-badge">Cartoon Graphics</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editorial Trust Strip for Kids -->
+    <section class="kids-editorial-strip">
+        <div class="kids-editorial-grid">
+            <div class="kids-editorial-card">
+                <i data-lucide="shield-check"></i>
+                <div>
+                    <h4>Skin-Safe &amp; Hypoallergenic</h4>
+                    <p>Gentle on delicate skin with zero harmful chemical residues or rough seams.</p>
+                </div>
+            </div>
+            <div class="kids-editorial-card">
+                <i data-lucide="smile"></i>
+                <div>
+                    <h4>Vibrant Fade-Resistant Prints</h4>
+                    <p>Machine-washable durable graphics that stay bright after countless playtime washes.</p>
+                </div>
+            </div>
+            <div class="kids-editorial-card">
+                <i data-lucide="sparkles"></i>
+                <div>
+                    <h4>Family Matching Available</h4>
+                    <p>Matching brother-sister and parent-child tees for unforgettable memories.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Catalog Section -->
+    <main class="section shop-page" style="padding-top: 2rem;">
+        <!-- Controls & Filter Toolbar -->
+        <div class="shop-control-bar shop-toolbar">
+            <!-- Search + Sort -->
+            <div class="shop-search-row">
+                <div class="shop-search-wrap">
+                    <i data-lucide="search" class="shop-search-icon"></i>
+                    <input type="text" id="shop-search" placeholder="Search Kids' collection (e.g. Cartoon, Anime, Cotton)..." oninput="handleSearch(this.value)">
+                </div>
+                <div class="shop-sort-wrap">
+                    <label for="shop-sort">Sort</label>
+                    <select id="shop-sort" onchange="handleSortChange(this.value)">
+                        <option value="default">Featured Pieces</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Categories Filter (Dynamic for Kids Section) -->
+            <div class="shop-filter-group">
+                <span class="shop-filter-label">Categories for Kids</span>
+                <div id="category-tab-row" class="shop-chip-row">
+                    <button class="shop-filter-btn category-btn active" onclick="selectCategory('All', this)">All Categories</button>
+                </div>
+            </div>
+
+            <!-- Subcategories (T-Shirts) -->
+            <div id="subcategory-row" class="shop-chip-row shop-sub-row" style="display: none;">
+                <button class="shop-subfilter-btn subcategory-btn t-shirt-sub" onclick="selectSubcategory('Regular Tee (Printed)', this)">Regular Fit (220 GSM)</button>
+                <button class="shop-subfilter-btn subcategory-btn t-shirt-sub" onclick="selectSubcategory('Oversized Tee (Printed)', this)">Oversized Fit (220 GSM)</button>
+            </div>
+
+            <!-- Active Department Badge -->
+            <div id="active-dept-badge-row" class="shop-active-dept" style="display: flex;">
+                <span id="active-dept-label">🏷 Kids' Collection Active</span>
+                <a href="shop.html" class="shop-active-dept-clear" style="text-decoration: none;">View All Departments &rarr;</a>
+            </div>
+        </div>
+
+        <div class="shop-results-bar">
+            <span id="shop-results-count">Showing Kids' collection products</span>
+        </div>
+
+        <!-- Dynamic Product Grid for Kids -->
+        <div class="product-grid" id="product-grid">
+            <!-- Loaded dynamically by script.js -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding: 60px 10% 30px; border-top: 1.5px solid rgba(60, 42, 33, 0.12); background: #ffffff !important; color: #000000 !important;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left;">
+            <div>
+                <h3 style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #000000 !important;">
+                    <span style="color: #8B5A2B !important;">Roohira</span> <span style="color: #000000 !important;">Collection</span>
+                </h3>
+                <p style="color: #000000 !important; font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px;">
+                    Playful, comfortable and durable kids' apparel. Pure soft cotton, cartoon tees, and custom family matching tees.
+                </p>
+                <div style="display: flex; gap: 12px;">
+                    <a href="https://web.facebook.com/roohiraonline" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none;" title="Facebook"><i data-lucide="facebook" style="width: 18px; height: 18px;"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #8B5A2B !important; display: flex; align-items: center; justify-content: center; text-decoration: none;" title="Instagram"><i data-lucide="instagram" style="width: 18px; height: 18px;"></i></a>
+                    <a href="https://wa.me/94757218786" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f0f5; color: #25D366 !important; display: flex; align-items: center; justify-content: center; text-decoration: none;" title="WhatsApp"><i data-lucide="message-circle" style="width: 18px; height: 18px;"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Collections</h4>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
+                    <li><a href="mens.html" style="color: #000000 !important; text-decoration: none;">Men's Collection</a></li>
+                    <li><a href="womens.html" style="color: #000000 !important; text-decoration: none;">Women's Collection</a></li>
+                    <li><a href="kids.html" style="color: #DC143C !important; font-weight: 700; text-decoration: none;">Kids' Collection</a></li>
+                    <li><a href="other.html" style="color: #000000 !important; text-decoration: none;">Others &amp; Accessories</a></li>
+                    <li><a href="customize.html" style="color: #000000 !important; text-decoration: none;">Custom Design Studio</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #000000 !important; margin-bottom: 18px; letter-spacing: 1px;">Contact Us</h4>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
+                    <li>
+                        <a href="tel:0757218786" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="phone" style="width: 16px; height: 16px; color: #8B5A2B;"></i> Call: 0757218786
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wa.me/94757218786" target="_blank" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="message-square" style="width: 16px; height: 16px; color: #25D366;"></i> WhatsApp: 0757218786
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:roohiraonline@gmail.com" style="color: #000000 !important; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                            <i data-lucide="mail" style="width: 16px; height: 16px; color: #8B5A2B;"></i> roohiraonline@gmail.com
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #e0e0e0; padding-top: 25px; text-align: center; color: #000000 !important; font-size: 0.85rem;">
+            <p style="color: #000000 !important;">&copy; 2026 Roohira Collection. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <div class="mobile-bottom-bar">
+        <a href="index.html" class="mobile-bottom-item">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+        <a href="mens.html" class="mobile-bottom-item">
+            <i data-lucide="shirt"></i>
+            <span>Men</span>
+        </a>
+        <a href="womens.html" class="mobile-bottom-item">
+            <i data-lucide="sparkles"></i>
+            <span>Women</span>
+        </a>
+        <a href="kids.html" class="mobile-bottom-item active">
+            <i data-lucide="smile"></i>
+            <span>Kids</span>
+        </a>
+        <a href="cart.html" class="mobile-bottom-item">
+            <i data-lucide="shopping-cart"></i>
+            <span>Cart</span>
+            <span class="badge-dot" id="mobile-bar-cart">0</span>
+        </a>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof selectSection === 'function') {
+                selectSection('Kids');
+            }
+        });
+    </script>
+</body>
+
+</html>

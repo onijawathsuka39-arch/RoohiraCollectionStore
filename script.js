@@ -2403,7 +2403,13 @@ function syncProducts(callback) {
         console.log("⚡ [Real-Time Multi-Device Sync] Products synced successfully:", products.length);
 
         // Immediate dynamic UI refresh without full page reload
-        if (window.location.pathname.includes('shop.html')) {
+        const isShopOrSectionPage = window.location.pathname.includes('shop.html') ||
+            window.location.pathname.includes('mens.html') ||
+            window.location.pathname.includes('womens.html') ||
+            window.location.pathname.includes('kids.html') ||
+            window.location.pathname.includes('other.html');
+
+        if (isShopOrSectionPage) {
             if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
             if (typeof filterShop === 'function') filterShop();
             else if (typeof filterProducts === 'function') {
@@ -2475,7 +2481,13 @@ function syncCategoriesListener() {
             if (data && data.name) window.liveCategories.push({ id: doc.id, ...data });
         });
         liveCategories = window.liveCategories;
-        if (window.location.pathname.includes('shop.html')) {
+        const isShopOrSectionPageSync = window.location.pathname.includes('shop.html') ||
+            window.location.pathname.includes('mens.html') ||
+            window.location.pathname.includes('womens.html') ||
+            window.location.pathname.includes('kids.html') ||
+            window.location.pathname.includes('other.html');
+
+        if (isShopOrSectionPageSync) {
             if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
         }
     }, err => console.warn('Categories live sync note:', err));
@@ -2498,7 +2510,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname.includes('cart.html')) { renderCart(); }
         if (window.location.pathname.includes('profile.html')) { loadProfile(); }
         if (window.location.pathname.includes('wishlist.html')) { renderWishlist(); }
-        if (window.location.pathname.includes('shop.html')) {
+        const isShopOrSectionPageInit = window.location.pathname.includes('shop.html') ||
+            window.location.pathname.includes('mens.html') ||
+            window.location.pathname.includes('womens.html') ||
+            window.location.pathname.includes('kids.html') ||
+            window.location.pathname.includes('other.html');
+
+        if (isShopOrSectionPageInit) {
             const urlParams = new URLSearchParams(window.location.search);
             const catParam = urlParams.get('category');
             catParam ? filterProducts(catParam) : filterProducts('All');
@@ -2791,11 +2809,21 @@ function renderHomeDepartmentProducts() {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-// Auto-parse URL department section parameter on page load
+// Auto-parse URL department section parameter or auto-set currentSection on section pages
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const secParam = urlParams.get('section');
-    if (secParam && typeof selectSection === 'function') {
+    const path = window.location.pathname.toLowerCase();
+
+    if (path.includes('mens.html')) {
+        if (typeof selectSection === 'function') selectSection('Mens');
+    } else if (path.includes('womens.html')) {
+        if (typeof selectSection === 'function') selectSection('Womens');
+    } else if (path.includes('kids.html')) {
+        if (typeof selectSection === 'function') selectSection('Kids');
+    } else if (path.includes('other.html')) {
+        if (typeof selectSection === 'function') selectSection('Others');
+    } else if (secParam && typeof selectSection === 'function') {
         const s = secParam.toLowerCase();
         if (s === 'mens' || s === 'men') selectSection('Mens');
         else if (s === 'womens' || s === 'women') selectSection('Womens');
