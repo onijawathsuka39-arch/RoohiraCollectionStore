@@ -2403,13 +2403,8 @@ function syncProducts(callback) {
         console.log("⚡ [Real-Time Multi-Device Sync] Products synced successfully:", products.length);
 
         // Immediate dynamic UI refresh without full page reload
-        const isShopOrSectionPage = window.location.pathname.includes('shop.html') ||
-            window.location.pathname.includes('mens.html') ||
-            window.location.pathname.includes('womens.html') ||
-            window.location.pathname.includes('kids.html') ||
-            window.location.pathname.includes('other.html');
-
-        if (isShopOrSectionPage) {
+        const isCatalogPage = window.location.pathname.includes('shop.html') || window.location.pathname.includes('mens.html') || window.location.pathname.includes('womens.html') || window.location.pathname.includes('kids.html') || window.location.pathname.includes('other.html');
+        if (isCatalogPage) {
             if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
             if (typeof filterShop === 'function') filterShop();
             else if (typeof filterProducts === 'function') {
@@ -2481,13 +2476,8 @@ function syncCategoriesListener() {
             if (data && data.name) window.liveCategories.push({ id: doc.id, ...data });
         });
         liveCategories = window.liveCategories;
-        const isShopOrSectionPageSync = window.location.pathname.includes('shop.html') ||
-            window.location.pathname.includes('mens.html') ||
-            window.location.pathname.includes('womens.html') ||
-            window.location.pathname.includes('kids.html') ||
-            window.location.pathname.includes('other.html');
-
-        if (isShopOrSectionPageSync) {
+        const isCatalogPage2 = window.location.pathname.includes('shop.html') || window.location.pathname.includes('mens.html') || window.location.pathname.includes('womens.html') || window.location.pathname.includes('kids.html') || window.location.pathname.includes('other.html');
+        if (isCatalogPage2) {
             if (typeof renderDynamicShopCategories === 'function') renderDynamicShopCategories();
         }
     }, err => console.warn('Categories live sync note:', err));
@@ -2510,13 +2500,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname.includes('cart.html')) { renderCart(); }
         if (window.location.pathname.includes('profile.html')) { loadProfile(); }
         if (window.location.pathname.includes('wishlist.html')) { renderWishlist(); }
-        const isShopOrSectionPageInit = window.location.pathname.includes('shop.html') ||
-            window.location.pathname.includes('mens.html') ||
-            window.location.pathname.includes('womens.html') ||
-            window.location.pathname.includes('kids.html') ||
-            window.location.pathname.includes('other.html');
-
-        if (isShopOrSectionPageInit) {
+        const isCatalogPage3 = window.location.pathname.includes('shop.html') || window.location.pathname.includes('mens.html') || window.location.pathname.includes('womens.html') || window.location.pathname.includes('kids.html') || window.location.pathname.includes('other.html');
+        if (isCatalogPage3) {
             const urlParams = new URLSearchParams(window.location.search);
             const catParam = urlParams.get('category');
             catParam ? filterProducts(catParam) : filterProducts('All');
@@ -2847,10 +2832,8 @@ function initFastScrollAnimations() {
     // Target elements: category cards, department cards, product cards, sections
     const selectors = [
         '.category-square-card',
-        '.dept-card',
         '.product-card',
         '.featured-product-card',
-        '#department-section .section-header',
         '.hero-content',
         '.exclusive-banner'
     ];

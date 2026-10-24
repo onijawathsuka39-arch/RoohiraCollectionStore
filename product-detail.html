@@ -784,13 +784,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadAndRenderProductDetail();
             syncProducts(() => {
-                loadAndRenderProductDetail();
+                // If the product was not loaded initially, re-render
+                if (!product) {
+                    loadAndRenderProductDetail();
+                }
             });
         });
 
         // Listen for real-time products updates from Firestore
         document.addEventListener('productsSynced', () => {
-            loadAndRenderProductDetail();
+            if (!product) {
+                loadAndRenderProductDetail();
+            }
         });
 
         // --- Print Size Selector ---
@@ -948,20 +953,75 @@
             updateDeliveryPromo();
         }
 
+        let previousAnimatedPrice = null;
+        let priceCountUpInterval = null;
+
+        function animatePriceCountdown(targetEl, startVal, endVal, oldPriceVal) {
+            if (priceCountUpInterval) {
+                cancelAnimationFrame(priceCountUpInterval);
+                priceCountUpInterval = null;
+            }
+
+            // Duration in ms: 1800ms gives a smooth, clearly noticeable countdown
+            const duration = 1100;
+            const startTime = performance.now();
+
+            function frame(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease out cubic: starts brisk and clearly slows down to landing
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const currentVal = Math.round(startVal - (startVal - endVal) * easeProgress);
+
+                let html = `<span class="price-counter-num dropping">Rs. ${currentVal.toLocaleString()}.00</span>`;
+                if (oldPriceVal) {
+                    html += ` <span class="old-price">Rs. ${oldPriceVal.toLocaleString()}</span>`;
+                }
+                if (oldPriceVal && oldPriceVal > endVal) {
+                    const pct = Math.round(((oldPriceVal - endVal) / oldPriceVal) * 100);
+                    html += ` <span class="pdp-save-badge flash">Save ${pct}%</span>`;
+                }
+                targetEl.innerHTML = html;
+
+                if (progress < 1) {
+                    priceCountUpInterval = requestAnimationFrame(frame);
+                } else {
+                    renderPriceStatic(targetEl, endVal, oldPriceVal);
+                }
+            }
+
+            // Small 150ms delay on initial mount so the user sees the original price first before dropping!
+            setTimeout(() => {
+                priceCountUpInterval = requestAnimationFrame(frame);
+            }, 60);
+        }
+
+        function renderPriceStatic(targetEl, finalPrice, oldPriceVal) {
+            let html = `<span class="price-counter-num landed">Rs. ${finalPrice.toLocaleString()}.00</span>`;
+            if (oldPriceVal) {
+                html += ` <span class="old-price">Rs. ${oldPriceVal.toLocaleString()}</span>`;
+            }
+            if (oldPriceVal && oldPriceVal > finalPrice) {
+                const pct = Math.round(((oldPriceVal - finalPrice) / oldPriceVal) * 100);
+                html += ` <span class="pdp-save-badge">Save ${pct}%</span>`;
+            }
+            targetEl.innerHTML = html;
+        }
+
         function updatePriceDisplay() {
             const priceEl = document.getElementById('detail-price');
+            if (!priceEl) return;
             let effectivePrice = currentPrice;
             let effectiveOldPrice = currentOldPrice;
 
-            let html = `Rs. ${effectivePrice.toLocaleString()}.00`;
-            if (effectiveOldPrice) {
-                html += ` <span class="old-price">Rs. ${effectiveOldPrice.toLocaleString()}</span>`;
+            // Start drop animation from original higher price down to current discounted price
+            let startVal = effectiveOldPrice;
+            if (!startVal || startVal <= effectivePrice) {
+                startVal = effectivePrice + 450;
             }
-            if (effectiveOldPrice && effectiveOldPrice > effectivePrice) {
-                const pct = Math.round(((effectiveOldPrice - effectivePrice) / effectiveOldPrice) * 100);
-                html += ` <span class="pdp-save-badge">Save ${pct}%</span>`;
-            }
-            priceEl.innerHTML = html;
+
+            animatePriceCountdown(priceEl, startVal, effectivePrice, effectiveOldPrice);
+            previousAnimatedPrice = effectivePrice;
 
             if (typeof updateStickyBar === 'function') updateStickyBar();
         }
